@@ -40,125 +40,125 @@
         </script><!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JP TechLift - Real-Time Elevator Monitoring</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JP TechLift - Elevator Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const App = () => {
-      return (
-        <div className="font-sans">
-          {/* Header */}
-          <header className="bg-gray-900 text-white py-4">
-            <div className="container mx-auto flex justify-between items-center px-4">
-              <h1 className="text-2xl font-bold">JP TechLift</h1>
-              <nav>
-                <ul className="flex space-x-4">
-                  <li><a href="#features" className="hover:text-blue-400">Features</a></li>
-                  <li><a href="#benefits" className="hover:text-blue-400">Benefits</a></li>
-                  <li><a href="#contact" className="hover:text-blue-400">Contact</a></li>
-                </ul>
-              </nav>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+             <img src="../../ADMIN/OneDrive/Pictures/JP TechLift/fanpage/Q8/1.jpg" width="50" height="50" alt="">
             </div>
-          </header>
-
-          {/* Hero Section */}
-          <section className="bg-gray-100 py-20 text-center">
-            <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-4">JP TechLift: Real-Time Elevator Intelligence</h2>
-              <p className="text-lg mb-6">Monitor and optimize your elevator operations with instant access to critical data, 24/7, from any device.</p>
-              <a href="#contact" className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Get Started</a>
-            </div>
-          </section>
-
-          {/* Features Section */}
-          <section id="features" className="py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">Key Features</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="text-4xl mb-4">📊</div>
-                  <h4 className="text-xl font-semibold mb-2">Real-Time Monitoring</h4>
-                  <p>Track elevator performance, load, speed, and door status instantly.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-4">🚨</div>
-                  <h4 className="text-xl font-semibold mb-2">Smart Alerts</h4>
-                  <p>Receive automatic notifications for anomalies or maintenance needs.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-4">📱</div>
-                  <h4 className="text-xl font-semibold mb-2">Mobile Access</h4>
-                  <p>Access your dashboard from any computer, tablet, or smartphone.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Benefits Section */}
-          <section id="benefits" className="bg-gray-100 py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">Why Choose JP TechLift?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">✅</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Maximize Uptime</h4>
-                    <p>Prevent downtime with proactive maintenance and real-time insights.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">💰</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Cost Efficiency</h4>
-                    <p>Reduce maintenance costs and optimize operational efficiency.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">🔒</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Enhanced Safety</h4>
-                    <p>Ensure passenger safety with continuous monitoring and alerts.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">⚙️</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Easy Installation</h4>
-                    <p>Wireless setup completed in hours, not days, by our experts.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Contact Section */}
-          <section id="contact" className="py-16">
-            <div className="container mx-auto px-4 text-center">
-              <h3 className="text-3xl font-bold mb-6">Ready to Elevate Your Operations?</h3>
-              <p className="text-lg mb-8">Contact us today to learn how JP TechLift can transform your elevator management.</p>
-              <div className="max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" className="w-full px-4 py-2 mb-4 border rounded" />
-                <button className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Submit</button>
-              </div>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className="bg-gray-900 text-white py-4 text-center">
-            <p>&copy; 2025 JP TechLift. All rights reserved.</p>
-          </footer>
+            <nav class="space-x-6">
+                <a href="#home" class="hover:text-blue-300">Home</a>
+                <a href="#products" class="hover:text-blue-300">Products</a>
+                <a href="#about" class="hover:text-blue-300">About Us</a>
+                <a href="#services" class="hover:text-blue-300">Services</a>
+                <a href="#contact" class="hover:text-blue-300">Contact</a>
+            </nav>
         </div>
-      );
-    };
+    </header>
 
-    ReactDOM.render(<App />, document.getElementById('root'));
-  </script>
+    <!-- Hero Section -->
+    <section id="home" class="bg-gray-100 py-20">
+        <div class="container mx-auto px-4 text-center">
+            <img src="elevator1.jpg" width="1000" height="542" alt="">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-900 mb-4">Elevate Your Future with JP TechLift</h1>
+            <p class="text-lg md:text-xl text-gray-700 mb-8">Premium elevator solutions for residential, commercial, and industrial needs.</p>
+            <a href="#contact" class="bg-blue-900 text-white px-6 py-3 rounded-full hover:bg-blue-700">Get a Quote</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-12">Our Elevator Solutions</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                 <img src="https://via.placeholder.com/300x200?text=Home+Elevator" alt="Home Elevator" class="w-full h-48 object-cover rounded-t-lg">
+                    <h3 class="text-xl font-semibold mt-4">Passenger Elevators</h3>
+                    <p class="text-gray-600 mt-2">Comfortable and reliable elevators for residential and commercial buildings.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300x200?text=Home+Elevator" alt="Home Elevator" class="w-full h-48 object-cover rounded-t-lg">
+                    <h3 class="text-xl font-semibold mt-4">Freight Elevators</h3>
+                    <p class="text-gray-600 mt-2">Heavy-duty solutions for industrial and warehouse applications.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300x200?text=Home+Elevator" alt="Home Elevator" class="w-full h-48 object-cover rounded-t-lg">
+                    <h3 class="text-xl font-semibold mt-4">Home Elevators</h3>
+                    <p class="text-gray-600 mt-2">Compact and stylish elevators for modern homes.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300x200?text=Service+Elevator" alt="Service Elevator" class="w-full h-48 object-cover rounded-t-lg">
+                    <h3 class="text-xl font-semibold mt-4">Service Elevators</h3>
+                    <p class="text-gray-600 mt-2">Specialized elevators for maintenance and service operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-12">About JP TechLift</h2>
+            <p class="text-lg text-gray-700 max-w-3xl mx-auto">JP TechLift is a leading provider of innovative elevator solutions, committed to quality, safety, and customer satisfaction. With years of experience, our skilled engineers deliver cutting-edge technology and reliable services to meet the needs of diverse projects across Japan and beyond.</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-blue-900 mb-12">Our Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold">Installation</h3>
+                    <p class="text-gray-600 mt-2">Professional installation services tailored to your project requirements.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold">Maintenance & Repair</h3>
+                    <p class="text-gray-600 mt-2">Comprehensive maintenance and prompt repair services to ensure longevity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-blue-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Contact Us</h2>
+            <div class="max-w-lg mx-auto">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium">Name</label>
+                    <input type="text" id="name" class="w-full p-2 mt-1 rounded bg-gray-800 text-white border border-gray-700">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium">Email</label>
+                    <input type="email" id="email" class="w-full p-2 mt-1 rounded bg-gray-800 text-white border border-gray-700">
+                </div>
+                <div class="mb-4">
+                    <label for="message" class="block text-sm font-medium">Message</label>
+                    <textarea id="message" rows="4" class="w-full p-2 mt-1 rounded bg-gray-800 text-white border border-gray-700"></textarea>
+                </div>
+                <button class="bg-white text-blue-900 px-6 py-3 rounded-full hover:bg-gray-200">Send Message</button>
+            </div>
+            <div class="mt-8 text-center">
+                <p>Phone: +84
+                777-275-384</p>
+                <p>Email: contact.jptechlift@gmail.com
+                <p>Address: 106/10/17 Do Nang Te Street, An Lac A Ward, Binh Tan, Ho Chi Minh City</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 JP TechLift. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
