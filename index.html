@@ -1,0 +1,164 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JP TechLift - Real-Time Elevator Monitoring</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const App = () => {
+      return (
+        <div className="font-sans">
+          {/* Header */}
+          <header className="bg-gray-900 text-white py-4">
+            <div className="container mx-auto flex justify-between items-center px-4">
+              <h1 className="text-2xl font-bold">JP TechLift</h1>
+              <nav>
+                <ul className="flex space-x-4">
+                  <li><a href="#features" className="hover:text-blue-400">Features</a></li>
+                  <li><a href="#benefits" className="hover:text-blue-400">Benefits</a></li>
+                  <li><a href="#contact" className="hover:text-blue-400">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+
+          {/* Hero Section */}
+          <section className="bg-gray-100 py-20 text-center">
+            <div className="container mx-auto px-4">
+              <h2 className="text-4xl font-bold mb-4">JP TechLift: Real-Time Elevator Intelligence</h2>
+              <p className="text-lg mb-6">Monitor and optimize your elevator operations with instant access to critical data, 24/7, from any device.</p>
+              <a href="#contact" className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Get Started</a>
+            </div>
+          </section>
+
+          {/* Features Section */}
+          <section id="features" className="py-16">
+            <div className="container mx-auto px-4">
+              <h3 className="text-3xl font-bold text-center mb-12">Key Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">📊</div>
+                  <h4 className="text-xl font-semibold mb-2">Real-Time Monitoring</h4>
+                  <p>Track elevator performance, load, speed, and door status instantly.</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl mb-4">🚨</div>
+                  <h4 className="text-xl font-semibold mb-2">Smart Alerts</h4>
+                  <p>Receive automatic notifications for anomalies or maintenance needs.</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl mb-4">📱</div>
+                  <h4 className="text-xl font-semibold mb-2">Mobile Access</h4>
+                  <p>Access your dashboard from any computer, tablet, or smartphone.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Benefits Section */}
+          <section id="benefits" className="bg-gray-100 py-16">
+            <div className="container mx-auto px-4">
+              <h3 className="text-3xl font-bold text-center mb-12">Why Choose JP TechLift?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="flex items-start">
+                  <div className="text-2xl mr-4">✅</div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">Maximize Uptime</h4>
+                    <p>Prevent downtime with proactive maintenance and real-time insights.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="text-2xl mr-4">💰</div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">Cost Efficiency</h4>
+                    <p>Reduce maintenance costs and optimize operational efficiency.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="text-2xl mr-4">🔒</div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">Enhanced Safety</h4>
+                    <p>Ensure passenger safety with continuous monitoring and alerts.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="text-2xl mr-4">⚙️</div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">Easy Installation</h4>
+                    <p>Wireless setup completed in hours, not days, by our experts.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Contact Section */}
+          <section id="contact" className="py-16">
+            <div className="container mx-auto px-4 text-center">
+              <h3 className="text-3xl font-bold mb-6">Ready to Elevate Your Operations?</h3>
+              <p className="text-lg mb-8">Contact us today to learn how JP TechLift can transform your elevator management.</p>
+              <div className="max-w-md mx-auto">
+                <input type="email" placeholder="Enter your email" className="w-full px-4 py-2 mb-4 border rounded" />
+                <button className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Submit</button>
+              </div>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer className="bg-gray-900 text-white py-4 text-center">
+            <p>&copy; 2025 JP TechLift. All rights reserved.</p>
+          </footer>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
