@@ -1,164 +1,735 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JP TechLift - Elevating Your World</title>
 
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JP TechLift - Real-Time Elevator Monitoring</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const App = () => {
-      return (
-        <div className="font-sans">
-          {/* Header */}
-          <header className="bg-gray-900 text-white py-4">
-            <div className="container mx-auto flex justify-between items-center px-4">
-              <h1 className="text-2xl font-bold">JP TechLift</h1>
-              <nav>
-                <ul className="flex space-x-4">
-                  <li><a href="#features" className="hover:text-blue-400">Features</a></li>
-                  <li><a href="#benefits" className="hover:text-blue-400">Benefits</a></li>
-                  <li><a href="#contact" className="hover:text-blue-400">Contact</a></li>
-                </ul>
-              </nav>
-            </div>
-          </header>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide-react@0.294.0/dist/lucide-react.js"></script>
 
-          {/* Hero Section */}
-          <section className="bg-gray-100 py-20 text-center">
-            <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-4">JP TechLift: Real-Time Elevator Intelligence</h2>
-              <p className="text-lg mb-6">Monitor and optimize your elevator operations with instant access to critical data, 24/7, from any device.</p>
-              <a href="#contact" className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Get Started</a>
-            </div>
-          </section>
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              "jp-red": "#E63946",
+              "jp-blue": "#1D3557",
+              "jp-light-blue": "#457B9D",
+              "jp-bg": "#F1FAEE",
+            },
+          },
+        },
+      };
+    </script>
 
-          {/* Features Section */}
-          <section id="features" className="py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">Key Features</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="text-center">
-                  <div className="text-4xl mb-4">📊</div>
-                  <h4 className="text-xl font-semibold mb-2">Real-Time Monitoring</h4>
-                  <p>Track elevator performance, load, speed, and door status instantly.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-4">🚨</div>
-                  <h4 className="text-xl font-semibold mb-2">Smart Alerts</h4>
-                  <p>Receive automatic notifications for anomalies or maintenance needs.</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl mb-4">📱</div>
-                  <h4 className="text-xl font-semibold mb-2">Mobile Access</h4>
-                  <p>Access your dashboard from any computer, tablet, or smartphone.</p>
-                </div>
-              </div>
-            </div>
-          </section>
+    <!-- Basic Styles -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f1faee; /* jp-bg */
+      }
+      .hero-gradient {
+        background: linear-gradient(to top, rgba(29, 53, 87, 0.8), rgba(29, 53, 87, 0.2));
+      }
+    </style>
+  </head>
+  <body class="bg-jp-bg text-jp-blue">
+    <!-- Header / Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <img src="../../ADMIN/OneDrive/Pictures/JP TechLift/fanpage/Q8/1.jpg" width="50" height="50" alt="" />
+          <div class="flex-shrink-0">
+            <a href="#" class="flex items-center space-x-2"> </a>
+          </div>
 
-          {/* Benefits Section */}
-          <section id="benefits" className="bg-gray-100 py-16">
-            <div className="container mx-auto px-4">
-              <h3 className="text-3xl font-bold text-center mb-12">Why Choose JP TechLift?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">✅</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Maximize Uptime</h4>
-                    <p>Prevent downtime with proactive maintenance and real-time insights.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">💰</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Cost Efficiency</h4>
-                    <p>Reduce maintenance costs and optimize operational efficiency.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">🔒</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Enhanced Safety</h4>
-                    <p>Ensure passenger safety with continuous monitoring and alerts.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="text-2xl mr-4">⚙️</div>
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Easy Installation</h4>
-                    <p>Wireless setup completed in hours, not days, by our experts.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <!-- Desktop Navigation -->
+          <nav class="hidden md:flex items-center space-x-8">
+            <a href="#home" class="font-medium text-jp-blue hover:text-jp-red transition-colors">Home</a>
+            <a href="#products" class="font-medium text-jp-blue hover:text-jp-red transition-colors">Products</a>
+            <a href="#services" class="font-medium text-jp-blue hover:text-jp-red transition-colors">Services</a>
+            <a href="#about" class="font-medium text-jp-blue hover:text-jp-red transition-colors">About Us</a>
+            <a href="#contact" class="font-medium text-jp-blue hover:text-jp-red transition-colors">Contact</a>
+          </nav>
 
-          {/* Contact Section */}
-          <section id="contact" className="py-16">
-            <div className="container mx-auto px-4 text-center">
-              <h3 className="text-3xl font-bold mb-6">Ready to Elevate Your Operations?</h3>
-              <p className="text-lg mb-8">Contact us today to learn how JP TechLift can transform your elevator management.</p>
-              <div className="max-w-md mx-auto">
-                <input type="email" placeholder="Enter your email" className="w-full px-4 py-2 mb-4 border rounded" />
-                <button className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700">Submit</button>
-              </div>
-            </div>
-          </section>
+          <!-- CTA Button Desktop -->
+          <div class="hidden md:block">
+            <a
+              href="#contact"
+              class="inline-block bg-jp-red text-white font-semibold px-5 py-3 rounded-lg shadow-md hover:bg-red-700 transition-all transform hover:scale-105"
+            >
+              Get a Quote
+            </a>
+          </div>
 
-          {/* Footer */}
-          <footer className="bg-gray-900 text-white py-4 text-center">
-            <p>&copy; 2025 JP TechLift. All rights reserved.</p>
-          </footer>
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden flex items-center">
+            <button
+              id="mobile-menu-button"
+              class="inline-flex items-center justify-center p-2 rounded-md text-jp-blue hover:text-jp-red hover:bg-gray-100 focus:outline-none"
+            >
+              <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            </button>
+          </div>
         </div>
-      );
-    };
+      </div>
 
-    ReactDOM.render(<App />, document.getElementById('root'));
-  </script>
-</body>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="md:hidden hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#home"
+            class="block px-3 py-2 rounded-md text-base font-medium text-jp-blue hover:text-jp-red hover:bg-gray-50"
+            >Home</a
+          >
+          <a
+            href="#products"
+            class="block px-3 py-2 rounded-md text-base font-medium text-jp-blue hover:text-jp-red hover:bg-gray-50"
+            >Products</a
+          >
+          <a
+            href="#services"
+            class="block px-3 py-2 rounded-md text-base font-medium text-jp-blue hover:text-jp-red hover:bg-gray-50"
+            >Services</a
+          >
+          <a
+            href="#about"
+            class="block px-3 py-2 rounded-md text-base font-medium text-jp-blue hover:text-jp-red hover:bg-gray-50"
+            >About Us</a
+          >
+          <a
+            href="#contact"
+            class="block px-3 py-2 rounded-md text-base font-medium text-jp-blue hover:text-jp-red hover:bg-gray-50"
+            >Contact</a
+          >
+          <div class="mt-4">
+            <a
+              href="#contact"
+              class="w-full text-center block bg-jp-red text-white font-semibold px-5 py-3 rounded-lg shadow-md hover:bg-red-700 transition-all"
+            >
+              Get a Quote
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section
+        id="home"
+        class="relative h-[80vh] min-h-[500px] flex items-center justify-center text-white text-center"
+      >
+        <div
+          class="absolute inset-0 bg-cover bg-center"
+          style="
+            background-image: url('https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?q=80&w=2070&auto=format&fit=crop');
+          "
+          onerror="this.onerror=null; this.style.backgroundImage='url(https://placehold.co/1920x1080/1D3557/F1FAEE?text=Modern+Elevator)'"
+        ></div>
+        <div class="absolute inset-0 hero-gradient"></div>
+        <div class="relative z-10 p-4">
+          <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 drop-shadow-lg">
+            Engineering Excellence, Elevating Futures
+          </h1>
+          <p class="text-lg md:text-2xl max-w-3xl mx-auto font-light drop-shadow-md">
+            Providing innovative, reliable, and safe elevator solutions across Vietnam.
+          </p>
+          <a
+            href="#products"
+            class="mt-8 inline-block bg-jp-red text-white font-semibold px-8 py-4 rounded-lg shadow-xl hover:bg-red-700 transition-all transform hover:scale-105 text-lg"
+          >
+            Explore Our Solutions
+          </a>
+        </div>
+      </section>
+
+      <!-- About Us Section -->
+      <section id="about" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight text-jp-blue sm:text-4xl">Welcome to JP TechLift</h2>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+              Your trusted partner in vertical transportation. We are dedicated to delivering superior quality elevators
+              and escalators, backed by exceptional service and a commitment to safety.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div class="p-6">
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-jp-red text-white mx-auto mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-8 h-8"
+                >
+                  <path d="m12 14 4-4"></path>
+                  <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-jp-blue">Advanced Technology</h3>
+              <p class="mt-2 text-gray-500">
+                Utilizing state-of-the-art technology for efficient and smooth operation.
+              </p>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-jp-red text-white mx-auto mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-8 h-8"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-jp-blue">Safety First</h3>
+              <p class="mt-2 text-gray-500">
+                Adhering to the strictest international safety standards for your peace of mind.
+              </p>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-jp-red text-white mx-auto mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-8 h-8"
+                >
+                  <path d="M12.22 2h-4.44a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.5L12.22 2z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-jp-blue">Quality Assurance</h3>
+              <p class="mt-2 text-gray-500">
+                Sourcing high-quality components for long-lasting durability and reliability.
+              </p>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center justify-center h-16 w-16 rounded-full bg-jp-red text-white mx-auto mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-8 h-8"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-jp-blue">Expert Team</h3>
+              <p class="mt-2 text-gray-500">Our skilled engineers and technicians are the backbone of our success.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Section -->
+      <section id="products" class="py-20 bg-jp-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight text-jp-blue sm:text-4xl">Our Elevator Solutions</h2>
+            <p class="mt-4 text-lg text-gray-600">Tailored to meet the unique demands of any building.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img
+                src="img/1025702-monochrome-architecture-space-symmetry-modern-motion-blur-elevator-structure-light-lighting-design-screenshot-public-transport.jpg"
+                width="4096"
+                height="2304"
+                alt=""
+              />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Passenger Elevators</h3>
+                <p class="mt-2 text-gray-600">
+                  Sleek, efficient, and comfortable elevators for residential buildings, offices, and shopping centers.
+                </p>
+              </div>
+            </div>
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img src="img/421807-digital-art-mice-elevator-light-effects.jpg" width="1366" height="768" alt="" />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Home Lifts</h3>
+                <p class="mt-2 text-gray-600">
+                  Compact and elegant solutions to enhance accessibility and convenience in private residences.
+                </p>
+              </div>
+            </div>
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img src="img/elevator1.jpg" width="1920" height="1276" alt="" />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Hospital Elevators</h3>
+                <p class="mt-2 text-gray-600">
+                  Specially designed for medical facilities, with smooth rides, precise leveling, and space for
+                  stretchers.
+                </p>
+              </div>
+            </div>
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img src="img/escalators-movingwalks-fam-g-arcit18.jpg" width="1920" height="1080" alt="" />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Freight Elevators</h3>
+                <p class="mt-2 text-gray-600">
+                  Robust and high-capacity lifts designed to move heavy goods in warehouses, factories, and industrial
+                  sites.
+                </p>
+              </div>
+            </div>
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img
+                src="img/pngtree-luxurious-elevator-lobby-in-a-business-hotel-a-3d-rendered-modernization-picture-image_3696327.jpg"
+                width="3132"
+                height="2088"
+                alt=""
+              />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Observation Elevators</h3>
+                <p class="mt-2 text-gray-600">
+                  Glass-paneled panoramic elevators that offer stunning views and add architectural beauty to any
+                  building.
+                </p>
+              </div>
+            </div>
+            <!-- Product Card -->
+            <div
+              class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300"
+            >
+              <img src="img/thumb-1920-1010294.jpg" width="3000" height="1912" alt="" />
+              <div class="p-6">
+                <h3 class="text-2xl font-semibold text-jp-blue">Escalators & Moving Walks</h3>
+                <p class="mt-2 text-gray-600">
+                  Reliable and safe solutions for managing high-traffic flow in airports, metro stations, and malls.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Section -->
+      <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight text-jp-blue sm:text-4xl">Comprehensive Services</h2>
+            <p class="mt-4 text-lg text-gray-600">Ensuring your elevators operate at peak performance, always.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-lg bg-jp-light-blue text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-6 w-6"
+                >
+                  <path
+                    d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+                  ></path>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-xl font-semibold text-jp-blue">New Installation</h3>
+                <p class="mt-1 text-gray-600">
+                  Professional and timely installation of new elevator systems, customized to your building's
+                  specifications.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-lg bg-jp-light-blue text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-6 w-6"
+                >
+                  <path d="m12 14 4-4"></path>
+                  <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-xl font-semibold text-jp-blue">Modernization & Upgrade</h3>
+                <p class="mt-1 text-gray-600">
+                  Enhance the safety, performance, and aesthetics of your existing elevators with our modernization
+                  packages.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-lg bg-jp-light-blue text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-6 w-6"
+                >
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-xl font-semibold text-jp-blue">Maintenance & Repair</h3>
+                <p class="mt-1 text-gray-600">
+                  Proactive maintenance plans and rapid-response repair services to minimize downtime and ensure safety.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-lg bg-jp-light-blue text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-6 w-6"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-xl font-semibold text-jp-blue">24/7 Technical Support</h3>
+                <p class="mt-1 text-gray-600">
+                  Our dedicated support team is available around the clock to address any emergencies or concerns.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="py-20 bg-jp-blue text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Get In Touch</h2>
+            <p class="mt-4 text-lg text-jp-bg opacity-80">
+              We're here to help. Contact us for a consultation or a quote.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+            <!-- Contact Info -->
+            <div class="space-y-8">
+              <div>
+                <h3 class="text-2xl font-semibold mb-4">Contact Information</h3>
+                <div class="flex items-center space-x-4 mb-4">
+                  <div class="bg-jp-red p-3 rounded-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold">Phone</h4>
+                    <a href="tel:+84777275384" class="text-jp-bg hover:text-jp-red">+84 777-275-384</a>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-4 mb-4">
+                  <div class="bg-jp-red p-3 rounded-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-6 h-6"
+                    >
+                      <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold">Email</h4>
+                    <a href="mailto:contact.jptechlift@gmail.com" class="text-jp-bg hover:text-jp-red"
+                      >contact.jptechlift@gmail.com</a
+                    >
+                  </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                  <div class="bg-jp-red p-3 rounded-full flex-shrink-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-6 h-6"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold">Address</h4>
+                    <p class="text-jp-bg">
+                      106/10/17 Do Nang Te Street, An Lac A Ward, Binh Tan District, Ho Chi Minh City
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-8">
+                <div class="rounded-lg overflow-hidden shadow-xl">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.782806145781!2d106.6026993147488!3d10.75130899233857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752dd160953e6b%3A0x443224164b1f6681!2zMTA2IMSQLiDEkOG7lyBOxINuZyBUPHUgLCBBbiBM4bqhYyBBLCBQw7JuZyBUw6JuLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1sen!2s!4v1678886400000!5m2!1sen!2s"
+                    width="100%"
+                    height="250"
+                    style="border: 0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="bg-white/10 p-8 rounded-lg">
+              <form action="#" method="POST">
+                <div class="space-y-6">
+                  <div>
+                    <label for="name" class="sr-only">Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      autocomplete="name"
+                      class="w-full p-3 rounded-md bg-white/20 border-white/30 placeholder-gray-300 focus:ring-2 focus:ring-jp-red focus:border-jp-red"
+                      placeholder="Full Name"
+                    />
+                  </div>
+                  <div>
+                    <label for="email" class="sr-only">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      autocomplete="email"
+                      class="w-full p-3 rounded-md bg-white/20 border-white/30 placeholder-gray-300 focus:ring-2 focus:ring-jp-red focus:border-jp-red"
+                      placeholder="Email Address"
+                    />
+                  </div>
+                  <div>
+                    <label for="phone" class="sr-only">Phone Number</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      autocomplete="tel"
+                      class="w-full p-3 rounded-md bg-white/20 border-white/30 placeholder-gray-300 focus:ring-2 focus:ring-jp-red focus:border-jp-red"
+                      placeholder="Phone Number"
+                    />
+                  </div>
+                  <div>
+                    <label for="message" class="sr-only">Message</label>
+                    <textarea
+                      name="message"
+                      id="message"
+                      rows="4"
+                      class="w-full p-3 rounded-md bg-white/20 border-white/30 placeholder-gray-300 focus:ring-2 focus:ring-jp-red focus:border-jp-red"
+                      placeholder="How can we help?"
+                    ></textarea>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      class="w-full bg-jp-red text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-red-700 transition-all transform hover:scale-105"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-jp-blue">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div class="space-y-8 xl:col-span-1">
+            <img
+              class="h-16 w-auto"
+              src="1.jpg"
+              alt="JP TechLift Logo"
+              onerror="this.onerror=null;this.src='https://placehold.co/200x200/1D3557/F1FAEE?text=JP+TechLift';"
+            />
+            <p class="text-gray-300 text-base">
+              Your premier partner for advanced vertical transportation solutions in Vietnam.
+            </p>
+          </div>
+          <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+            <div class="md:grid md:grid-cols-2 md:gap-8">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Solutions</h3>
+                <ul class="mt-4 space-y-4">
+                  <li><a href="#products" class="text-base text-gray-300 hover:text-white">Passenger Lifts</a></li>
+                  <li><a href="#products" class="text-base text-gray-300 hover:text-white">Home Lifts</a></li>
+                  <li><a href="#products" class="text-base text-gray-300 hover:text-white">Freight Lifts</a></li>
+                  <li><a href="#products" class="text-base text-gray-300 hover:text-white">Hospital Lifts</a></li>
+                </ul>
+              </div>
+              <div class="mt-12 md:mt-0">
+                <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Company</h3>
+                <ul class="mt-4 space-y-4">
+                  <li><a href="#about" class="text-base text-gray-300 hover:text-white">About</a></li>
+                  <li><a href="#services" class="text-base text-gray-300 hover:text-white">Services</a></li>
+                  <li><a href="#" class="text-base text-gray-300 hover:text-white">Projects</a></li>
+                  <li><a href="#contact" class="text-base text-gray-300 hover:text-white">Contact Us</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-12 border-t border-gray-700 pt-8">
+          <p class="text-base text-gray-400 xl:text-center">
+            &copy; 2025 JP TechLift Import & Export Co., LTD. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const header = document.getElementById("header");
+
+      // Toggle mobile menu
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Close menu when a link is clicked
+      mobileMenu.addEventListener("click", (e) => {
+        if (e.target.tagName === "A") {
+          mobileMenu.classList.add("hidden");
+        }
+      });
+
+      // Add shadow to header on scroll
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 10) {
+          header.classList.add("shadow-lg");
+        } else {
+          header.classList.remove("shadow-lg");
+        }
+      });
+    </script>
+  </body>
 </html>
