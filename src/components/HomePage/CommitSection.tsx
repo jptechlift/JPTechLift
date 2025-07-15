@@ -1,8 +1,8 @@
-import commitBanner from "../assets/images/commit-banner.jpg";
-import techImg from "../assets/images/commit1.png";
-import qualityImg from "../assets/images/commit2.png";
-import safetyImg from "../assets/images/commit3.png";
-import expertImg from "../assets/images/commit4.png";
+import commitBanner from "../../assets/images/commit-banner.jpg";
+import techImg from "../../assets/images/commit1.png";
+import qualityImg from "../../assets/images/commit2.png";
+import safetyImg from "../../assets/images/commit3.png";
+import expertImg from "../../assets/images/commit4.png";
 
 interface CommitBlock {
   img: string;

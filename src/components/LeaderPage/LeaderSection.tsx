@@ -1,7 +1,7 @@
 // src/components/LeaderSection.tsx
 import { useState } from "react";
-import { leaders } from "../data/LeaderData";
-import type { Leader } from "../data/LeaderData"; // thêm từ khóa "type"
+import { leaders } from "../../data/LeaderData";
+import type { Leader } from "../../data/LeaderData"; // thêm từ khóa "type"
 
 export default function LeaderSection() {
   const [selectedLeader, setSelectedLeader] = useState<Leader | null>(null);
@@ -10,7 +10,7 @@ export default function LeaderSection() {
     <section className="bg-white py-10 px-4 md:px-12 lg:px-24">
       {/* Tiêu đề */}
       <div className="text-center max-w-4xl mx-auto mb-12">
-        <h2 className="text-3xl font-bold text-[#041E42] mb-10">
+        <h2 className="font-inter text-3xl font-bold text-[#041E42] mb-10">
           Ban Điều Hành Của Chúng Tôi
         </h2>
 

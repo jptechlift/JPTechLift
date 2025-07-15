@@ -1,7 +1,7 @@
 // HeroBanner.tsx
-import backgroundImage from "../assets/images/BannerFooter.jpg";
-import chatIcon from "../assets/images/Message.png";
-import arrowIcon from "../assets/images/Arrow.png";
+import backgroundImage from "../../assets/images/BannerFooter.jpg";
+import chatIcon from "../../assets/images/Message.png";
+import arrowIcon from "../../assets/images/Arrow.png";
 
 export default function HeroFooter() {
   return (

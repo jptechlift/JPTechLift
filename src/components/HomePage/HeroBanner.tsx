@@ -1,8 +1,8 @@
 // src/components/HeroSection.tsx
-import Carousel from "./Carousel/Carousel";
-import TopBar from "./Navbar/DesktopMenu/TopBar";
-import MenuBar from "./Navbar/DesktopMenu/MenuBar";
-import { slides } from "../data/HeroSlide";
+import Carousel from "../Carousel/Carousel";
+import TopBar from "../Navbar/DesktopMenu/TopBar";
+import MenuBar from "../Navbar/DesktopMenu/MenuBar";
+import { slides } from "../../data/HeroSlide";
 
 export default function HeroSection() {
   return (
