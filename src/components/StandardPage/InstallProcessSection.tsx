@@ -1,4 +1,4 @@
-import phase1 from "../assets/images/phase1.jpg";
+import phase1 from "../../assets/images/phase1.jpg";
 
 export default function InstallProcessSection() {
   return (

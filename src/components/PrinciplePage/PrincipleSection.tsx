@@ -1,11 +1,11 @@
-import image from "../assets/images/Book-Img.jpg";
+import image from "../../assets/images/Book-Img.jpg";
 
 export default function PrincipleSection() {
   return (
     <section className="w-full px-4 py-12 md:px-12 lg:px-24 bg-white text-center text-[#041E42]">
       {/* --- Phần 1: Giới thiệu --- */}
       <div className="max-w-3xl mx-auto mb-20">
-        <h2 className="text-2xl md:text-3xl font-semibold leading-snug mb-10">
+        <h2 className="font-inter text-2xl md:text-3xl font-semibold leading-snug mb-10">
           Những nền tảng cốt lõi để trở thành phiên bản tốt nhất của chính mình
         </h2>
 
@@ -31,7 +31,7 @@ export default function PrincipleSection() {
 
       {/* --- Phần 2: Hình ảnh + CTA --- */}
       <div className="max-w-3xl mx-auto">
-        <h3 className="text-xl text-[#041E42] md:text-2xl font-semibold mb-10">
+        <h3 className="font-inter text-xl text-[#041E42] md:text-2xl font-semibold mb-10">
           Tìm hiểu tất cả ngay tại đây.
         </h3>
 

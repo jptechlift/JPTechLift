@@ -1,5 +1,5 @@
-import TopBar from "./Navbar/DesktopMenu/TopBar";
-import MenuBar from "./Navbar/DesktopMenu/MenuBar";
+import TopBar from "../Navbar/DesktopMenu/TopBar";
+import MenuBar from "../Navbar/DesktopMenu/MenuBar";
 
 interface HeaderWithBanner {
   banner: string;
@@ -31,7 +31,7 @@ export default function HeaderWithBanner({ banner, title }: HeaderWithBanner) {
       </div>
 
       {/* TITLE */}
-      <h1 className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center
+      <h1 className="font-inter pointer-events-none absolute inset-0 z-30 flex items-center justify-center
                      px-4 mt-12 pt-10 text-center text-3xl font-extrabold uppercase tracking-wide text-white
                      md:text-5xl">
         {title}             

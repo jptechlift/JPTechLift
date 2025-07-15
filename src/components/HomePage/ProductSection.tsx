@@ -1,10 +1,10 @@
-import product1 from "../assets/images/product1.jpg";
-import product2 from "../assets/images/product2.jpg";
-import product3 from "../assets/images/product3.jpg";
-import product4 from "../assets/images/product4.jpg";
-import product5 from "../assets/images/product5.jpg";
-import product6 from "../assets/images/product6.jpg";
-import logo from "../assets/images/logo-noname.png";
+import product1 from "../../assets/images/product1.jpg";
+import product2 from "../../assets/images/product2.jpg";
+import product3 from "../../assets/images/product3.jpg";
+import product4 from "../../assets/images/product4.jpg";
+import product5 from "../../assets/images/product5.jpg";
+import product6 from "../../assets/images/product6.jpg";
+import logo from "../../assets/images/logo-noname.png";
 /**
  * ProductSection
  *
@@ -95,7 +95,7 @@ export default function ProductSection() {
                 <button className="mr-2 py-3 px-6 bg-[#041E42] text-white font-inter font-semibold rounded-md transition-colors whitespace-nowrap border border-[#041E42] hover:bg-white hover:text-[#041E42]">
                   LIÊN HỆ
                 </button>
-                <button className="w-[120%] py-3 bg-[#041E42] text-white font-inter font-semibold rounded-md transition-colors whitespace-nowrap border border-[#041E42] hover:bg-white hover:text-[#041E42]">
+                <button className="w-[122%] py-4 bg-[#041E42] text-white font-inter font-semibold rounded-md transition-colors whitespace-nowrap border border-[#041E42] hover:bg-white hover:text-[#041E42]">
                   TÌM HIỂU THÊM
                 </button>
               </div>

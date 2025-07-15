@@ -1,7 +1,7 @@
-import WorldMap from "../assets/images/WorldMap.png";
-import AboutUs1 from "../assets/images/AboutUs1.jpg";
-import AboutUs2 from "../assets/images/AboutUs2.jpg";
-import AboutUs3 from "../assets/images/AboutUs3.jpg";
+import WorldMap from "../../assets/images/WorldMap.png";
+import AboutUs1 from "../../assets/images/AboutUs1.jpg";
+import AboutUs2 from "../../assets/images/AboutUs2.jpg";
+import AboutUs3 from "../../assets/images/AboutUs3.jpg";
 /**
  * AboutSection
  *
