@@ -8,6 +8,7 @@ import LeaderPage from "./pages/LeaderPage";
 
 import ProductTemplatePage from "./pages/Products/ProductTemplate";
 import ServiceTemplatePage from "./pages/Services/ServiceTemplatePage";
+import NewsPage from "./pages/News/NewsPage";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/quy-trinh-du-an" element={<StandardPage />} />   {/* Trang tiêu chuẩn */}
           <Route path="/nguyen-tac" element={<PrinciplePage />} />   {/* Trang nguyên tắc */}
           <Route path="/ban-lanh-dao" element={<LeaderPage />} />   {/* Trang nguyên tắc */}
+          <Route path="/tin-tuc" element={<NewsPage />} />   {/* Trang tin tức */}
 
             {/* PRODUCT: chỉ còn 1 route động */}
         <Route path="/products/:productId" element={<ProductTemplatePage />} />
