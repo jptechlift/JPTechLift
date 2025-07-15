@@ -1,7 +1,7 @@
 // App.tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./layouts/layout";
-import HomePage from "./pages/HomePage";         
+import HomePage from "./pages/HomePage";
 import StandardPage from "./pages/StandardPage";
 import PrinciplePage from "./pages/PrinciplePage";
 import LeaderPage from "./pages/LeaderPage";
@@ -11,6 +11,7 @@ import ServiceTemplatePage from "./pages/Services/ServiceTemplatePage";
 import AboutUsPage from "./pages/AboutUsPage";
 import BlogPage from "./pages/BlogPage";
 import ContactJPTechLiftFormPage from "./pages/ContactPage";
+
 
 const App = () => {
   return (
