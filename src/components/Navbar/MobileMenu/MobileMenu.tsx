@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../../../styles/components/Navbar/MobieNavbar/MobileMenu.module.scss";
 import { ChevronRight } from "lucide-react";
 import Logo from "../../Logo/Logo";
@@ -11,7 +11,10 @@ const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [menuLevel, setMenuLevel] = useState<"main" | "product_service" | "product">("main");
-  const navigate = useNavigate();
+  const closeMenu = () => {
+    setIsOpen(false);
+    setMenuLevel("main");
+  };
   return (
     <>
       {/* Thanh trên: Hotline */}
@@ -27,13 +30,28 @@ const MobileMenu = () => {
         <div className={styles.headerBar__right}>
           <div className={styles.headerBar__icons}>
             <div className={`${styles.headerBar__socialIcons} ${showSearch ? styles.hidden : ""}`}>
-              <a href="#" className="transition duration-200 hover:brightness-200 hover:scale-105">
+              <a
+                href="https://www.facebook.com/profile.php?id=61573816036604"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition duration-200 hover:brightness-200 hover:scale-105"
+              >
                 <img src={facebook} alt="facebook" />
               </a>
-              <a href="#" className="transition duration-200 hover:brightness-200 hover:scale-105">
+              <a
+                href="https://www.linkedin.com/in/mayinpixels"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition duration-200 hover:brightness-200 hover:scale-105"
+              >
                 <img src={linkendin} alt="linkendin" />
               </a>
-              <a href="#" className="transition duration-200 hover:brightness-200 hover:scale-105">
+              <a
+                href="https://www.tiktok.com/@jptechlift"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition duration-200 hover:brightness-200 hover:scale-105"
+              >
                 <img src={tiktok} alt="tiktok" />
               </a>
             </div>
@@ -66,20 +84,20 @@ const MobileMenu = () => {
                   <span>SẢN PHẨM & DỊCH VỤ</span> <ChevronRight size={16} />
                 </a>
               </li>
-              <li onClick={() => navigate("/cong-ty")}>
-                <a href="">
+              <li>
+                <Link to="/ve-chung-toi" onClick={closeMenu}>
                   <span>CÔNG TY CHÚNG TÔI</span> <ChevronRight size={16} />
-                </a>
+                </Link>
               </li>
-              <li onClick={() => navigate("/lien-he")}>
-                <a href="">
+              <li>
+                <Link to="/lien-he" onClick={closeMenu}>
                   <span>LIÊN HỆ</span> <ChevronRight size={16} />
-                </a>
+                </Link>
               </li>
-              <li onClick={() => navigate("/tin-tuc")}>
-                <a href="">
+              <li>
+                <Link to="/blog" onClick={closeMenu}>
                   <span>TIN TỨC</span> <ChevronRight size={16} />
-                </a>
+                </Link>
               </li>
             </ul>
           )}
@@ -91,46 +109,45 @@ const MobileMenu = () => {
                   <span>SẢN PHẨM</span> <span>+</span>
                 </a>
               </li>
-              <li onClick={() => navigate("/dich-vu")}>
-                <a>
+              <li>
+                <Link to="/dich-vu" onClick={closeMenu}>
                   <span>DỊCH VỤ</span> <span>+</span>
-                </a>
+                </Link>
               </li>
             </ul>
           )}
 
           {menuLevel === "product" && (
             <ul className={styles.menuList}>
-              <li onClick={() => navigate("/products/home-lift")}>
-                <a>
+              <li>
+                <Link to="/products/home-lift" onClick={closeMenu}>
                   <span>THANG MÁY GIA ĐÌNH</span> <span>→</span>
-                </a>{" "}
+                </Link>
               </li>
-              <li onClick={() => navigate("/products/passenger-elevator")}>
-                <a>
+              <li>
+                <Link to="/products/passenger-elevator" onClick={closeMenu}>
                   <span>THANG MÁY DÂN DỤNG</span> <span>→</span>
-                </a>{" "}
+                </Link>
               </li>
-              <li onClick={() => navigate("/products/freight-lift")}>
-                <a>
-                  {" "}
+              <li>
+                <Link to="/products/freight-lift" onClick={closeMenu}>
                   <span>THANG MÁY CHỞ HÀNG</span> <span>→</span>
-                </a>
+                </Link>
               </li>
-              <li onClick={() => navigate("/products/panorama-lift")}>
-                <a>
+              <li>
+                <Link to="/products/panorama-lift" onClick={closeMenu}>
                   <span>THANG MÁY QUAN SÁT</span> <span>→</span>
-                </a>{" "}
+                </Link>
               </li>
-              <li onClick={() => navigate("/products/hospital-lift")}>
-                <a>
+              <li>
+                <Link to="/products/hospital-lift" onClick={closeMenu}>
                   <span>THANG MÁY BỆNH VIỆN</span> <span>→</span>
-                </a>{" "}
+                </Link>
               </li>
-              <li onClick={() => navigate("/products/food-lift")}>
-                <a>
+              <li>
+                <Link to="/products/food-lift" onClick={closeMenu}>
                   <span>THANG MÁY THỰC PHẨM</span> <span>→</span>
-                </a>{" "}
+                </Link>
               </li>
             </ul>
           )}
