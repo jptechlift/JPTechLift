@@ -10,7 +10,7 @@ interface LogoProps {
 export default function Logo({ variant = "default", className }: LogoProps) {
   const src = variant === "white" ? whiteLogo : colorLogo;
   return (
-    <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+    <Link to="/">
       <img src={src} alt="JP TECHLIFT" className={className} />
     </Link>
   );
