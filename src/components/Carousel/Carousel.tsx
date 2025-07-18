@@ -13,7 +13,7 @@ interface CarouselProps {
   slides: Slide[];
   autoSlide?: boolean;
   autoSlideInterval?: number;
-  transitionEffect?: "fade" | "slide";
+  transitionEffect?: "slide" | "fade";
 }
 
 export default function Carousel({
