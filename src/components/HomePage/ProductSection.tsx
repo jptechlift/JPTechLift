@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import product1 from "../../assets/images/product1.jpg";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import product1 from "../../assets/images/product1.png";
 import product2 from "../../assets/images/product2.png";
 import product3 from "../../assets/images/product3.png";
 import product4 from "../../assets/images/product4.png";
-import product5 from "../../assets/images/product5.jpg";
-import product6 from "../../assets/images/product6.jpg";
+import product5 from "../../assets/images/product5.png";
+import product6 from "../../assets/images/product6.png";
 import logo from "../../assets/images/logo-noname.png";
 /**
  * ProductSection
@@ -61,22 +64,39 @@ const products: Product[] = [
 ];
 
 export default function ProductSection() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+    });
+  }, []);
+
   return (
-    <section className="bg-white py-16 px-4">
+    <section className="bg-white px-4 pb-24">
       {/* Heading */}
-      <h2 className="font-inter font-medium text-[36px] uppercase text-center mb-10">
+      <h2
+        className="font-inter font-medium text-[36px] uppercase text-center mb-10"
+        data-aos="fade-up"
+      >
         SẢN PHẨM
       </h2>
 
       {/* Horizontal Border */}
-      <div className="w-[60px] h-1 bg-[#CBA052] mx-auto mb-20 rounded-[2px]" />
+      <div
+        className="w-[60px] h-1 bg-[#CBA052] mx-auto mb-20 rounded-[2px]"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      />
 
       {/* Products grid */}
       <div className="mx-auto max-w-[1200px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 place-items-center">
         {products.map((p, i) => (
           <div
             key={i}
-            className="w-[300px] flex flex-col items-center border-2 border-[#041E42] rounded-2xl shadow-lg overflow-hidden"
+            data-aos="fade-up"
+            data-aos-delay={i * 100}
+            className="w-[300px] flex flex-col items-center border-1 border-[#041E42] rounded-2xl shadow-2xl overflow-hidden"
           >
             {/* Image */}
             <img
