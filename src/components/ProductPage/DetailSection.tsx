@@ -37,32 +37,43 @@ export default function DetailSection({ data, images }: Props) {
 
   return (
     <div>
-      <section id="details" className={styles.detailSection}>
-        <div className={styles.imageWrapper}>
-          <div className={styles.carousel}>
+      <section id="details" className={styles["product-gallery"]}>
+        <div className={styles["product-gallery__image-wrapper"]}>
+          <div className={styles["product-gallery__carousel"]}>
             {images.map((src, index) => (
               <img
                 key={index}
                 src={src}
                 alt={`Product image ${index + 1}`}
-                className={`${styles.image} ${index === currentSlide ? styles.imageActive : ""}`}
+                className={`${styles["product-gallery__image"]} ${
+                  index === currentSlide ? styles["product-gallery__image--active"] : ""
+                }`}
               />
             ))}
           </div>
 
           {/* Triangle Pagination with SVG */}
-          <div className={styles.trianglePagination}>
-            <div className={styles.paginationBackground}>
+          <div className={styles["product-gallery__triangle-pagination"]}>
+            <div className={styles["product-gallery__pagination-background"]}>
               {images.map((_, index) => {
                 const isCenter = index === Math.floor(images.length / 2);
                 const isActive = index === currentSlide;
                 const fillColor = isActive ? "#ffffff" : "#CBA052";
 
                 return (
-                  <div key={index} className={styles.triangleContainer} onClick={() => goToSlide(index)}>
+                  <div
+                    key={index}
+                    className={styles["product-gallery__triangle-container"]}
+                    onClick={() => goToSlide(index)}
+                  >
                     {isCenter ? (
                       // Triangle pointing up (center)
-                      <svg width="28" height="24" viewBox="0 0 40 38" className={styles.triangleSvg}>
+                      <svg
+                        width="28"
+                        height="24"
+                        viewBox="0 0 40 38"
+                        className={styles["product-gallery__triangle-svg"]}
+                      >
                         <path
                           d="M23.8365 34.6973C22.1585 37.9391 17.5224 37.9391 15.8444 34.6973L1.54553 7.07422C-0.00459107 4.07908 2.16916 0.506155 5.54163 0.505859L34.1393 0.505859C37.5117 0.506157 39.6855 4.07908 38.1354 7.07422L23.8365 34.6973Z"
                           fill={fillColor}
@@ -88,11 +99,11 @@ export default function DetailSection({ data, images }: Props) {
           </div>
         </div>
 
-        <div className={styles.info}>
+          <div className={styles["product-gallery__info"]}>
           <h2>{data.title}</h2>
           <p>{data.introductionLine1}</p>
           <p>{data.introductionLine2}</p>
-          <ul className={styles.specList}>
+         <ul className={styles["product-gallery__spec-list"]}>
             <li className={styles.specItem}>{data.productLine}</li>
             <li className={styles.specItem}>Cấu hình: {data.config}</li>
             <li className={styles.specItem}>Thương hiệu: {data.brand}</li>
@@ -105,10 +116,10 @@ export default function DetailSection({ data, images }: Props) {
         </div>
       </section>
       {/* Bottom Section with Buttons */}
-      <section className={styles.buttonsContainer}>
-        <div className={styles.buttonsWrapper}>
-          <button className={styles.button}>LIÊN HỆ CHÚNG TÔI NGAY</button>
-          <button className={styles.button}>THÔNG TIN & GIÁ CẢ</button>
+    <section className={styles["product-gallery__buttons-container"]}>
+        <div className={styles["product-gallery__buttons-wrapper"]}>
+          <button className={styles["product-gallery__button"]}>LIÊN HỆ CHÚNG TÔI NGAY</button>
+          <button className={styles["product-gallery__button"]}>THÔNG TIN & GIÁ CẢ</button>
         </div>
       </section>
     </div>
