@@ -23,15 +23,15 @@ export default function Introduction({ title, introduction, description, imageUr
   const descriptionParts = description.split("JP TECHLIFT");
 
   return (
-    <section className={styles.introSection}>
-      <div className={styles.container}>
-        <div className={styles.textBox}>
-          <h1 className={styles.title}>
+    <section className={styles["product-intro"]}>
+      <div className={styles["product-intro__container"]}>
+        <div className={styles["product-intro__text"]}>
+          <h1 className={styles["product-intro__title"]}>
             {first} <br />
             {highlight && <span>{highlight}</span>}
           </h1>
 
-          <p className={styles.description}>
+          <p className={styles["product-intro__description"]}>
             {descriptionParts.length === 2 ? (
               <>
                 {descriptionParts[0]}
@@ -43,11 +43,11 @@ export default function Introduction({ title, introduction, description, imageUr
             )}
           </p>
 
-          <p className={styles.introduction}>{introduction}</p>
+          <p className={styles["product-intro__intro"]}>{introduction}</p>
         </div>
 
-        <div className={styles.imageWrapper}>
-          <img src={imageUrl} alt="Ảnh minh họa sản phẩm" className={styles.image} />
+        <div className={styles["product-intro__image-wrapper"]}>
+          <img src={imageUrl} alt="Ảnh minh họa sản phẩm" className={styles["product-intro__image"]} />
         </div>
       </div>
     </section>

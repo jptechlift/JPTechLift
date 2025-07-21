@@ -12,33 +12,35 @@ interface Props {
 
 export default function BlueprintSection({ blueprint }: Props) {
   return (
-    <div className={styles.blueprintWrapper}>
-      <h2 className={styles.title}>Bản vẽ kỹ thuật</h2>
-      <section id="blueprint" className={styles.blueprintSection}>
+    <div className={styles["product-blueprint__wrapper"]}>
+      <h2 className={styles["product-blueprint__title"]}>Bản vẽ kỹ thuật</h2>
+      <section id="blueprint" className={styles["product-blueprint"]}>
         <div className={styles.content}>
-          <div className={styles.imageWrapper}>
-            <img src={blueprint.image} alt="Bản vẽ kỹ thuật" className={styles.image} />
+          <div className={styles["product-blueprint__image-wrapper"]}>
+            <img src={blueprint.image} alt="Bản vẽ kỹ thuật" className={styles["product-blueprint__image"]} />
           </div>
-          <div className={styles.info}>
+          <div className={styles["product-blueprint__info"]}>
             {blueprint.description.map((line, idx) => (
-              <p key={idx} className={styles.description}>
+              <p key={idx} className={styles["product-blueprint__description"]}>
                 {line}
               </p>
             ))}
-            <ul className={styles.specList}>
+            <ul className={styles["product-blueprint__spec-list"]}>
               {blueprint.specs.map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>
-            <p className={styles.stops}>
+            <p className={styles["product-blueprint__stops"]}>
               <strong>Số điểm dừng:</strong> {blueprint.stops}
             </p>
-            <p className={styles.note}>
+            <p className={styles["product-blueprint__note"]}>
               <strong>{blueprint.heightNote}</strong>
             </p>
-            <div className={styles.buttonGroup}>
-              <button className={styles.primaryButton}>LIÊN HỆ TRỰC TIẾP ĐỂ BIẾT THÊM THÔNG TIN</button>
-              <button className={styles.secondaryButton}>KHO ẢNH</button>
+            <div className={styles["product-blueprint__button-group"]}>
+              <button className={styles["product-blueprint__primary-button"]}>
+                LIÊN HỆ TRỰC TIẾP ĐỂ BIẾT THÊM THÔNG TIN
+              </button>
+              <button className={styles["product-blueprint__secondary-button"]}>KHO ẢNH</button>
             </div>
           </div>
         </div>
