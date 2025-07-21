@@ -24,6 +24,9 @@ const SubBanner: React.FC = () => {
           style={{
             filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4))",
           }}
+          data-aos="zoom-in-down"
+          data-aos-easing="ease-out-cubic"
+          data-aos-duration="1200"
         />
 
         <p
