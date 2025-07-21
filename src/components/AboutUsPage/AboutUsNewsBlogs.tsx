@@ -15,11 +15,17 @@ export default function AboutUsNewsBlogs() {
       <div className={styles.grid}>
         <div className={styles.card} data-aos="zoom-in-up">
           <img src={newsImg} alt="Tin tức" className={styles.img} />
+          <div className={styles.labelWrap}>
           <div className={styles.label}>Tin tức</div>
+            <div className={styles.labelUnderline}></div>
+          </div>
         </div>
         <div className={styles.card} data-aos="zoom-in-up" data-aos-delay="200">
           <img src={blogImg} alt="Blogs" className={styles.img} />
+          <div className={styles.labelWrap}>
           <div className={styles.label}>Blogs</div>
+            <div className={styles.labelUnderline}></div>
+          </div>
         </div>
       </div>
     </section>
