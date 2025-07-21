@@ -157,8 +157,14 @@ export default function AboutSection() {
           bạch.
         </p>
         <div className="w-full flex justify-center mb-20">
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            {/* Nút LIÊN HỆ TƯ VẤN – nền trắng, hover xám đậm hơn */}
+          <div
+            className="flex flex-col md:flex-row items-center gap-4"
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="1000"
+            data-aos-easing="ease-in-out"
+          >
+            {/* Nút LIÊN HỆ TƯ VẤN */}
             <button className="group inline-flex items-center gap-2 border border-[#041E42] bg-white px-4 py-2 text-[#041E42] font-semibold hover:bg-[#e5e7eb] hover:text-[#041E42] transition-colors duration-300 whitespace-nowrap">
               LIÊN HỆ TƯ VẤN
               <svg
@@ -177,7 +183,7 @@ export default function AboutSection() {
               </svg>
             </button>
 
-            {/* Nút KHÁM PHÁ – thêm hiệu ứng wiggle cho mũi tên */}
+            {/* Nút KHÁM PHÁ */}
             <button className="group inline-flex items-center gap-2 border border-[#041E42] bg-[#041E42] text-white px-6 py-2 font-semibold hover:bg-white hover:text-[#041E42] transition-colors duration-300">
               KHÁM PHÁ GIẢI PHÁP THANG MÁY
               <svg
