@@ -5,15 +5,15 @@ import banner2 from "../assets/images/BannerFooter.jpg";
 export const slides: Slide[] = [
   {
     src: banner1,
-    title: "Technology Is The Vision Of No Limits",
-    description: "Công nghệ không có ranh giới - chỉ có sự hoàn thiện không ngừng",
+    title: "KHÔNG CHỈ LẮP ĐẶT – CHÚNG TÔI ĐỒNG HÀNH",
+    description: "Mỗi mét thang là một cam kết",
     ctaText: "Tìm hiểu thêm",
     ctaLink: "/services",
   },
   {
     src: banner2,
-    title: "Bảo trì định kỳ",
-    description: "Giải pháp tiết kiệm – Tối ưu hiệu quả",
+    title: "Stylish - Smart - Simple",
+    description: "Nền tảng để chúng tôi phát huy hết mình",
     ctaText: "Liên hệ tư vấn",
     ctaLink: "/contact",
   },
