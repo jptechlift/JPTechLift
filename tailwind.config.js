@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        delvona: ['Delvona', 'sans-serif'],
         inter: ["Inter", ...defaultTheme.fontFamily.sans],
         nunito: ['"Nunito Sans"', ...defaultTheme.fontFamily.sans],
         noto: ['"Noto Serif"', ...defaultTheme.fontFamily.serif],

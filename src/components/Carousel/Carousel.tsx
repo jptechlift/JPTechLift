@@ -62,14 +62,14 @@ export default function Carousel({
             />
 
             {/* Overlay content */}
-            <div className="relative z-10 text-center text-white max-w-8xl px-4">
+              <div className="relative z-10 text-center text-white max-w-8xl px-4 flex flex-col items-center space-y-10">
+
               {slide.title && (
                 <h1
                   style={{
                     fontFamily: "grifo_mmedium",
                     fontSize: "50px",
                     lineHeight: "50px",
-                    margin: "0px 0px 30px",
                     textAlign: "center",
                   }}
                   className="font-grifo text-white text-[36px] md:text-[68px] font-black tracking-wide text-center drop-shadow-[3px_4px_4px_rgba(0,0,0,2)] leading-tight"
@@ -85,7 +85,8 @@ export default function Carousel({
               {slide.ctaText && (
                 <a
                   href={slide.ctaLink || "#"}
-                  className="mt-4 inline-block bg-white text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                  className="mt-8 px-6 py-2 border-2 border-white text-white bg-transparent 
+           hover:bg-white hover:text-black transition-all duration-300 font-medium text-xl"
                 >
                   {slide.ctaText}
                 </a>
@@ -102,8 +103,8 @@ export default function Carousel({
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`w-3 h-3 rounded-full ${
-              i === current ? "bg-white" : "bg-white/50"
+            className={`w-4 h-4 border-2 border-yellow-400 rotate-45 ${
+              i === current ? "bg-white" : "bg-white/10"
             }`}
           />
         ))}
