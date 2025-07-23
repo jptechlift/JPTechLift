@@ -29,8 +29,8 @@ import hospital_realGallery5 from "../assets/images/productPage_img/hospital _el
 import panoramic_realGallery1 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery1.png";
 import panoramic_realGallery2 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery2.png";
 import panoramic_realGallery3 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery3.png";
-import panoramic_realGallery4 from "../assets/images/productPage_img/panoramic_elevator/panoramic_carousel1.png";
-import panoramic_realGallery5 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery1.png";
+import panoramic_realGallery4 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery4.png";
+import panoramic_realGallery5 from "../assets/images/productPage_img/panoramic_elevator/p_realGallery5.png";
 import d_realGallery1 from "../assets/images/productPage_img/dumbwaiter/d_realGallery1.png";
 import d_realGallery2 from "../assets/images/productPage_img/dumbwaiter/d_realGallery2.png";
 import d_realGallery3 from "../assets/images/productPage_img/dumbwaiter/d_realGallery3.png";
@@ -857,7 +857,7 @@ export const productData: Record<string, Product> = {
     ],
     // Thay mục blueprint bằng mục "Tính năng an toàn"
     blueprint: {
-      image: "", // Có thể để ảnh một tính năng an toàn nổi bật
+      image: blueprint, // Có thể để ảnh một tính năng an toàn nổi bật
       description: [
         "An toàn là ưu tiên hàng đầu của thang cuốn JP TechLift. Sản phẩm được trang bị đầy đủ các thiết bị bảo vệ theo tiêu chuẩn châu Âu EN115:",
       ],

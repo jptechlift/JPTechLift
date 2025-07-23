@@ -62,17 +62,18 @@ export default function Carousel({
             />
 
             {/* Overlay content */}
-              <div className="relative z-10 text-center text-white max-w-8xl px-4 flex flex-col items-center space-y-10">
+              <div className="relative z-10 text-center text-white max-w-8xl px-4 flex flex-col items-center space-y-9">
 
               {slide.title && (
                 <h1
                   style={{
                     fontFamily: "grifo_mmedium",
-                    fontSize: "50px",
-                    lineHeight: "50px",
+                    fontSize: "40px",
+                    fontWeight: "500",
+                    lineHeight: "10px",
                     textAlign: "center",
                   }}
-                  className="font-grifo text-white text-[36px] md:text-[68px] font-black tracking-wide text-center drop-shadow-[3px_4px_4px_rgba(0,0,0,2)] leading-tight"
+                  className="font-grifo text-white text-[36px] md:text-[68px] font-black tracking-wide text-center drop-shadow-[6px_8px_8px_rgba(0,0,0,7)] leading-tight"
                 >
                   {slide.title}
                 </h1>
@@ -98,13 +99,13 @@ export default function Carousel({
       </div>
 
       {/* Indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 z-20">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`w-4 h-4 border-2 border-yellow-400 rotate-45 ${
-              i === current ? "bg-white" : "bg-white/10"
+            className={`w-4 h-4 border-2 border-white-400 rotate-45 ${
+              i === current ? "bg-[#cba052]" : "bg-[#cba052]/10"
             }`}
           />
         ))}

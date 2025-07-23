@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import HeaderWithBanner from "../../components/HomePage/HeaderWithBanner";
 import ElevatorServicesMobile from "../../components/ServicePage/ServicePageMobile";
 import ElevatorServicesDestop from "../../components/ServicePage/ServicePageDesktop";
-import banner from "../../assets/images/Banner-img.jpg";
+import banner from "../../assets/images/Banner-img.png";
 import Footer from "../../components/Footer/Footer";
 
 const ServicesPage = () => {
