@@ -188,7 +188,7 @@
    🎯 BUTTONS CONTAINER
    =================================== */
   &__buttons-container {
-    background-color: var(--color-yellow);
+    background-color: var(--color-main);
     width: 100vw; // Force full viewport width
     margin-left: calc(-50vw + 50%); // Center it and break out of container
     padding: 32px 20px;
@@ -229,18 +229,18 @@
       background-color: var(--color-white);
       color: var(--color-main);
       font-weight: 600;
-      width: 300px;
+      width: 400px;
       padding: 12px 32px;
       border: none;
       cursor: pointer;
       transition: all var(--transition-medium);
       text-align: center;
       font-size: 14px;
-
+      border: 1px solid var(--color-main);
       &:hover {
-        background-color: #f0f0f0;
+        background-color: #cba052;
+        color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: var(--shadow-medium);
       }
 
       &:active {
