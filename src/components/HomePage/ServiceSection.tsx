@@ -44,23 +44,23 @@ const services: Service[] = [
 
 const MobileServices: ServiceMobile[] = [
   {
-    title: "Tư Vấn và Thiết Kế",
-    description: "Thiết kế từ nền móng – tối ưu công năng, thẩm mỹ, chi phí.",
+    title: "Giải pháp và Thiết kế",
+    description: "Thiết kế từ nền móng – tối ưu công năng, thẩm mỹ và chi phí.",
     image: service1,
   },
   {
-    title: "Lắp Đặt - Vận Hành",
-    description: "Triển khai chuẩn xác – an toàn, ổn định lâu dài.",
+    title: "Lắp Đặt và Vận Hành",
+    description: "Thi công chính xác – đảm bảo an toàn và vận hành lâu dài.",
     image: service2,
   },
   {
-    title: "Bảo Trì – Bảo Dưỡng",
-    description: "Phản ứng nhanh 3 giờ – đảm bảo vận hành ổn định.",
+    title: "Bảo Trì và Bảo Dưỡng",
+    description: "Phản ứng nhanh 3 giờ – duy trì hiệu suất và kiểm tra định kỳ.",
     image: service3,
   },
   {
-    title: "Cải Tạo - Sửa Chữa",
-    description: "Nâng cấp toàn diện – tăng an toàn, nâng tầm trải nghiệm.",
+    title: "Cải Tạo và Sửa Chữa",
+    description: "Nâng cấp toàn diện – cải thiện an toàn và trải nghiệm sử dụng.",
     image: service4,
   },
 ];
@@ -77,7 +77,7 @@ export default function ServiceSection() {
     <section className="overflow-hidden bg-texture-bg bg-texture-pattern bg-[length:8px_8px] py-16 px-4">
       {/* Title */}
       <h1
-        className="text-[#041E42] font-inter font-bold text-[30px] md:text-[36px] uppercase text-center mb-5 md:mb-10"
+        className="mt-20 font-inter font-semibold md:font-medium md:text-[36px] text-[30px] uppercase text-center mb-5 md:mb-10 text-[#041E42] md:text-black"
         data-aos="fade-up"
       >
         DỊCH VỤ THANG MÁY
@@ -162,7 +162,7 @@ export default function ServiceSection() {
               {ServiceMobile.title}
             </h3>
 
-            <p className="text-xs text-[#444] leading-snug line-clamp-2 mb-3">
+            <p className="text-xs text-[#444] leading-snug min-h-[50px] mb-3">
               {ServiceMobile.description}
             </p>
 
