@@ -9,13 +9,11 @@ const FixedButtons = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 flex flex-col-reverse md:flex-row gap-4 z-30">
+    <div className="fixed bottom-16 right-6 flex flex-col-reverse md:flex-row gap-4 z-30">
       {/* Nút liên hệ */}
       <motion.button
         aria-label="Contact"
-        onClick={() =>
-          window.open("https://zalo.me/3469899057771273254", "_blank")
-        }
+        onClick={() => window.open("https://zalo.me/3469899057771273254", "_blank")}
         className="w-14 h-14 md:w-16 md:h-16 rounded-full border border-[#0467f8] bg-white text-[#041E42] flex items-center justify-center shadow-md"
         animate={{ rotate: [0, -10, 10, -10, 10, 0] }}
         transition={{ repeat: Infinity, repeatDelay: 9, duration: 3 }}
@@ -26,7 +24,7 @@ const FixedButtons = () => {
           alt="Chat Icon"
           className="w-10 h-10 md:w-10 md:h-10"
           animate={{ scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity,  repeatDelay: 3, duration: 0.5}}
+          transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.5 }}
         />
       </motion.button>
 
@@ -44,7 +42,7 @@ const FixedButtons = () => {
           alt="WhatsApp Icon"
           className="w-10 h-10 md:w-10 md:h-10"
           animate={{ scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity,  repeatDelay: 3, duration: 0.5}}
+          transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.5 }}
         />
       </motion.button>
 
