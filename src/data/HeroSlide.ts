@@ -13,7 +13,7 @@ export const slides: Slide[] = [
   {
     src: banner2,
     title: "Stylish - Smart - Simple",
-    description: "Nền tảng để chúng tôi phát huy hết mình.",
+    description: "Nền tảng để chúng tôi phát huy hết mình..",
     ctaText: "Khám phá thêm",
     ctaLink: "/ve-chung-toi",
   },
