@@ -251,6 +251,10 @@
         transform: translateY(0);
       }
 
+      @media (max-width: 730px) {
+        width: 83vw;
+      }
+
       @media (max-width: 430px) {
         width: 83vw;
       }
