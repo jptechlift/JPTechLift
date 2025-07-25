@@ -1,0 +1,66 @@
+@use "../../base/variables";
+.cabin-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); // overlay tối
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  &__modalContent {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease-in-out;
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    h4 {
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    ul {
+      margin-top: 8px;
+      margin-left: 20px;
+      list-style: disc;
+      color: #333;
+    }
+  }
+
+  &__cabin-modal__close {
+    margin-top: 24px;
+    padding: 10px 16px;
+    background-color: var(--color-main);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #003366;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
