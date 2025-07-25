@@ -10,6 +10,13 @@ const aboutLinks: Record<string, string> = {
   "QUY TRÌNH DỰ ÁN": "/quy-trinh-du-an",
 };
 
+const serviceLinks: Record<string, string> = {
+  "TƯ VẤN - THIẾT KẾ": "/dich-vu/tu-van-lap-dat",
+  "LẮP ĐẶT - VẬN HÀNH": "/dich-vu/lap-dat-thang-may",
+  "BẢO TRÌ": "/dich-vu/bao-tri",
+  "CẢI TẠO - SỬA CHỮA": "/dich-vu/cai-tao",
+};
+
 const newsLinks: Record<string, string> = {
   BLOG: "/blog",
   "TIN TỨC": "/tin-tuc",
@@ -33,7 +40,6 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
           "BẢO TRÌ",
           "LẮP ĐẶT - VẬN HÀNH",
           "CẢI TẠO - SỬA CHỮA",
-          "VẬT TƯ - PHỤ KIỆN THANG MÁY",
         ],
       },
     ],
@@ -53,7 +59,7 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
 
   const getLink = (item: string, group: string): string => {
     if (group === "DỊCH VỤ") {
-      return "/dich-vu";
+      return serviceLinks[item] || "/dich-vu";
     }
 
     if (type === "product") {
