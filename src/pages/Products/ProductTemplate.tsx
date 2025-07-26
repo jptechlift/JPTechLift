@@ -14,11 +14,7 @@ import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
-<<<<<<< HEAD
-
-=======
 import NotFound from "../NotFound";
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
   return id in productData;
@@ -29,73 +25,46 @@ export default function ProductTemplatePage() {
   const [isAestheticsOpen, setAestheticsOpen] = useState(false);
 
   if (!productId || !isValidProductId(productId)) {
-<<<<<<< HEAD
-    return <p>Sản phẩm không tồn tại.</p>;
-=======
     return <NotFound />;
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
   }
 
   const product = productData[productId];
 
   return (
-<<<<<<< HEAD
-    <div style={{ backgroundColor: 'var(--color-gray1)'}}>
-=======
+
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
       <Helmet>
         <title>{product.seo?.metaTitle}</title>
         <meta name="description" content={product.seo?.metaDescription || ""} />
         <meta name="keywords" content={product.seo?.keywords?.join(", ") || ""} />
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
-<<<<<<< HEAD
-            "itemListElement": [
-=======
             itemListElement: [
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
               {
                 "@type": "ListItem",
                 position: 1,
                 name: "Trang chủ",
-<<<<<<< HEAD
-                item: "https://thangmaysaigonjptechlift.com"
-=======
                 item: "https://thangmaysaigonjptechlift.com",
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
+
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Sản phẩm",
-<<<<<<< HEAD
-                item: "https://thangmaysaigonjptechlift.com/products"
-=======
                 item: "https://thangmaysaigonjptechlift.com/san-pham",
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: product.intro.title,
-<<<<<<< HEAD
-                item: `https://thangmaysaigonjptechlift.com/products/${productId}`
-              }
-            ]
-=======
                 item: `https://thangmaysaigonjptechlift.com/san-pham/${productId}`,
               },
             ],
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
+
           })}
         </script>
       </Helmet>
@@ -105,17 +74,12 @@ export default function ProductTemplatePage() {
       {/* ✅ HTML breadcrumb bị ẩn khỏi người dùng nhưng vẫn giúp Google hiểu */}
       <nav aria-label="breadcrumb" style={{ display: "none" }}>
         <ol>
-<<<<<<< HEAD
-          <li><a href="https://jptechlift.vn">Trang chủ</a></li>
-          <li><a href="https://jptechlift.vn/products">Sản phẩm</a></li>
-=======
           <li>
             <a href="https://jptechlift.vn">Trang chủ</a>
           </li>
           <li>
             <a href="https://jptechlift.vn/san-pham">Sản phẩm</a>
           </li>
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
           <li aria-current="page">{product.intro.title}</li>
         </ol>
       </nav>
@@ -131,14 +95,7 @@ export default function ProductTemplatePage() {
 
       {product.contentTable && (
         <FadeInSection>
-<<<<<<< HEAD
-          <ContentTableSection
-            data={product.contentTable}
-            imageUrl="/assets/images/home-lift/hero.jpg"
-          />
-=======
           <ContentTableSection data={product.contentTable} imageUrl="/assets/images/home-lift/hero.jpg" />
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
         </FadeInSection>
       )}
 
@@ -164,14 +121,7 @@ export default function ProductTemplatePage() {
 
       {product.installationSteps && product.installationImage && (
         <FadeInSection>
-<<<<<<< HEAD
-          <InstallationSection
-            steps={product.installationSteps}
-            image={product.installationImage}
-          />
-=======
           <InstallationSection steps={product.installationSteps} image={product.installationImage} />
->>>>>>> bf999dd6c428540cda1922b0135929db97124862
         </FadeInSection>
       )}
 
