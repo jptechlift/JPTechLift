@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "sync-deploy": "git push origin deploy && git push test deploy:main"
   },
   "dependencies": {
     "aos": "^2.3.4",
