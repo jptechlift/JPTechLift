@@ -4,7 +4,9 @@ import service3 from "../../assets/images/service3.jpg";
 import service4 from "../../assets/images/service4.jpg";
 
 import { useEffect } from "react";
+
 import { Link } from "react-router-dom";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -12,6 +14,7 @@ interface Service {
   title: string;
   description: string;
   image: string;
+
   url: string;
 }
 
@@ -19,6 +22,7 @@ interface ServiceMobile {
   title: string;
   description: string;
   image: string;
+
   url: string;
 }
 
@@ -27,24 +31,28 @@ const services: Service[] = [
     title: "Tư Vấn - Thiết Kế Thang Máy",
     description: "Thiết kế từ nền móng – tối ưu công năng, thẩm mỹ, chi phí.",
     image: service1,
+
     url: "/dich-vu-thang-may/tu-van-thiet-ke",
   },
   {
     title: "Lắp Đặt - Vận Hành Thang Máy",
     description: "Triển khai chuẩn xác – an toàn, ổn định lâu dài.",
     image: service2,
+
     url: "/dich-vu-thang-may/lap-dat-thang-may",
   },
   {
     title: "Bảo Trì – Bảo Dưỡng Thang Máy",
     description: "Phản ứng nhanh 3 giờ – đảm bảo vận hành ổn định.",
     image: service3,
+
     url: "/dich-vu-thang-may/bao-tri-thang-may",
   },
   {
     title: "Cải Tạo - Sửa Chữa Thang Máy",
     description: "Nâng cấp toàn diện – tăng an toàn, nâng tầm trải nghiệm.",
     image: service4,
+
     url: "/dich-vu-thang-may/cai-tao-sua-chua",
   },
 ];
@@ -64,15 +72,13 @@ const MobileServices: ServiceMobile[] = [
   },
   {
     title: "Bảo Trì và Bảo Dưỡng",
-    description:
-      "Phản ứng nhanh 3 giờ – duy trì hiệu suất và kiểm tra định kỳ.",
+    description: "Phản ứng nhanh 3 giờ – duy trì hiệu suất và kiểm tra định kỳ.",
     image: service3,
     url: "/dich-vu-thang-may/bao-tri-thang-may",
   },
   {
     title: "Cải Tạo và Sửa Chữa",
-    description:
-      "Nâng cấp toàn diện – cải thiện an toàn và trải nghiệm sử dụng.",
+    description: "Nâng cấp toàn diện – cải thiện an toàn và trải nghiệm sử dụng.",
     image: service4,
     url: "/dich-vu-thang-may/cai-tao-sua-chua",
   },
@@ -94,7 +100,6 @@ export default function ServiceSection() {
       >
         DỊCH VỤ THANG MÁY
       </h1>
-
       <div
         className="w-[60px] h-1 bg-[#CBA052] mx-auto mb-10 md:mb-20 rounded-[2px]"
         data-aos="fade-up"
@@ -120,9 +125,7 @@ export default function ServiceSection() {
             <h3 className="font-inter text-[22px] font-bold uppercase text-[#041E42] mb-3 min-h-[52px]">
               {service.title}
             </h3>
-            <p className="font-nunito text-base text-[#444] leading-relaxed min-h-[60px]">
-              {service.description}
-            </p>
+            <p className="font-nunito text-base text-[#444] leading-relaxed min-h-[60px]">{service.description}</p>
 
             <Link
               to={service.url}
@@ -136,24 +139,14 @@ export default function ServiceSection() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
           </div>
         ))}
       </div>
-
       {/* Mobile Layout */}
-      <div
-        className="grid grid-cols-2 gap-4 md:hidden max-w-[480px] mx-auto"
-        data-aos="fade-up"
-        data-aos-delay="200"
-      >
+      <div className="grid grid-cols-2 gap-4 md:hidden max-w-[480px] mx-auto" data-aos="fade-up" data-aos-delay="200">
         {MobileServices.map((service, idx) => (
           <div
             key={idx}
@@ -176,9 +169,7 @@ export default function ServiceSection() {
               {service.title}
             </h3>
 
-            <p className="text-xs text-[#444] leading-snug min-h-[50px] mb-3">
-              {service.description}
-            </p>
+            <p className="text-xs text-[#444] leading-snug min-h-[50px] mb-3">{service.description}</p>
 
             <Link
               to={service.url}

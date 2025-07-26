@@ -4,18 +4,16 @@
 .product-specs {
   width: 100%;
   margin: 0 auto;
-  padding: 0px 0px;
+  padding: 60px 20px; // ✅ Match với real-gallery
   background-color: var(--color-gray1);
 
   &__heading {
     font-family: var(--font-title);
     font-weight: 500;
-    grid-column: span 2; // ✅ nằm full hàng trong grid
     text-align: center;
     font-size: 28px;
     color: #041e42;
-    margin-bottom: 10px;
-    margin-top: 60px;
+    margin-bottom: 40px; // ✅ Match với real-gallery
 
     &::after {
       content: "";
@@ -25,30 +23,21 @@
       background-color: var(--color-yellow);
       margin: 12px auto 0;
     }
-
-    @media (max-width: 768px) {
-      grid-column: span 1; // ✅ mobile chỉ 1 cột
-    }
   }
 
   &__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    max-width: 1280px; // ✅ Match với real-gallery
     margin: 0 auto;
-    max-width: 1540px;
-    padding: 46px;
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
+    width: 100%;
   }
+
   &__layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
+    gap: 32px; // ✅ Match với real-gallery gap
+    align-items: stretch;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) { // ✅ Match với real-gallery breakpoint
       grid-template-columns: 1fr;
       gap: 20px;
     }
@@ -57,33 +46,52 @@
   /* Phần bảng kích thước */
   &__dimension-section {
     padding: 30px;
-    flex: 1;
     width: 100%;
-    max-width: 660px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-    .product-specs__title {
-      font-family: var(--font-title);
-      font-size: 24px;
-      font-weight: 700;
-      color: #041e42;
-      margin-bottom: 20px;
-      position: relative;
+    @media (max-width: 1024px) {
+      padding: 20px;
+      height: auto;
+    }
+
+    @media (max-width: 414px) {
+      padding: 15px 10px;
+    }
+  }
+
+  &__title {
+    font-family: var(--font-title);
+    font-size: 24px;
+    font-weight: 700;
+    color: #041e42;
+    margin-bottom: 20px;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: #cba052;
+    }
+
+    // Override cho installation section
+    .product-specs__installation-section & {
+      color: #ffffff;
 
       &::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 50px;
-        height: 2px;
-        background-color: #cba052;
+        background-color: var(--color-white);
       }
     }
   }
 
   &__table-wrapper {
     overflow-x: auto;
+    flex-grow: 1;
   }
 
   &__table {
@@ -100,6 +108,26 @@
       font-size: 14px;
       letter-spacing: 0.5px;
       border: 1px solid var(--color-gray);
+
+      @media (max-width: 1024px) {
+        padding: 10px 15px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 414px) {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      @media (max-width: 375px) {
+        padding: 6px;
+        font-size: 11px;
+      }
+
+      @media (max-width: 320px) {
+        padding: 5px;
+        font-size: 10px;
+      }
     }
 
     td {
@@ -114,6 +142,26 @@
         font-weight: 700;
         color: black;
       }
+
+      @media (max-width: 1024px) {
+        padding: 10px 15px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 414px) {
+        padding: 8px;
+        font-size: 12px;
+      }
+
+      @media (max-width: 375px) {
+        padding: 6px;
+        font-size: 11px;
+      }
+
+      @media (max-width: 320px) {
+        padding: 5px;
+        font-size: 10px;
+      }
     }
 
     tbody tr:hover {
@@ -126,112 +174,101 @@
     background-color: #041e42;
     color: #ffffff;
     padding: 30px;
-    flex: 1;
     width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    @media (max-width: 1024px) {
+      padding: 20px;
+      height: auto;
+    }
+
+    @media (max-width: 414px) {
+      padding: 15px 10px;
+    }
 
     .product-specs__title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 20px;
       color: #ffffff;
-      position: relative;
 
       &::after {
-        content: "";
-        position: absolute;
-        bottom: -8px; // Thêm dòng này
-        left: 0; // Thêm dòng này
-        width: 50px;
-        height: 2px;
         background-color: var(--color-white);
-      }
-    }
-
-    .product-specs__subtitle {
-      font-size: 16px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      color: #ffffff;
-    }
-
-    .product-specs__content {
-      ul {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 30px;
-
-        li {
-          position: relative;
-          margin-bottom: 12px;
-          padding-left: 20px;
-          line-height: 1.6;
-          font-size: 14px;
-
-          &::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #cba052;
-            font-weight: bold;
-            font-size: 16px;
-          }
-        }
-      }
-
-      .product-specs__button {
-        background-color: #ffffff;
-        color: #041e42;
-        width: 80%;
-        padding: 12px 24px;
-        border: none;
-        font-weight: 600;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-
-        &:hover {
-          background-color: #cba052;
-          color: #ffffff;
-          transform: translateY(-2px);
-        }
-
-        &:active {
-          transform: translateY(0);
-        }
       }
     }
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .product-specs {
-      padding: 20px 15px;
+  &__subtitle {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #ffffff;
+  }
 
-      &__dimension-section,
-      &__installation-section {
-        padding: 20px;
-        max-width: none;
-      }
-      &__table {
-        th,
-        td {
-          padding: 10px 15px;
-          font-size: 13px;
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @media (max-width: 1024px) {
+      flex-grow: unset;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 30px;
+
+      li {
+        position: relative;
+        margin-bottom: 12px;
+        padding-left: 20px;
+        line-height: 1.6;
+        font-size: 14px;
+
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 0;
+          color: #cba052;
+          font-weight: bold;
+          font-size: 16px;
         }
       }
+    }
 
-      &__installation-section {
-        .product-specs__content {
-          .product-specs__button {
-            width: 100%;
-            padding: 15px;
-            font-size: 13px;
-          }
-        }
+    .product-specs__button {
+      background-color: #ffffff;
+      color: #041e42;
+      width: 80%;
+      padding: 12px 24px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      align-self: flex-start;
+
+      &:hover {
+        background-color: #cba052;
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 1024px) {
+        width: 100%;
+        padding: 15px;
+        font-size: 13px;
+      }
+
+      @media (max-width: 414px) {
+        width: 100%;
       }
     }
   }

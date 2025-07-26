@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/components/Navbar/SearchPanel.module.scss";
+
 import { searchData, popularSearches, type SearchItem } from "../../constants/searchData";
+
 interface Props {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   scrolled?: boolean;
 }
+
 
 const typeIcons: Record<SearchItem["type"], string> = {
   "Sản phẩm": "📦 ",
@@ -20,6 +23,7 @@ export default function AdvancedSearch({ isOpen, setIsOpen, scrolled }: Props) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+
   const [history, setHistory] = useState<string[]>([]);
   const navigate = useNavigate();
 
@@ -45,6 +49,7 @@ export default function AdvancedSearch({ isOpen, setIsOpen, scrolled }: Props) {
       if (e.key === "Escape") {
         setIsOpen(false);
       }
+
       if (!isOpen) return;
       if (e.key === "ArrowDown") {
         e.preventDefault();
@@ -133,7 +138,6 @@ export default function AdvancedSearch({ isOpen, setIsOpen, scrolled }: Props) {
         <form className={styles["searchPanel__form"]} onSubmit={handleSubmit}>
           <input autoFocus value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Nhập từ khóa..." />
         </form>
-
         {query && results.length > 0 && (
           <div className={styles["searchPanel__section"]}>
             {Object.entries(grouped).map(([type, items]) => (

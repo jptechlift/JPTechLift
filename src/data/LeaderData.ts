@@ -1,7 +1,10 @@
 // src/data/leaders.ts
 import ThomasEaton from "../assets/images/leaders/ThomasEaton.png";
 import VuNgocMinhTuyet from "../../src/assets/images/leaders/VuNgocMinhTuyet.png";
+
+
 import AnhKhoa from "../../src/assets/images/leaders/AnhKhoa.png";
+
 export interface Leader {
   name: string;
   title: string;

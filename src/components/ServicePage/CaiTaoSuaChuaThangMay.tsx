@@ -1,3 +1,4 @@
+
 const CaiTaoSuaChuaThangMay = () => {
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 bg-white text-[#4a4a4a] font-inter">
@@ -22,6 +23,8 @@ const CaiTaoSuaChuaThangMay = () => {
       </div>
 
       {/* Sự cần thiết của việc cải tạo và sửa chữa thang máy */}
+
+
       <div className="mb-10">
         <h2 className="text-2xl font-semibold text-[#041e42] mb-4">
           Vì sao cần cải tạo và sửa chữa thang máy?

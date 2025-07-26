@@ -1,3 +1,4 @@
+
 import thangtaihang from "../../assets/images/thangtaihang.png"
 
 const ElevatorConsultation = () => {
@@ -6,6 +7,7 @@ const ElevatorConsultation = () => {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
+
           Tư Vấn & Thiết Kế Thang Máy
         </h1>
         <div className="flex justify-center items-center space-x-2">
@@ -88,6 +90,7 @@ const ElevatorConsultation = () => {
             </div>
 
             <div className="text-center">
+
               <div className="text-orange-500 text-lg">JP TECHLIFT</div>
               <div className="text-xs text-gray-500">
                 Thiết kế giếng thang đảm bảo kỹ thuật và an toàn
