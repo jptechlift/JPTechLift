@@ -35,56 +35,63 @@ const DimensionSection = memo(({ data, className }: Props) => {
   }
 
   return (
-    <div id="size-price" className={`${styles["product-specs"]} ${styles["product-specs__grid"]}`}>
-      <h2 className={styles["product-specs__heading"]}>Kích thước và giá lắp đặt</h2>
-      <section className={styles["product-specs__dimension-section"]}>
-        <h2 className={styles["product-specs__title"]}>Kích thước thang máy</h2>
-        <div className={styles["product-specs__table-wrapper"]}>
-          <table className={styles["product-specs__table"]}>
-            <thead>
-              <tr>
-                <th>KHỐI LƯỢNG</th>
-                <th>KÍCH THƯỚC</th>
-                <th>TẢI TRỌNG</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.people}</td>
-                  <td>{item.size}</td>
-                  <td>{item.weight}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+ <section id="size-price" className={styles["product-specs"]}>
+    <h2 className={styles["product-specs__heading"]}>Kích thước và giá lắp đặt</h2>
 
-      <section className={styles["product-specs__installation-section"]}>
-        <h2 className={styles["product-specs__title"]}>Giá lắp đặt</h2>
-        <div className={styles["product-specs__content"]}>
-          <p className={styles["product-specs__subtitle"]}>
-            Trên thực tế, giá thang máy thay đổi phụ thuộc vào nhiều yếu tố:
-          </p>
-          <ul>
-            {INSTALLATION_FACTORS.map((factor, index) => (
-              <li key={index}>{factor}</li>
-            ))}
-          </ul>
-          <a
-            href="https://zalo.me/3469899057771273254"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <button className={styles["product-specs__button"]} type="button">
-            THẨM MỸ THANG MÁY
-            </button>
-          </a>
-        </div>
-      </section>
+    <div className={styles["product-specs__grid"]}>
+      <div className={styles["product-specs__layout"]}>
+        {/* Kích thước */}
+        <section className={styles["product-specs__dimension-section"]}>
+          <h2 className={styles["product-specs__title"]}>Kích thước thang máy</h2>
+          <div className={styles["product-specs__table-wrapper"]}>
+            <table className={styles["product-specs__table"]}>
+              <thead>
+                <tr>
+                  <th>KHỐI LƯỢNG</th>
+                  <th>KÍCH THƯỚC</th>
+                  <th>TẢI TRỌNG</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.people}</td>
+                    <td>{item.size}</td>
+                    <td>{item.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Giá lắp đặt */}
+        <section className={styles["product-specs__installation-section"]}>
+          <h2 className={styles["product-specs__title"]}>Giá lắp đặt</h2>
+          <div className={styles["product-specs__content"]}>
+            <p className={styles["product-specs__subtitle"]}>
+              Trên thực tế, giá thang máy thay đổi phụ thuộc vào nhiều yếu tố:
+            </p>
+            <ul>
+              {INSTALLATION_FACTORS.map((factor, index) => (
+                <li key={index}>{factor}</li>
+              ))}
+            </ul>
+            <a
+              href="https://zalo.me/3469899057771273254"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <button className={styles["product-specs__button"]} type="button">
+                THẨM MỸ THANG MÁY
+              </button>
+            </a>
+          </div>
+        </section>
+      </div>
     </div>
+  </section>
   );
 });
 
