@@ -3,6 +3,7 @@
 .product-process {
   width: 100%;
   margin: 0 auto;
+  padding: 60px 20px; // ✅ Match với real-gallery và product-specs
 
   &__title {
     font-family: var(--font-title);
@@ -10,28 +11,27 @@
     font-weight: 500 !important;
     color: var(--color-main);
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 40px; // ✅ Match với các section khác
     position: relative;
 
     &::after {
       content: "";
       display: block;
-      width: 40px;
+      width: 60px; // ✅ Match với các section khác
       height: 3px;
       background-color: var(--color-yellow);
       margin: 12px auto 0;
-      border-radius: 3px;
     }
   }
 
   &__container {
-    max-width: 1200px;
+    max-width: 1280px; // ✅ Match với real-gallery và product-specs
     margin: 0 auto;
     display: flex;
-    gap: 40px;
+    gap: 32px; // ✅ Match với real-gallery gap
     align-items: stretch;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) { // ✅ Match với breakpoint của các section khác
       flex-direction: column;
     }
   }
@@ -55,14 +55,22 @@
   }
 
   &__stage {
-    max-width: 1100px;
-    margin: 0 auto; // ✅ Căn giữa
+    width: 100%; // ✅ Đảm bảo full width trong container
+    margin: 0; // ✅ Loại bỏ margin auto để tận dụng flex space
     display: flex;
     flex-direction: column;
     gap: 32px;
     background-color: #fff;
     padding: 32px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+    @media (max-width: 1024px) {
+      padding: 24px;
+    }
+
+    @media (max-width: 414px) {
+      padding: 20px;
+    }
   }
 
   &__stage-title {
@@ -102,11 +110,12 @@
   }
 
   &__image-wrapper {
-    flex: 1 1 60%;
+    flex: 1 1 40%; // ✅ Adjust để balance với content area
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: stretch;
+    
     .product-process__image {
       width: 100%;
       max-width: 500px;
@@ -114,7 +123,7 @@
       box-shadow: var(--shadow-medium);
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       margin-top: 24px;
     }
 

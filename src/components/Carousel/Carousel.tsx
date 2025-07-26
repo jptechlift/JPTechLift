@@ -36,7 +36,8 @@ export default function Carousel({
 
   return (
     <div className="relative w-full mx-auto overflow-hidden">
-      <div className="relative h-[475px]">
+
+      <div className="relative h-[530px]">
         {slides.map((slide, index) => (
           <div
             key={index}

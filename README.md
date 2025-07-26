@@ -79,4 +79,12 @@ export default tseslint.config([
   },
 ])
 ```
+## Netlify SPA routing
 
+To ensure React Router works with direct URL entries on Netlify, create a `_redirects` file under `public` containing:
+
+```
+/* /index.html 200
+```
+
+No additional configuration is required in `vite.config.ts`. After deploying, check Netlify Deploy logs or access a deep link to verify the redirect is active.
