@@ -1,5 +1,5 @@
-import service1 from "../../assets/images/service1.jpg";
-import service2 from "../../assets/images/service2.jpg";
+import lapdat1 from "../../assets/images/lapdat1.png";
+import lapdat2 from "../../assets/images/lapdat2.png";
 const ElevatorInstallationOperation = () => {
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 bg-white text-[#4a4a4a] font-inter">
@@ -32,14 +32,14 @@ const ElevatorInstallationOperation = () => {
             {/* flex để xếp hàng ngang, gap để tạo khoảng cách */}
             <div className="flex md:w-60 md:h-80 w-35 h-45">
               <img
-                src={service1}
+                src={lapdat1}
                 alt="Đội ngũ lắp đặt thang máy JP TechLift"
                 className=""
               />
             </div>
             <div className="flex md:w-60 md:h-80 w-35 h-45">
               <img
-                src={service2}
+                src={lapdat2}
                 alt="Đội ngũ lắp đặt thang máy JP TechLift"
                 className=""
               />
