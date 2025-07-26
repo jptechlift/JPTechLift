@@ -1,22 +1,17 @@
+
 import serviceImg from "../../assets/images/product4.png";
 const BaoTriThangMay = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white">
       {/* Header với breadcrumb */}
-      <div className="text-sm text-gray-500 mb-4">
-        Trang chủ {">"} Dịch vụ {">"} Bảo Trì Bảo Dường Thang Máy
+      <div className="text-sm text-gray-500 mb-4 hidden">
+        Trang chủ {'>'} Dịch vụ {'>'} Bảo Trì Bảo Dường Thang Máy
+
       </div>
 
       {/* Title */}
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
-        Bảo Trì - Bảo Dưỡng Thang Máy
-        <div className="flex justify-center mt-2">
-          <div className="flex space-x-1">
-            <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-            <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-            <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-          </div>
-        </div>
+        Bảo Trì Bảo Dường Thang Máy 
       </h1>
 
       {/* Tận tình - Tận tâm - Chuyên nghiệp */}
@@ -43,6 +38,7 @@ const BaoTriThangMay = () => {
       {/* Các dịch vụ bảo trì bảo dưỡng */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
+
           Các dịch vụ bảo trì bảo dưỡng của JP TechLift
         </h2>
         <p className="text-gray-700 mb-6">
@@ -116,6 +112,7 @@ const BaoTriThangMay = () => {
             <p className="mb-2">Điều kiện thực hiện:</p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Bảo dưỡng định kỳ hàng tháng</li>
+
               <li>Sửa chữa khi phát sinh hư hỏng</li>
               <li>Thay thế linh kiện, vật tư bị hỏng</li>
               <li>Ngăn ngừa sự cố, đảm bảo vận hành an toàn</li>
@@ -227,12 +224,14 @@ const BaoTriThangMay = () => {
           nhằm mang đến trải nghiệm vận hành an toàn, bền bỉ và chuyên nghiệp.
           Chúng tôi không chỉ cam kết bằng chất lượng sản phẩm, mà còn khẳng
           định sự khác biệt bằng chất lượng dịch vụ.
+
         </p>
       </div>
 
       {/* Customer service illustration placeholder */}
       <div className="flex justify-center mb-8">
         <div className="w-64 h-40 bg-gray-100 rounded-lg flex items-center justify-center">
+
           <span className="text-gray-500">
             {" "}
             <img
@@ -244,6 +243,7 @@ const BaoTriThangMay = () => {
       </div>
 
       {/* Footer contact info */}
+
       <div className="text-center text-s text-gray-600 border-t pt-4">
         <p>
           Nếu quý khách cần tư vấn chi tiết về quy trình bảo trì – bảo dưỡng
@@ -260,3 +260,4 @@ const BaoTriThangMay = () => {
 };
 
 export default BaoTriThangMay;
+

@@ -31,6 +31,7 @@ export default function ProductTemplatePage() {
   const product = productData[productId];
 
   return (
+
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
       <Helmet>
         <title>{product.seo?.metaTitle}</title>
@@ -48,6 +49,7 @@ export default function ProductTemplatePage() {
                 position: 1,
                 name: "Trang chủ",
                 item: "https://thangmaysaigonjptechlift.com",
+
               },
               {
                 "@type": "ListItem",
@@ -62,6 +64,7 @@ export default function ProductTemplatePage() {
                 item: `https://thangmaysaigonjptechlift.com/san-pham/${productId}`,
               },
             ],
+
           })}
         </script>
       </Helmet>

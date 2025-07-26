@@ -1,3 +1,4 @@
+
 import { productData } from "../data/ProductData";
 
 export interface SearchItem {
@@ -36,4 +37,7 @@ export const popularSearches = [
   "Thang cuốn",
   "Bảo trì thang máy",
   "Cải tạo thang máy cũ",
+  "Thang máy gia đình",
+  "Thang máy văn phòng"
 ];
+

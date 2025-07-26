@@ -1,3 +1,6 @@
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Layout from "./layouts/layout";
 import HomePage from "./pages/HomePage";
 import StandardPage from "./pages/StandardPage";
@@ -15,7 +18,6 @@ import HuongDan from "./pages/Services/HuongDan";
 import LapDatThangMay from "./pages/Services/LapDatThangMay";
 import BaoTriThangMay from "./pages/Services/BaoTriThangMay";
 import CaiTaoSuaChuaThangMay from "./pages/Services/CaiTaoSuaChuaThangMayPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
   return (
@@ -70,3 +72,4 @@ const App = () => {
 };
 
 export default App;
+

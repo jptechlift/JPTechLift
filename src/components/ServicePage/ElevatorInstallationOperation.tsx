@@ -1,3 +1,4 @@
+
 import lapdat1 from "../../assets/images/lapdat1.png";
 import lapdat2 from "../../assets/images/lapdat2.png";
 const ElevatorInstallationOperation = () => {
@@ -42,13 +43,16 @@ const ElevatorInstallationOperation = () => {
                 src={lapdat2}
                 alt="Đội ngũ lắp đặt thang máy JP TechLift"
                 className=""
+
               />
             </div>
           </div>
         </div>
 
         <p className="text-sm text-gray-600 mt-2">
+
           Đội ngũ lắp đặt thang máy JP TechLift
+
         </p>
       </div>
 
@@ -66,6 +70,7 @@ const ElevatorInstallationOperation = () => {
       </div>
 
       {/* Section 2 */}
+
       <div className="mb-10">
         <h2 className="text-2xl font-semibold text-[#041e42] mb-4">
           Quy trình thi công chuẩn mực

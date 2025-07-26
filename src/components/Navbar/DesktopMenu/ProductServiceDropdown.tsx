@@ -4,6 +4,7 @@ import { productSlugMap } from "../../../constants/productSlugMap"; // ánh xạ
 import type { ProductTitle } from "../../../constants/productSlugMap";
 
 const aboutLinks: Record<string, string> = {
+
    "VỀ CHÚNG TÔI": "/gioi-thieu",
   "BAN LÃNH ĐẠO": "/gioi-thieu/ban-lanh-dao",
   "NGUYÊN TẮC": "/gioi-thieu/nguyen-tac",
@@ -60,21 +61,25 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
   const getLink = (item: string, group: string): string => {
     if (group === "DỊCH VỤ") {
       return serviceLinks[item] || "/dich-vu-thang-may";
+
     }
 
     if (type === "product") {
       const slug = productSlugMap[item as ProductTitle];
+
      return slug ? `/san-pham/${slug}` : "#";
     }
 
     if (type === "about") {
       return aboutLinks[item.toUpperCase()] || "/gioi-thieu";
+
     }
     if (type === "contact") {
       return "/lien-he";
     }
 
     if (type === "news") {
+
      return newsLinks[item.toUpperCase()] || "/tin-tuc-thang-may";
     }
     return "#";
