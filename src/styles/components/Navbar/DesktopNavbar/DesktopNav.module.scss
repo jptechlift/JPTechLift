@@ -344,9 +344,8 @@
       padding: 0;
 
       li {
-        padding: 10px var(--spacing-lg);
+        padding: 8px var(--spacing-lg);
         color: var(--color-main);
-        font-size: 16px;
         border-bottom: 1px solid #eee;
         transition: all var(--transition-fast);
         cursor: pointer;
@@ -362,6 +361,7 @@
           text-decoration: none;
           display: block;
           width: 100%;
+            font-size: 16px;
 
           &:hover {
             color: inherit;
