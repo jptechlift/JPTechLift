@@ -377,7 +377,7 @@ export const productData: Record<string, Product> = {
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
   },
-  "thang-tai-hang": {
+  "thang-may-tai-hang": {
     seo: {
       metaTitle: "Thang chở hàng JP TechLift – tải trọng cao",
       metaDescription:
@@ -388,10 +388,11 @@ export const productData: Record<string, Product> = {
         "thang tải hàng công nghiệp",
         "thang máy kho xưởng",
         "JP TechLift freight elevator",
+        "freight elevator",
       ],
     },
     intro: {
-      title: "Thang Tải Hàng",
+      title: "Thang Máy Tải Hàng",
       description:
         "Vận chuyển hàng hóa nặng, cồng kềnh một cách dễ dàng và an toàn. Giải pháp thang máy công nghiệp với tải trọng lớn, kết cấu bền bỉ, tối ưu cho nhà xưởng, kho bãi.",
       introduction:

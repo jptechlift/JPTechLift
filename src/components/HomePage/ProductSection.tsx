@@ -39,7 +39,7 @@ const products: Product[] = [
   },
   {
     title: "Thang Máy Tải Hàng",
-    slug: "thang-tai-hang",
+    slug: "thang-may-tai-hang",
     desc: "Bền bỉ và tải trọng lớn, vận chuyển hàng hóa nặng trong kho bãi, nhà máy và khu công nghiệp.",
     image: product3,
   },
