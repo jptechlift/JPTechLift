@@ -11,7 +11,7 @@
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "sync-deploy": "git push origin deploy && git push test deploy:main",
-    "generate-sitemap": "ts-node scripts/generate-sitemap.ts"
+    "generate-sitemap": "node scripts/generate-sitemap.cjs"
   },
   "dependencies": {
     "aos": "^2.3.4",
