@@ -11,8 +11,7 @@ export default function TitleIntro({ title, className }: TitleIntroProps) {
 
   return (
     <h1 className={className}>
-      <span>{main}</span>
-      <br />
+      <span>{main} </span>
       <span className={styles.highlight}>{highlight}</span>
     </h1>
   );

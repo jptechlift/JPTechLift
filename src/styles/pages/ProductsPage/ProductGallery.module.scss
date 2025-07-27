@@ -7,7 +7,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 40px 20px;
+  padding: 0px 20px; // Đồng bộ với real gallery trên mobile
+  
   position: relative;
 
   @media (min-width: 768px) {
@@ -17,7 +18,8 @@
   }
 
   @media (min-width: 1200px) {
-    padding: 40px 120px;
+    padding: 0px 120px;
+    padding-top: 40px;
   }
 
   @media (min-width: 1600px) {
@@ -39,7 +41,6 @@
     .product-gallery__carousel {
       width: 100%;
       max-width: 440px;
-      border-radius: 12px;
       border: 2px solid var(--color-gray);
       box-shadow: var(--shadow-heavy);
       overflow: hidden;
@@ -194,7 +195,7 @@
     background-color: var(--color-main);
     width: 100vw; // Force full viewport width
     margin-left: calc(-50vw + 50%); // Center it and break out of container
-    padding: 32px 40px;
+    padding: 32px 20px; // Đồng bộ với real gallery trên mobile
     position: relative;
 
     @media (min-width: 768px) {
@@ -291,7 +292,6 @@
   &__image {
     max-width: 500px;
     width: 100%;
-    border-radius: 12px;
     object-fit: contain;
   }
   &__info {

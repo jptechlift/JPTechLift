@@ -36,10 +36,11 @@ import d_realGallery2 from "../assets/images/productPage_img/dumbwaiter/d_realGa
 import d_realGallery3 from "../assets/images/productPage_img/dumbwaiter/d_realGallery3.png";
 import d_realGallery4 from "../assets/images/productPage_img/dumbwaiter/d_realGallery4.png";
 import d_realGallery5 from "../assets/images/productPage_img/dumbwaiter/d_realGallery1.png";
-import real1 from "../assets/images/productPage_img/home_lift/real1.png";
-import real2 from "../assets/images/productPage_img/home_lift/real2.png";
-import real3 from "../assets/images/productPage_img/home_lift/real3.png";
-import real4 from "../assets/images/productPage_img/home_lift/real4.png";
+import es_realGallery1 from "../assets/images/productPage_img/escalator&moving_walkway/es_realGallery1.jpg";
+import es_realGallery2 from "../assets/images/productPage_img/escalator&moving_walkway/es_realGallery2.jpg";
+import es_realGallery3 from "../assets/images/productPage_img/escalator&moving_walkway/es_realGallery3.png";
+import es_realGallery4 from "../assets/images/productPage_img/escalator&moving_walkway/es_realGallery4.jpg";
+import es_realGallery5 from "../assets/images/productPage_img/escalator&moving_walkway/es_realGallery5.jpg";
 //carousel section
 import homelift_carousel1 from "../assets/images/productPage_img/home_lift/homepage_carousel1.png";
 import homelift_carousel2 from "../assets/images/productPage_img/home_lift/homepage_carousel2.png";
@@ -47,8 +48,8 @@ import homelift_carousel3 from "../assets/images/productPage_img/home_lift/homep
 import passenger_carousel1 from "../assets/images/productPage_img/passenger_elevator/passenger_carousel1.png";
 import passenger_carousel2 from "../assets/images/productPage_img/passenger_elevator/passenger_carousel2.jpg";
 import passenger_carousel3 from "../assets/images/productPage_img/passenger_elevator/passenger_carousel3.png";
-import es_carousel1 from "../assets/images/productPage_img/escalator&moving_walkway/esc_carousel1.png";
-import es_carousel2 from "../assets/images/productPage_img/escalator&moving_walkway/esc_carousel2.png";
+import es_carousel1 from "../assets/images/productPage_img/escalator&moving_walkway/esc_carousel1.jpg";
+import es_carousel2 from "../assets/images/productPage_img/escalator&moving_walkway/esc_carousel2.jpg";
 import es_carousel3 from "../assets/images/productPage_img/escalator&moving_walkway/esc_carousel3.png";
 import fr_carousel1 from "../assets/images/productPage_img/freight_elevator/freight_carousel1.png";
 import fr_carousel2 from "../assets/images/productPage_img/freight_elevator/freight_carousel2.png";
@@ -63,7 +64,6 @@ import p_carousel1 from "../assets/images/productPage_img/panoramic_elevator/pan
 import p_carousel2 from "../assets/images/productPage_img/panoramic_elevator/panoramic_carousel2.png";
 import p_carousel3 from "../assets/images/productPage_img/panoramic_elevator/panoramic_carousel3.png";
 
-import real5 from "../assets/images/productPage_img/home_lift/gallery_content_table.jpg";
 import install from "../assets/images/productPage_img/home_lift/install_content_table.jpg";
 import blueprint from "../assets/images/productPage_img/home_lift/blueprint1.png";
 import d_blueprint from "../assets/images/productPage_img/dumbwaiter/d_blueprint.png";
@@ -139,9 +139,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Máy Gia Đình",
       description:
-        "Tại các thành phố lớn như Hà Nội và TP.HCM, nhà phố dạng ống cao từ 3 đến 5 tầng xuất hiện ngày càng nhiều. Tuy nhiên, thiết kế nhà cao tầng lại đặt ra nhiều thách thức trong việc di chuyển, đặc biệt đối với người lớn tuổi, phụ nữ mang thai, người gặp vấn đề về xương khớp hoặc trẻ nhỏ. Việc đi lại bằng cầu thang bộ trong những ngôi nhà này không chỉ bất tiện mà còn tiềm ẩn nhiều rủi ro về sức khỏe và an toàn.",
+        "Giải pháp di chuyển tiện nghi, an toàn và nâng tầm đẳng cấp cho nhà phố, biệt thự hiện đại. Thiết kế nhỏ gọn, vận hành êm ái, phù hợp với mọi không gian.",
       introduction:
-        "Chính vì vậy, nhu cầu lắp đặt thang máy gia đình cho nhà ống đang ngày càng trở nên cần thiết. Thang máy không chỉ hỗ trợ di chuyển thuận tiện giữa các tầng mà còn nâng tầm tiện nghi, tăng giá trị sử dụng và giúp không gian sống trở nên hiện đại, an toàn hơn cho mọi thành viên trong gia đình.",
+        "Thang máy gia đình JP TechLift là lựa chọn hoàn hảo giúp việc đi lại giữa các tầng trở nên dễ dàng, đặc biệt cho gia đình có người lớn tuổi và trẻ nhỏ. Với thiết kế tùy chỉnh, tiết kiệm diện tích và công nghệ an toàn hàng đầu, sản phẩm không chỉ mang lại sự tiện nghi tối đa mà còn là điểm nhấn sang trọng, gia tăng giá trị cho ngôi nhà của bạn. [2, 4]",
       heroImage: homeLiftHeroImg,
     },
 
@@ -274,9 +274,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Thực Phẩm",
       description:
-        "JP TECHLIFT cung cấp thang thực phẩm nhỏ gọn, vỏ inox dễ vệ sinh, phù hợp nhà hàng, khách sạn, đáp ứng tiêu chuẩn an toàn vận chuyển thực phẩm.",
+        "Giải pháp vận chuyển thực phẩm, đồ dùng chuyên nghiệp cho nhà hàng, khách sạn, quán cà phê. Thiết kế nhỏ gọn, vật liệu inox 304 sạch sẽ, và tối ưu hiệu suất.",
       introduction:
-        "Thang thực phẩm JP TECHLIFT là giải pháp lý tưởng cho việc vận chuyển thức ăn, nguyên liệu, dụng cụ giữa các tầng trong nhà hàng, khách sạn và bếp công nghiệp. Thiết kế nhỏ gọn, vỏ inox sáng bóng giúp dễ dàng vệ sinh và đảm bảo vệ sinh an toàn thực phẩm theo tiêu chuẩn ngành F&B.",
+        "Tối ưu hóa quy trình phục vụ với thang tải thực phẩm JP TechLift. Sản phẩm được thiết kế chuyên dụng với vật liệu inox 304 chống gỉ, dễ vệ sinh, vận hành ổn định và bền bỉ. Đây là công cụ đắc lực giúp vận chuyển thức ăn, đồ uống nhanh chóng, an toàn, đảm bảo tiêu chuẩn vệ sinh và nâng cao hiệu suất cho khu bếp của bạn.",
       heroImage: dHeroImg,
     },
 
@@ -393,9 +393,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Tải Hàng",
       description:
-        "JP TECHLIFT cung cấp thang chở hàng tải trọng lớn, vận hành ổn định – giải pháp tối ưu cho kho xưởng, nhà máy và trung tâm logistics hiện đại.",
+        "Vận chuyển hàng hóa nặng, cồng kềnh một cách dễ dàng và an toàn. Giải pháp thang máy công nghiệp với tải trọng lớn, kết cấu bền bỉ, tối ưu cho nhà xưởng, kho bãi.",
       introduction:
-        "Thang chở hàng JP TECHLIFT là giải pháp chuyên dụng cho vận chuyển hàng hóa khối lượng lớn tại kho xưởng, nhà máy và trung tâm logistics. Thiết kế chịu lực cao, sàn chống trượt và hệ thống điều khiển thông minh giúp đảm bảo an toàn, bền bỉ và tối ưu hiệu suất vận hành cho doanh nghiệp.",
+        "Thang máy tải hàng JP TechLift là giải pháp không thể thiếu cho các nhà máy, kho xưởng và trung tâm logistics. Với kết cấu vững chắc, khả năng chịu tải lên đến 5000kg và sàn cabin chống trượt, sản phẩm đảm bảo vận hành ổn định, an toàn cho cả hàng hóa và người sử dụng, giúp tăng năng suất và hiệu quả chuỗi cung ứng.",
       heroImage: freightHeroImg,
     },
 
@@ -525,10 +525,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Máy Hành Khách",
       description:
-        "Tại các đô thị lớn như Hà Nội và TP.HCM, nhu cầu di chuyển nhanh chóng, an toàn giữa các tầng trong các tòa nhà cao tầng, trung tâm thương mại, văn phòng và nhà ở hiện đại ngày càng gia tăng. Trong bối cảnh quỹ đất hạn chế và xu hướng phát triển theo chiều cao, việc lắp đặt thang máy tải khách trở thành giải pháp không thể thiếu, đặc biệt trong những công trình có mật độ sử dụng cao hoặc có người già, trẻ nhỏ, phụ nữ mang thai thường xuyên di chuyển. Việc sử dụng cầu thang bộ không chỉ bất tiện mà còn tiềm ẩn nhiều nguy cơ về an toàn và sức khỏe.",
-
+        "Giải pháp di chuyển nhanh chóng, êm ái và an toàn cho các tòa nhà chung cư, văn phòng, khách sạn. Thiết kế hiện đại, nội thất sang trọng, nâng tầm giá trị công trình.",
       introduction:
-        "Thang máy tải khách được thiết kế để đáp ứng nhu cầu vận chuyển người hiệu quả giữa các tầng, với tốc độ ổn định, vận hành êm ái và đảm bảo tiêu chuẩn an toàn nghiêm ngặt. Không chỉ là phương tiện di chuyển, thang máy còn góp phần nâng cao giá trị kiến trúc, tối ưu hóa công năng và mang lại trải nghiệm tiện nghi, hiện đại cho người sử dụng. Đây là lựa chọn lý tưởng cho các công trình như khách sạn, chung cư, tòa nhà văn phòng, bệnh viện và cả nhà ở cao tầng có nhu cầu sử dụng thường xuyên.",
+        "Đáp ứng nhu cầu di chuyển với mật độ cao tại các tòa nhà cao tầng, thang máy tải khách JP TechLift mang đến trải nghiệm vượt trội với công nghệ vận hành êm ái, tốc độ tối ưu và tính năng an toàn tuyệt đối. Sản phẩm có thiết kế đa dạng, nội thất sang trọng, góp phần nâng cao đẳng cấp và hoàn thiện vẻ đẹp kiến trúc cho mọi công trình.",
       heroImage: passengerLiftHeroImg,
     },
 
@@ -656,9 +655,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Máy Bệnh Viện",
       description:
-        "JP TECHLIFT cung cấp thang máy bệnh viện chuyên dụng, vận hành êm ái, an toàn khi vận chuyển bệnh nhân, cáng cứu thương và thiết bị y tế.",
+        "Giải pháp vận chuyển chuyên dụng cho bệnh viện, phòng khám. Cabin rộng rãi, di chuyển cực kỳ êm ái, ưu tiên an toàn tuyệt đối cho bệnh nhân và các thiết bị y tế nhạy cảm.",
       introduction:
-        "Thang máy bệnh viện JP TECHLIFT được thiết kế chuyên biệt để vận chuyển bệnh nhân, giường bệnh và thiết bị y tế trong môi trường y tế đòi hỏi độ chính xác và an toàn cao. Cabin rộng rãi, trang bị thanh vịn, cảm biến độ mở cửa và điều khiển chính xác giúp di chuyển nhẹ nhàng, hạn chế rung lắc, đáp ứng tiêu chuẩn vệ sinh và chăm sóc sức khỏe.",
+        "Được thiết kế đặc biệt cho môi trường y tế, thang máy bệnh viện JP TechLift đảm bảo vận chuyển giường bệnh và các thiết bị một cách nhẹ nhàng, chính xác. Với cabin rộng, vật liệu kháng khuẩn, và các chế độ ưu tiên, sản phẩm đáp ứng đầy đủ các tiêu chuẩn khắt khe về an toàn và vệ sinh trong bệnh viện.",
       heroImage: hospitalHeroImg,
     },
 
@@ -787,9 +786,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Cuốn",
       description:
-        "Thang cuốn JP TECHLIFT – giải pháp vận chuyển hành khách hiệu quả, an toàn cho trung tâm thương mại, nhà ga, sân bay với đa dạng độ nghiêng và chiều rộng.",
+        "Giải pháp tối ưu cho việc di chuyển lưu lượng lớn tại trung tâm thương mại, siêu thị, sân bay. Vận hành liên tục, bền bỉ và trang bị công nghệ an toàn vượt trội.",
       introduction:
-        "Thang cuốn JP TECHLIFT được thiết kế để vận chuyển lượng lớn người qua lại một cách liên tục, an toàn. Với nhiều tùy chọn độ nghiêng, chiều rộng bậc và chiều cao, sản phẩm dễ dàng đáp ứng nhu cầu lắp đặt tại trung tâm thương mại, nhà ga, sân bay hoặc khu mua sắm đông đúc.",
+        "Thang cuốn JP TechLift giúp điều phối dòng người hiệu quả, giảm ùn tắc và mang lại sự thuận tiện tối đa cho khách hàng tại các khu vực công cộng. Sản phẩm tích hợp các công nghệ an toàn tiên tiến nhất, động cơ hiệu suất cao và thiết kế hiện đại, đảm bảo hoạt động bền bỉ 24/7 và nâng cao trải nghiệm của khách hàng.",
       heroImage: escalatorHeroImg,
     },
 
@@ -823,7 +822,7 @@ export const productData: Record<string, Product> = {
     },
     // ✅ carousel của phần thông tin chi tiết sản phẩm - hình bên trái
     galleryImages: [es_carousel1, es_carousel2, es_carousel3],
-    realGalleryImages: [real1, real2, real3, real4, real5],
+    realGalleryImages: [es_realGallery1, es_realGallery2, es_realGallery3, es_realGallery4, es_realGallery5],
     // ✅ Hình ảnh thực tế - Phần này cố định không đổi xuyên suốt 6 trang
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
@@ -900,9 +899,9 @@ export const productData: Record<string, Product> = {
     intro: {
       title: "Thang Máy Quan Sát",
       description:
-        "JP TECHLIFT cung cấp thang máy quan sát kính toàn phần, thiết kế sang trọng, vận hành êm ái – giúp nâng tầm trải nghiệm tại trung tâm thương mại, khách sạn, cao ốc hiện đại.",
+        "Kiệt tác kiến trúc di động, mang lại tầm nhìn panorama ngoạn mục và nâng tầm đẳng cấp không gian cho khách sạn, trung tâm thương mại và các cao ốc hiện đại. [3]",
       introduction:
-        "Thang máy quan sát (thang máy lồng kính) là dòng thang máy sử dụng vật liệu kính trong suốt ở một hoặc nhiều mặt cabin, cho phép người dùng nhìn thấy toàn cảnh không gian bên ngoài trong quá trình di chuyển. Loại thang này thường được lắp đặt tại các công trình công cộng có kiến trúc mở như trung tâm thương mại, khách sạn, resort hoặc tòa nhà cao tầng nhằm tăng tính thẩm mỹ, tạo điểm nhấn không gian và nâng cao trải nghiệm người dùng.",
+        "Thang máy quan sát JP TechLift không chỉ là một phương tiện di chuyển mà còn là một điểm nhấn kiến trúc đầy ấn tượng. Với thiết kế vách kính cường lực an toàn, cabin đa dạng (tròn, vuông, bán nguyệt), sản phẩm mở ra không gian quan sát 360 độ, mang đến trải nghiệm di chuyển độc đáo và sang trọng cho người dùng, biến mỗi chuyến đi thành một hành trình thú vị. [3, 5]",
       heroImage: panaramicHeroImg,
     },
 
