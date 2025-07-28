@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS", // ✅ Node.js chạy được
+    "moduleResolution": "node",
+    "lib": ["ES2020"], // ✅ Không dùng DOM
+    "outDir": "./.sitemap-build", // ✅ Không dùng outFile nữa
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["scripts/generate-sitemap.ts"]
+}

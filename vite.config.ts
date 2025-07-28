@@ -1,42 +1,46 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import sitemap from 'vite-plugin-sitemap';
-import { productSlugMap } from './src/constants/productSlugMap';
+// scripts/generate-sitemap.ts
+import fs from "fs";
+import path from "path";
+import { productSlugMap } from "../JPTechLift_Project/src/constants/productSlugMap"; // ✅ dùng import
 
+const hostname = "https://thangmaysaigonjptechlift.com";
 
-// https://vite.dev/config/
 const staticRoutes = [
-  '/',
-  '/gioi-thieu/quy-trinh-du-an',
-  '/gioi-thieu/nguyen-tac',
-  '/gioi-thieu/ban-lanh-dao',
-  '/tin-tuc-thang-may',
-  '/gioi-thieu',
-  '/blog-thang-may',
-  '/lien-he',
-  '/dich-vu-thang-may',
-  '/dich-vu-thang-may/lap-dat-thang-may',
-  '/dich-vu-thang-may/tu-van-thiet-ke',
-  '/dich-vu-thang-may/huong-dan-van-hanh',
-  '/dich-vu-thang-may/bao-tri-thang-may',
-  '/dich-vu-thang-may/cai-tao-sua-chua',
+  "/",
+  "/gioi-thieu",
+  "/gioi-thieu/ban-lanh-dao",
+  "/gioi-thieu/nguyen-tac",
+  "/gioi-thieu/quy-trinh-du-an",
+  "/tin-tuc-thang-may",
+  "/blog-thang-may",
+  "/lien-he",
+  "/dich-vu-thang-may",
+  "/dich-vu-thang-may/lap-dat-thang-may",
+  "/dich-vu-thang-may/tu-van-thiet-ke",
+  "/dich-vu-thang-may/bao-tri-thang-may",
+  "/dich-vu-thang-may/huong-dan-van-hanh",
+  "/dich-vu-thang-may/cai-tao-sua-chua",
 ];
 
 const productRoutes = Object.values(productSlugMap).map(
-  (slug) => `/san-pham/${slug}`,
+  (slug) => `/san-pham/${slug}`
 );
 
-export default defineConfig({
-  plugins: [
-    react(),
-    sitemap({
-      hostname: 'https://thangmaysaigonjptechlift.com',
-      routes: [...staticRoutes, ...productRoutes],
-    }),
-  ],
+const allRoutes = [...staticRoutes, ...productRoutes];
 
-  server: {
-    host: true,
-  },
-  base: '/',
-});
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allRoutes
+  .map(
+    (route) => `
+  <url>
+    <loc>${hostname}${route}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`
+  )
+  .join("")}
+</urlset>`;
+
+fs.writeFileSync(path.resolve("dist", "sitemap.xml"), sitemap);
+console.log("✅ sitemap.xml generated");
