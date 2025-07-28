@@ -5,7 +5,7 @@ import ElevatorServicesMobile from "../../components/ServicePage/ServicePageMobi
 import ElevatorServicesDesktop from "../../components/ServicePage/ServicePageDesktop";
 import banner from "../../assets/images/Banner-img.png";
 import Footer from "../../components/Footer/Footer";
-
+import SEO from "../../components/SEO";
 const ServicesPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -47,6 +47,11 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+        <SEO
+        title="Dịch vụ thang máy JP TechLift"
+        description="Các dịch vụ lắp đặt, bảo trì và cải tạo thang máy chuyên nghiệp tại JP TechLift."
+        path="/dich-vu-thang-may"
+      />
       <HeaderWithBanner banner={banner} title="DỊCH VỤ" />
       <main className="flex-grow py-8 px-4">
         {/* Hiển thị ElevatorServicesMobile hoặc ElevatorServicesDesktop nếu ở trang chính /dich-vu */}

@@ -88,3 +88,64 @@ To ensure React Router works with direct URL entries on Netlify, create a `_redi
 ```
 
 No additional configuration is required in `vite.config.ts`. After deploying, check Netlify Deploy logs or access a deep link to verify the redirect is active.
+
+## SEO configuration
+
+### Helmet usage
+Use the `SEO` component to set meta tags for each page:
+
+```tsx
+import SEO from "./components/SEO";
+
+const ExamplePage = () => (
+  <>
+    <SEO
+      title="JP TechLift - Example"
+      description="Mô tả trang"
+      path="/example"
+    />
+    {/* page content */}
+  </>
+);
+```
+
+### sitemap.xml
+A minimal sitemap can live under `public/`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://thangmaysaigonjptechlift.com/</loc></url>
+  <url><loc>https://thangmaysaigonjptechlift.com/san-pham</loc></url>
+  <url><loc>https://thangmaysaigonjptechlift.com/dich-vu-thang-may</loc></url>
+</urlset>
+```
+
+### robots.txt
+Place this file in `public/robots.txt` to allow crawling:
+
+```
+User-agent: *
+Allow: /
+Sitemap: https://thangmaysaigonjptechlift.com/sitemap.xml
+```
+
+### Organization Schema
+Embed the organization JSON-LD once (usually in `index.html`):
+
+```html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "JP TechLift",
+  "url": "https://thangmaysaigonjptechlift.com",
+  "logo": "https://thangmaysaigonjptechlift.com/Logo-Title.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+84-123456789",
+    "contactType": "customer service"
+  }
+}
+</script>
+```

@@ -68,6 +68,7 @@ import install from "../assets/images/productPage_img/home_lift/install_content_
 import blueprint from "../assets/images/productPage_img/home_lift/blueprint1.png";
 import d_blueprint from "../assets/images/productPage_img/dumbwaiter/d_blueprint.png";
 import passenger_blueprint from "../assets/images/productPage_img/passenger_elevator/passenger_blueprint.png";
+import es_blueprint from "../assets/images/productPage_img/escalator&moving_walkway/es_blueprint.png";
 import h_blueprint from "../assets/images/productPage_img/hospital _elevator/blueprintOfHospital_Pasenger.png";
 
 export interface Product {
@@ -857,7 +858,7 @@ export const productData: Record<string, Product> = {
     ],
     // Thay mục blueprint bằng mục "Tính năng an toàn"
     blueprint: {
-      image: blueprint, // Có thể để ảnh một tính năng an toàn nổi bật
+      image: es_blueprint, // Có thể để ảnh một tính năng an toàn nổi bật
       description: [
         "An toàn là ưu tiên hàng đầu của thang cuốn JP TechLift. Sản phẩm được trang bị đầy đủ các thiết bị bảo vệ theo tiêu chuẩn châu Âu EN115:",
       ],
