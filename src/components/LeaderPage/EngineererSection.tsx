@@ -39,7 +39,7 @@ export default function LeaderSection() {
       </section>
 
       {/* Danh sách kỹ sư */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-12 max-w-xs mx-auto mb-10 px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-12 max-w-xl mx-auto mb-10 px-6">
         {engineerers.map((engineer, index) => (
           <div
             key={index}
