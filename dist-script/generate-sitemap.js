@@ -31,7 +31,7 @@ var staticRoutes = [
 var productSlugs = [
     'thang-may-gia-dinh',
     'thang-tai-thuc-pham',
-    'thang-tai-hang',
+    'thang-may-tai-hang',
     'thang-may-hanh-khach',
     'thang-may-benh-vien',
     'thang-truot-thang-cuon',

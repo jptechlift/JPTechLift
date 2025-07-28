@@ -4,6 +4,7 @@ import HeroFooter from "../components/Footer/HeroFooter";
 import bannerImg from "../assets/images/Banner-Leadership.png";
 import Footer from "../components/Footer/Footer";
 import SEO from "../components/SEO";
+import EngineerSection from "../components/LeaderPage/EngineererSection"
 
 const LeaderPage = () => {
   return (
@@ -15,6 +16,7 @@ const LeaderPage = () => {
       />
       <HeaderWithBanner banner={bannerImg} title="ĐỘI NGŨ LÃNH ĐẠO" />
       <LeaderSection />
+      <EngineerSection />
       <HeroFooter />
       <Footer />
     </div>
