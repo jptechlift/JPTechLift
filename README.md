@@ -13,9 +13,9 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
 
@@ -30,14 +30,15 @@ export default tseslint.config([
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
+
 ## EmailJS Integration
 
 Install the EmailJS SDK and import it when using the contact form:
@@ -50,35 +51,35 @@ npm install emailjs-com
 import emailjs from "emailjs-com";
 ```
 
-
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
       // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
+      reactX.configs["recommended-typescript"],
       // Enable lint rules for React DOM
       reactDom.configs.recommended,
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
+
 ## Netlify SPA routing
 
 To ensure React Router works with direct URL entries on Netlify, create a `_redirects` file under `public` containing:
@@ -89,9 +90,20 @@ To ensure React Router works with direct URL entries on Netlify, create a `_redi
 
 No additional configuration is required in `vite.config.ts`. After deploying, check Netlify Deploy logs or access a deep link to verify the redirect is active.
 
+## Environment variables
+
+Create a `.env` file in the project root and define `VITE_SITE_URL` with your
+production domain. This value is used when generating canonical URLs and the
+sitemap.
+
+```env
+VITE_SITE_URL=https://thangmaysaigonjptechlift.com
+```
+
 ## SEO configuration
 
 ### Helmet usage
+
 Use the `SEO` component to set meta tags for each page:
 
 ```tsx
@@ -110,6 +122,7 @@ const ExamplePage = () => (
 ```
 
 ### sitemap.xml
+
 A minimal sitemap can live under `public/`:
 
 ```xml
@@ -122,6 +135,7 @@ A minimal sitemap can live under `public/`:
 ```
 
 ### robots.txt
+
 Place this file in `public/robots.txt` to allow crawling:
 
 ```
@@ -131,21 +145,22 @@ Sitemap: https://thangmaysaigonjptechlift.com/sitemap.xml
 ```
 
 ### Organization Schema
+
 Embed the organization JSON-LD once (usually in `index.html`):
 
 ```html
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "JP TechLift",
-  "url": "https://thangmaysaigonjptechlift.com",
-  "logo": "https://thangmaysaigonjptechlift.com/Logo-Title.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+84-123456789",
-    "contactType": "customer service"
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "JP TechLift",
+    "url": "https://thangmaysaigonjptechlift.com",
+    "logo": "https://thangmaysaigonjptechlift.com/Logo-Title.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+84-123456789",
+      "contactType": "customer service"
+    }
   }
-}
 </script>
 ```

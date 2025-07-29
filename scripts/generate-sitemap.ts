@@ -1,33 +1,34 @@
-import fs from 'fs';
+import fs from "fs";
 
-const domain = 'https://thangmaysaigonjptechlift.com';
-const today = new Date().toISOString().split('T')[0];
+const domain =
+  process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
+const today = new Date().toISOString().split("T")[0];
 
 const staticRoutes = [
-  '',
-  'gioi-thieu',
-  'gioi-thieu/ban-lanh-dao',
-  'gioi-thieu/nguyen-tac',
-  'gioi-thieu/quy-trinh-du-an',
-  'tin-tuc-thang-may',
-  'blog-thang-may',
-  'lien-he',
-  'dich-vu-thang-may',
-  'dich-vu-thang-may/lap-dat-thang-may',
-  'dich-vu-thang-may/tu-van-thiet-ke',
-  'dich-vu-thang-may/huong-dan-van-hanh',
-  'dich-vu-thang-may/bao-tri-thang-may',
-  'dich-vu-thang-may/cai-tao-sua-chua',
+  "",
+  "gioi-thieu",
+  "gioi-thieu/ban-lanh-dao",
+  "gioi-thieu/nguyen-tac",
+  "gioi-thieu/quy-trinh-du-an",
+  "tin-tuc-thang-may",
+  "blog-thang-may",
+  "lien-he",
+  "dich-vu-thang-may",
+  "dich-vu-thang-may/lap-dat-thang-may",
+  "dich-vu-thang-may/tu-van-thiet-ke",
+  "dich-vu-thang-may/huong-dan-van-hanh",
+  "dich-vu-thang-may/bao-tri-thang-may",
+  "dich-vu-thang-may/cai-tao-sua-chua",
 ];
 
 const productSlugs = [
-  'thang-may-gia-dinh',
-  'thang-tai-thuc-pham',
-  'thang-may-tai-hang',
-  'thang-may-hanh-khach',
-  'thang-may-benh-vien',
-  'thang-truot-thang-cuon',
-  'thang-may-quan-sat',
+  "thang-may-gia-dinh",
+  "thang-tai-thuc-pham",
+  "thang-may-tai-hang",
+  "thang-may-hanh-khach",
+  "thang-may-benh-vien",
+  "thang-truot-thang-cuon",
+  "thang-may-quan-sat",
 ];
 
 const urls = [
@@ -48,5 +49,5 @@ urls.forEach((url) => {
 
 xml += `</urlset>`;
 
-fs.writeFileSync('public/sitemap.xml', xml);
-console.log('✅ sitemap.xml generated');
+fs.writeFileSync("public/sitemap.xml", xml);
+console.log("✅ sitemap.xml generated");

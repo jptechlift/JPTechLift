@@ -10,7 +10,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
-var domain = 'https://thangmaysaigonjptechlift.com';
+var domain = process.env.VITE_SITE_URL || 'https://thangmaysaigonjptechlift.com';
 var today = new Date().toISOString().split('T')[0];
 var staticRoutes = [
     '',
