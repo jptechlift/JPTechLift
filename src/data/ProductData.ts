@@ -94,7 +94,7 @@ export interface ContentVariant {
 
 export interface Product {
   seo?: MetaData;
-  seoVariants?: Partial<Record<Audience, MetaData>>;  
+  seoVariants?: Partial<Record<Audience, MetaData>>;
   contentVariants?: Partial<Record<Audience, ContentVariant>>;
   intro: {
     title: string;
@@ -474,16 +474,17 @@ export const productData: Record<string, Product> = {
   },
   "thang-may-tai-hang": {
     seo: {
-      metaTitle: "Thang chở hàng JP TechLift – tải trọng cao",
+      metaTitle: "Thang Máy Tải Hàng Công Nghiệp 100kg – 5 Tấn | JP Tech Lift",
       metaDescription:
-        "Thang chở hàng JP TechLift mang đến giải pháp vận chuyển hàng hóa nhanh chóng trong kho xưởng và nhà máy. Sản phẩm chịu tải lớn, vận hành ổn định, an toàn.",
+        "Chuyên cung cấp thang máy tải hàng từ 100kg đến 5000kg. Thiết kế theo yêu cầu, vận hành ổn định, an toàn tuyệt đối. Bảo hành dài hạn – hỗ trợ 24/7.",
       keywords: [
         "thang chở hàng",
-        "thang máy chở hàng",
+        "thang máy tải hàng",
         "thang tải hàng công nghiệp",
         "thang máy kho xưởng",
         "JP TechLift freight elevator",
         "freight elevator",
+        "giá thang máy tải hàng",
       ],
     },
     intro: {
@@ -1062,7 +1063,7 @@ export const productData: Record<string, Product> = {
         "giải pháp di chuyển liên tục",
       ],
     },
-      seoVariants: {
+    seoVariants: {
       mall: {
         metaTitle:
           "Thang Cuốn Trung Tâm Thương Mại | Hiện Đại – An Toàn – Đẳng Cấp",
