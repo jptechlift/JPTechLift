@@ -33,6 +33,8 @@ export default function ProductTemplatePage() {
   const product = productData[productId];
   const audience = searchParams.get("audience") as Audience | null;
   const seo = (audience && product.seoVariants?.[audience]) || product.seo;
+  const content =
+    (audience && product.contentVariants?.[audience]) || undefined;
 
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
@@ -87,8 +89,8 @@ export default function ProductTemplatePage() {
 
       <FadeInSection>
         <Introduction
-          title={product.intro.title}
-          description={product.intro.description}
+          title={content?.title || product.intro.title}
+          description={content?.description || product.intro.description}
           introduction={product.intro.introduction}
           imageUrl={product.intro.heroImage}
         />
