@@ -71,12 +71,22 @@ import passenger_blueprint from "../assets/images/productPage_img/passenger_elev
 import es_blueprint from "../assets/images/productPage_img/escalator&moving_walkway/es_blueprint.png";
 import h_blueprint from "../assets/images/productPage_img/hospital _elevator/blueprintOfHospital_Pasenger.png";
 
+export type Audience =
+  | "office"
+  | "school"
+  | "hospital"
+  | "residential"
+  | "government";
+
+export interface MetaData {
+  metaTitle: string;
+  metaDescription: string;
+  keywords: string[];
+}
+
 export interface Product {
-  seo?: {
-    metaTitle: string;
-    metaDescription: string;
-    keywords: string[];
-  };
+  seo?: MetaData;
+  seoVariants?: Record<Audience, MetaData>;
   intro: {
     title: string;
     description: string;
@@ -132,10 +142,19 @@ export interface Product {
 export const productData: Record<string, Product> = {
   "thang-may-gia-dinh": {
     seo: {
-      metaTitle: "Thang máy gia đình JP TechLift tiện nghi",
+      metaTitle:
+        "Thang Máy Gia Đình Cao Cấp | Nhập Khẩu Chính Hãng – JP TechLift",
       metaDescription:
-        "Thang máy gia đình JP TechLift thiết kế nhỏ gọn, vận hành êm ái, phù hợp nhà phố và biệt thự. Sản phẩm nhập khẩu linh kiện, lắp ráp trong nước, an toàn và bền bỉ.",
-      keywords: ["thang máy gia đình", "thang máy mini", "thang máy không hố pit", "home lift", "JP TechLift"],
+        "Lắp đặt thang máy gia đình mini, không hố pit, tiết kiệm diện tích – vận hành êm ái, an toàn tuyệt đối. Tư vấn & báo giá miễn phí tại TP.HCM.",
+      keywords: [
+        "thang máy gia đình mini",
+        "thang máy không hố pit",
+        "thang máy gia đình cao cấp",
+        "thang máy gia đình nhập khẩu",
+        "thang máy kính",
+        "thang máy gia đình trục vít",
+        "JP TechLift",
+      ],
     },
     intro: {
       title: "Thang Máy Gia Đình",
@@ -163,7 +182,8 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang máy gia đình JPTechLift là lựa chọn lý tưởng cho cả công trình xây mới và cải tạo. ",
+      introductionLine1:
+        "Thang máy gia đình JPTechLift là lựa chọn lý tưởng cho cả công trình xây mới và cải tạo. ",
       introductionLine2:
         "Được thiết kế và lắp đặt tại Việt Nam, sản phẩm mang đến sự linh hoạt về tải trọng, phù hợp với đa dạng nhu cầu sử dụng trong gia đình hiện đại.",
       productLine: "Dòng sản phẩm: Thang máy gia đình JPTechLift.",
@@ -205,7 +225,8 @@ export const productData: Record<string, Product> = {
       },
       {
         stage: "Giai đoạn 02: Lắp đặt cơ khí và cabin",
-        description: "Sau khi hố thang hoàn thiện, chúng tôi tiến hành lắp đặt các thành phần cơ khí chính:",
+        description:
+          "Sau khi hố thang hoàn thiện, chúng tôi tiến hành lắp đặt các thành phần cơ khí chính:",
         steps: [
           {
             stepTitle: "Bước 1: Lắp đặt Ray dẫn hướng và Đối trọng",
@@ -214,7 +235,8 @@ export const productData: Record<string, Product> = {
           },
           {
             stepTitle: "Bước 2: Lắp đặt Cabin và Cửa tầng",
-            stepContent: "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tại mỗi điểm dừng.",
+            stepContent:
+              "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tại mỗi điểm dừng.",
           },
           {
             stepTitle: "Bước 3: Lắp đặt Máy kéo và Hệ thống an toàn",
@@ -233,7 +255,10 @@ export const productData: Record<string, Product> = {
     // ✅ Bản vẽ chi tiết (thêm mô tả bên cạnh ảnh)
     blueprint: {
       image: blueprint,
-      description: ["Mặt bên hố thang máy gia đình 4 điểm dừng", "Cấu hình hố thang tiêu chuẩn:"],
+      description: [
+        "Mặt bên hố thang máy gia đình 4 điểm dừng",
+        "Cấu hình hố thang tiêu chuẩn:",
+      ],
       specs: [
         "Trụ đứng: 120x120x4mm",
         "Đà đặt máy (4 mặt hố thang): 120x45x4mm",
@@ -252,9 +277,21 @@ export const productData: Record<string, Product> = {
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
@@ -298,8 +335,10 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang tải thực phẩm JP TechLift vận hành êm ái, bền bỉ và sạch sẽ.",
-      introductionLine2: "Vật liệu Inox 304 chống gỉ sét, đáp ứng tiêu chuẩn vệ sinh an toàn thực phẩm.",
+      introductionLine1:
+        "Thang tải thực phẩm JP TechLift vận hành êm ái, bền bỉ và sạch sẽ.",
+      introductionLine2:
+        "Vật liệu Inox 304 chống gỉ sét, đáp ứng tiêu chuẩn vệ sinh an toàn thực phẩm.",
       productLine: "Dòng sản phẩm: Thang thực phẩm JP TechLift.",
       config: "Nhập khẩu linh kiện, lắp ráp trong nước",
       brand: "JPTechLift",
@@ -312,14 +351,32 @@ export const productData: Record<string, Product> = {
 
     // ✅ carousel của phần thông tin chi tiết sản phẩm - hình bên trái
     galleryImages: [d_carousel1, d_carousel2, d_carousel3],
-    realGalleryImages: [d_realGallery1, d_realGallery2, d_realGallery3, d_realGallery4, d_realGallery5],
+    realGalleryImages: [
+      d_realGallery1,
+      d_realGallery2,
+      d_realGallery3,
+      d_realGallery4,
+      d_realGallery5,
+    ],
     // ✅ Hình ảnh thực tế - Phần này cố định không đổi xuyên suốt 6 trang
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
     dimensions: [
-      { people: "50 - 100 KG", size: "600x600x800 mm", weight: "Phù hợp quán cà phê, văn phòng" },
-      { people: "100 - 200 KG", size: "800x800x1000 mm", weight: "Phù hợp nhà hàng, trường học" },
-      { people: "200 - 300 KG", size: "1000x1000x1200 mm", weight: "Phù hợp khách sạn, bếp ăn công nghiệp" },
+      {
+        people: "50 - 100 KG",
+        size: "600x600x800 mm",
+        weight: "Phù hợp quán cà phê, văn phòng",
+      },
+      {
+        people: "100 - 200 KG",
+        size: "800x800x1000 mm",
+        weight: "Phù hợp nhà hàng, trường học",
+      },
+      {
+        people: "200 - 300 KG",
+        size: "1000x1000x1200 mm",
+        weight: "Phù hợp khách sạn, bếp ăn công nghiệp",
+      },
     ],
 
     // ✅ Quy trình lắp đặt
@@ -338,11 +395,13 @@ export const productData: Record<string, Product> = {
         steps: [
           {
             stepTitle: "Bước 1: Lắp đặt ray và máy tời",
-            stepContent: "Cố định hệ thống ray và máy tời chuyên dụng vào giếng thang.",
+            stepContent:
+              "Cố định hệ thống ray và máy tời chuyên dụng vào giếng thang.",
           },
           {
             stepTitle: "Bước 2: Lắp đặt cabin và cửa tầng",
-            stepContent: "Lắp cabin inox và hệ thống cửa mở tay dạng 2 cánh trượt lên-xuống.",
+            stepContent:
+              "Lắp cabin inox và hệ thống cửa mở tay dạng 2 cánh trượt lên-xuống.",
           },
         ],
       },
@@ -357,7 +416,10 @@ export const productData: Record<string, Product> = {
     // ✅ Bản vẽ chi tiết (thêm mô tả bên cạnh ảnh)
     blueprint: {
       image: d_blueprint, // Thay bằng bản vẽ thang thực phẩm
-      description: ["Bản vẽ kỹ thuật tham khảo cho thang tải thực phẩm 100kg.", "Cấu hình tiêu chuẩn cho nhà hàng:"],
+      description: [
+        "Bản vẽ kỹ thuật tham khảo cho thang tải thực phẩm 100kg.",
+        "Cấu hình tiêu chuẩn cho nhà hàng:",
+      ],
       specs: [
         "Vật liệu cabin & cửa: Inox 304 sọc nhuyễn",
         "Kích thước cabin (Rộng x Sâu x Cao): 800x800x800 mm",
@@ -367,13 +429,26 @@ export const productData: Record<string, Product> = {
         "Số tầng phục vụ: Tùy chỉnh (2-5 tầng)",
       ],
       stops: "3 điểm dừng",
-      heightNote: "Chiều cao cửa thường đặt ở ngang tầm thắt lưng để tiện lấy đồ.",
+      heightNote:
+        "Chiều cao cửa thường đặt ở ngang tầm thắt lưng để tiện lấy đồ.",
     },
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
@@ -420,7 +495,8 @@ export const productData: Record<string, Product> = {
       title: "Thông số kỹ thuật",
       introductionLine1:
         "Thang tải hàng JP TechLift được thiết kế tối ưu cho vận chuyển hàng hóa khối lượng lớn, kể cả xe nâng.",
-      introductionLine2: "Phù hợp cho nhà kho, xưởng sản xuất, trung tâm phân phối và bệnh viện.",
+      introductionLine2:
+        "Phù hợp cho nhà kho, xưởng sản xuất, trung tâm phân phối và bệnh viện.",
       productLine: "Dòng sản phẩm: Thang tải hàng JP TechLift.",
       config: "Kết cấu thép chịu lực, nhập khẩu máy kéo, lắp ráp trong nước",
       brand: "JPTechLift",
@@ -444,9 +520,21 @@ export const productData: Record<string, Product> = {
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
     dimensions: [
-      { people: "500 - 1000 KG", size: "1600x1800x2200 mm", weight: "Phù hợp xưởng may, kho hàng nhẹ" },
-      { people: "1500 - 2000 KG", size: "1800x2500x2200 mm", weight: "Phù hợp kho hàng có xe nâng tay" },
-      { people: "> 2500 KG", size: "Tùy chỉnh theo yêu cầu", weight: "Phù hợp nhà máy, kho logistics lớn" },
+      {
+        people: "500 - 1000 KG",
+        size: "1600x1800x2200 mm",
+        weight: "Phù hợp xưởng may, kho hàng nhẹ",
+      },
+      {
+        people: "1500 - 2000 KG",
+        size: "1800x2500x2200 mm",
+        weight: "Phù hợp kho hàng có xe nâng tay",
+      },
+      {
+        people: "> 2500 KG",
+        size: "Tùy chỉnh theo yêu cầu",
+        weight: "Phù hợp nhà máy, kho logistics lớn",
+      },
     ],
 
     // ✅ Quy trình lắp đặt
@@ -475,7 +563,8 @@ export const productData: Record<string, Product> = {
           },
           {
             stepTitle: "Bước 3: Lắp đặt Máy kéo và Cáp tải",
-            stepContent: "Lắp đặt máy kéo công suất lớn và hệ thống cáp tải phù hợp với tải trọng của thang.",
+            stepContent:
+              "Lắp đặt máy kéo công suất lớn và hệ thống cáp tải phù hợp với tải trọng của thang.",
           },
         ],
       },
@@ -488,7 +577,10 @@ export const productData: Record<string, Product> = {
     ],
     blueprint: {
       image: blueprint, // Thay bằng bản vẽ thang tải hàng
-      description: ["Bản vẽ kỹ thuật tham khảo cho thang tải hàng 2000kg.", "Cấu hình cho nhà xưởng công nghiệp:"],
+      description: [
+        "Bản vẽ kỹ thuật tham khảo cho thang tải hàng 2000kg.",
+        "Cấu hình cho nhà xưởng công nghiệp:",
+      ],
       specs: [
         "Kết cấu hố thang: Bê tông cốt thép hoặc khung thép hình chịu lực",
         "Kích thước cabin (Rộng x Sâu x Cao): 1800x2500x2200 mm",
@@ -499,30 +591,112 @@ export const productData: Record<string, Product> = {
         "Hệ thống an toàn: Photocell dạng thanh, cảm biến quá tải",
       ],
       stops: "3 điểm dừng",
-      heightNote: "Kích thước có thể thay đổi lớn tùy thuộc vào loại hàng hóa và phương tiện vận chuyển (xe nâng).",
+      heightNote:
+        "Kích thước có thể thay đổi lớn tùy thuộc vào loại hàng hóa và phương tiện vận chuyển (xe nâng).",
     },
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
   },
   "thang-may-hanh-khach": {
     seo: {
-      metaTitle: "Thang máy hành khách JP TechLift sang trọng",
+      metaTitle:
+        "Thang Máy Hành Khách Cao Cấp | Giải Pháp Di Chuyển Cho Văn Phòng, Trường Học, Bệnh Viện – JP TechLift",
       metaDescription:
-        "Thang máy hành khách JP TechLift thiết kế hiện đại, vận hành êm ái và an toàn. Phù hợp tòa nhà văn phòng và chung cư, mang lại trải nghiệm di chuyển tiện nghi.",
+        "Thang máy hành khách JP Tech Lift – vận hành êm, an toàn, tiết kiệm điện. Giải pháp tối ưu cho văn phòng, trường học, bệnh viện, chung cư và công trình nhà nước.",
       keywords: [
-        "thang máy hành khách",
-        "thang máy tòa nhà",
-        "thang máy chung cư",
-        "thang máy JP TechLift",
-        "elevator passenger",
+        "thang máy văn phòng",
+        "thang máy hành khách cho công ty",
+        "thang máy tốc độ cao",
+        "thang máy trường học",
+        "thang máy dân dụng an toàn",
+        "thang máy cho trung tâm giáo dục",
+        "thang máy bệnh viện",
+        "thang máy êm ái",
+        "thang máy không rung",
+        "thang máy cho chung cư mini",
+        "thang máy không phòng máy",
+        "thang máy dân dụng nhỏ gọn",
+        "thang máy công trình nhà nước",
+        "thang máy tiêu chuẩn Việt Nam",
+        "thang máy có chứng chỉ",
+        "JP Tech Lift",
       ],
+    },
+    seoVariants: {
+      office: {
+        metaTitle: "Thang máy văn phòng JP TechLift êm ái",
+        metaDescription:
+          "Giải pháp thang máy JP TechLift cho tòa nhà văn phòng, tối ưu lưu thông nhân viên và khách hàng, vận hành êm ái, an toàn.",
+        keywords: [
+          "thang máy văn phòng",
+          "thang máy tòa nhà",
+          "thang máy JP TechLift",
+          "thang máy hành khách",
+        ],
+      },
+      school: {
+        metaTitle: "Thang máy trường học JP TechLift an toàn",
+        metaDescription:
+          "Thang máy JP TechLift phù hợp cho trường học, bền bỉ và an toàn cho học sinh, giáo viên.",
+        keywords: [
+          "thang máy trường học",
+          "thang máy học đường",
+          "thang máy JP TechLift",
+          "thang máy hành khách",
+        ],
+      },
+      hospital: {
+        metaTitle: "Thang máy bệnh viện JP TechLift chuyên dụng",
+        metaDescription:
+          "Giải pháp thang máy JP TechLift cho bệnh viện, vận hành ổn định, đáp ứng tiêu chuẩn vệ sinh và an toàn.",
+        keywords: [
+          "thang máy bệnh viện",
+          "thang máy y tế",
+          "thang máy JP TechLift",
+          "thang máy hành khách",
+        ],
+      },
+      residential: {
+        metaTitle: "Thang máy chung cư JP TechLift tiện nghi",
+        metaDescription:
+          "Thang máy JP TechLift cho khu căn hộ, vận hành êm ái, tiết kiệm điện năng, nâng cao trải nghiệm cư dân.",
+        keywords: [
+          "thang máy chung cư",
+          "thang máy căn hộ",
+          "thang máy JP TechLift",
+          "thang máy hành khách",
+        ],
+      },
+      government: {
+        metaTitle: "Thang máy công sở JP TechLift bền bỉ",
+        metaDescription:
+          "Thang máy JP TechLift dành cho công trình cơ quan, đảm bảo an toàn và độ bền cao.",
+        keywords: [
+          "thang máy công sở",
+          "thang máy cơ quan",
+          "thang máy JP TechLift",
+          "thang máy hành khách",
+        ],
+      },
     },
     intro: {
       title: "Thang Máy Hành Khách",
@@ -550,8 +724,10 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang máy hành khách JP TechLift đáp ứng tiêu chuẩn an toàn cao.",
-      introductionLine2: "Thiết kế sang trọng, vận hành êm ái cho trải nghiệm thoải mái.",
+      introductionLine1:
+        "Thang máy hành khách JP TechLift đáp ứng tiêu chuẩn an toàn cao.",
+      introductionLine2:
+        "Thiết kế sang trọng, vận hành êm ái cho trải nghiệm thoải mái.",
       productLine: "Dòng sản phẩm: Thang máy hành khách JPTechLift.",
       config: "Nhập khẩu linh kiện, lắp ráp trong nước",
       brand: "JPTechLift",
@@ -563,7 +739,11 @@ export const productData: Record<string, Product> = {
     },
 
     // ✅ carousel của phần thông tin chi tiết sản phẩm - hình bên trái
-    galleryImages: [passenger_carousel1, passenger_carousel2, passenger_carousel3],
+    galleryImages: [
+      passenger_carousel1,
+      passenger_carousel2,
+      passenger_carousel3,
+    ],
     realGalleryImages: [
       passenger_realGallery1,
       passenger_realGallery2,
@@ -596,11 +776,13 @@ export const productData: Record<string, Product> = {
         steps: [
           {
             stepTitle: "Bước 1: Lắp đặt Ray dẫn hướng và Đối trọng",
-            stepContent: "Lắp đặt hệ thống ray dẫn hướng và khung đối trọng, đảm bảo độ thẳng đứng và chắc chắn.",
+            stepContent:
+              "Lắp đặt hệ thống ray dẫn hướng và khung đối trọng, đảm bảo độ thẳng đứng và chắc chắn.",
           },
           {
             stepTitle: "Bước 2: Lắp đặt Cabin và Cửa tầng",
-            stepContent: "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tự động tại mỗi điểm dừng.",
+            stepContent:
+              "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tự động tại mỗi điểm dừng.",
           },
           {
             stepTitle: "Bước 3: Lắp đặt Máy kéo và Hệ thống an toàn",
@@ -618,7 +800,10 @@ export const productData: Record<string, Product> = {
     ],
     blueprint: {
       image: passenger_blueprint, // Thay bằng bản vẽ thang tải khách
-      description: ["Bản vẽ kỹ thuật tham khảo cho thang tải khách 750kg.", "Cấu hình cho tòa nhà văn phòng:"],
+      description: [
+        "Bản vẽ kỹ thuật tham khảo cho thang tải khách 750kg.",
+        "Cấu hình cho tòa nhà văn phòng:",
+      ],
       specs: [
         "Kích thước hố thang (Thông thủy): W2000 x D1900 mm",
         "Kích thước cabin: W1600 x D1400 x H2300 mm",
@@ -629,14 +814,27 @@ export const productData: Record<string, Product> = {
         "Hệ thống điều khiển: Simplex hoặc Duplex (điều khiển nhóm)",
       ],
       stops: "10 điểm dừng",
-      heightNote: "Thông số có thể thay đổi tùy thuộc vào chiều cao và thiết kế của tòa nhà.",
+      heightNote:
+        "Thông số có thể thay đổi tùy thuộc vào chiều cao và thiết kế của tòa nhà.",
     },
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
@@ -680,7 +878,8 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang máy bệnh viện JP TechLift chuyên dụng cho cáng bệnh.",
+      introductionLine1:
+        "Thang máy bệnh viện JP TechLift chuyên dụng cho cáng bệnh.",
       introductionLine2: "Cơ cấu vận hành êm, cabin rộng rãi, đảm bảo vệ sinh.",
       productLine: "Dòng sản phẩm: Thang máy bệnh viện JPTechLift.",
       config: "Nhập khẩu linh kiện, lắp ráp trong nước",
@@ -705,9 +904,21 @@ export const productData: Record<string, Product> = {
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
     dimensions: [
-      { people: "1000 KG", size: "1400x2400x2300 mm", weight: "1 giường bệnh + 3-4 người đi kèm" },
-      { people: "1350 KG", size: "1500x2500x2300 mm", weight: "1 giường bệnh + thiết bị + 4 người đi kèm" },
-      { people: "1600 KG", size: "1600x2700x2300 mm", weight: "Nhu cầu vận chuyển lớn hơn" },
+      {
+        people: "1000 KG",
+        size: "1400x2400x2300 mm",
+        weight: "1 giường bệnh + 3-4 người đi kèm",
+      },
+      {
+        people: "1350 KG",
+        size: "1500x2500x2300 mm",
+        weight: "1 giường bệnh + thiết bị + 4 người đi kèm",
+      },
+      {
+        people: "1600 KG",
+        size: "1600x2700x2300 mm",
+        weight: "Nhu cầu vận chuyển lớn hơn",
+      },
     ],
     // ✅ Quy trình lắp đặt
     installationImage: install,
@@ -725,11 +936,13 @@ export const productData: Record<string, Product> = {
         steps: [
           {
             stepTitle: "Bước 1: Lắp đặt Ray dẫn hướng và Đối trọng",
-            stepContent: "Lắp đặt hệ thống ray dẫn hướng và khung đối trọng, đảm bảo độ thẳng đứng và chắc chắn.",
+            stepContent:
+              "Lắp đặt hệ thống ray dẫn hướng và khung đối trọng, đảm bảo độ thẳng đứng và chắc chắn.",
           },
           {
             stepTitle: "Bước 2: Lắp đặt Cabin và Cửa tầng",
-            stepContent: "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tự động tại mỗi điểm dừng.",
+            stepContent:
+              "Lắp đặt khung và vách cabin, sau đó lắp đặt hệ thống cửa tầng tự động tại mỗi điểm dừng.",
           },
           {
             stepTitle: "Bước 3: Lắp đặt Máy kéo và Hệ thống an toàn",
@@ -749,7 +962,10 @@ export const productData: Record<string, Product> = {
     // ✅ Bản vẽ chi tiết (thêm mô tả bên cạnh ảnh)
     blueprint: {
       image: h_blueprint, // Thay bằng bản vẽ thang bệnh viện
-      description: ["Bản vẽ kỹ thuật tham khảo cho thang máy bệnh viện 1350kg.", "Cấu hình tiêu chuẩn cho bệnh viện:"],
+      description: [
+        "Bản vẽ kỹ thuật tham khảo cho thang máy bệnh viện 1350kg.",
+        "Cấu hình tiêu chuẩn cho bệnh viện:",
+      ],
       specs: [
         "Kích thước cabin (Rộng x Sâu x Cao): 1500x2500x2300 mm",
         "Kích thước cửa: W1100 x H2100 mm (đủ rộng cho giường bệnh)",
@@ -760,14 +976,27 @@ export const productData: Record<string, Product> = {
         "Hệ thống an toàn: Cứu hộ tự động ARD, photocell",
       ],
       stops: "5 điểm dừng",
-      heightNote: "Kích thước cabin phải đảm bảo giường bệnh có thể ra vào dễ dàng.",
+      heightNote:
+        "Kích thước cabin phải đảm bảo giường bệnh có thể ra vào dễ dàng.",
     },
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
@@ -811,8 +1040,10 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang cuốn JP TechLift phù hợp cho các khu vực công cộng có lưu lượng người qua lại lớn.",
-      introductionLine2: "Thiết kế hiện đại, vận hành êm ái và được trang bị các tính năng an toàn tiên tiến nhất.",
+      introductionLine1:
+        "Thang cuốn JP TechLift phù hợp cho các khu vực công cộng có lưu lượng người qua lại lớn.",
+      introductionLine2:
+        "Thiết kế hiện đại, vận hành êm ái và được trang bị các tính năng an toàn tiên tiến nhất.",
       productLine: "Dòng sản phẩm: Thang cuốn & Băng chuyền bộ JPTechLift.",
       config: "Nhập khẩu nguyên chiếc hoặc nhập khẩu linh kiện đồng bộ",
       brand: "JPTechLift",
@@ -824,14 +1055,32 @@ export const productData: Record<string, Product> = {
     },
     // ✅ carousel của phần thông tin chi tiết sản phẩm - hình bên trái
     galleryImages: [es_carousel1, es_carousel2, es_carousel3],
-    realGalleryImages: [es_realGallery1, es_realGallery2, es_realGallery3, es_realGallery4, es_realGallery5],
+    realGalleryImages: [
+      es_realGallery1,
+      es_realGallery2,
+      es_realGallery3,
+      es_realGallery4,
+      es_realGallery5,
+    ],
     // ✅ Hình ảnh thực tế - Phần này cố định không đổi xuyên suốt 6 trang
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
     dimensions: [
-      { people: "Rộng 600 mm", size: "~4500 người/giờ", weight: "Phù hợp nơi có lưu lượng vừa phải" },
-      { people: "Rộng 800 mm", size: "~6700 người/giờ", weight: "Phổ biến cho trung tâm thương mại" },
-      { people: "Rộng 1000 mm", size: "~9000 người/giờ", weight: "Phù hợp sân bay, nhà ga, nơi cực đông người" },
+      {
+        people: "Rộng 600 mm",
+        size: "~4500 người/giờ",
+        weight: "Phù hợp nơi có lưu lượng vừa phải",
+      },
+      {
+        people: "Rộng 800 mm",
+        size: "~6700 người/giờ",
+        weight: "Phổ biến cho trung tâm thương mại",
+      },
+      {
+        people: "Rộng 1000 mm",
+        size: "~9000 người/giờ",
+        weight: "Phù hợp sân bay, nhà ga, nơi cực đông người",
+      },
     ],
 
     // ✅ Quy trình lắp đặt
@@ -876,9 +1125,21 @@ export const productData: Record<string, Product> = {
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
@@ -924,7 +1185,8 @@ export const productData: Record<string, Product> = {
     // ✅ Thông tin chi tiết sản phẩm
     detailInfo: {
       title: "Thông số kỹ thuật",
-      introductionLine1: "Thang máy quan sát JPTechLift kết hợp hoàn hảo giữa công năng và nghệ thuật kiến trúc.",
+      introductionLine1:
+        "Thang máy quan sát JPTechLift kết hợp hoàn hảo giữa công năng và nghệ thuật kiến trúc.",
       introductionLine2:
         "Sử dụng kính cường lực an toàn, khung thép hoặc inox cao cấp, mang lại vẻ đẹp bền vững theo thời gian.",
       productLine: "Dòng sản phẩm: Thang máy quan sát lồng kính JPTechLift.",
@@ -950,9 +1212,21 @@ export const productData: Record<string, Product> = {
     //---
     // ✅ Kích thước thang máy - phần nãy cũng giữ nguyên ngoại trừ bảng chi tiết, dimensions đã làm - phần bên phải giữ nguyên qua 6 trang
     dimensions: [
-      { people: "6 - 8 người", size: "450 - 630 KG", weight: "Phù hợp cho biệt thự, khách sạn nhỏ" },
-      { people: "10 - 11 người", size: "750 - 800 KG", weight: "Phù hợp trung tâm thương mại, cao ốc" },
-      { people: "13 - 15 người", size: "1000 KG", weight: "Phù hợp các công trình quy mô lớn" },
+      {
+        people: "6 - 8 người",
+        size: "450 - 630 KG",
+        weight: "Phù hợp cho biệt thự, khách sạn nhỏ",
+      },
+      {
+        people: "10 - 11 người",
+        size: "750 - 800 KG",
+        weight: "Phù hợp trung tâm thương mại, cao ốc",
+      },
+      {
+        people: "13 - 15 người",
+        size: "1000 KG",
+        weight: "Phù hợp các công trình quy mô lớn",
+      },
     ],
 
     // ✅ Quy trình lắp đặt
@@ -966,11 +1240,13 @@ export const productData: Record<string, Product> = {
       },
       {
         stage: "Giai đoạn 02: Lắp đặt cơ khí và cabin kính",
-        description: "Quá trình lắp đặt cần sự cẩn trọng tối đa để tránh làm trầy xước các tấm kính.",
+        description:
+          "Quá trình lắp đặt cần sự cẩn trọng tối đa để tránh làm trầy xước các tấm kính.",
         steps: [
           {
             stepTitle: "Bước 1: Lắp đặt Ray dẫn hướng và Đối trọng",
-            stepContent: "Đối trọng có thể được bố trí phía sau hoặc bên hông để tối đa hóa phần kính quan sát.",
+            stepContent:
+              "Đối trọng có thể được bố trí phía sau hoặc bên hông để tối đa hóa phần kính quan sát.",
           },
           {
             stepTitle: "Bước 2: Lắp đặt Khung cabin và các tấm kính",
@@ -1001,14 +1277,27 @@ export const productData: Record<string, Product> = {
         "Hệ thống chiếu sáng: Đèn LED trang trí trên trần và dưới sàn cabin",
       ],
       stops: "5 điểm dừng",
-      heightNote: "Thiết kế thang máy quan sát có tính tùy biến rất cao để phù hợp với kiến trúc tổng thể.",
+      heightNote:
+        "Thiết kế thang máy quan sát có tính tùy biến rất cao để phù hợp với kiến trúc tổng thể.",
     },
 
     // ✅ Thẩm mỹ nội thất cabin - phần này kiểu nó nên làm trang riêng hay cho hiện nổi lên(hiện tại chính trang productpage đó nhưng ô nhỏ hơn và có thể bấm thoát ra vẫn ở vị trí lúc bấm vào btn - lướt trang productpage bthg)??
     aestheticsOptions: {
-      roofStyles: ["Trần kim loại", "Trần đèn LED", "Trần inox sọc", "Trần hoa văn"],
+      roofStyles: [
+        "Trần kim loại",
+        "Trần đèn LED",
+        "Trần inox sọc",
+        "Trần hoa văn",
+      ],
       handrails: ["Tay vịn inox tròn", "Tay gỗ", "Không tay vịn"],
-      materials: ["Inox gương", "Inox sọc nhuyễn", "Gỗ công nghiệp", "Gỗ phủ laminate", "Tranh in UV", "Sơn tĩnh điện"],
+      materials: [
+        "Inox gương",
+        "Inox sọc nhuyễn",
+        "Gỗ công nghiệp",
+        "Gỗ phủ laminate",
+        "Tranh in UV",
+        "Sơn tĩnh điện",
+      ],
     },
 
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
