@@ -902,7 +902,7 @@ export const productData: Record<string, Product> = {
     },
     intro: {
       title:
-        "Thang Máy Bệnh Viện Chuyên Dụng – Êm Ái, Sạch Sẽ, Vận Hành Liên Tục",
+        "Thang Máy Bệnh Viện",
       description:
         "Giải pháp vận chuyển chuyên dụng cho bệnh viện, phòng khám. Cabin rộng rãi, di chuyển cực kỳ êm ái, ưu tiên an toàn tuyệt đối cho bệnh nhân và các thiết bị y tế nhạy cảm.",
       introduction:
