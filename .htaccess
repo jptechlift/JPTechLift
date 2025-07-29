@@ -1,8 +1,0 @@
-RewriteEngine On
-RewriteBase /
-# Send all requests to index.html except existing files
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule - [L]
-RewriteRule ^ index.html [L]
-
