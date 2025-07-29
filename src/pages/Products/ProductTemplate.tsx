@@ -16,6 +16,8 @@ import RealGallerySection from "../../components/ProductPage/RealGallerySection"
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
 import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
+import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
+
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
   return id in productData;
@@ -152,6 +154,12 @@ export default function ProductTemplatePage() {
       {productId === "thang-may-gia-dinh" && (
         <FadeInSection>
           <HomeLiftSeoContent />
+        </FadeInSection>
+      )}
+
+      {productId === "thang-may-benh-vien" && (
+        <FadeInSection>
+          <HospitalLiftSeoContent />
         </FadeInSection>
       )}
       <Footer />

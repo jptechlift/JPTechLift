@@ -869,19 +869,25 @@ export const productData: Record<string, Product> = {
   },
   "thang-may-benh-vien": {
     seo: {
-      metaTitle: "Thang máy bệnh viện JP TechLift an toàn",
+      metaTitle:
+        "Thang Máy Y Tế Chuyên Dụng | Vận Hành Êm – Chuẩn ICU – JP Tech Lift",
       metaDescription:
-        "Thang máy bệnh viện JP TechLift tối ưu vận chuyển bệnh nhân và thiết bị y tế. Cabin rộng, khởi động êm, đảm bảo an toàn và đáp ứng tiêu chuẩn vệ sinh.",
+        "Thang máy bệnh viện JP Tech Lift – êm ái, chống rung, cabin sạch khuẩn. Vận hành 24/7, tải băng ca – đạt chuẩn y tế cho phòng khám & bệnh viện.",
       keywords: [
         "thang máy bệnh viện",
-        "thang nâng y tế",
-        "elevator stretcher",
-        "JP TechLift hospital lift",
+        "thang máy y tế",
+        "thang máy cấp cứu",
+        "thang máy không rung",
+        "thang máy chống khuẩn",
+        "thang máy vận hành 24/7",
+        "thang máy tải băng ca",
+        "thang máy sạch – kháng khuẩn",
+        "báo giá thang máy bệnh viện",
         "thang máy chuyên dụng bệnh viện",
       ],
     },
     intro: {
-      title: "Thang Máy Bệnh Viện",
+      title: "Thang Máy Bệnh Viện Chuyên Dụng – Êm Ái, Sạch Sẽ, Vận Hành Liên Tục",
       description:
         "Giải pháp vận chuyển chuyên dụng cho bệnh viện, phòng khám. Cabin rộng rãi, di chuyển cực kỳ êm ái, ưu tiên an toàn tuyệt đối cho bệnh nhân và các thiết bị y tế nhạy cảm.",
       introduction:
