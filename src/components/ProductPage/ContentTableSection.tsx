@@ -1,6 +1,6 @@
 import styles from "../../styles/pages/ProductsPage/ProductContentTable.module.scss";
 import size from "../../assets/images/productPage_img/home_lift/contentTable_size&price.png";
-import install from "../../assets/images/productPage_img/home_lift/contentTable_realític.png";
+import install from "../../assets/images/productPage_img/home_lift/contentTable_realistic.png";
 import gallery from "../../assets/images/productPage_img/home_lift/contentTable_installation.png";
 import blueprint from "../../assets/images/productPage_img/home_lift/contentTable_blueprint.png";
 interface Props {

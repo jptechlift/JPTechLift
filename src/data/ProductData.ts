@@ -84,9 +84,15 @@ export interface MetaData {
   keywords: string[];
 }
 
+export interface ContentVariant {
+  title: string;
+  description: string;
+}
+
 export interface Product {
   seo?: MetaData;
   seoVariants?: Record<Audience, MetaData>;
+  contentVariants?: Record<Audience, ContentVariant>;
   intro: {
     title: string;
     description: string;
@@ -696,6 +702,28 @@ export const productData: Record<string, Product> = {
           "thang máy JP TechLift",
           "thang máy hành khách",
         ],
+      },
+    },
+    contentVariants: {
+      office: {
+        title: "Thang Máy Văn Phòng",
+        description: "Tối ưu lưu thông cho toà nhà làm việc chuyên nghiệp",
+      },
+      school: {
+        title: "Thang Máy Trường Học",
+        description: "An toàn cho học sinh, bền bỉ cho môi trường giáo dục",
+      },
+      hospital: {
+        title: "Thang Máy Bệnh Viện",
+        description: "Đáp ứng tiêu chuẩn y tế, vận hành êm ái",
+      },
+      residential: {
+        title: "Thang Máy Chung Cư",
+        description: "Giải pháp di chuyển tiện nghi cho khu căn hộ",
+      },
+      government: {
+        title: "Thang Máy Công Sở",
+        description: "Bền bỉ cho các công trình nhà nước",
       },
     },
     intro: {

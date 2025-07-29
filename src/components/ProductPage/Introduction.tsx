@@ -20,7 +20,7 @@ export default function Introduction({ title, introduction, description, imageUr
         <div className={styles["product-intro__text"]}>
            <TitleIntro title={title} className={styles["product-intro__title"]} />
 
-          <p className={styles["product-intro__description"]}>
+          <h2 className={styles["product-intro__description"]}>
             {descriptionParts.length === 2 ? (
               <>
                 {descriptionParts[0]}
@@ -30,7 +30,7 @@ export default function Introduction({ title, introduction, description, imageUr
             ) : (
               description
             )}
-          </p>
+          </h2>
 
           <p className={styles["product-intro__intro"]}>{introduction}</p>
         </div>
