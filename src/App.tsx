@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
+import { useEffect } from "react";
 
 import Layout from "./layouts/layout";
 import HomePage from "./pages/HomePage";
@@ -17,10 +24,25 @@ import HuongDan from "./pages/Services/HuongDan";
 import LapDatThangMay from "./pages/Services/LapDatThangMay";
 import BaoTriThangMay from "./pages/Services/BaoTriThangMay";
 import CaiTaoSuaChuaThangMay from "./pages/Services/CaiTaoSuaChuaThangMayPage";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
+  const RedirectHandler = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const redirect = sessionStorage.getItem("redirectPath");
+      if (redirect) {
+        sessionStorage.removeItem("redirectPath");
+        navigate(redirect, { replace: true });
+      }
+    }, [navigate]);
+
+    return null;
+  };
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <RedirectHandler />
       <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
@@ -73,6 +95,7 @@ const App = () => {
             path="/san-pham/:productId"
             element={<ProductTemplatePage />}
           />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
