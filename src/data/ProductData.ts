@@ -304,19 +304,29 @@ export const productData: Record<string, Product> = {
   },
   "thang-tai-thuc-pham": {
     seo: {
-      metaTitle: "Thang thực phẩm JP TechLift nhỏ gọn",
+      metaTitle: "Thang Tải Thực Phẩm Inox | Gọn Nhẹ – Sạch Sẽ – JP Tech Lift",
       metaDescription:
-        "Thang thực phẩm JP TechLift chuyên dụng cho nhà bếp, nhà hàng, khách sạn. Thiết kế nhỏ gọn, vận hành êm, giúp di chuyển thức ăn nhanh chóng và an toàn.",
+        "Thang máy tải thực phẩm nhỏ gọn, cabin inox sạch khuẩn – lý tưởng cho nhà hàng, khách sạn, bếp ăn công nghiệp. Vận hành êm ái, tiết kiệm diện tích.",
       keywords: [
         "thang thực phẩm",
         "thang tời thức ăn",
         "food lift JP TechLift",
         "thang nâng nhà hàng",
         "thang chở thức ăn",
+        "thang tải thực phẩm",
+        "thang máy thực phẩm",
+        "thang nâng thực phẩm mini",
+        "dumbwaiter cho nhà hàng",
+        "thang máy vận chuyển thức ăn",
+        "thang inox bếp ăn",
+        "thang tải nhà bếp",
+        "thang máy nhà hàng",
+        "báo giá thang thực phẩm",
+        "thang vận chuyển thức ăn sạch",
       ],
     },
     intro: {
-      title: "Thang Thực Phẩm",
+      title: "Thang Tải Thực Phẩm Inox",
       description:
         "Giải pháp vận chuyển thực phẩm, đồ dùng chuyên nghiệp cho nhà hàng, khách sạn, quán cà phê. Thiết kế nhỏ gọn, vật liệu inox 304 sạch sẽ, và tối ưu hiệu suất.",
       introduction:
@@ -887,7 +897,8 @@ export const productData: Record<string, Product> = {
       ],
     },
     intro: {
-      title: "Thang Máy Bệnh Viện Chuyên Dụng – Êm Ái, Sạch Sẽ, Vận Hành Liên Tục",
+      title:
+        "Thang Máy Bệnh Viện Chuyên Dụng – Êm Ái, Sạch Sẽ, Vận Hành Liên Tục",
       description:
         "Giải pháp vận chuyển chuyên dụng cho bệnh viện, phòng khám. Cabin rộng rãi, di chuyển cực kỳ êm ái, ưu tiên an toàn tuyệt đối cho bệnh nhân và các thiết bị y tế nhạy cảm.",
       introduction:
@@ -1180,9 +1191,10 @@ export const productData: Record<string, Product> = {
   },
   "thang-may-quan-sat": {
     seo: {
-      metaTitle: "Thang Máy Quan Sát JPTechLift – Sang trọng, êm ái, toàn cảnh",
+      metaTitle:
+        "Thang Máy Quan Sát Kính Cường Lực – Thiết Kế Hiện Đại | JP TechLift",
       metaDescription:
-        "JPTechLift cung cấp thang máy quan sát cao cấp với thiết kế kính toàn phần, vận hành êm ái, tăng trải nghiệm sang trọng cho khách sạn, trung tâm thương mại.",
+        "Thang máy quan sát kính – thiết kế trong suốt, vận hành êm, nâng tầm thẩm mỹ cho trung tâm thương mại, nhà phố, khách sạn. Tư vấn & báo giá miễn phí.",
       keywords: [
         "thang máy quan sát",
         "thang máy kính",
@@ -1191,6 +1203,12 @@ export const productData: Record<string, Product> = {
         "thang máy khách sạn",
         "thang máy trung tâm thương mại",
         "thang máy cao cấp JPTechLift",
+        "thang máy quan sát ngoài trời",
+        "thang máy quan sát trong nhà",
+        "báo giá thang máy quan sát",
+        "lắp đặt thang máy quan sát",
+        "tư vấn thang máy kính",
+        "thiết kế giếng thang máy quan sát",
       ],
     },
     intro: {
