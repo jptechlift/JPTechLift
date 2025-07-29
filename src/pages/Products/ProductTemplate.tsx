@@ -19,6 +19,7 @@ import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
 import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
 import ObservationLiftSeoContent from "../../components/SEO/ObservationLiftSeoContent";
+import EscalatorSeoContent from "../../components/SEO/EscalatorSeoContent";
 
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
@@ -168,6 +169,12 @@ export default function ProductTemplatePage() {
       {productId === "thang-tai-thuc-pham" && (
         <FadeInSection>
           <FoodLiftSeoContent />
+        </FadeInSection>
+      )}
+
+      {productId === "thang-truot-thang-cuon" && (
+        <FadeInSection>
+          <EscalatorSeoContent />
         </FadeInSection>
       )}
 

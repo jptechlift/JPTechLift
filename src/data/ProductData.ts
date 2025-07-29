@@ -76,7 +76,10 @@ export type Audience =
   | "school"
   | "hospital"
   | "residential"
-  | "government";
+  | "government"
+  | "mall"
+  | "airport"
+  | "retail";
 
 export interface MetaData {
   metaTitle: string;
@@ -91,8 +94,8 @@ export interface ContentVariant {
 
 export interface Product {
   seo?: MetaData;
-  seoVariants?: Record<Audience, MetaData>;
-  contentVariants?: Record<Audience, ContentVariant>;
+  seoVariants?: Partial<Record<Audience, MetaData>>;  
+  contentVariants?: Partial<Record<Audience, ContentVariant>>;
   intro: {
     title: string;
     description: string;
@@ -1059,6 +1062,57 @@ export const productData: Record<string, Product> = {
         "giải pháp di chuyển liên tục",
       ],
     },
+      seoVariants: {
+      mall: {
+        metaTitle:
+          "Thang Cuốn Trung Tâm Thương Mại | Hiện Đại – An Toàn – Đẳng Cấp",
+        metaDescription:
+          "Lắp đặt thang cuốn cao cấp cho trung tâm thương mại – vận hành êm, tiết kiệm điện, thiết kế thẩm mỹ, nâng tầm trải nghiệm mua sắm.",
+        keywords: [
+          "thang cuốn trung tâm thương mại",
+          "lắp đặt thang cuốn TTTM",
+          "báo giá thang cuốn 2025",
+        ],
+      },
+      airport: {
+        metaTitle:
+          "Thang Cuốn Cho Sân Bay | Di Chuyển Nhanh – Bền Bỉ – Chuẩn Quốc Tế",
+        metaDescription:
+          "Thiết kế thang cuốn cho sân bay – tối ưu lưu lượng hành khách, vận hành êm, độ nghiêng hợp lý, chống trượt – bảo trì thấp.",
+        keywords: [
+          "thang cuốn sân bay",
+          "thang trượt hành lý sân bay",
+          "thang cuốn chống trượt",
+        ],
+      },
+      retail: {
+        metaTitle: "Thang Cuốn Cho Siêu Thị | Linh Hoạt – An Toàn – Hợp Lý",
+        metaDescription:
+          "Lắp thang cuốn cho siêu thị và trung tâm bán lẻ – tải trọng phù hợp xe đẩy hàng, vận hành êm, an toàn cho người dùng mọi lứa tuổi.",
+        keywords: [
+          "thang cuốn siêu thị",
+          "lắp đặt thang cuốn cho siêu thị",
+          "mua thang cuốn",
+        ],
+      },
+    },
+    contentVariants: {
+      mall: {
+        title: "Thang Cuốn Cho Trung Tâm Thương Mại",
+        description:
+          "Tư vấn giải pháp lắp đặt thang cuốn hiện đại, an toàn cho các trung tâm thương mại quy mô lớn.",
+      },
+      airport: {
+        title: "Thang Cuốn Cho Sân Bay & Nhà Ga",
+        description:
+          "Thiết kế tối ưu lưu lượng hành khách, vận hành bền bỉ suốt 24/7 cho sân bay, nhà ga.",
+      },
+      retail: {
+        title: "Thang Cuốn Dành Cho Siêu Thị & Trung Tâm Bán Lẻ",
+        description:
+          "Giải pháp thang cuốn phù hợp xe đẩy hàng, an toàn cho mọi lứa tuổi tại siêu thị, trung tâm bán lẻ.",
+      },
+    },
     intro: {
       title: "Thang Cuốn",
       description:
@@ -1355,6 +1409,5 @@ export const productData: Record<string, Product> = {
     // imagegallery - chức năng kho ảnh - phần này tớ định nối qua drive cho nhanh - khóa phần này lại để khách muốn thì mới làm
   },
 } as const;
-
 // ✅ Dòng này giúp TypeScript hiểu rõ key
 export type ProductId = keyof typeof productData;
