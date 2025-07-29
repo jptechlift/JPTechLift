@@ -2,17 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Page Not Found</title>
+    <title>Redirecting...</title>
     <script>
       (function () {
         var redirectPath = location.pathname + location.search + location.hash;
-        sessionStorage.setItem('redirectPath', redirectPath);
-        location.replace('/index.html');
+        sessionStorage.setItem("redirectPath", redirectPath);
+        window.location.replace("/index.html");
       })();
     </script>
   </head>
   <body>
-    <h1>404 - Page Not Found</h1>
-    <p>Redirecting…</p>
+    <h1>Redirecting...</h1>
   </body>
 </html>
