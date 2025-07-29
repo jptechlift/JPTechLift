@@ -1,5 +1,4 @@
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./layouts/layout";
 import HomePage from "./pages/HomePage";
@@ -26,16 +25,21 @@ const App = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} /> {/* Trang chủ */}
-          <Route path="/gioi-thieu/quy-trinh-du-an" element={<StandardPage />} />
+          <Route
+            path="/gioi-thieu/quy-trinh-du-an"
+            element={<StandardPage />}
+          />
           {/* Trang tiêu chuẩn */}
           <Route path="/gioi-thieu/nguyen-tac" element={<PrinciplePage />} />
           {/* Trang nguyên tắc */}
           <Route path="/gioi-thieu/ban-lanh-dao" element={<LeaderPage />} />
           {/* Trang nguyên tắc */}
-          <Route path="/tin-tuc-thang-may" element={<NewsPage />} /> {/* Trang tin tức */}
+          <Route path="/tin-tuc-thang-may" element={<NewsPage />} />{" "}
+          {/* Trang tin tức */}
           <Route path="/gioi-thieu" element={<AboutUsPage />} />
           {/* Trang về chúng tôi */}
-          <Route path="/blog-thang-may" element={<BlogPage />} /> {/* Trang blog */}
+          <Route path="/blog-thang-may" element={<BlogPage />} />{" "}
+          {/* Trang blog */}
           <Route path="/lien-he" element={<ContactJPTechLiftFormPage />} />{" "}
           {/* Trang liên hệ */}
           <Route path="/dich-vu-thang-may" element={<ServiceTemplatePage />} />
@@ -60,6 +64,10 @@ const App = () => {
             path="/dich-vu-thang-may/cai-tao-sua-chua"
             element={<CaiTaoSuaChuaThangMay />}
           />
+          <Route
+            path="/thang-may-gia-dinh"
+            element={<Navigate to="/san-pham/thang-may-gia-dinh" replace />}
+          />
           {/* PRODUCT: chỉ còn 1 route động */}
           <Route
             path="/san-pham/:productId"
@@ -72,4 +80,3 @@ const App = () => {
 };
 
 export default App;
-

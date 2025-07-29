@@ -3,6 +3,7 @@
     "types": ["node"],
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "module": "ES2020",
   }
 }

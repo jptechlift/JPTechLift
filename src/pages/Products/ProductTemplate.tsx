@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { productData } from "../../data/ProductData";
-import type { ProductId } from "../../data/ProductData";
+import type { ProductId, Audience } from "../../data/ProductData";
 import ContentTableSection from "../../components/ProductPage/ContentTableSection";
 import DetailSection from "../../components/ProductPage/DetailSection";
 import DimensionSection from "../../components/ProductPage/DimensionSection";
@@ -15,6 +15,7 @@ import Footer from "../../components/Footer/Footer";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
+import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
   return id in productData;
@@ -22,6 +23,7 @@ function isValidProductId(id: string): id is ProductId {
 
 export default function ProductTemplatePage() {
   const { productId } = useParams();
+  const [searchParams] = useSearchParams();
   const [isAestheticsOpen, setAestheticsOpen] = useState(false);
 
   if (!productId || !isValidProductId(productId)) {
@@ -29,14 +31,15 @@ export default function ProductTemplatePage() {
   }
 
   const product = productData[productId];
+  const audience = searchParams.get("audience") as Audience | null;
+  const seo = (audience && product.seoVariants?.[audience]) || product.seo;
 
   return (
-
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
       <Helmet>
-        <title>{product.seo?.metaTitle}</title>
-        <meta name="description" content={product.seo?.metaDescription || ""} />
-        <meta name="keywords" content={product.seo?.keywords?.join(", ") || ""} />
+        <title>{seo?.metaTitle}</title>
+        <meta name="description" content={seo?.metaDescription || ""} />
+        <meta name="keywords" content={seo?.keywords?.join(", ") || ""} />
 
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">
@@ -49,7 +52,6 @@ export default function ProductTemplatePage() {
                 position: 1,
                 name: "Trang chủ",
                 item: "https://thangmaysaigonjptechlift.com",
-
               },
               {
                 "@type": "ListItem",
@@ -64,7 +66,6 @@ export default function ProductTemplatePage() {
                 item: `https://thangmaysaigonjptechlift.com/san-pham/${productId}`,
               },
             ],
-
           })}
         </script>
       </Helmet>
@@ -95,7 +96,10 @@ export default function ProductTemplatePage() {
 
       {product.contentTable && (
         <FadeInSection>
-          <ContentTableSection data={product.contentTable} imageUrl="/assets/images/home-lift/hero.jpg" />
+          <ContentTableSection
+            data={product.contentTable}
+            imageUrl="/assets/images/home-lift/hero.jpg"
+          />
         </FadeInSection>
       )}
 
@@ -121,7 +125,10 @@ export default function ProductTemplatePage() {
 
       {product.installationSteps && product.installationImage && (
         <FadeInSection>
-          <InstallationSection steps={product.installationSteps} image={product.installationImage} />
+          <InstallationSection
+            steps={product.installationSteps}
+            image={product.installationImage}
+          />
         </FadeInSection>
       )}
 
@@ -140,6 +147,11 @@ export default function ProductTemplatePage() {
         />
       )}
 
+      {productId === "thang-may-gia-dinh" && (
+        <FadeInSection>
+          <HomeLiftSeoContent />
+        </FadeInSection>
+      )}
       <Footer />
     </div>
   );
