@@ -7,7 +7,7 @@ import HeroBanner from "../components/HomePage/HeroBanner";
 import Footer from "../components/Footer/Footer";
 import SubBanner from "../components/HomePage/SubBanner";
 import SEO from "../components/SEO";
-import HomePageSeoContent from "../components/SEO/HomePageSeoContent";
+// import HomePageSeoContent from "../components/SEO/HomePageSeoContent";
 
 const HomePage = () => {
   return (
@@ -23,7 +23,7 @@ const HomePage = () => {
       <ProductSection />
       <ServiceSection />
       <CommitSection />
-      <HomePageSeoContent />
+      {/* <HomePageSeoContent /> */}
       <HeroFooter />
       <Footer />
     </div>

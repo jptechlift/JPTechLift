@@ -15,12 +15,12 @@ import Footer from "../../components/Footer/Footer";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
-import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
-import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
-import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
-import ObservationLiftSeoContent from "../../components/SEO/ObservationLiftSeoContent";
-import EscalatorSeoContent from "../../components/SEO/EscalatorSeoContent";
-import FreightLiftSeoContent from "../../components/SEO/FreightLiftSeoContent";
+// import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
+// import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
+// import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
+// import ObservationLiftSeoContent from "../../components/SEO/ObservationLiftSeoContent";
+// import EscalatorSeoContent from "../../components/SEO/EscalatorSeoContent";
+// import FreightLiftSeoContent from "../../components/SEO/FreightLiftSeoContent";
 
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
@@ -155,7 +155,7 @@ export default function ProductTemplatePage() {
         />
       )}
 
-      {productId === "thang-may-gia-dinh" && (
+      {/* {productId === "thang-may-gia-dinh" && (
         <FadeInSection>
           <HomeLiftSeoContent />
         </FadeInSection>
@@ -189,7 +189,7 @@ export default function ProductTemplatePage() {
         <FadeInSection>
           <ObservationLiftSeoContent />
         </FadeInSection>
-      )}
+      )} */}
       <Footer />
     </div>
   );
