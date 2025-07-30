@@ -58,7 +58,7 @@ export default function CommitSection() {
 
       {/* Horizontal Border */}
       <div
-        className="w-[60px] h-1 bg-[#CBA052] mx-auto mb-10 md:mb-20 rounded-[2px]"
+        className="w-[60px] h-1 bg-[#CBA052] mx-auto mb-10 md:mb-24 rounded-[2px]"
         data-aos="zoom-in-up"
         data-aos-delay="100"
       />
