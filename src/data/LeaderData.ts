@@ -20,7 +20,7 @@ export const leaders: Leader[] = [
   },
   {
     name: "Minh Tuyết",
-    title: "Co-Founder",
+    title: "Founder",
     image: VuNgocMinhTuyet,
     description: "Quản trị bộ máy và phát triển thương hiệu.",
   },
