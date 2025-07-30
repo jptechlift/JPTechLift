@@ -1,11 +1,10 @@
-import styles from "../../../styles/components/Navbar/DesktopNavbar/DesktopNav.module.scss";
+import styles from "../../../styles/components/Navbar/DesktopNavbar/DropdownMenu.module.scss";
 import { Link } from "react-router-dom";
 import { productSlugMap } from "../../../constants/productSlugMap"; // ánh xạ chuẩn
 import type { ProductTitle } from "../../../constants/productSlugMap";
 
 const aboutLinks: Record<string, string> = {
-
-   "VỀ CHÚNG TÔI": "/gioi-thieu",
+  "VỀ CHÚNG TÔI": "/gioi-thieu",
   "BAN LÃNH ĐẠO": "/gioi-thieu/ban-lanh-dao",
   "NGUYÊN TẮC": "/gioi-thieu/nguyen-tac",
   "QUY TRÌNH DỰ ÁN": "/gioi-thieu/quy-trinh-du-an",
@@ -16,14 +15,15 @@ const serviceLinks: Record<string, string> = {
   "LẮP ĐẶT - VẬN HÀNH": "/dich-vu-thang-may/lap-dat-thang-may",
   "BẢO TRÌ": "/dich-vu-thang-may/bao-tri-thang-may",
   "CẢI TẠO - SỬA CHỮA": "/dich-vu-thang-may/cai-tao-sua-chua",
+  "VẬT TƯ - PHỤ KIỆN THANG MÁY": "/dich-vu-thang-may/vat-tu-phu-kien",
 };
 
 const newsLinks: Record<string, string> = {
- BLOG: "/blog-thang-may",
+  BLOG: "/blog-thang-may",
   "TIN TỨC": "/tin-tuc-thang-may",
 };
 interface DropdownContentProps {
-  type: "product" | "about" | "contact" | "news";
+  type: "product" | "service" | "about" | "contact" | "news";
   onClose?: () => void; // hàm đóng dropdown khi click
 }
 
@@ -32,8 +32,10 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
     product: [
       {
         title: "SẢN PHẨM",
-        items: Object.keys(productSlugMap) as ProductTitle[], // chỉ dùng key hợp lệ
+        items: Object.keys(productSlugMap) as ProductTitle[],
       },
+    ],
+    service: [
       {
         title: "DỊCH VỤ",
         items: [
@@ -41,12 +43,13 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
           "BẢO TRÌ",
           "LẮP ĐẶT - VẬN HÀNH",
           "CẢI TẠO - SỬA CHỮA",
+          "VẬT TƯ - PHỤ KIỆN THANG MÁY",
         ],
       },
     ],
     about: {
       title: "GIỚI THIỆU",
-      items: ["VỀ CHÚNG TÔI", "BAN LÃNH ĐẠO", "NGUYÊN TẮC", "QUY TRÌNH DỰ ÁN"],
+      items: ["JP TECHLIFT", "BAN LÃNH ĐẠO", "NGUYÊN TẮC", "QUY TRÌNH DỰ ÁN"],
     },
     contact: {
       title: "LIÊN HỆ CHÍNH",
@@ -61,26 +64,23 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
   const getLink = (item: string, group: string): string => {
     if (group === "DỊCH VỤ") {
       return serviceLinks[item] || "/dich-vu-thang-may";
-
     }
 
     if (type === "product") {
       const slug = productSlugMap[item as ProductTitle];
 
-     return slug ? `/san-pham/${slug}` : "#";
+      return slug ? `/san-pham/${slug}` : "#";
     }
 
     if (type === "about") {
       return aboutLinks[item.toUpperCase()] || "/gioi-thieu";
-
     }
     if (type === "contact") {
       return "/lien-he";
     }
 
     if (type === "news") {
-
-     return newsLinks[item.toUpperCase()] || "/tin-tuc-thang-may";
+      return newsLinks[item.toUpperCase()] || "/tin-tuc-thang-may";
     }
     return "#";
   };

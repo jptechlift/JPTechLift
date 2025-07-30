@@ -26,6 +26,7 @@ const routes = [
   '/dich-vu-thang-may/huong-dan-van-hanh',
   '/dich-vu-thang-may/bao-tri-thang-may',
   '/dich-vu-thang-may/cai-tao-sua-chua',
+  '/dich-vu-thang-may/vat-tu-phu-kien',
   ...productSlugs.map((s) => `/san-pham/${s}`),
 ];
 

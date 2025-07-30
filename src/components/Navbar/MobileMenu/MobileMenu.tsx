@@ -16,10 +16,9 @@ import backIcon from "../../../assets/images/header/Back_Icon.png";
 // Constants
 const MENU_LEVELS = {
   MAIN: "main",
-  PRODUCT_SERVICE: "product_service",
   PRODUCT: "product",
-  ABOUT: "about",
   SERVICE: "service",
+  ABOUT: "about",
 } as const;
 
 type MenuLevel = typeof MENU_LEVELS[keyof typeof MENU_LEVELS];
@@ -28,7 +27,7 @@ type MenuLevel = typeof MENU_LEVELS[keyof typeof MENU_LEVELS];
 const NAVIGATION_DATA = {
   products: [
    { label: "THANG MÁY GIA ĐÌNH", path: "/san-pham/thang-may-gia-dinh" },
-    { label: "THANG MÁY DÂN DỤNG", path: "/san-pham/thang-may-hanh-khach" },
+    { label: "THANG MÁY HÀNH KHÁCH", path: "/san-pham/thang-may-hanh-khach" },
     { label: "THANG MÁY TẢI HÀNG", path: "/san-pham/thang-may-tai-hang" },
     { label: "THANG MÁY QUAN SÁT", path: "/san-pham/thang-may-quan-sat" },
     { label: "THANG MÁY BỆNH VIỆN", path: "/san-pham/thang-may-benh-vien" },
@@ -248,13 +247,33 @@ const MobileMenu = () => {
           {/* Main Menu Level */}
           {activeMenuLevel === MENU_LEVELS.MAIN && (
             <ul className={styles["menu__list"]} role="list">
+                <li className={styles["menu__item"]}>
+                <Link
+                  to="/"
+                  onClick={handleMenuClose}
+                  className={styles["menu__link"]}
+                >
+                  <span>TRANG CHỦ</span>
+                  <ChevronRight size={16} aria-hidden="true" />
+                </Link>
+              </li>
               <li className={styles["menu__item"]}>
                 <button
                   className={styles["menu__button"]}
-                  onClick={() => handleMenuLevelChange(MENU_LEVELS.PRODUCT_SERVICE)}
-                  aria-label="Xem sản phẩm và dịch vụ"
+                onClick={() => handleMenuLevelChange(MENU_LEVELS.PRODUCT)}
+                  aria-label="Xem danh sách sản phẩm"
                 >
-                  <span>SẢN PHẨM & DỊCH VỤ</span>
+                 <span>SẢN PHẨM</span>
+                  <ChevronRight size={16} aria-hidden="true" />
+                </button>
+              </li>
+              <li className={styles["menu__item"]}>
+                <button
+                  className={styles["menu__button"]}
+                  onClick={() => handleMenuLevelChange(MENU_LEVELS.SERVICE)}
+                  aria-label="Xem danh sách dịch vụ"
+                >
+                  <span>DỊCH VỤ</span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </button>
               </li>
@@ -298,38 +317,11 @@ const MobileMenu = () => {
               {renderMenuItems(NAVIGATION_DATA.about)}
             </ul>
           )}
-
-          {/* Product & Service Menu Level */}
-          {activeMenuLevel === MENU_LEVELS.PRODUCT_SERVICE && (
-            <ul className={styles["menu__list"]} role="list">
-              {renderBackButton(MENU_LEVELS.MAIN)}
-              <li className={styles["menu__item"]}>
-                <button
-                  className={styles["menu__button"]}
-                  onClick={() => handleMenuLevelChange(MENU_LEVELS.PRODUCT)}
-                  aria-label="Xem danh sách sản phẩm"
-                >
-                  <span>SẢN PHẨM</span>
-                  <span aria-hidden="true">+</span>
-                </button>
-              </li>
-              <li className={styles["menu__item"]}>
-                <button
-                  className={styles["menu__button"]}
-                  onClick={() => handleMenuLevelChange(MENU_LEVELS.SERVICE)}
-                  aria-label="Xem danh sách dịch vụ"
-                >
-                  <span>DỊCH VỤ</span>
-                  <span aria-hidden="true">+</span>
-                </button>
-              </li>
-            </ul>
-          )}
-
+        
           {/* Service Menu Level */}
           {activeMenuLevel === MENU_LEVELS.SERVICE && (
             <ul className={styles["menu__list"]} role="list">
-              {renderBackButton(MENU_LEVELS.PRODUCT_SERVICE)}
+             {renderBackButton(MENU_LEVELS.MAIN)}
               {renderMenuItems(NAVIGATION_DATA.services)}
             </ul>
           )}
@@ -337,7 +329,7 @@ const MobileMenu = () => {
           {/* Product Menu Level */}
           {activeMenuLevel === MENU_LEVELS.PRODUCT && (
             <ul className={styles["menu__list"]} role="list">
-              {renderBackButton(MENU_LEVELS.PRODUCT_SERVICE)}
+                 {renderBackButton(MENU_LEVELS.MAIN)}
               {renderMenuItems(NAVIGATION_DATA.products)}
             </ul>
           )}
