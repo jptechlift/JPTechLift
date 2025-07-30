@@ -2,7 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
-import { HelmetProvider, FilledContext } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
+import type { HelmetServerState } from 'react-helmet-async';
+
+interface HelmetContext { helmet?: HelmetServerState }
 import App from '../src/App';
 import productSlugs from '../product-slugs.json';
 
@@ -27,7 +30,7 @@ const routes = [
 ];
 
 routes.forEach((url) => {
-  const helmetContext: FilledContext = {} as FilledContext;
+     const helmetContext: { helmet?: HelmetServerState } = {};
   const app = (
     <HelmetProvider context={helmetContext}>
       <StaticRouter location={url}>
