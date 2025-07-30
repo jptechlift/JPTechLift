@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { engineerers, Engineer } from "../../data/EngineererData";
+import { engineerers } from "../../data/EngineererData";
+import type { Engineer } from "../../data/EngineererData";
 
 export default function LeaderSection() {
   const [selectedEngineer, setSelectedEngineer] = useState<Engineer | null>(
@@ -106,18 +107,19 @@ export default function LeaderSection() {
               {selectedEngineer.description}
             </p>
 
-            {selectedEngineer.highlights?.length > 0 && (
-              <>
-                <p className="text-base font-medium text-gray-800 mt-6 mb-2">
-                  Điểm nổi bật:
-                </p>
-                <ul className="text-sm text-gray-700 space-y-2 list-disc list-inside">
-                  {selectedEngineer.highlights.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-              </>
-            )}
+            {selectedEngineer.highlights &&
+              selectedEngineer.highlights.length > 0 && (
+                <>
+                  <p className="text-base font-medium text-gray-800 mt-6 mb-2">
+                    Điểm nổi bật:
+                  </p>
+                  <ul className="text-sm text-gray-700 space-y-2 list-disc list-inside">
+                    {selectedEngineer.highlights.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
           </div>
         </div>
       )}
