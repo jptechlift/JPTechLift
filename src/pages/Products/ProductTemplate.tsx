@@ -15,15 +15,13 @@ import Footer from "../../components/Footer/Footer";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
+import { BASE_URL } from "../../components/SEO/constant";
 // import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
 // import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
 // import ObservationLiftSeoContent from "../../components/SEO/ObservationLiftSeoContent";
 // import EscalatorSeoContent from "../../components/SEO/EscalatorSeoContent";
 // import FreightLiftSeoContent from "../../components/SEO/FreightLiftSeoContent";
-
-const BASE_URL =
-  import.meta.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
 
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
