@@ -93,9 +93,9 @@ export default function ServiceSection() {
   }, []);
 
   return (
-    <section className="overflow-hidden bg-texture-bg bg-texture-pattern bg-[length:8px_8px] py-16 px-4">
+    <section className="pb-14 overflow-hidden bg-texture-bg bg-texture-pattern bg-[length:8px_8px] px-4">
       <h1
-        className="mt-20 font-inter font-semibold md:font-medium md:text-[36px] text-[30px] uppercase text-center mb-5 md:mb-10 text-[#041E42] md:text-black"
+        className=" font-inter font-semibold md:font-medium md:text-[36px] text-[30px] uppercase text-center mb-5 md:mb-10 text-[#041E42] md:text-black"
         data-aos="fade-up"
       >
         DỊCH VỤ THANG MÁY
@@ -115,7 +115,7 @@ export default function ServiceSection() {
         {services.map((service, idx) => (
           <div
             key={idx}
-            className="bg-white shadow-2xl border border-gray-100 hover:shadow-2xl transition-all duration-300 p-6 flex flex-col items-center text-center group"
+            className="bg-white shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 p-6 flex flex-col items-center text-center group"
           >
             <img
               src={service.image}

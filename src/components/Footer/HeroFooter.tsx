@@ -36,7 +36,13 @@ export default function HeroFooter() {
         data-aos="slide-up"
         data-aos-delay="400"
       >
-        <h3 className="font-inter text-white text-[42px] md:text-[64px] font-black tracking-wide text-center drop-shadow-[3px_4px_4px_rgba(0,0,0,2)] leading-tight">
+        {/* Mobile only */}
+        <h3 className="block sm:hidden font-inter text-white text-[50px] font-black tracking-wide text-center drop-shadow-[3px_4px_4px_rgba(0,0,0,2)] leading-tight">
+          HÃY ĐỂ CHÚNG TÔI MANG LẠI GIÁ TRỊ CHO BẠN
+        </h3>
+
+        {/* Tablet & Desktop only */}
+        <h3 className="hidden sm:block font-inter text-white text-[64px] font-black tracking-wide text-center drop-shadow-[3px_4px_4px_rgba(0,0,0,2)] leading-tight">
           HÃY ĐỂ CHÚNG TÔI
           <br />
           MANG LẠI GIÁ TRỊ

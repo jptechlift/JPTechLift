@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface Slide {
   src: string;
@@ -24,26 +24,36 @@ export default function Carousel({
 }: CarouselProps) {
   const [current, setCurrent] = useState(0);
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
+  const nextSlide = useCallback(
+    () => setCurrent((p) => (p + 1) % slides.length),
+    [slides.length]
+  );
 
   useEffect(() => {
     if (!autoSlide) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, autoSlideInterval);
+    const interval = setInterval(nextSlide, autoSlideInterval);
     return () => clearInterval(interval);
-  }, [current, autoSlide, autoSlideInterval]);
+  }, [autoSlide, autoSlideInterval, nextSlide]);
 
   return (
     <div className="relative w-full mx-auto overflow-hidden">
-
       <div className="relative h-[530px]">
         {slides.map((slide, index) => (
           <div
             key={index}
             className={`absolute w-full h-full top-0 left-0 flex items-center justify-center transition-all duration-700 ease-in-out 
-              ${transitionEffect === "fade" ? (index === current ? "opacity-100 z-10" : "opacity-0 z-0") : ""}
-              ${transitionEffect === "slide" ? `transform translate-x-${(index - current) * 100}` : ""}
+              ${
+                transitionEffect === "fade"
+                  ? index === current
+                    ? "opacity-100 z-10"
+                    : "opacity-0 z-0"
+                  : ""
+              }
+              ${
+                transitionEffect === "slide"
+                  ? `transform translate-x-${(index - current) * 100}`
+                  : ""
+              }
             `}
           >
             <img

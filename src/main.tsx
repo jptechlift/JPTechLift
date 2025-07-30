@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import './styles/fonts.css';
 import './styles/index.scss';
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
