@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { productData } from "../../data/ProductData";
@@ -15,6 +15,7 @@ import Footer from "../../components/Footer/Footer";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
+import { BASE_URL } from "../../components/SEO/constant";
 // import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
 // import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
@@ -30,6 +31,8 @@ function isValidProductId(id: string): id is ProductId {
 export default function ProductTemplatePage() {
   const { productId } = useParams();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
+
   const [isAestheticsOpen, setAestheticsOpen] = useState(false);
 
   if (!productId || !isValidProductId(productId)) {
@@ -41,6 +44,7 @@ export default function ProductTemplatePage() {
   const seo = (audience && product.seoVariants?.[audience]) || product.seo;
   const content =
     (audience && product.contentVariants?.[audience]) || undefined;
+  const canonical = `${BASE_URL}/san-pham/${productId}${location.search || ""}`;
 
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
@@ -48,6 +52,7 @@ export default function ProductTemplatePage() {
         <title>{seo?.metaTitle}</title>
         <meta name="description" content={seo?.metaDescription || ""} />
         <meta name="keywords" content={seo?.keywords?.join(", ") || ""} />
+        <link rel="canonical" href={canonical} />
 
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">

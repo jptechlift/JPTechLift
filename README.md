@@ -164,3 +164,29 @@ Embed the organization JSON-LD once (usually in `index.html`):
   }
 </script>
 ```
+
+## Build and Deploy
+
+The project now uses a prerender step built with `ReactDOMServer`. Running the
+build command generates HTML files for all application routes so that meta tags
+are present in the static output.
+
+### Build
+
+```bash
+npm run build
+```
+
+This executes `vite build` followed by `npm run prerender` which writes the
+prerendered pages into the `dist/` folder.
+
+### Deploy
+
+To deploy the generated site to GitHub Pages run:
+
+```bash
+npm run deploy
+```
+
+The `deploy` script publishes the contents of `dist/` using the `gh-pages`
+package.
