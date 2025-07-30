@@ -7,7 +7,7 @@ interface SEOProps {
   path?: string;
 }
 
-const BASE_URL =
+export const BASE_URL =
   import.meta.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
 
 export default function SEO({ title, description, keywords, path }: SEOProps) {
