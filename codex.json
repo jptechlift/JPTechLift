@@ -1,3 +1,4 @@
 {
-  "setup": ["npm install"]
+  "setup": ["npm install"],
+  "test": "npm test"
 }
