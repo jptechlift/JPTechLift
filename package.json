@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prerender": "tsx scripts/prerender.tsx",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
@@ -49,7 +50,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "gh-pages": "^6.3.0",
     "globals": "^16.2.0",
-      "jsdom": "^26.1.0",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.6",
     "sass-embedded": "^1.89.2",
     "sass-embedded-linux-x64": "^1.89.2",
@@ -60,5 +61,10 @@
     "vite": "^7.0.0",
     "vitest": "^3.2.4"
   },
-  "homepage": "https://baodhg.github.io/JPTechLift-WebApp"
+  "homepage": "https://baodhg.github.io/JPTechLift-WebApp",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
