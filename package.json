@@ -10,6 +10,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
+    "test": "npm run lint",
     "sync-deploy": "git push origin deploy && git push test deploy:main",
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js"
   },
