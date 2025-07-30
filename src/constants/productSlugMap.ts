@@ -1,8 +1,8 @@
 // Danh sách ánh xạ rõ ràng giữa tên hiển thị và slug URL
 export const productSlugMap = {
   "THANG MÁY GIA ĐÌNH": "thang-may-gia-dinh",
-  "THANG MÁY TẢI KHÁCH": "thang-may-hanh-khach",
-  "THANG TRƯỢT & THANG CUỐN": "thang-truot-thang-cuon",
+"THANG MÁY HÀNH KHÁCH": "thang-may-hanh-khach",
+  "THANG CUỐN": "thang-truot-thang-cuon",
   "THANG MÁY TẢI HÀNG": "thang-may-tai-hang",
   "THANG TẢI THỰC PHẨM": "thang-tai-thuc-pham",
   "THANG MÁY BỆNH VIỆN": "thang-may-benh-vien",

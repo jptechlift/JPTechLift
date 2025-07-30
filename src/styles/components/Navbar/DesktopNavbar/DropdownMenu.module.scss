@@ -1,0 +1,93 @@
+/* ===================================
+   📋 DROPDOWN COMPONENT
+   =================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% - 36px);
+  left: 0;
+  display: flex;
+  background-color: var(--color-white);
+  border-radius: 0 0 1px 1px;
+  box-shadow: var(--shadow-medium);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  animation: fadeIn var(--transition-fast);
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    min-width: 340px;
+
+    h4 {
+      background-color: var(--color-yellow);
+      color: white;
+      padding: 10px var(--spacing-lg);
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      border-bottom: 2px solid var(--color-gray1);
+      transition: all var(--transition-fast);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      a {
+        display: block;
+        padding: 8px var(--spacing-lg);
+        color: black;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 1.5;
+        text-decoration: none;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--color-main);
+          color: var(--color-white);
+        }
+      }
+
+      &:hover {
+        background-color: var(--color-main);
+      }
+
+      &:hover a {
+        color: var(--color-white);
+      }
+    }
+  }
+}
+
+/* ===================================
+   📱 RESPONSIVE HANDLING
+   =================================== */
+@media (max-width: 1280px) {
+  .dropdown {
+    left: 20px;
+    right: 20px;
+    max-width: calc(100% - 40px);
+  }
+}

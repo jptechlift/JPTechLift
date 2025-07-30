@@ -44,20 +44,6 @@
 }
 
 /* ===================================
-   🎬 ANIMATIONS & KEYFRAMES
-   =================================== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===================================
    🔧 BASE LAYOUT & WRAPPER
    =================================== */
 .desktopMenu {
@@ -77,17 +63,13 @@
   padding: var(--spacing-md) var(--spacing-xl);
   background-color: var(--color-white);
 
-  // Logo Section
-  &__logo {
-    img {
-      height: var(--logo-height);
-      width: auto;
-      object-fit: contain;
-      display: block;
-    }
+  &__logo img {
+    height: var(--logo-height);
+    width: auto;
+    object-fit: contain;
+    display: block;
   }
 
-  // Info Section
   &__info {
     display: flex;
     gap: var(--spacing-xl);
@@ -102,7 +84,6 @@
     gap: var(--spacing-xs);
   }
 
-  // Language Selector
   &__lang {
     display: flex;
     align-items: center;
@@ -113,7 +94,6 @@
     box-shadow: var(--shadow-light);
   }
 
-  // Icons
   &__icon {
     height: var(--icon-size);
     width: auto;
@@ -138,7 +118,6 @@
     }
   }
 
-  // Contact Section
   &__contactIcon {
     display: flex;
     gap: var(--spacing-xs);
@@ -167,6 +146,7 @@
     }
 
     &:hover span::after {
+      filter: brightness(1.2);
       transform: scaleX(1);
       opacity: 1;
     }
@@ -188,7 +168,6 @@
   position: relative;
   z-index: 1000;
 
-  // Scrolled State
   &.menuBarScrolled {
     position: fixed;
     top: 0;
@@ -209,84 +188,70 @@
   height: var(--menu-height);
   background-color: var(--color-main);
   padding: 2%;
-  overflow: visible; // Quan trọng cho dropdown
+  overflow: visible;
   transition: transform 2s ease, background-color 2s ease, box-shadow 2s ease, padding 2s ease;
   border-bottom: 2px solid var(--color-gray);
-  &.menuBarScrolled {
-    border-radius: 0;
+
+
+  &__left {
+    display: flex;
+    align-items: center;
   }
 
-  // Navigation List
   &__list {
     display: flex;
-    gap: var(--spacing-xl);
+    align-items: center;
+    gap: 50px;
     list-style: none;
-    margin: 0;
+    margin-left: 34px;
     padding: 0;
+  }
 
-    li {
-      position: relative;
-      color: var(--color-gray);
-      font-weight: 500;
+  &__link {
+    all: unset;
+    position: relative;
+    color: var(--color-gray);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    transition: color var(--transition-medium);
+    cursor: pointer;
+    padding: 40px 0;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 98%;
+      left: 1px;
+      right: 3px;
+      bottom: 40px;
+      height: 2px;
+      background-color: var(--color-red);
+      transform: scaleX(0);
+      transform-origin: left;
+      opacity: 0;
+      transition: transform var(--transition-medium), opacity var(--transition-medium);
     }
 
-    a {
-      position: relative;
-      color: var(--color-gray);
-      text-decoration: none;
-      padding-bottom: 4px;
-      font-size: 18px;
-      font-weight: 600;
-      transition: color var(--transition-medium);
+    &:hover::after {
+      transform: scaleX(1);
+      opacity: 1;
+    }
 
-      &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--color-red);
-        width: 100%;
-        transform: scaleX(0);
-        transform-origin: left;
-        opacity: 0;
-        transition: transform var(--transition-medium), opacity var(--transition-medium);
-      }
-
-      &:hover::after {
-        transform: scaleX(1);
-        opacity: 1;
-      }
+    &:hover {
+      filter: brightness(1.2);
     }
   }
 
-  // Social Icons
   &__icons {
     display: flex;
     align-items: center;
 
-    button {
-      display: flex;
-      align-items: center;
-      margin-left: 30px;
-      padding-left: 30px;
-      border-left: 2px solid var(--color-gray);
-      a {
-        display: inline-block;
-      padding: 0 var(--spacing-sm);
-      transition: var(--transition-medium);
-        img {
-          width: 24px;
-          height: 24px;
-          object-fit: contain;
-        }
-      }
-    }
-
-    a {
+    > a {
       display: inline-block;
       padding: 0 var(--spacing-sm);
       transition: var(--transition-medium);
+      cursor: pointer;
 
       &:hover {
         filter: brightness(1.2);
@@ -294,91 +259,33 @@
       }
 
       img {
-        width: var(--icon-size-sm);
-        height: var(--icon-size-sm);
+        width: 20px;
+        height: 20px;
         object-fit: contain;
       }
     }
   }
+
+  &__iconButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding-right: 10px;
+    margin-left: 30px;
+    padding-left: 40px;
+    border-left: 2px solid var(--color-gray);
+    display: flex;
+    align-items: center;
+
+    img {
+      width: var(--icon-size);
+      height: var(--icon-size);
+    }
+
+  }
 }
 
-/* ===================================
-   📋 DROPDOWN COMPONENT
-   =================================== */
 .dropdownWrapper {
   position: relative;
   display: inline-block;
-}
-
-.dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  display: flex;
-  background-color: var(--color-white);
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-  box-shadow: var(--shadow-medium);
-  z-index: var(--z-dropdown);
-  overflow: hidden;
-  animation: fadeIn var(--transition-fast);
-  min-width: 280px;
-
-  .column {
-    display: flex;
-    flex-direction: column;
-    min-width: 360px;
-
-    h4 {
-      background-color: var(--color-yellow);
-      color: white;
-      padding: 10px var(--spacing-lg);
-      font-size: 18px;
-      font-weight: 600;
-      text-transform: uppercase;
-      margin: 0;
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-
-      li {
-        padding: 8px var(--spacing-lg);
-        color: var(--color-main);
-        border-bottom: 1px solid #eee;
-        transition: all var(--transition-fast);
-        cursor: pointer;
-
-        &:hover {
-          background-color: var(--color-main);
-          color: white;
-        }
-
-        a {
-          color: inherit;
-          font-weight: bold;
-          text-decoration: none;
-          display: block;
-          width: 100%;
-            font-size: 16px;
-
-          &:hover {
-            color: inherit;
-          }
-        }
-      }
-    }
-  }
-}
-
-/* ===================================
-   📱 RESPONSIVE HANDLING
-   =================================== */
-@media (max-width: 1280px) {
-  .searchPanel {
-    left: 20px;
-    right: 20px;
-    max-width: calc(100% - 40px);
-  }
 }

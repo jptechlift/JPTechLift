@@ -25,7 +25,7 @@ import LapDatThangMay from "./pages/Services/LapDatThangMay";
 import BaoTriThangMay from "./pages/Services/BaoTriThangMay";
 import CaiTaoSuaChuaThangMay from "./pages/Services/CaiTaoSuaChuaThangMayPage";
 import NotFound from "./pages/NotFound";
-
+import AccessoriesPage from "./pages/Services/AccessoriesPage";
 const App = () => {
   const RedirectHandler = () => {
     const navigate = useNavigate();
@@ -82,14 +82,18 @@ const App = () => {
             path="/dich-vu-thang-may/bao-tri-thang-may"
             element={<BaoTriThangMay />}
           />
-          <Route
-            path="/dich-vu-thang-may/cai-tao-sua-chua"
-            element={<CaiTaoSuaChuaThangMay />}
-          />
-          <Route
-            path="/thang-may-gia-dinh"
-            element={<Navigate to="/san-pham/thang-may-gia-dinh" replace />}
-          />
+           <Route
+          path="/dich-vu-thang-may/cai-tao-sua-chua"
+          element={<CaiTaoSuaChuaThangMay />}
+        />
+        <Route
+          path="/dich-vu-thang-may/vat-tu-phu-kien"
+          element={<AccessoriesPage />}
+        />
+        <Route
+          path="/thang-may-gia-dinh"
+          element={<Navigate to="/san-pham/thang-may-gia-dinh" replace />}
+        />
           {/* PRODUCT: chỉ còn 1 route động */}
           <Route
             path="/san-pham/:productId"
