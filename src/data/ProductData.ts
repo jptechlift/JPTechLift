@@ -329,7 +329,7 @@ export const productData: Record<string, Product> = {
       ],
     },
     intro: {
-      title: "Thang Tải Thực Phẩm Inox",
+      title: "Thang Tải Thực Phẩm",
       description:
         "Giải pháp vận chuyển thực phẩm, đồ dùng chuyên nghiệp cho nhà hàng, khách sạn, quán cà phê. Thiết kế nhỏ gọn, vật liệu inox 304 sạch sẽ, và tối ưu hiệu suất.",
       introduction:
