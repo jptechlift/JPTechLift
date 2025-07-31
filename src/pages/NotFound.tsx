@@ -4,7 +4,7 @@ import SEO from "../components/SEO";
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] py-10">
-      <SEO title="Không tìm thấy trang" path="/404" />
+       <SEO title="Không tìm thấy trang" description="Trang không tồn tại." url="/404" image="/og-default.jpg" />
       <h1 className="text-3xl font-bold mb-4">404 - Trang không tồn tại</h1>
       <Link to="/" className="text-blue-500 underline">
         Quay lại trang chủ

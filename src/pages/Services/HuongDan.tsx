@@ -10,7 +10,8 @@ const HomePage = () => {
       <SEO
         title="Hướng dẫn vận hành thang máy"
         description="Các hướng dẫn vận hành và sử dụng thang máy an toàn từ JP TechLift."
-        path="/dich-vu-thang-may/huong-dan-van-hanh"
+         url="/dich-vu-thang-may/huong-dan-van-hanh"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <ElevatorInstallationOperation/>

@@ -5,7 +5,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import { HelmetProvider } from 'react-helmet-async';
 import type { HelmetServerState } from 'react-helmet-async';
 
-interface HelmetContext { helmet?: HelmetServerState }
+
 import App from '../src/App';
 import productSlugs from '../product-slugs.json';
 

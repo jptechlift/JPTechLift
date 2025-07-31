@@ -4,44 +4,31 @@ import fs from "fs";
 import path from "path";
 import { productSlugMap } from "./src/constants/productSlugMap";
 
+// 🧭 Tạo sitemap.xml khi build xong
 function generateSitemap() {
-  const hostname =
-    process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
+  const hostname = process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
+
   const staticRoutes = [
-    "",
-    "gioi-thieu",
-    "gioi-thieu/ban-lanh-dao",
-    "gioi-thieu/nguyen-tac",
-    "gioi-thieu/quy-trinh-du-an",
-    "tin-tuc-thang-may",
-    "blog-thang-may",
-    "lien-he",
-    "dich-vu-thang-may",
-    "dich-vu-thang-may/lap-dat-thang-may",
-    "dich-vu-thang-may/tu-van-thiet-ke",
-    "dich-vu-thang-may/huong-dan-van-hanh",
-    "dich-vu-thang-may/bao-tri-thang-may",
+    "", "gioi-thieu", "gioi-thieu/ban-lanh-dao", "gioi-thieu/nguyen-tac",
+    "gioi-thieu/quy-trinh-du-an", "tin-tuc-thang-may", "blog-thang-may", "lien-he",
+    "dich-vu-thang-may", "dich-vu-thang-may/lap-dat-thang-may", "dich-vu-thang-may/tu-van-thiet-ke",
+    "dich-vu-thang-may/huong-dan-van-hanh", "dich-vu-thang-may/bao-tri-thang-may",
     "dich-vu-thang-may/cai-tao-sua-chua",
   ];
 
-  const productRoutes = Object.values(productSlugMap).map(
-    (slug) => `/san-pham/${slug}`
-  );
-
+  const productRoutes = Object.values(productSlugMap).map((slug) => `/san-pham/${slug}`);
   const urls = [...staticRoutes.map((r) => `/${r}`), ...productRoutes];
-
   const today = new Date().toISOString().split("T")[0];
 
-  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
-  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const url of urls) {
     xml += `  <url>\n`;
     xml += `    <loc>${hostname}${url}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += "    <priority>0.8</priority>\n";
-    xml += "  </url>\n";
+    xml += `    <priority>0.8</priority>\n`;
+    xml += `  </url>\n`;
   }
-  xml += "</urlset>";
+  xml += `</urlset>`;
 
   const outPath = path.resolve("dist", "sitemap.xml");
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -49,6 +36,7 @@ function generateSitemap() {
   console.log("✅ sitemap.xml generated");
 }
 
+// 📦 Hook vào sau khi build xong
 function sitemapPlugin() {
   return {
     name: "sitemap-plugin",
@@ -57,5 +45,8 @@ function sitemapPlugin() {
 }
 
 export default defineConfig({
-  plugins: [react(), sitemapPlugin()],
+  plugins: [
+    react(),
+    sitemapPlugin(), // ✅ Chỉ giữ lại plugin tạo sitemap
+  ],
 });

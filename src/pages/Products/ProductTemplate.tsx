@@ -16,6 +16,7 @@ import RealGallerySection from "../../components/ProductPage/RealGallerySection"
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
 import { BASE_URL } from "../../components/SEO/constant";
+import SEO from "../../components/SEO";
 // import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
 // import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
@@ -48,11 +49,14 @@ export default function ProductTemplatePage() {
 
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
-      <Helmet>
-        <title>{seo?.metaTitle}</title>
-        <meta name="description" content={seo?.metaDescription || ""} />
-        <meta name="keywords" content={seo?.keywords?.join(", ") || ""} />
-        <link rel="canonical" href={canonical} />
+        <SEO
+        title={seo?.metaTitle || ""}
+        description={seo?.metaDescription || ""}
+        keywords={seo?.keywords}
+        url={canonical}
+        image={product.intro.heroImage}
+      />
+      <Helmet>      
 
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">

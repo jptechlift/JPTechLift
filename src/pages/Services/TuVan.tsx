@@ -9,7 +9,8 @@ const HomePage = () => {
       <SEO
         title="Tư vấn thiết kế thang máy"
         description="Dịch vụ tư vấn thiết kế thang máy tối ưu và tiết kiệm chi phí bởi JP TechLift."
-        path="/dich-vu-thang-may/tu-van-thiet-ke"
+        url="/dich-vu-thang-may/tu-van-thiet-ke"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <ElevatorConsultation/>

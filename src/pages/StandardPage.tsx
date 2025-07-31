@@ -13,7 +13,8 @@ const StandardPage = () => {
       <SEO
         title="Quy trình dự án JP TechLift"
         description="Tìm hiểu quy trình triển khai dự án thang máy chuyên nghiệp của JP TechLift."
-        path="/gioi-thieu/quy-trinh-du-an"
+          url="/gioi-thieu/quy-trinh-du-an"
+        image={bannerImg}
       />
       <HeaderWithBanner banner={bannerImg} title="QUY TRÌNH DỰ ÁN"/>
       <InstallProcessSection />

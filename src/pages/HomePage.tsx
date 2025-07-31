@@ -15,7 +15,8 @@ const HomePage = () => {
       <SEO
         title="JP TechLift - Thang máy chuyên nghiệp"
         description="Công ty thang máy JP TechLift cung cấp giải pháp thang máy an toàn, chất lượng tại Việt Nam."
-        path="/"
+        url="/"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <AboutSection />

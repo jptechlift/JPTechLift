@@ -9,7 +9,8 @@ const AccessoriesPage = () => {
       <SEO
         title="Vật tư & Phụ kiện thang máy JP TechLift"
         description="Cung cấp vật tư và phụ kiện thang máy chính hãng, chất lượng cao."
-        path="/dich-vu-thang-may/vat-tu-phu-kien"
+         url="/dich-vu-thang-may/vat-tu-phu-kien"
+        image="/og-default.jpg"
       />
       <NavBar/>
       <Accessories />

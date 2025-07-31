@@ -14,7 +14,8 @@ const AboutUsPage = () => {
       <SEO
         title="Giới thiệu JP TechLift"
         description="Tìm hiểu về JP TechLift - đơn vị cung cấp thang máy uy tín và chất lượng."
-        path="/gioi-thieu"
+         url="/gioi-thieu"
+        image={bannerImg}
       />
       <Header banner={bannerImg} title="VỀ CHÚNG TÔI" />
       <AboutUsIntro />

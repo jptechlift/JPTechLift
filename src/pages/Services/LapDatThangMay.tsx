@@ -10,7 +10,8 @@ const LapDatThangMayPage= () => {
       <SEO
         title="Lắp đặt thang máy JP TechLift"
         description="Dịch vụ lắp đặt và vận hành thang máy an toàn, chuyên nghiệp từ JP TechLift."
-        path="/dich-vu-thang-may/lap-dat-thang-may"
+          url="/dich-vu-thang-may/lap-dat-thang-may"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <ElevatorInstallationOperation/>
