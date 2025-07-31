@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "test": "npm run lint && vitest run",
     "sync-deploy": "git push origin deploy && git push test deploy:main",
-    "generate-sitemap": "node .sitemap-build/generate-sitemap.js"
+    "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
+    "postbuild": "node scripts/copy404.js"
   },
   "dependencies": {
     "aos": "^2.3.4",
