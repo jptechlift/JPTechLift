@@ -50,7 +50,8 @@ const ServicesPage = () => {
         <SEO
         title="Dịch vụ thang máy JP TechLift"
         description="Các dịch vụ lắp đặt, bảo trì và cải tạo thang máy chuyên nghiệp tại JP TechLift."
-        path="/dich-vu-thang-may"
+         url="/dich-vu-thang-may"
+        image={banner}
       />
       <HeaderWithBanner banner={banner} title="DỊCH VỤ" />
       <main className="flex-grow py-8 px-4">

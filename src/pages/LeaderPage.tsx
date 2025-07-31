@@ -12,7 +12,8 @@ const LeaderPage = () => {
       <SEO
         title="Đội ngũ lãnh đạo JP TechLift"
         description="Gặp gỡ đội ngũ lãnh đạo chuyên nghiệp và tận tâm của JP TechLift."
-        path="/gioi-thieu/ban-lanh-dao"
+        url="/gioi-thieu/ban-lanh-dao"
+        image={bannerImg}
       />
       <HeaderWithBanner banner={bannerImg} title="ĐỘI NGŨ LÃNH ĐẠO" />
       <LeaderSection />

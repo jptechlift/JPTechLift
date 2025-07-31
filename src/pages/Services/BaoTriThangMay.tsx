@@ -10,7 +10,8 @@ const BaoTriThangMayPage = () => {
       <SEO
         title="Bảo trì thang máy JP TechLift"
         description="Dịch vụ bảo trì, bảo dưỡng thang máy định kỳ giúp vận hành ổn định và an toàn."
-        path="/dich-vu-thang-may/bao-tri-thang-may"
+         url="/dich-vu-thang-may/bao-tri-thang-may"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <BaoTriThangMay/>

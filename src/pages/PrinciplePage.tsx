@@ -11,7 +11,8 @@ const PrinciplePage = () => {
       <SEO
         title="Nguyên tắc hoạt động JP TechLift"
         description="Những nguyên tắc và giá trị cốt lõi làm nên thương hiệu JP TechLift."
-        path="/gioi-thieu/nguyen-tac"
+         url="/gioi-thieu/nguyen-tac"
+        image={bannerImg}
       />
       <HeaderWithBanner banner={bannerImg} title="NGUYÊN TẮC CỦA JPTECHLIFT" />
       <PrincipleSection />

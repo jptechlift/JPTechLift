@@ -10,7 +10,8 @@ const NewsPage = () => {
             <SEO
                 title="Tin tức thang máy JP TechLift"
                 description="Cập nhật các tin tức, sự kiện mới nhất về ngành thang máy tại JP TechLift."
-                path="/tin-tuc-thang-may"
+                    url="/tin-tuc-thang-may"
+                image="/og-default.jpg"
             />
             <HeroBanner />
             <ArticleGrid/>

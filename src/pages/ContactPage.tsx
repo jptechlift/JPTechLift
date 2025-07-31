@@ -10,7 +10,8 @@ const ContactJPTechLiftFormPage = () => {
       <SEO
         title="Liên hệ JP TechLift"
         description="Gửi yêu cầu tư vấn và liên hệ với JP TechLift qua biểu mẫu trực tuyến."
-        path="/lien-he"
+       url="/lien-he"
+        image={banner}
       />
       <HeaderWithBanner banner={banner} title="LIÊN HỆ" />
       <ContactJPTechLiftForm />

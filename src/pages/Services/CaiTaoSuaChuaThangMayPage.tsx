@@ -10,7 +10,8 @@ const CaiTaoSuaChuaThangMayPage= () => {
       <SEO
         title="Cải tạo, sửa chữa thang máy"
         description="Dịch vụ nâng cấp, sửa chữa thang máy nhằm đảm bảo an toàn và hiệu suất tối ưu."
-        path="/dich-vu-thang-may/cai-tao-sua-chua"
+         url="/dich-vu-thang-may/cai-tao-sua-chua"
+        image="/og-default.jpg"
       />
       <HeroBanner />
       <CaiTaoSuaChuaThangMay/>
