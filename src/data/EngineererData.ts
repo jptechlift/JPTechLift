@@ -1,5 +1,6 @@
 import MinhKhoi from "../../src/assets/images/leaders/MinhKhoi.png";
-import Tan from "../../src/assets/images/leaders/Tan.png"
+import Tan from "../../src/assets/images/leaders/Tan.png";
+import LeMinhDa from "../../src/assets/images/leaders/LeMinhDa.png";
 export interface Engineer {
   name: string;
   title: string;
@@ -9,6 +10,13 @@ export interface Engineer {
 }
 
 export const engineerers: Engineer[] = [
+  {
+    name: "Lê Minh Đà",
+    title: "Elevator Operations Engineer",
+    image: LeMinhDa,
+    description:
+      "Phụ trách dẫn dắt tổ điện trong việc lắp đặt, kiểm tra, xử lý sự cố, bảo trì hệ thống điện thang máy. Đảm bảo tuân thủ quy định an toàn, tiêu chuẩn kỹ thuật, tiến độ dự án. Phối hợp với tổ cơ khí, quản lý dự án để đảm bảo vận hành trơn tru, bàn giao đúng hạn",
+  },
   {
     name: "Minh Khôi",
     title: "Maintenance Electrical Engineer",
