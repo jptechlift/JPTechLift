@@ -37,12 +37,12 @@ const ServicesPage = () => {
      path: "/dich-vu-thang-may/bao-tri-thang-may",
       description: "Bảo trì định kỳ đảm bảo thang máy hoạt động ổn định và an toàn.",
     },
-    {
-      id: 4,
-      title: "Cải Tạo Sửa Chữa",
-      path: "/dich-vu/caitao",
-      description: "Khắc phục sự cố, nâng cấp thang máy để đảm bảo hiệu suất và an toàn.",
-    },
+      {
+        id: 4,
+        title: "Cải Tạo Sửa Chữa",
+        path: "/dich-vu-thang-may/cai-tao-sua-chua",
+        description: "Khắc phục sự cố, nâng cấp thang máy để đảm bảo hiệu suất và an toàn.",
+      },
   ];
 
   return (
