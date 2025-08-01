@@ -17,6 +17,7 @@ import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
 import { BASE_URL } from "../../components/SEO/constant";
 import SEO from "../../components/SEO";
+import { getSeoMeta } from "../../utils/seo";
 // import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
 // import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
@@ -42,22 +43,20 @@ export default function ProductTemplatePage() {
 
   const product = productData[productId];
   const audience = searchParams.get("audience") as Audience | null;
-  const seo = (audience && product.seoVariants?.[audience]) || product.seo;
-  const content =
-    (audience && product.contentVariants?.[audience]) || undefined;
+  const seo = getSeoMeta(product, audience);
+  const content = (audience && product.contentVariants?.[audience]) || undefined;
   const canonical = `${BASE_URL}/san-pham/${productId}${location.search || ""}`;
 
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
-        <SEO
+      <SEO
         title={seo?.metaTitle || ""}
         description={seo?.metaDescription || ""}
         keywords={seo?.keywords}
         url={canonical}
         image={product.intro.heroImage}
       />
-      <Helmet>      
-
+      <Helmet>
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -113,10 +112,7 @@ export default function ProductTemplatePage() {
 
       {product.contentTable && (
         <FadeInSection>
-          <ContentTableSection
-            data={product.contentTable}
-            imageUrl="/assets/images/home-lift/hero.jpg"
-          />
+          <ContentTableSection data={product.contentTable} imageUrl="/assets/images/home-lift/hero.jpg" />
         </FadeInSection>
       )}
 
@@ -142,10 +138,7 @@ export default function ProductTemplatePage() {
 
       {product.installationSteps && product.installationImage && (
         <FadeInSection>
-          <InstallationSection
-            steps={product.installationSteps}
-            image={product.installationImage}
-          />
+          <InstallationSection steps={product.installationSteps} image={product.installationImage} />
         </FadeInSection>
       )}
 
