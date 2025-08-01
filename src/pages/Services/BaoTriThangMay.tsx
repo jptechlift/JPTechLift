@@ -1,24 +1,27 @@
 import HeroFooter from "../../components/Footer/HeroFooter";
 import HeroBanner from "../../components/HomePage/HeroBanner";
 import Footer from "../../components/Footer/Footer";
-import BaoTriThangMay from "../../components/ServicePage/BaoTriThangMay";
-import SEO from "../../components/SEO";
+import CaiTaoSuaChuaThangMay from "../../components/ServicePage/CaiTaoSuaChuaThangMay";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../../components/SEO/constant";
 
-const BaoTriThangMayPage = () => {
+const CaiTaoSuaChuaThangMayPage= () => {
   return (
     <div>
-      <SEO
-        title="Bảo trì thang máy JP TechLift"
-        description="Dịch vụ bảo trì, bảo dưỡng thang máy định kỳ giúp vận hành ổn định và an toàn."
-         url="/dich-vu-thang-may/bao-tri-thang-may"
-        image="/og-default.jpg"
-      />
+      <Helmet>
+        <title>Bảo trì & bảo dưỡng thang máy - JP TechLift</title>
+        <meta
+          name="description"
+          content="Nâng cấp và sửa chữa thang máy nhanh chóng, bảo đảm an toàn và hiệu quả."
+        />
+        <link rel="canonical" href={`${BASE_URL}/dich-vu-thang-may/cai-tao-sua-chua`} />
+      </Helmet>
       <HeroBanner />
-      <BaoTriThangMay/>
+      <CaiTaoSuaChuaThangMay/>
         <HeroFooter />
       <Footer />
     </div>
   );
 };
 
-export default BaoTriThangMayPage;
+export default CaiTaoSuaChuaThangMayPage;

@@ -16,7 +16,6 @@ import RealGallerySection from "../../components/ProductPage/RealGallerySection"
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
 import { BASE_URL } from "../../components/SEO/constant";
-import SEO from "../../components/SEO";
 import { getSeoMeta } from "../../utils/seo";
 // import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
 // import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
@@ -44,18 +43,20 @@ export default function ProductTemplatePage() {
   const product = productData[productId];
   const audience = searchParams.get("audience") as Audience | null;
   const seo = getSeoMeta(product, audience);
-  const content = (audience && product.contentVariants?.[audience]) || undefined;
+  const content =
+    (audience && product.contentVariants?.[audience]) || undefined;
   const canonical = `${BASE_URL}/san-pham/${productId}${location.search || ""}`;
 
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
-      <SEO
-        title={seo?.metaTitle || ""}
-        description={seo?.metaDescription || ""}
-        keywords={seo?.keywords}
-        url={canonical}
-        image={product.intro.heroImage}
-      />
+      <Helmet>
+        <title>{seo?.metaTitle} - JP TechLift</title>
+        <meta name="description" content={seo?.metaDescription || ""} />
+        {seo?.keywords && (
+          <meta name="keywords" content={seo.keywords.join(", ")} />
+        )}
+        <link rel="canonical" href={canonical} />
+      </Helmet>
       <Helmet>
         {/* ✅ Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">
@@ -112,7 +113,10 @@ export default function ProductTemplatePage() {
 
       {product.contentTable && (
         <FadeInSection>
-          <ContentTableSection data={product.contentTable} imageUrl="/assets/images/home-lift/hero.jpg" />
+          <ContentTableSection
+            data={product.contentTable}
+            imageUrl="/assets/images/home-lift/hero.jpg"
+          />
         </FadeInSection>
       )}
 
@@ -138,7 +142,10 @@ export default function ProductTemplatePage() {
 
       {product.installationSteps && product.installationImage && (
         <FadeInSection>
-          <InstallationSection steps={product.installationSteps} image={product.installationImage} />
+          <InstallationSection
+            steps={product.installationSteps}
+            image={product.installationImage}
+          />
         </FadeInSection>
       )}
 

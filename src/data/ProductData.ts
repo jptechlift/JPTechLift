@@ -152,9 +152,9 @@ export const productData: Record<string, Product> = {
   "thang-may-gia-dinh": {
     seo: {
       metaTitle:
-        "Thang Máy Gia Đình Cao Cấp | Nhập Khẩu Chính Hãng – JP TechLift",
+        "Thang Máy Gia Đình Cao Cấp – Thiết Kế Sang Trọng, Vận Hành Êm Ái | JP TechLift",
       metaDescription:
-        "Lắp đặt thang máy gia đình mini, không hố pit, tiết kiệm diện tích – vận hành êm ái, an toàn tuyệt đối. Tư vấn & báo giá miễn phí tại TP.HCM.",
+        "Thang máy gia đình JP TechLift – Không cần hố pit, tiết kiệm diện tích, vận hành siêu êm. Công nghệ Nhật – Bảo hành lâu dài – Dịch vụ chuyên nghiệp tại TP.HCM. Tư vấn & báo giá miễn phí!",
       keywords: [
         "thang máy gia đình mini",
         "thang máy không hố pit",
@@ -307,9 +307,9 @@ export const productData: Record<string, Product> = {
   },
   "thang-tai-thuc-pham": {
     seo: {
-      metaTitle: "Thang Tải Thực Phẩm Inox | Gọn Nhẹ – Sạch Sẽ – JP Tech Lift",
+      metaTitle: "Thang Máy Tải Thực Phẩm Mini | Vận Hành Êm, Tiết Kiệm Năng Lượng | JP TechLift",
       metaDescription:
-        "Thang máy tải thực phẩm nhỏ gọn, cabin inox sạch khuẩn – lý tưởng cho nhà hàng, khách sạn, bếp ăn công nghiệp. Vận hành êm ái, tiết kiệm diện tích.",
+        "Thang máy tải thực phẩm nhỏ gọn, cabin inox sạch khuẩn – lý tưởng cho nhà hàng, khách sạn, bếp ăn công nghiệp. Vận hành êm ái, tiết kiệm diện tích.  Tư vấn & báo giá miễn phí toàn quốc!",
       keywords: [
         "thang thực phẩm",
         "thang tời thức ăn",
@@ -474,9 +474,9 @@ export const productData: Record<string, Product> = {
   },
   "thang-may-tai-hang": {
     seo: {
-      metaTitle: "Thang Máy Tải Hàng Công Nghiệp 100kg – 5 Tấn | JP Tech Lift",
+      metaTitle: "Thang Máy Tải Hàng Công Nghiệp - Tải Trọng Lớn, Vận Hành Êm, An Toàn Tuyệt Đối | JP Tech Lift",
       metaDescription:
-        "Chuyên cung cấp thang máy tải hàng từ 100kg đến 5000kg. Thiết kế theo yêu cầu, vận hành ổn định, an toàn tuyệt đối. Bảo hành dài hạn – hỗ trợ 24/7.",
+        "JP TechLift cung cấp thang máy tải hàng công nghiệp tải trọng 500–5000 kg. Thiết kế theo yêu cầu, vận hành ổn định, an toàn tuyệt đối. Bảo hành dài hạn – hỗ trợ 24/7.",
       keywords: [
         "thang chở hàng",
         "thang máy tải hàng",
@@ -639,9 +639,9 @@ export const productData: Record<string, Product> = {
   "thang-may-hanh-khach": {
     seo: {
       metaTitle:
-        "Thang Máy Hành Khách Cao Cấp | Giải Pháp Di Chuyển Cho Văn Phòng, Trường Học, Bệnh Viện – JP TechLift",
+        "Thang Máy Hành Khách Sang Trọng – Giải Pháp Di Chuyển An Toàn Tuyệt Đối Cho Mọi Công Trình | JP TechLift",
       metaDescription:
-        "Thang máy hành khách JP Tech Lift – vận hành êm, an toàn, tiết kiệm điện. Giải pháp tối ưu cho văn phòng, trường học, bệnh viện, chung cư và công trình nhà nước.",
+        "Thang máy hành khách JP Tech Lift – vận hành êm ái, an toàn, tiết kiệm điện. Giải pháp tối ưu cho văn phòng, trường học, bệnh viện, chung cư, trung tâm thương mại và công trình nhà nước.",
       keywords: [
         "thang máy văn phòng",
         "thang máy hành khách cho công ty",
@@ -884,9 +884,9 @@ export const productData: Record<string, Product> = {
   "thang-may-benh-vien": {
     seo: {
       metaTitle:
-        "Thang Máy Y Tế Chuyên Dụng | Vận Hành Êm – Chuẩn ICU – JP Tech Lift",
+        "Thang Máy Y Tế Chuyên Dụng | Vận Hành Êm – Chuẩn ICU – JP TechLift",
       metaDescription:
-        "Thang máy bệnh viện JP Tech Lift – êm ái, chống rung, cabin sạch khuẩn. Vận hành 24/7, tải băng ca – đạt chuẩn y tế cho phòng khám & bệnh viện.",
+        "Thang máy bệnh viện JP TechLift – êm ái, chống rung, cabin sạch khuẩn. Vận hành 24/7, tải băng ca – đạt chuẩn y tế cho phòng khám & bệnh viện.",
       keywords: [
         "thang máy bệnh viện",
         "thang máy y tế",
@@ -901,8 +901,7 @@ export const productData: Record<string, Product> = {
       ],
     },
     intro: {
-      title:
-        "Thang Máy Bệnh Viện",
+      title: "Thang Máy Bệnh Viện",
       description:
         "Giải pháp vận chuyển chuyên dụng cho bệnh viện, phòng khám. Cabin rộng rãi, di chuyển cực kỳ êm ái, ưu tiên an toàn tuyệt đối cho bệnh nhân và các thiết bị y tế nhạy cảm.",
       introduction:
@@ -1052,9 +1051,9 @@ export const productData: Record<string, Product> = {
   },
   "thang-truot-thang-cuon": {
     seo: {
-      metaTitle: "Thang cuốn JP TechLift – vận hành êm",
+      metaTitle: "Thang Cuốn & Walkway Cao Cấp – Giải Pháp Di Chuyển Đông Người Cho Trung Tâm Thương Mại & Sân Bay | JP TechLift",
       metaDescription:
-        "Thang cuốn JP TechLift ứng dụng cho trung tâm thương mại, nhà ga, sân bay. Động cơ bền bỉ, vận hành êm, thiết kế an toàn giúp di chuyển liên tục và hiệu quả.",
+        "JP TechLift - Cung cấp thang cuốn & băng chuyền khách chuyên dụng cho siêu thị, sân bay, tòa nhà cao tầng. Vận hành mượt mà, tiết kiệm năng lượng, an toàn đạt chuẩn quốc tế. Giao lắp & bảo trì toàn quốc!",
       keywords: [
         "thang cuốn",
         "escalator JP TechLift",
@@ -1247,7 +1246,7 @@ export const productData: Record<string, Product> = {
   "thang-may-quan-sat": {
     seo: {
       metaTitle:
-        "Thang Máy Quan Sát Kính Cường Lực – Thiết Kế Hiện Đại | JP TechLift",
+        "Thang Máy Quan Sát Kính Cường Lực Cao Cấp – Thiết Kế Hiện Đại, Sang Trọng | JP TechLift",
       metaDescription:
         "Thang máy quan sát kính – thiết kế trong suốt, vận hành êm, nâng tầm thẩm mỹ cho trung tâm thương mại, nhà phố, khách sạn. Tư vấn & báo giá miễn phí.",
       keywords: [
