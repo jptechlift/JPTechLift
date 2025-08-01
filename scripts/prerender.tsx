@@ -2,12 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
+import { createRequire } from 'module';
 import { HelmetProvider } from 'react-helmet-async';
 import type { HelmetServerState } from 'react-helmet-async';
 
 
 import App from '../src/App';
 import productSlugs from '../product-slugs.json';
+
+const require = createRequire(import.meta.url);
+['.jpg', '.jpeg', '.png', '.gif', '.svg', '.css', '.scss', '.otf'].forEach((ext) => {
+  // Ignore static asset imports when rendering on the server
+  require.extensions[ext as keyof NodeJS.RequireExtensions] = () => '';
+});
 
 const template = fs.readFileSync(path.resolve('dist/index.html'), 'utf-8');
 
