@@ -50,7 +50,7 @@ export default function ProductTemplatePage() {
   return (
     <div style={{ backgroundColor: "var(--color-gray1)" }}>
       <Helmet>
-        <title>{seo?.metaTitle} - JP TechLift</title>
+        <title>{seo?.metaTitle}</title>
         <meta name="description" content={seo?.metaDescription || ""} />
         {seo?.keywords && (
           <meta name="keywords" content={seo.keywords.join(", ")} />
