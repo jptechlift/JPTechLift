@@ -3,17 +3,20 @@ import PrincipleSection from "../components/PrinciplePage/PrincipleSection";
 import HeroFooter from "../components/Footer/HeroFooter";
 import bannerImg from "../assets/images/Banner-Principle.jpg";
 import Footer from "../components/Footer/Footer";
-import SEO from "../components/SEO";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../components/SEO/constant";
 
 const PrinciplePage = () => {
   return (
     <div>
-      <SEO
-        title="Nguyên tắc hoạt động JP TechLift"
-        description="Những nguyên tắc và giá trị cốt lõi làm nên thương hiệu JP TechLift."
-         url="/gioi-thieu/nguyen-tac"
-        image={bannerImg}
-      />
+      <Helmet>
+        <title>Nguyên tắc hoạt động - JP TechLift</title>
+        <meta
+          name="description"
+          content="Tìm hiểu nguyên tắc và giá trị cốt lõi giúp JP TechLift được nhiều khách hàng tin cậy."
+        />
+        <link rel="canonical" href={`${BASE_URL}/gioi-thieu/nguyen-tac`} />
+      </Helmet>
       <HeaderWithBanner banner={bannerImg} title="NGUYÊN TẮC CỦA JPTECHLIFT" />
       <PrincipleSection />
       <HeroFooter />

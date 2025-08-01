@@ -2,17 +2,20 @@ import HeroFooter from "../../components/Footer/HeroFooter";
 import HeroBanner from "../../components/HomePage/HeroBanner";
 import Footer from "../../components/Footer/Footer";
 import ElevatorInstallationOperation from "../../components/ServicePage/ElevatorInstallationOperation";
-import SEO from "../../components/SEO";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../../components/SEO/constant";
 
 const LapDatThangMayPage= () => {
   return (
     <div>
-      <SEO
-        title="Lắp đặt thang máy JP TechLift"
-        description="Dịch vụ lắp đặt và vận hành thang máy an toàn, chuyên nghiệp từ JP TechLift."
-          url="/dich-vu-thang-may/lap-dat-thang-may"
-        image="/og-default.jpg"
-      />
+      <Helmet>
+        <title>Lắp đặt & vận hành thang máy - JP TechLift</title>
+        <meta
+          name="description"
+          content="Dịch vụ lắp đặt thang máy an toàn, chất lượng cao, đáp ứng nhu cầu thị trường."
+        />
+        <link rel="canonical" href={`${BASE_URL}/dich-vu-thang-may/lap-dat-thang-may`} />
+      </Helmet>
       <HeroBanner />
       <ElevatorInstallationOperation/>
         <HeroFooter />

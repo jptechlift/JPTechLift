@@ -5,17 +5,20 @@ import CommitSection from "../components/HomePage/CommitSection";
 import HeroFooter from "../components/Footer/HeroFooter";
 import bannerImg from "../assets/images/Banner-img.png";
 import Footer from "../components/Footer/Footer";
-import SEO from "../components/SEO";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../components/SEO/constant";
 
 const StandardPage = () => {
   return (
     <div>
-      <SEO
-        title="Quy trình dự án JP TechLift"
-        description="Tìm hiểu quy trình triển khai dự án thang máy chuyên nghiệp của JP TechLift."
-          url="/gioi-thieu/quy-trinh-du-an"
-        image={bannerImg}
-      />
+      <Helmet>
+        <title>Quy trình dự án - JP TechLift</title>
+        <meta
+          name="description"
+          content="Khám phá quy trình triển khai dự án thang máy chuẩn mực của JP TechLift, được nhiều doanh nghiệp tin chọn."
+        />
+        <link rel="canonical" href={`${BASE_URL}/gioi-thieu/quy-trinh-du-an`} />
+      </Helmet>
       <HeaderWithBanner banner={bannerImg} title="QUY TRÌNH DỰ ÁN"/>
       <InstallProcessSection />
       <ProductSection />

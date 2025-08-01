@@ -5,7 +5,8 @@ import ElevatorServicesMobile from "../../components/ServicePage/ServicePageMobi
 import ElevatorServicesDesktop from "../../components/ServicePage/ServicePageDesktop";
 import banner from "../../assets/images/Banner-img.png";
 import Footer from "../../components/Footer/Footer";
-import SEO from "../../components/SEO";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../../components/SEO/constant";
 const ServicesPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -47,12 +48,14 @@ const ServicesPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-        <SEO
-        title="Dịch vụ thang máy JP TechLift"
-        description="Các dịch vụ lắp đặt, bảo trì và cải tạo thang máy chuyên nghiệp tại JP TechLift."
-         url="/dich-vu-thang-may"
-        image={banner}
-      />
+        <Helmet>
+        <title>Dịch vụ thang máy - JP TechLift</title>
+        <meta
+          name="description"
+          content="Đa dạng dịch vụ lắp đặt, bảo trì thang máy chuyên nghiệp được khách hàng ưa chuộng."
+        />
+        <link rel="canonical" href={`${BASE_URL}/dich-vu-thang-may`} />
+      </Helmet>
       <HeaderWithBanner banner={banner} title="DỊCH VỤ" />
       <main className="flex-grow py-8 px-4">
         {/* Hiển thị ElevatorServicesMobile hoặc ElevatorServicesDesktop nếu ở trang chính /dich-vu */}

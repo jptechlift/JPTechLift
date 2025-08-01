@@ -6,17 +6,20 @@ import AboutUsNewsBlogs from "../components/AboutUsPage/AboutUsNewsBlogs";
 
 import bannerImg from "../assets/images/Banner_AboutUs_Img.png";
 import Footer from "../components/Footer/Footer";
-import SEO from "../components/SEO";
+import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "../components/SEO/constant";
 
 const AboutUsPage = () => {
   return (
     <div>
-      <SEO
-        title="Giới thiệu JP TechLift"
-        description="Tìm hiểu về JP TechLift - đơn vị cung cấp thang máy uy tín và chất lượng."
-         url="/gioi-thieu"
-        image={bannerImg}
-      />
+      <Helmet>
+        <title>Giới thiệu - JP TechLift</title>
+        <meta
+          name="description"
+          content="Tìm hiểu về JP TechLift – Thương hiệu thang máy uy tín, được khách hàng tin chọn."
+        />
+        <link rel="canonical" href={`${BASE_URL}/gioi-thieu`} />
+      </Helmet>
       <Header banner={bannerImg} title="VỀ CHÚNG TÔI" />
       <AboutUsIntro />
       <AboutUsBanner />
