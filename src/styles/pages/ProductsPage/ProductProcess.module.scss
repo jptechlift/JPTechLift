@@ -3,7 +3,7 @@
 .product-process {
   width: 100%;
   margin: 0 auto;
-  padding: 60px 20px; // ✅ Match với real-gallery và product-specs
+  padding: 0px 20px; // ✅ Match với real-gallery và product-specs
 
   &__title {
     font-family: var(--font-title);
@@ -11,7 +11,7 @@
     font-weight: 500 !important;
     color: var(--color-main);
     text-align: center;
-    margin-bottom: 40px; // ✅ Match với các section khác
+    margin-bottom: 30px; // ✅ Match với các section khác
     position: relative;
 
     &::after {
