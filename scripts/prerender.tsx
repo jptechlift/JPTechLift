@@ -45,8 +45,12 @@ routes.forEach((url) => {
 
   let html = template.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`);
 
+  // Remove the default description and canonical tags from the template
+  html = html.replace(/<meta name="description"[^>]*>/, "");
+  html = html.replace(/<link rel="canonical"[^>]*>/, "");
+
   if (helmet) {
-    html = html.replace('<title>JP TECHLIFT</title>', `${helmet.title.toString()}${helmet.meta.toString()}${helmet.link.toString()}`);
+    html = html.replace('<title>JP TechLift - Chuyên Cung Cấp Thang Máy Cao Cấp</title>', `${helmet.title.toString()}${helmet.meta.toString()}${helmet.link.toString()}`);
   }
 
   const filePath = path.join('dist', url === '/' ? 'index.html' : `${url}/index.html`);
