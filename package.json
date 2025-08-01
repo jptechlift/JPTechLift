@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run prerender",
     "prerender": "tsx scripts/prerender.tsx",
     "preview": "vite preview",
     "predeploy": "npm run build",

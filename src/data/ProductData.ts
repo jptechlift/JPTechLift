@@ -309,7 +309,7 @@ export const productData: Record<string, Product> = {
     seo: {
       metaTitle: "Thang Máy Tải Thực Phẩm Mini | Vận Hành Êm, Tiết Kiệm Năng Lượng | JP TechLift",
       metaDescription:
-        "Thang máy tải thực phẩm nhỏ gọn, cabin inox sạch khuẩn – lý tưởng cho nhà hàng, khách sạn, bếp ăn công nghiệp. Vận hành êm ái, tiết kiệm diện tích.  Tư vấn & báo giá miễn phí toàn quốc!",
+        "Thang máy tải thực phẩm nhỏ gọn, cabin inox sạch khuẩn – lý tưởng cho nhà hàng, khách sạn, bếp ăn công nghiệp. Vận hành êm ái, tiết kiệm diện tích. Tư vấn & báo giá miễn phí toàn quốc!",
       keywords: [
         "thang thực phẩm",
         "thang tời thức ăn",
