@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { PanelLeft, CircleDot, DoorOpen, Lightbulb, AlertCircle, Cog } from "lucide-react";
 import styles from "../../styles/pages/ServicePage/Accessories.module.scss";
 import AccessoriesGallery from "./AccessoriesGallery";
@@ -15,13 +14,6 @@ const items = [
 export default function Accessories() {
   return (
     <div className={styles.accessories}>
-      <Helmet>
-        <title>Vật tư &amp; Phụ kiện Thang máy | Dịch vụ JP TechLift</title>
-        <meta
-          name="description"
-          content="Cung cấp phụ kiện thang máy chính hãng – từ bảng điều khiển đến đèn LED. Đảm bảo độ bền, tương thích cao, giao hàng nhanh và tư vấn kỹ thuật chuyên sâu."
-        />
-      </Helmet>
 
       <h1 className={styles.accessories__heading}>Vật tư &amp; Phụ kiện Thang máy Cao cấp</h1>
       <p className={styles.accessories__intro}>
