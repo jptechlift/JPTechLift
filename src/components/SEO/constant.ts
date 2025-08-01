@@ -1,2 +1,1 @@
-export const BASE_URL =
-  import.meta.env.VITE_SITE_URL ?? "https://thangmaysaigonjptechlift.com";
+export const BASE_URL = "https://thangmaysaigonjptechlift.com";
