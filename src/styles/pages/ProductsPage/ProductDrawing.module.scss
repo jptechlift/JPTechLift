@@ -2,7 +2,6 @@
 
 .product-blueprint {
   margin: 0 auto;
-
   background-color: #0a1d3b; // nền xanh đậm
   color: #fff;
 
@@ -31,7 +30,7 @@
     width: 100%;
     font-weight: 500;
     font-family: var(--font-title);
-    margin-bottom: 24px;
+    margin-bottom: 30px;
     color: var(--color-main); // ✅ CHỈNH Ở ĐÂY
 
     &::after {
