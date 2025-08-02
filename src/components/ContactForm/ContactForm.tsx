@@ -53,15 +53,9 @@ export default function ContactJPTechLiftForm() {
             <div className={styles.row}>
               <div className={styles.field}>
                 <label>
-                  Họ<span className={styles.required}>*</span>
+                  Họ và tên<span className={styles.required}>*</span>
                 </label>
-                <input type="text" name="ho" required />
-              </div>
-              <div className={styles.field}>
-                <label>
-                  Tên<span className={styles.required}>*</span>
-                </label>
-                <input type="text" name="ten" required />
+                <input type="text" name="name" required />
               </div>
             </div>
 
@@ -72,24 +66,14 @@ export default function ContactJPTechLiftForm() {
                 </label>
                 <input type="email" name="email" required />
               </div>
+            </div>
+
+            <div className={styles.row}>
               <div className={styles.field}>
                 <label>
                   Số điện thoại<span className={styles.required}>*</span>
                 </label>
                 <input type="tel" name="phone" pattern="[0-9]{10,11}" required />
-              </div>
-            </div>
-
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label>Công ty</label>
-                <input type="text" name="company" />
-              </div>
-              <div className={styles.field}>
-                <label>
-                  Bạn ở vị trí nào?<span className={styles.required}>*</span>
-                </label>
-                <input type="text" name="position" required />
               </div>
             </div>
 
