@@ -36,19 +36,19 @@ const products: Product[] = [
     image: product1,
     features: [
       {
-        title: "🔹SANG TRỌNG – ĐẲNG CẤP",
+        title: "🔹Thiết Kế Sang Trọng",
         desc: "Kiến tạo không gian sống hiện đại với thang máy sang trọng, thiết kế tinh tế.",
       },
       {
-        title: "🔹AN TOÀN TUYỆT ĐỐI",
+        title: "🔹An Toàn Tuyệt Đối",
         desc: "Thiết kế để vận hành an toàn, bảo vệ những người bạn yêu thương nhất.",
       },
       {
-        title: "🔹VẬN HÀNH ÊM ÁI",
+        title: "🔹Vận Hành Êm Mượt",
         desc: "Công nghệ tiên tiến giúp vận hành mượt mà, hạn chế tối đa tiếng ồn.",
       },
       {
-        title: "🔹TỐI ƯU KHÔNG GIAN",
+        title: "🔹Tối Ưu Diện Tích",
         desc: "Phù hợp biệt thự, nhà phố – đảm bảo vừa vặn và thẩm mỹ.",
       },
     ],
@@ -59,19 +59,19 @@ const products: Product[] = [
     image: product2,
     features: [
       {
-        title: "🔹THẨM MỸ ĐỈNH CAO",
+        title: "🔹Thẩm Mỹ Tinh Tế",
         desc: "Cabin hiện đại, bảng điều khiển tinh xảo – mang đến vẻ ngoài đẳng cấp cho mọi công trình.",
       },
       {
-        title: "🔹CHUYỂN ĐỘNG ÊM MƯỢT",
+        title: "🔹Chuyển Động Êm Mượt",
         desc: "Công nghệ biến tần và động cơ không hộp số – vận hành mượt mà, tiết kiệm điện năng.",
       },
       {
-        title: "🔹AN TOÀN TOÀN DIỆN",
+        title: "🔹An Toàn Đa Tầng",
         desc: "Hệ thống cảm biến, chống quá tải, cứu hộ tự động – bảo vệ tối đa người dùng.",
       },
       {
-        title: "🔹TÙY BIẾN LINH HOẠT",
+        title: "🔹Tùy Biến Linh Hoạt",
         desc: "Thiết kế đa dạng – dễ dàng tích hợp cho chung cư, văn phòng, khách sạn.",
       },
     ],
@@ -82,19 +82,19 @@ const products: Product[] = [
     image: product4,
     features: [
       {
-        title: "🔹AN TOÀN CHUYÊN BIỆT",
+        title: "🔹An Toàn Chuyên Dụng",
         desc: "Cabin tối ưu cho cáng bệnh, xe lăn – nâng cao trải nghiệm và sự an tâm cho bệnh nhân.",
       },
       {
-        title: "🔹VẬN HÀNH ÊM ÁI",
+        title: "🔹Vận Hành Êm Mượt",
         desc: "Giảm thiểu rung lắc và tiếng ồn – bảo đảm sự yên tĩnh tuyệt đối trong không gian điều trị.",
       },
       {
-        title: "🔹TIỆN ÍCH NHÂN ĐẠO",
+        title: "🔹Tiện Ích Hỗ Trợ",
         desc: "Trang bị tay vịn, sàn chống trượt – hỗ trợ tốt cho người lớn tuổi và người khuyết tật.",
       },
       {
-        title: "🔹VẬT LIỆU CAO CẤP",
+        title: "🔹Chất Liệu Kháng Khuẩn",
         desc: "Chống khuẩn, dễ lau chùi – đáp ứng tiêu chuẩn vệ sinh nghiêm ngặt ngành y tế.",
       },
     ],
@@ -105,19 +105,19 @@ const products: Product[] = [
     image: product6,
     features: [
       {
-        title: "🔹TRẢI NGHIỆM TOÀN CẢNH",
+        title: "🔹Tầm Nhìn Toàn Cảnh",
         desc: "Cabin kính trong suốt – mở ra tầm nhìn ngoạn mục, nâng tầm không gian kiến trúc.",
       },
       {
-        title: "🔹TẠO ĐIỂM NHẤN SANG TRỌNG",
+        title: "🔹Tôn Vinh Kiến Trúc",
         desc: "Lý tưởng cho trung tâm thương mại, khách sạn, resort – khẳng định đẳng cấp công trình.",
       },
       {
-        title: "🔹VẬN HÀNH CHÍNH XÁC",
+        title: "🔹Dừng Tầng Chính Xác",
         desc: "Dừng tầng mượt mà, hành trình êm ái – nâng cao trải nghiệm người dùng.",
       },
       {
-        title: "🔹CÔNG NGHỆ AN TOÀN",
+        title: "🔹Công Nghệ An Toàn",
         desc: "Cảm biến hiện đại, khung thép cường lực – vận hành an toàn trong mọi điều kiện.",
       },
     ],
@@ -128,19 +128,19 @@ const products: Product[] = [
     image: product5,
     features: [
       {
-        title: "🔹VỆ SINH TUYỆT ĐỐI",
-        desc: "Cabin inox khép kín – ngăn lây nhiễm chéo, đảm bảo an toàn thực phẩm tối đa.",
+        title: "🔹Vệ Sinh Khép Kín",
+        desc: "Cabin inox khép kín – ngăn lây nhiễm, đảm bảo vệ sinh an toàn thực phẩm.",
       },
       {
-        title: "🔹ÊM ÁI – ỔN ĐỊNH",
-        desc: "Cơ chế nâng hạ nhẹ nhàng – bảo toàn hình dạng và chất lượng món ăn cao cấp.",
+        title: "🔹Êm Và Ổn Định",
+        desc: "Cơ chế nâng hạ nhẹ nhàng – bảo toàn hình dạng và chất lượng món ăn.",
       },
       {
-        title: "🔹THIẾT KẾ NHỎ GỌN",
-        desc: "Tối ưu không gian – dễ dàng lắp đặt trong nhà hàng, khách sạn, bếp ăn công nghiệp.",
+        title: "🔹Thiết Kế Nhỏ Gọn",
+        desc: "Dễ dàng lắp đặt trong nhà hàng, khách sạn, bếp ăn công nghiệp.",
       },
       {
-        title: "🔹HIỆU SUẤT VƯỢT TRỘI",
+        title: "🔹Hiệu Suất Ưu Việt",
         desc: "Vận chuyển nhanh, chính xác – tăng tốc độ phục vụ và hiệu quả vận hành.",
       },
     ],
@@ -151,20 +151,20 @@ const products: Product[] = [
     image: product3,
     features: [
       {
-        title: "🔹TẢI TRỌNG CỰC ĐẠI",
-        desc: "Hỗ trợ vận chuyển khối lượng lớn – đáp ứng yêu cầu kho xưởng và công trình lớn.",
+        title: "🔹Tải Trọng Lớn",
+        desc: "Hỗ trợ vận chuyển khối lượng lớn, đáp ứng yêu cầu kho xưởng & công trình lớn.",
       },
       {
-        title: "🔹KẾT CẤU SIÊU BỀN",
+        title: "🔹Kết Cấu Bền Vững",
         desc: "Cabin thép chịu lực, cửa rộng mở – dễ dàng cho hàng hóa cồng kềnh.",
       },
       {
-        title: "🔹AN TOÀN CÔNG NGHIỆP",
+        title: "🔹An Toàn Công Trình",
         desc: "Trang bị khóa tầng, cảnh báo quá tải – bảo vệ an toàn tối đa cho người và hàng.",
       },
       {
-        title: "🔹VẬN HÀNH MẠNH MẼ",
-        desc: "Động cơ công suất lớn – tiết kiệm điện, hiệu suất ổn định trong mọi môi trường.",
+        title: "🔹Vận Hành Mạnh Mẽ",
+        desc: "Động cơ công suất lớn – tiết kiệm điện, hiệu suất ổn định cho mọi môi trường.",
       },
     ],
   },
@@ -174,24 +174,25 @@ const products: Product[] = [
     image: product7,
     features: [
       {
-        title: "🔹LUỒNG DI CHUYỂN LIÊN TỤC",
-        desc: "Phù hợp nơi đông đúc – vận hành liên tục, trơn tru suốt giờ cao điểm.",
+        title: "🔹Luồng Di Chuyển Mượt",
+        desc: "Phù hợp lắp đặt nơi đông đúc, vận hành trơn tru suốt giờ cao điểm.",
       },
       {
-        title: "🔹TIÊU CHUẨN AN TOÀN CAO",
+        title: "🔹Chuẩn An Toàn Cao",
         desc: "Tích hợp cảm biến vật cản, nút dừng khẩn – sẵn sàng xử lý mọi tình huống.",
       },
       {
-        title: "🔹DỄ DÀNG CHO MỌI NGƯỜI",
+        title: "🔹Thiết Kế Thân Thiện",
         desc: "Thiết kế thân thiện – hỗ trợ tối đa người già, trẻ em và khách khuyết tật.",
       },
       {
-        title: "🔹TINH TẾ TRONG MỌI KIẾN TRÚC",
-        desc: "Dễ dàng tùy chỉnh độ nghiêng, độ dài – phù hợp mọi không gian nội thất.",
+        title: "🔹Phù Hợp Mọi Không Gian",
+        desc: "Dễ dàng tùy chỉnh độ nghiêng, độ dài – phù hợp với mọi không gian nội thất.",
       },
     ],
   },
 ];
+
 
 const mobileProducts: Product[] = [
   {
@@ -364,6 +365,9 @@ export default function ProductCarouselFullScreen() {
     AOS.init({ duration: 800, once: true, offset: 100 });
   }, []);
 
+  useEffect(() => {
+    AOS.refresh();
+  }, [activeIndex]);
   return (
     <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-20 md:h-[calc(100vh-100px)]">
       {/* Desktop layout */}
@@ -415,10 +419,15 @@ export default function ProductCarouselFullScreen() {
                     alt=""
                     className="absolute top-10 left-0 md:left-18 w-full h-full object-contain pointer-events-none"
                   />
-                  <div className="absolute top-[90px] left-[10px] md:left-[20px] w-[90%] max-w-[300px]">
+                  <div className="absolute top-[90px] left-[10px] md:left-[16px] w-[90%] max-w-[280px]">
                     <ul className="flex flex-col gap-5">
                       {p.features.slice(0, 2).map((f, idx) => (
-                        <li key={idx} className="mb-6">
+                        <li
+                          key={idx}
+                          className="mb-6"
+                          data-aos="fade-right"
+                          data-aos-delay={idx * 200}
+                        >
                           <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                             {f.title}
                           </h1>
@@ -430,9 +439,23 @@ export default function ProductCarouselFullScreen() {
                     </ul>
                     <Link
                       to="/lien-he"
-                      className="mt-6 inline-block border border-[#041E42] text-[#041E42] hover:bg-[#041E42] hover:text-white transition font-inter px-6 py-2"
+                      className="mt-6 group inline-flex items-center gap-2 border border-[#041E42] bg-white px-6 py-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                     >
                       LIÊN HỆ TƯ VẤN
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite]"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
                     </Link>
                   </div>
                 </div>
@@ -443,6 +466,7 @@ export default function ProductCarouselFullScreen() {
                     src={p.image}
                     alt={p.title}
                     className="object-contain z-40 h-[640px] w-[420px] drop-shadow-[0_40px_40px_rgba(0,0,0,0.3)]"
+                    data-aos="fade-up"
                   />
                 </div>
 
@@ -454,10 +478,15 @@ export default function ProductCarouselFullScreen() {
                       alt=""
                       className="absolute top-10 w-full h-full object-contain pointer-events-none"
                     />
-                    <div className="absolute top-[90px] w-[90%] max-w-[300px] right-[10px] md:right-[20px] z-10">
+                    <div className="absolute top-[90px] w-[90%] max-w-[280px] right-[10px] md:right-[16px] z-10">
                       <ul className="flex flex-col gap-5">
                         {p.features.slice(2).map((f, idx) => (
-                          <li key={idx} className="mb-6">
+                           <li
+                            key={idx}
+                            className="mb-6"
+                            data-aos="fade-right"
+                            data-aos-delay={idx * 200}
+                          >
                             <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                               {f.title}
                             </h1>
@@ -469,9 +498,23 @@ export default function ProductCarouselFullScreen() {
                       </ul>
                       <Link
                         to={`/san-pham/${p.slug}`}
-                        className="mt-6 inline-block border border-[#041E42] text-white bg-[#041E42] hover:bg-white hover:text-[#041E42] font-inter px-6 py-2 transition"
+                        className="mt-6 group inline-flex items-center gap-2 border border-[#041E42] bg-[#041E42] px-6 py-2 font-inter font-semibold text-white hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                       >
                         TÌM HIỂU THÊM
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite] group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
                       </Link>
                     </div>
                   </div>
@@ -501,7 +544,12 @@ export default function ProductCarouselFullScreen() {
                 />
                 <ul className="text-left w-full max-w-md">
                   {p.features.map((f, idx) => (
-                    <li key={idx} className="mb-3">
+                     <li
+                      key={idx}
+                      className="mb-3"
+                      data-aos="fade-right"
+                      data-aos-delay={idx * 200}
+                    >
                       <h1 className="text-[#041E42] font-inter font-bold text-sm mb-1">
                         {f.title}
                       </h1>
@@ -514,15 +562,43 @@ export default function ProductCarouselFullScreen() {
                 <div className="flex flex-wrap justify-center gap-4 mt-2">
                   <Link
                     to="/lien-he"
-                    className="border border-[#041E42] text-[#041E42] hover:bg-[#041E42] hover:text-white transition font-inter px-4 py-2"
+                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-white px-4 py-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                   >
                     LIÊN HỆ TƯ VẤN
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </Link>
                   <Link
                     to={`/san-pham/${p.slug}`}
-                    className="border border-[#041E42] bg-[#041E42] text-white hover:bg-white hover:text-[#041E42] transition font-inter px-4 py-2"
+                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-[#041E42] px-4 py-2 font-inter font-semibold text-white hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                   >
                     TÌM HIỂU THÊM
+                     <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite] group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </Link>
                 </div>
               </div>
