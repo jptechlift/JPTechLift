@@ -357,7 +357,6 @@ const mobileProducts: Product[] = [
   },
 ];
 
-
 export default function ProductCarouselFullScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -366,13 +365,11 @@ export default function ProductCarouselFullScreen() {
   }, []);
 
   return (
-     <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
+    <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
       {/* Desktop layout */}
       <div className="relative hidden h-full md:flex">
         {/* Navigation sidebar */}
-        <div
-          className="w-full mr-10 md:w-[300px] max-[1499px]:w-[240px] max-[1350px]:w-[220px] z-10 flex flex-col justify-start h-auto md:h-full transition-all duration-300"
-        >
+        <div className="w-full mr-10 md:w-[300px] max-[1499px]:w-[240px] max-[1350px]:w-[220px] z-10 flex flex-col justify-start h-auto md:h-full transition-all duration-300">
           <img src={logo} alt="logo" className="h-16 mb-6 mx-auto" />
           <h2 className="text-[24px] md:text-[28px] font-inter font-bold text-[#041E42] uppercase mb-4 text-center">
             SẢN PHẨM
@@ -405,9 +402,12 @@ export default function ProductCarouselFullScreen() {
         >
           {products.map((p, i) => (
             <SwiperSlide key={i}>
-              <div
-                className="relative md:ml-10 grid grid-cols-1 pl-8 md:grid-cols-[300px_420px_400px] max-[1499px]:grid-cols-[240px_420px_400px] max-[1350px]:grid-cols-[220px_420px_400px] gap-10 items-start justify-center h-full min-h-[600px] md:min-h-[700px] overflow-hidden"
-              >
+              <div className="relative md:ml-10 grid grid-cols-1 pl-8 md:grid-cols-[300px_420px_400px] max-[1499px]:grid-cols-[240px_420px_400px] max-[1350px]:grid-cols-[220px_420px_400px] gap-10 items-start justify-center h-full min-h-[600px] md:min-h-[700px] overflow-hidden">
+                <img
+                  src={productShadow}
+                  alt=""
+                  className="absolute bottom-44 left-1/2 -translate-x-1/2 w-full max-w-[900px] z-0 pointer-events-none"
+                />
                 {/* LEFT BLOCK */}
                 <div className="relative left-0 md:left-8 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
                   <img
@@ -422,7 +422,9 @@ export default function ProductCarouselFullScreen() {
                           <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                             {f.title}
                           </h1>
-                          <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
+                          <p className="text-[#0D1B2A] font-nunito text-base">
+                            {f.desc}
+                          </p>
                         </li>
                       ))}
                     </ul>
@@ -459,7 +461,9 @@ export default function ProductCarouselFullScreen() {
                             <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                               {f.title}
                             </h1>
-                            <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
+                            <p className="text-[#0D1B2A] font-nunito text-base">
+                              {f.desc}
+                            </p>
                           </li>
                         ))}
                       </ul>
