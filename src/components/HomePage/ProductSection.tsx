@@ -365,7 +365,7 @@ export default function ProductCarouselFullScreen() {
   }, []);
 
   return (
-    <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
+    <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-20 md:h-[calc(100vh-100px)]">
       {/* Desktop layout */}
       <div className="relative hidden h-full md:flex">
         {/* Navigation sidebar */}
@@ -406,10 +406,10 @@ export default function ProductCarouselFullScreen() {
                 <img
                   src={productShadow}
                   alt=""
-                  className="absolute bottom-44 left-1/2 -translate-x-1/2 w-full max-w-[900px] z-0 pointer-events-none"
+                  className="ml-10 absolute bottom-44 left-1/2 -translate-x-1/2 w-full max-w-[900px] z-0 pointer-events-none"
                 />
                 {/* LEFT BLOCK */}
-                <div className="relative left-0 md:left-8 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
+                <div className="relative left-0 md:left-28 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] md:mx-0">
                   <img
                     src={patternLeft}
                     alt=""
@@ -438,16 +438,16 @@ export default function ProductCarouselFullScreen() {
                 </div>
 
                 {/* IMAGE CENTER */}
-                <div className="flex justify-center md:justify-start items-start h-full w-full max-[1499px]:min-w-[420px]">
+                <div className="flex ml-14 justify-center items-start h-full w-full max-[1499px]:min-w-[420px]">
                   <img
                     src={p.image}
                     alt={p.title}
-                    className="object-contain z-30 h-[640px] w-[420px] drop-shadow-[0_40px_40px_rgba(0,0,0,0.3)]"
+                    className="object-contain z-40 h-[640px] w-[420px] drop-shadow-[0_40px_40px_rgba(0,0,0,0.3)]"
                   />
                 </div>
 
                 {/* RIGHT BLOCK */}
-                <div className="relative right-0 md:right-32 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
+                <div className="relative right-0 md:right-20 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
                   <div className="relative w-full h-full">
                     <img
                       src={patternRight}
