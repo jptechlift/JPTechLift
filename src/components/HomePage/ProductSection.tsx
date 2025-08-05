@@ -325,14 +325,23 @@ export default function ProductCarouselFullScreen() {
           {products.map((p, i) => (
             <SwiperSlide key={i}>
               <div className="flex flex-col items-center py-6">
-                <img src={p.image} alt={p.title} className="w-full max-w-xs h-auto mb-6" />
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="w-full max-w-xs h-64 object-contain mb-6"
+                />
                 <ul className="text-left w-full max-w-md">
                   {p.features.map((f, idx) => (
                     <li key={idx} className="mb-4">
                       <h1 className="text-[#041E42] font-inter font-bold mb-1">
                         {f.title}
                       </h1>
-                      <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
+                      <p
+                        className="text-[#0D1B2A] font-nunito text-base overflow-hidden text-ellipsis min-h-[48px]"
+                        style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}
+                      >
+                        {f.desc}
+                      </p>
                     </li>
                   ))}
                 </ul>
