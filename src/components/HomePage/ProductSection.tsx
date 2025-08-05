@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -360,6 +361,7 @@ const mobileProducts: Product[] = [
 
 export default function ProductCarouselFullScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const swiperRef = useRef<SwiperType>();
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true, offset: 100 });
@@ -382,7 +384,10 @@ export default function ProductCarouselFullScreen() {
             {products.map((prod, idx) => (
               <button
                 key={idx}
-                onClick={() => setActiveIndex(idx)}
+                onClick={() => {
+                  setActiveIndex(idx);
+                  swiperRef.current?.slideToLoop(idx);
+                }}
                 className={`text-left px-4 py-2 border text-sm font-semibold transition-all duration-200 uppercase ${
                   idx === activeIndex
                     ? "bg-[#CBA052] text-white"
@@ -397,10 +402,13 @@ export default function ProductCarouselFullScreen() {
 
         {/* Carousel content */}
         <Swiper
-          modules={[Navigation]}
+      modules={[Navigation, Autoplay]}
           slidesPerView={1}
           navigation={false}
-          onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+           loop
+          autoplay={{ delay: 6000, disableOnInteraction: false }}
           initialSlide={activeIndex}
           className="flex-1 h-full"
         >
@@ -533,7 +541,13 @@ export default function ProductCarouselFullScreen() {
             SẢN PHẨM
           </h2>
         </div>
-        <Swiper modules={[Navigation]} slidesPerView={1} className="w-full">
+       <Swiper
+          modules={[Navigation, Autoplay]}
+          slidesPerView={1}
+          loop
+          autoplay={{ delay: 6000, disableOnInteraction: false }}
+          className="w-full"
+        >
           {mobileProducts.map((p, i) => (
             <SwiperSlide key={i}>
               <div className="flex flex-col items-center py-2">
