@@ -556,6 +556,9 @@ export default function ProductCarouselFullScreen() {
                   alt={p.title}
                   className="w-full max-w-xs h-72 object-contain mb-8"
                 />
+                <h1 className="text-[#041E42] font-inter font-bold text-lg mb-4 text-center">
+                  {p.title}
+                </h1>
                 <ul className="text-left w-full max-w-md">
                   {p.features.map((f, idx) => (
                      <li
@@ -573,12 +576,12 @@ export default function ProductCarouselFullScreen() {
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap justify-center gap-4 mt-2">
+                <div className="grid grid-cols-2 justify-center gap-4 mt-2">
                   <Link
                     to="/lien-he"
-                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-white px-4 py-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
+                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-white px-2 mr-4 my-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                   >
-                    LIÊN HỆ TƯ VẤN
+                    LIÊN HỆ
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite]"
