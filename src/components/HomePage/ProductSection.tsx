@@ -361,7 +361,7 @@ const mobileProducts: Product[] = [
 
 export default function ProductCarouselFullScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const swiperRef = useRef<SwiperType>();
+  const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
     AOS.init({ duration: 800, once: true, offset: 100 });
