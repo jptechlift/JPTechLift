@@ -370,8 +370,7 @@ export default function ProductCarouselFullScreen() {
     AOS.refresh();
   }, [activeIndex]);
   return (
-    <section className="pt-10 w-full h-[780px] bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-20">
-      {/* Desktop layout */}
+  <section className="pt-10 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative md:h-[780px] md:overflow-hidden md:pl-20">      {/* Desktop layout */}
       <div className="relative hidden h-full md:flex">
         {/* Navigation sidebar */}
         <div className="w-full mr-10 md:w-[300px] max-[1499px]:w-[240px] max-[1350px]:w-[220px] z-10 flex flex-col justify-start h-auto md:h-full transition-all duration-300">
