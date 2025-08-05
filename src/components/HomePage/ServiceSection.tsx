@@ -93,7 +93,7 @@ export default function ServiceSection() {
   }, []);
 
   return (
-    <section className="pt-10 pb-14 overflow-hidden bg-texture-bg bg-texture-pattern bg-[length:8px_8px] px-4">
+    <section className="pb-14 overflow-hidden bg-texture-bg bg-texture-pattern bg-[length:8px_8px] px-4">
       <h1
         className=" font-inter font-semibold md:font-medium md:text-[36px] text-[30px] uppercase text-center mb-5 md:mb-10 text-[#041E42] md:text-black"
         data-aos="fade-up"
@@ -108,7 +108,7 @@ export default function ServiceSection() {
 
       {/* PC Layout */}
       <div
-        className="hidden md:grid lg:grid-cols-4 grid-cols-2 gap-6 max-w-[1280px] mx-auto"
+        className="justify-center hidden md:grid lg:grid-cols-4 grid-cols-2 gap-6 max-w-[1280px] mx-auto"
         data-aos="fade-up"
         data-aos-delay="200"
       >
