@@ -194,7 +194,6 @@ const products: Product[] = [
   },
 ];
 
-
 const mobileProducts: Product[] = [
   {
     title: "Thang Máy Gia Đình",
@@ -402,12 +401,12 @@ export default function ProductCarouselFullScreen() {
 
         {/* Carousel content */}
         <Swiper
-      modules={[Navigation, Autoplay]}
+          modules={[Navigation, Autoplay]}
           slidesPerView={1}
           navigation={false}
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-           loop
+          loop
           autoplay={{ delay: 6000, disableOnInteraction: false }}
           initialSlide={activeIndex}
           className="flex-1 h-full"
@@ -489,7 +488,7 @@ export default function ProductCarouselFullScreen() {
                     <div className="absolute top-[90px] w-[90%] max-w-[280px] right-[10px] md:right-[16px] z-10">
                       <ul className="flex flex-col gap-5">
                         {p.features.slice(2).map((f, idx) => (
-                           <li
+                          <li
                             key={idx}
                             className="mb-6"
                             data-aos="fade-right"
@@ -541,7 +540,7 @@ export default function ProductCarouselFullScreen() {
             SẢN PHẨM
           </h2>
         </div>
-       <Swiper
+        <Swiper
           modules={[Navigation, Autoplay]}
           slidesPerView={1}
           loop
@@ -559,9 +558,14 @@ export default function ProductCarouselFullScreen() {
                 <h1 className="text-[#041E42] font-inter font-bold text-lg mb-4 text-center">
                   {p.title}
                 </h1>
+                <span
+                  className="w-16 h-1 bg-[#CBA052] mx-auto mb-6 md:mb-20 rounded"
+                  data-aos="fade-up"
+                  data-aos-delay="100"
+                />
                 <ul className="text-left w-full max-w-md">
                   {p.features.map((f, idx) => (
-                     <li
+                    <li
                       key={idx}
                       className="mb-3"
                       data-aos="fade-right"
@@ -576,10 +580,10 @@ export default function ProductCarouselFullScreen() {
                     </li>
                   ))}
                 </ul>
-                <div className="grid grid-cols-2 justify-center gap-4 mt-2">
+                <div className="flex w-full max-w-md gap-4 mt-2">
                   <Link
                     to="/lien-he"
-                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-white px-2 mr-4 my-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
+                    className="flex-1 whitespace-nowrap group inline-flex justify-center items-center gap-2 border border-[#041E42] bg-white px-2 py-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                   >
                     LIÊN HỆ
                     <svg
@@ -599,10 +603,10 @@ export default function ProductCarouselFullScreen() {
                   </Link>
                   <Link
                     to={`/san-pham/${p.slug}`}
-                    className="group inline-flex items-center gap-2 border border-[#041E42] bg-[#041E42] px-4 py-2 font-inter font-semibold text-white hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
+                    className="flex-1 whitespace-nowrap group inline-flex justify-center items-center gap-2 border border-[#041E42] bg-[#041E42] px-2 py-2 font-inter font-semibold text-white hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
                   >
                     TÌM HIỂU THÊM
-                     <svg
+                    <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="w-4 h-4 animate-[wiggle_1s_ease-in-out_infinite] group-hover:translate-x-1 transition-transform"
                       fill="none"
