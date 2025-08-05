@@ -193,6 +193,171 @@ const products: Product[] = [
   },
 ];
 
+const mobileProducts: Product[] = [
+  {
+    title: "Thang Máy Gia Đình",
+    slug: "thang-may-gia-dinh",
+    image: product1,
+    features: [
+      {
+        title: "🔹SANG TRỌNG – ĐẲNG CẤP",
+        desc: "Kiến tạo không gian hiện đại, thiết kế sang trọng tinh tế.",
+      },
+      {
+        title: "🔹AN TOÀN TUYỆT ĐỐI",
+        desc: "Vận hành an toàn, bảo vệ những người bạn yêu thương.",
+      },
+      {
+        title: "🔹VẬN HÀNH ÊM ÁI",
+        desc: "Công nghệ tiên tiến giúp vận hành mượt mà, giảm tiếng ồn.",
+      },
+      {
+        title: "🔹TỐI ƯU KHÔNG GIAN",
+        desc: "Phù hợp biệt thự, nhà phố, đảm bảo vừa vặn thẩm mỹ.",
+      },
+    ],
+  },
+  {
+    title: "Thang Máy Hành Khách",
+    slug: "thang-may-hanh-khach",
+    image: product2,
+    features: [
+      {
+        title: "🔹THẨM MỸ ĐỈNH CAO",
+        desc: "Cabin hiện đại, bảng điều khiển tinh xảo, vẻ ngoài đẳng cấp.",
+      },
+      {
+        title: "🔹CHUYỂN ĐỘNG ÊM MƯỢT",
+        desc: "Biến tần, động cơ không hộp số, vận hành êm, tiết kiệm.",
+      },
+      {
+        title: "🔹AN TOÀN TOÀN DIỆN",
+        desc: "Chống quá tải và cứu hộ tự động bảo vệ an toàn.",
+      },
+      {
+        title: "🔹TÙY BIẾN LINH HOẠT",
+        desc: "Thiết kế đa dạng, phù hợp chung cư, văn phòng, khách sạn.",
+      },
+    ],
+  },
+  {
+    title: "Thang Máy Bệnh Viện",
+    slug: "thang-may-benh-vien",
+    image: product4,
+    features: [
+      {
+        title: "🔹AN TOÀN CHUYÊN BIỆT",
+        desc: "Cabin tối ưu cho cáng bệnh, xe lăn, an tâm bệnh nhân.",
+      },
+      {
+        title: "🔹VẬN HÀNH ÊM ÁI",
+        desc: "Giảm rung lắc và tiếng ồn, giữ yên tĩnh trong điều trị.",
+      },
+      {
+        title: "🔹TIỆN ÍCH NHÂN ĐẠO",
+        desc: "Tay vịn, sàn chống trượt hỗ trợ người già và khuyết tật.",
+      },
+      {
+        title: "🔹VẬT LIỆU CAO CẤP",
+        desc: "Chống khuẩn, dễ lau chùi, đáp ứng tiêu chuẩn vệ sinh.",
+      },
+    ],
+  },
+  {
+    title: "Thang Máy Quan Sát",
+    slug: "thang-may-quan-sat",
+    image: product6,
+    features: [
+      {
+        title: "🔹TRẢI NGHIỆM TOÀN CẢNH",
+        desc: "Cabin kính trong suốt mở tầm nhìn ngoạn mục, nâng không gian.",
+      },
+      {
+        title: "🔹TẠO ĐIỂM NHẤN SANG TRỌNG",
+        desc: "Hợp trung tâm thương mại, khách sạn, resort, khẳng định đẳng cấp.",
+      },
+      {
+        title: "🔹VẬN HÀNH CHÍNH XÁC",
+        desc: "Dừng tầng mượt mà, hành trình êm ái nâng trải nghiệm.",
+      },
+      {
+        title: "🔹CÔNG NGHỆ AN TOÀN",
+        desc: "Cảm biến hiện đại, khung thép cường lực vận hành an toàn.",
+      },
+    ],
+  },
+  {
+    title: "Thang Máy Thực Phẩm",
+    slug: "thang-tai-thuc-pham",
+    image: product5,
+    features: [
+      {
+        title: "🔹VỆ SINH TUYỆT ĐỐI",
+        desc: "Cabin inox khép kín ngăn lây nhiễm, giữ an toàn thực phẩm.",
+      },
+      {
+        title: "🔹ÊM ÁI – ỔN ĐỊNH",
+        desc: "Nâng hạ nhẹ nhàng, giữ nguyên hình dạng và chất lượng món.",
+      },
+      {
+        title: "🔹THIẾT KẾ NHỎ GỌN",
+        desc: "Tối ưu không gian, lắp trong nhà hàng, khách sạn, bếp ăn.",
+      },
+      {
+        title: "🔹HIỆU SUẤT VƯỢT TRỘI",
+        desc: "Vận chuyển nhanh, chính xác, tăng tốc độ phục vụ hiệu quả.",
+      },
+    ],
+  },
+  {
+    title: "Thang Máy Tải Hàng",
+    slug: "thang-may-tai-hang",
+    image: product3,
+    features: [
+      {
+        title: "🔹TẢI TRỌNG CỰC ĐẠI",
+        desc: "Vận chuyển khối lượng lớn, đáp ứng nhu cầu kho xưởng lớn.",
+      },
+      {
+        title: "🔹KẾT CẤU SIÊU BỀN",
+        desc: "Cabin thép chịu lực, cửa rộng, tiện cho hàng hóa lớn.",
+      },
+      {
+        title: "🔹AN TOÀN CÔNG NGHIỆP",
+        desc: "Khóa tầng, cảnh báo quá tải bảo vệ an toàn người hàng.",
+      },
+      {
+        title: "🔹VẬN HÀNH MẠNH MẼ",
+        desc: "Động cơ công suất lớn, tiết kiệm điện, hiệu suất ổn định.",
+      },
+    ],
+  },
+  {
+    title: "Thang Trượt – Thang Cuốn",
+    slug: "thang-truot-thang-cuon",
+    image: product7,
+    features: [
+      {
+        title: "🔹LUỒNG DI CHUYỂN LIÊN TỤC",
+        desc: "Phù hợp nơi đông đúc, vận hành liên tục trơn tru suốt.",
+      },
+      {
+        title: "🔹TIÊU CHUẨN AN TOÀN CAO",
+        desc: "Cảm biến vật cản, nút dừng khẩn, xử lý mọi tình huống.",
+      },
+      {
+        title: "🔹DỄ DÀNG CHO MỌI NGƯỜI",
+        desc: "Thiết kế thân thiện cho người già, trẻ em, khách khuyết tật.",
+      },
+      {
+        title: "🔹TINH TẾ TRONG MỌI KIẾN TRÚC",
+        desc: "Tùy chỉnh độ nghiêng, độ dài phù hợp mọi không gian nội.",
+      },
+    ],
+  },
+];
+
+
 export default function ProductCarouselFullScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -201,7 +366,7 @@ export default function ProductCarouselFullScreen() {
   }, []);
 
   return (
-     <section className="pt-10 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
+     <section className="pt-10 pb-14 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
       {/* Desktop layout */}
       <div className="relative hidden h-full md:flex">
         {/* Navigation sidebar */}
@@ -322,30 +487,27 @@ export default function ProductCarouselFullScreen() {
           </h2>
         </div>
         <Swiper modules={[Navigation]} slidesPerView={1} className="w-full">
-          {products.map((p, i) => (
+          {mobileProducts.map((p, i) => (
             <SwiperSlide key={i}>
-              <div className="flex flex-col items-center py-6">
+              <div className="flex flex-col items-center py-2">
                 <img
                   src={p.image}
                   alt={p.title}
-                  className="w-full max-w-xs h-64 object-contain mb-6"
+                  className="w-full max-w-xs h-72 object-contain mb-8"
                 />
                 <ul className="text-left w-full max-w-md">
                   {p.features.map((f, idx) => (
-                    <li key={idx} className="mb-4">
-                      <h1 className="text-[#041E42] font-inter font-bold mb-1">
+                    <li key={idx} className="mb-3">
+                      <h1 className="text-[#041E42] font-inter font-bold text-sm mb-1">
                         {f.title}
                       </h1>
-                      <p
-                        className="text-[#0D1B2A] font-nunito text-base overflow-hidden text-ellipsis min-h-[48px]"
-                        style={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}
-                      >
+                      <p className="text-[#0D1B2A] font-nunito text-xs">
                         {f.desc}
                       </p>
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap justify-center gap-4 mt-6">
+                <div className="flex flex-wrap justify-center gap-4 mt-2">
                   <Link
                     to="/lien-he"
                     className="border border-[#041E42] text-[#041E42] hover:bg-[#041E42] hover:text-white transition font-inter px-4 py-2"
