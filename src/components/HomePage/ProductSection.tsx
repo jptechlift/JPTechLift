@@ -201,22 +201,15 @@ export default function ProductCarouselFullScreen() {
   }, []);
 
   return (
-    <section className="pt-10 w-full min-[769px]:pl-28 h-[calc(100vh-100px)] bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden">
-      <div className="relative flex h-full">
+     <section className="pt-10 w-full bg-texture-bg bg-texture-pattern bg-[length:8px_8px] relative overflow-hidden md:pl-28 md:h-[calc(100vh-100px)]">
+      {/* Desktop layout */}
+      <div className="relative hidden h-full md:flex">
         {/* Navigation sidebar */}
         <div
-          className="
-            w-full mr-10
-            min-[769px]:w-[300px]
-            max-[1499px]:w-[240px]
-            max-[1350px]:w-[220px]
-            z-10 flex flex-col justify-start
-            h-auto min-[769px]:h-full
-            transition-all duration-300
-          "
+          className="w-full mr-10 md:w-[300px] max-[1499px]:w-[240px] max-[1350px]:w-[220px] z-10 flex flex-col justify-start h-auto md:h-full transition-all duration-300"
         >
           <img src={logo} alt="logo" className="h-16 mb-6 mx-auto" />
-          <h2 className="text-[24px] min-[769px]:text-[28px] font-inter font-bold text-[#041E42] uppercase mb-4 text-center">
+          <h2 className="text-[24px] md:text-[28px] font-inter font-bold text-[#041E42] uppercase mb-4 text-center">
             SẢN PHẨM
           </h2>
           <div className="flex flex-col gap-2 border border-[#041E42] p-1">
@@ -224,12 +217,11 @@ export default function ProductCarouselFullScreen() {
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
-                className={`text-left px-4 py-2 border text-sm font-semibold transition-all duration-200 uppercase
-                  ${
-                    idx === activeIndex
-                      ? "bg-[#CBA052] text-white"
-                      : "border-[#041E42] text-[#041E42] hover:bg-[#f2f2f2]"
-                  }`}
+                className={`text-left px-4 py-2 border text-sm font-semibold transition-all duration-200 uppercase ${
+                  idx === activeIndex
+                    ? "bg-[#CBA052] text-white"
+                    : "border-[#041E42] text-[#041E42] hover:bg-[#f2f2f2]"
+                }`}
               >
                 {prod.title}
               </button>
@@ -249,37 +241,23 @@ export default function ProductCarouselFullScreen() {
           {products.map((p, i) => (
             <SwiperSlide key={i}>
               <div
-                className="
-                  relative min-[769px]:ml-10
-                  grid grid-cols-1 pl-8
-                  min-[769px]:grid-cols-[300px_420px_400px]
-                  max-[1499px]:grid-cols-[240px_420px_400px]
-                  max-[1350px]:grid-cols-[220px_420px_400px]
-                  gap-10 items-start justify-center
-                  h-full min-h-[600px] md:min-h-[700px] overflow-hidden
-                "
+                className="relative md:ml-10 grid grid-cols-1 pl-8 md:grid-cols-[300px_420px_400px] max-[1499px]:grid-cols-[240px_420px_400px] max-[1350px]:grid-cols-[220px_420px_400px] gap-10 items-start justify-center h-full min-h-[600px] md:min-h-[700px] overflow-hidden"
               >
                 {/* LEFT BLOCK */}
-                <div
-                  className="relative left-0 min-[769px]:left-8 z-10 w-full
-                    min-[769px]:w-[400px] max-[1499px]:w-[400px] h-[540px]
-                    mx-auto min-[769px]:mx-0"
-                >
+                <div className="relative left-0 md:left-8 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
                   <img
                     src={patternLeft}
                     alt=""
-                    className="absolute top-10 left-0 min-[769px]:left-18 w-full h-full object-contain pointer-events-none"
+                    className="absolute top-10 left-0 md:left-18 w-full h-full object-contain pointer-events-none"
                   />
-                  <div className="absolute top-[90px] left-[10px] min-[769px]:left-[20px] w-[90%] max-w-[300px]">
+                  <div className="absolute top-[90px] left-[10px] md:left-[20px] w-[90%] max-w-[300px]">
                     <ul className="flex flex-col gap-5">
                       {p.features.slice(0, 2).map((f, idx) => (
                         <li key={idx} className="mb-6">
                           <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                             {f.title}
                           </h1>
-                          <p className="text-[#0D1B2A] font-nunito text-base">
-                            {f.desc}
-                          </p>
+                          <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
                         </li>
                       ))}
                     </ul>
@@ -293,7 +271,7 @@ export default function ProductCarouselFullScreen() {
                 </div>
 
                 {/* IMAGE CENTER */}
-                <div className="flex justify-center min-[769px]:justify-start items-start  h-full w-full max-[1499px]:min-w-[420px]">
+                <div className="flex justify-center md:justify-start items-start h-full w-full max-[1499px]:min-w-[420px]">
                   <img
                     src={p.image}
                     alt={p.title}
@@ -302,27 +280,21 @@ export default function ProductCarouselFullScreen() {
                 </div>
 
                 {/* RIGHT BLOCK */}
-                <div
-                  className="relative right-0 min-[769px]:right-32 z-10 w-full
-                    min-[769px]:w-[400px] max-[1499px]:w-[400px] h-[540px]
-                    mx-auto min-[769px]:mx-0"
-                >
+                <div className="relative right-0 md:right-32 z-10 w-full md:w-[400px] max-[1499px]:w-[400px] h-[540px] mx-auto md:mx-0">
                   <div className="relative w-full h-full">
                     <img
                       src={patternRight}
                       alt=""
                       className="absolute top-10 w-full h-full object-contain pointer-events-none"
                     />
-                    <div className="absolute top-[90px] w-[90%] max-w-[300px] right-[10px] min-[769px]:right-[20px] z-10">
+                    <div className="absolute top-[90px] w-[90%] max-w-[300px] right-[10px] md:right-[20px] z-10">
                       <ul className="flex flex-col gap-5">
                         {p.features.slice(2).map((f, idx) => (
                           <li key={idx} className="mb-6">
                             <h1 className="text-[#041E42] font-inter font-bold text-xl mb-2">
                               {f.title}
                             </h1>
-                            <p className="text-[#0D1B2A] font-nunito text-base">
-                              {f.desc}
-                            </p>
+                            <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
                           </li>
                         ))}
                       </ul>
@@ -334,6 +306,49 @@ export default function ProductCarouselFullScreen() {
                       </Link>
                     </div>
                   </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {/* Mobile layout */}
+      <div className="md:hidden px-4">
+        <div className="text-center">
+          <img src={logo} alt="logo" className="h-12 mb-4 mx-auto" />
+          <h2 className="text-2xl font-inter font-bold text-[#041E42] uppercase mb-4">
+            SẢN PHẨM
+          </h2>
+        </div>
+        <Swiper modules={[Navigation]} slidesPerView={1} className="w-full">
+          {products.map((p, i) => (
+            <SwiperSlide key={i}>
+              <div className="flex flex-col items-center py-6">
+                <img src={p.image} alt={p.title} className="w-full max-w-xs h-auto mb-6" />
+                <ul className="text-left w-full max-w-md">
+                  {p.features.map((f, idx) => (
+                    <li key={idx} className="mb-4">
+                      <h1 className="text-[#041E42] font-inter font-bold mb-1">
+                        {f.title}
+                      </h1>
+                      <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap justify-center gap-4 mt-6">
+                  <Link
+                    to="/lien-he"
+                    className="border border-[#041E42] text-[#041E42] hover:bg-[#041E42] hover:text-white transition font-inter px-4 py-2"
+                  >
+                    LIÊN HỆ TƯ VẤN
+                  </Link>
+                  <Link
+                    to={`/san-pham/${p.slug}`}
+                    className="border border-[#041E42] bg-[#041E42] text-white hover:bg-white hover:text-[#041E42] transition font-inter px-4 py-2"
+                  >
+                    TÌM HIỂU THÊM
+                  </Link>
                 </div>
               </div>
             </SwiperSlide>
