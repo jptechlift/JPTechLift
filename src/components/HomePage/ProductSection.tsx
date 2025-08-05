@@ -314,29 +314,33 @@ export default function ProductCarouselFullScreen() {
       </div>
 
       {/* Mobile layout */}
-      <div className="md:hidden px-4">
-        <div className="text-center">
-          <img src={logo} alt="logo" className="h-12 mb-4 mx-auto" />
-          <h2 className="text-2xl font-inter font-bold text-[#041E42] uppercase mb-4">
+      <div className="md:hidden px-4 h-screen flex flex-col">
+        <div className="text-center mb-4">
+          <img src={logo} alt="logo" className="h-12 mb-2 mx-auto" />
+          <h2 className="text-2xl font-inter font-bold text-[#041E42] uppercase">
             SẢN PHẨM
           </h2>
         </div>
-        <Swiper modules={[Navigation]} slidesPerView={1} className="w-full">
+        <Swiper modules={[Navigation]} slidesPerView={1} className="flex-1">
           {products.map((p, i) => (
-            <SwiperSlide key={i}>
-              <div className="flex flex-col items-center py-6">
-                <img src={p.image} alt={p.title} className="w-full max-w-xs h-auto mb-6" />
-                <ul className="text-left w-full max-w-md">
+            <SwiperSlide key={i} className="h-full">
+              <div className="flex flex-col items-center h-full">
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="h-52 w-auto mb-4 object-contain"
+                />
+                <ul className="flex-1 overflow-y-auto text-left w-full max-w-md text-sm">
                   {p.features.map((f, idx) => (
                     <li key={idx} className="mb-4">
-                      <h1 className="text-[#041E42] font-inter font-bold mb-1">
+                      <h1 className="text-[#041E42] font-inter font-bold text-base mb-1">
                         {f.title}
                       </h1>
-                      <p className="text-[#0D1B2A] font-nunito text-base">{f.desc}</p>
+                      <p className="text-[#0D1B2A] font-nunito text-sm">{f.desc}</p>
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap justify-center gap-4 mt-6">
+                <div className="flex flex-wrap justify-center gap-4 mt-4 mb-6">
                   <Link
                     to="/lien-he"
                     className="border border-[#041E42] text-[#041E42] hover:bg-[#041E42] hover:text-white transition font-inter px-4 py-2"
