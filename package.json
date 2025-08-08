@@ -56,9 +56,10 @@
     "tailwindcss": "^3.4.4",
     "tailwindcss-cli": "^0.1.2",
     "tsx": "^4.20.3",
-    "typescript": "~5.8.3",
+    "typescript": "^5.9.2",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0",
+    "vite-plugin-ssr": "^0.4.51",
     "vitest": "^3.2.4"
   },
   "homepage": "https://baodhg.github.io/JPTechLift-WebApp",

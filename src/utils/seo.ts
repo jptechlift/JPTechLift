@@ -7,5 +7,6 @@ export function getSeoMeta(
   if (audience && product.seoVariants && product.seoVariants[audience]) {
     return product.seoVariants[audience];
   }
+  console.log("[SEO]", product.seo.metaDescription);
   return product.seo;
 }

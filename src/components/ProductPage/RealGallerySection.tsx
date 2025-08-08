@@ -19,18 +19,23 @@ export default function RealGallerySection({ images }: Props) {
 
         <div className={styles["real-gallery__text"]}>
           <h3>
-            Trải Nghiệm Thực Tế <br /> Lắp đặt Thang Máy Tại Công Trình
+            Lắp Đặt Thực Tế <br /> Tại Công Trình
           </h3>
-          <p>
+
+          <p className={styles["real-gallery__paragraph"]}>
+            {" "}
             Mỗi công trình là một hành trình riêng: từ khảo sát thực tế, lên phương án thi công, cho đến khi vận hành
             trơn tru và bàn giao cho khách hàng.
           </p>
-          <p>Chúng tôi luôn đặt tiêu chí an toàn – tối ưu – thẩm mỹ lên hàng đầu trong từng bước triển khai.</p>
-          <p>
+          <p className={styles["real-gallery__paragraph"]}>
+            Chúng tôi luôn đặt tiêu chí an toàn – tối ưu – thẩm mỹ lên hàng đầu trong từng bước triển khai.
+          </p>
+          <p className={styles["real-gallery__paragraph"]}>
+            {" "}
             Thang máy có thể được lắp đặt trong nhà hoặc ngoài trời. Thiết kế linh hoạt theo không gian và nhu cầu sử
             dụng.
           </p>
-          <p>
+          <p className={styles["real-gallery__paragraph"]}>
             Muốn hiểu rõ hơn về cách chọn thang máy đúng nhu cầu? Đừng bỏ qua những bài viết chuyên sâu và kinh nghiệm
             thực tế từ đội ngũ của chúng tôi.
           </p>
@@ -44,7 +49,7 @@ export default function RealGallerySection({ images }: Props) {
             >
               <button>ẢNH THỰC TẾ</button>
             </a>
-           <button onClick={() => navigate("/tin-tuc-thang-may")}>MỤC TIN TỨC</button>
+            <button onClick={() => navigate("/tin-tuc-thang-may")}>MỤC TIN TỨC</button>
           </div>
         </div>
       </div>

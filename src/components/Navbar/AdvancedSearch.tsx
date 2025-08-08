@@ -10,7 +10,6 @@ interface Props {
   scrolled?: boolean;
 }
 
-
 const typeIcons: Record<SearchItem["type"], string> = {
   "Sản phẩm": "📦 ",
   "Dịch vụ": "🛠 ",
@@ -31,7 +30,7 @@ export default function AdvancedSearch({ isOpen, setIsOpen, scrolled }: Props) {
     text
       .toLowerCase()
       .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "")
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/đ/g, "d")
       .replace(/Đ/g, "D");
 

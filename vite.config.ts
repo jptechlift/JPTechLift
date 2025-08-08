@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import ssr from "vite-plugin-ssr/plugin";
 import fs from "fs";
 import path from "path";
 import { productSlugMap } from "./src/constants/productSlugMap";
 
-// 🧭 Tạo sitemap.xml khi build xong
+// 📦 Tạo sitemap.xml
 function generateSitemap() {
   const hostname = process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
 
@@ -33,10 +34,10 @@ function generateSitemap() {
   const outPath = path.resolve("dist", "sitemap.xml");
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, xml);
-  console.log("✅ sitemap.xml generated");
+  console.log(" sitemap.xml generated");
 }
 
-// 📦 Hook vào sau khi build xong
+// 📦 Plugin tạo sitemap sau build
 function sitemapPlugin() {
   return {
     name: "sitemap-plugin",
@@ -47,6 +48,7 @@ function sitemapPlugin() {
 export default defineConfig({
   plugins: [
     react(),
-    sitemapPlugin(), // ✅ Chỉ giữ lại plugin tạo sitemap
+    ssr(),            //  Bắt buộc để SSR hoạt động
+    sitemapPlugin(),  //  Sau khi build thì tạo sitemap
   ],
 });

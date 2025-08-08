@@ -128,21 +128,7 @@
       position: relative;
       color: var(--color-main);
       padding-bottom: 2px;
-      transition: color var(--transition-medium);
-
-      &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--color-red);
-        width: 100%;
-        transform: scaleX(0);
-        transform-origin: left;
-        opacity: 0;
-        transition: transform var(--transition-medium), opacity var(--transition-medium);
-      }
+      transition: color var(--transition-medium);    
     }
 
     &:hover span::after {
