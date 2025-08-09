@@ -547,13 +547,13 @@ export default function ProductCarouselFullScreen() {
         >
           {mobileProducts.map((p, i) => (
             <SwiperSlide key={i}>
-              <div className="flex flex-col items-center py-2">
+              <div className="flex flex-col items-center py-2 px-1">
                 <img
                   src={p.image}
                   alt={p.title}
                   className="w-full max-w-xs h-72 object-contain mb-8"
                 />
-                <h1 className="text-[#041E42] font-inter font-bold text-lg mb-4 text-center">
+                <h1 className="text-[#041E42] font-inter font-bold text-xl mb-4 text-center">
                   {p.title}
                 </h1>
                 <span
@@ -565,20 +565,20 @@ export default function ProductCarouselFullScreen() {
                   {p.features.map((f, idx) => (
                     <li
                       key={idx}
-                      className="mb-3"
+                      className="mb-4"
                       data-aos="fade-right"
                       data-aos-delay={idx * 200}
                     >
-                      <h1 className="text-[#041E42] font-inter font-bold text-sm mb-1">
+                      <h1 className="text-[#041E42] font-inter font-bold text-xl mb-1">
                         {f.title}
                       </h1>
-                      <p className="text-[#0D1B2A] font-nunito text-xs">
+                      <p className="text-[#0D1B2A] font-nunito text-lg">
                         {f.desc}
                       </p>
                     </li>
                   ))}
                 </ul>
-                <div className="flex w-full max-w-md gap-4 mt-2">
+                <div className="flex w-full max-w-md gap-4 mt-2 px-2">
                   <Link
                     to="/lien-he"
                     className="flex-1 whitespace-nowrap group inline-flex justify-center items-center gap-2 border border-[#041E42] bg-white px-2 py-2 font-inter font-semibold text-[#041E42] hover:bg-[#cba052] hover:text-[#041E42] transition-colors duration-300"
