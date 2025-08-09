@@ -2,7 +2,7 @@
 
 .searchPanel {
   position: fixed;
-  z-index: var(--z-search);
+  z-index: 2000;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
@@ -102,6 +102,7 @@
   }
 
   &__section {
+    color: var(--color-white);
     margin-bottom: 16px;
 
     h5 {

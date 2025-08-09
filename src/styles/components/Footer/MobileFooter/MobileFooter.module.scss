@@ -1,12 +1,6 @@
 // 🌈 Root Color
-:root {
-  --color-main: #041e42;
-  --color-red: #d64344;
-  --color-yellow: #cba052;
-  --color-white: #ffffff;
-  --color-gray: #bfbfbf;
-  --font-main: "Nunito Sans", sans-serif;
-}
+@use "../../../base/variables"; 
+
 .footer {
   font-family: var(--font-main);
   background: var(--color-white);

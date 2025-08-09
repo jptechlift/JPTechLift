@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "../../styles/pages/ProductsPage/ProductProcess.module.scss";
 
 interface Step {
@@ -17,7 +18,18 @@ interface Props {
 }
 
 export default function InstallationSection({ steps, image }: Props) {
-  // ✅ chỉ dùng ảnh minh họa duy nhất từ giai đoạn đầu tiên
+  const [expandedStages, setExpandedStages] = useState<Set<number>>(new Set());
+
+  const toggleStage = (index: number) => {
+    const newExpanded = new Set(expandedStages);
+    if (newExpanded.has(index)) {
+      newExpanded.delete(index);
+    } else {
+      newExpanded.add(index);
+    }
+    setExpandedStages(newExpanded);
+  };
+
   return (
     <section id="installation" className={styles["product-process"]}>
       <h2 className={styles["product-process__title"]}>Quy trình lắp đặt</h2>
@@ -26,10 +38,26 @@ export default function InstallationSection({ steps, image }: Props) {
           <div className={styles["product-process__content-box"]}>
             {steps.map((stage, index) => (
               <div key={index} className={styles["product-process__stage"]}>
-                <div className={styles["product-process__text"]}>
-                  <h3 className={styles["product-process__stage-title"]}>{stage.stage}</h3>
-                  <p className={styles["product-process__description"]}>{stage.description}</p>
-                  {stage.steps.length > 0 && (
+                <div 
+                  className={styles["product-process__text"]}
+                  onClick={() => toggleStage(index)}
+                >
+                  <h3 className={styles["product-process__stage-title"]}>
+                    {stage.stage}
+                    <span className={`${styles["product-process__toggle-icon"]} ${
+                      expandedStages.has(index) ? styles["product-process__toggle-icon--expanded"] : ''
+                    }`}>
+                      {expandedStages.has(index) ? '−' : '＋'}
+                    </span>
+                  </h3>
+                  
+                  <p className={`${styles["product-process__description"]} ${
+                    !expandedStages.has(index) ? styles["product-process__description--blur"] : ''
+                  }`}>
+                    {stage.description}
+                  </p>
+
+                  {expandedStages.has(index) && stage.steps.length > 0 && (
                     <ul className={styles["product-process__step-list"]}>
                       {stage.steps.map((s, i) => (
                         <li key={i}>
@@ -45,7 +73,21 @@ export default function InstallationSection({ steps, image }: Props) {
         </div>
 
         <div className={styles["product-process__image-wrapper"]}>
-          <img src={image} alt="Ảnh minh họa quy trình lắp đặt" className={styles["product-process__image"]} />
+          <div className={styles["product-process__image-container"]}>
+            <img 
+              src={image} 
+              alt="Ảnh minh họa quy trình lắp đặt" 
+              className={`${styles["product-process__image"]} ${
+                expandedStages.size > 0 ? styles["product-process__image--active"] : ''
+              }`} 
+            />
+            <div className={`${styles["product-process__image-overlay"]} ${
+              expandedStages.size > 0 ? styles["product-process__image-overlay--active"] : ''
+            }`}></div>
+            <div className={`${styles["product-process__image-glow"]} ${
+              expandedStages.size > 0 ? styles["product-process__image-glow--active"] : ''
+            }`}></div>
+          </div>
         </div>
       </div>
     </section>

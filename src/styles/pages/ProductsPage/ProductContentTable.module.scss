@@ -69,8 +69,9 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
     margin-top: 24px;
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
+    @media (max-width: 435px) {
+      grid-template-columns: repeat(2, 1fr);
+      padding: 0px 3px;
     }
   }
 
