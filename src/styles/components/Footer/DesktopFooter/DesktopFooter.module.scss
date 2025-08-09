@@ -1,134 +1,137 @@
-// Root 
-:root {
-  --color-main: #041e42;
-  --color-red: #d64344;
-  --color-yellow: #cba052;
-  --color-white: #ffffff;
-  --color-gray: #bfbfbf;
-  --font-main: "Nunito Sans", sans-serif;
-}
+// Root
+@use "../../../base/variables"; 
+
+// Block: footer
 .footer {
   background-color: var(--color-main);
   color: var(--color-white);
   font-size: 14px;
   font-family: var(--font-main);
 
-  .content {
+  // Element: content
+  &__content {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     padding: 48px 64px;
     gap: 32px;
     border-bottom: 1px solid var(--color-gray);
+  }
+  
+  // Element: column
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
 
-    .column {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-
-      // Nếu không phải cột cuối → thêm đường kẻ
-      &:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        right: -16px;
-        top: 0;
-        height: 100%;
-        width: 1px;
-        background-color: var(--color-gray);
-      }
-
-      h4 {
-        font-weight: 600;
-        margin-bottom: 12px;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-          margin-bottom: 6px;
-          cursor: pointer;
-
-          &:hover {
-            text-decoration: underline;
-          }
-        }
-      }
-
-      p {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        line-height: 1.6;
-      }
-
-      .logo {
-        max-width: 240px;
-        margin-bottom: 12px;
-      }
-
-      .socials {
-        display: flex;
-        margin-top: 8px;
-        margin-left: 14%;
-
-        a {
-          display: inline-block;
-          padding: 0 8px;
-          transition: 0.3s ease;
-          img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-          }
-
-          &:hover {
-            transform: scale(1.1);
-            filter: brightness(1.2);
-          }
-        }
-      }
+    // Thêm đường kẻ ngăn cách giữa các cột
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -16px;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      background-color: var(--color-gray);
     }
-
-    .map {
-      iframe {
-        width: 94%;
-        height: 160px;
-        border: 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); // nhẹ cho đẹp hơn
-      }
+    
+    p {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.6;
+    }
+  }
+  
+  // Element: column title
+  &__columnTitle {
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  // Element: column list
+  &__columnList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  // Element: column item
+  &__columnItem {
+    margin-bottom: 6px;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
   }
 
-  .bottom {
+  // Element: logo
+  &__logo {
+    max-width: 240px;
+    margin-bottom: 12px;
+  }
+
+  // Element: socials
+  &__socials {
+    display: flex;
+    margin-top: 8px;
+    margin-left: 3.5%;
+  }
+  
+  // Element: social link
+  &__socials__iconLink {
+    display: inline-block;
+    padding: 0 8px;
+    transition: 0.3s ease;
+    img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    &:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+  }
+
+  // Element: map
+  &__map {
+    iframe {
+      width: 94%;
+      height: 160px;
+      border: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  // Element: bottom
+  &__bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 26px 64px;
+    padding: 24px 64px;
+  }
 
-    .links {
-      display: flex;
-      gap: 24px;
+  &__bottom__links {
+    display: flex;
+    gap: 24px;
+  }
 
-      a {
-        display: inline-block;
-        display: flex;
-        gap: 10px;
-        padding: 0 8px;
-        transition: 0.3s ease;
-        color: white;
-        text-decoration: none;
-        img {
-          width: 28px;
-          height: 28px;
-          object-fit: contain;
-        }
-        &:hover {
-          text-decoration: underline;
-        }
-      }
+  &__bottom__link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    transition: 0.3s ease;
+    color: white;
+    text-decoration: none;
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

@@ -23,11 +23,11 @@
   }
 
   &__wrapper {
-    max-width: 1280px; // ✅ Giới hạn chiều rộng tổng thể
+    max-width: 1280px;
     margin: 0 auto;
     display: flex;
     gap: 32px;
-    align-items: stretch; // ✅ ép 2 cột bằng chiều cao
+    align-items: stretch;
     flex-wrap: nowrap;
 
     @media (max-width: 1024px) {
@@ -48,27 +48,22 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    // Ảnh 1: cao hơn
     img:nth-child(1) {
       height: 280px;
     }
 
-    // Ảnh 2: đứng chuẩn
     img:nth-child(2) {
       height: 280px;
     }
 
-    // Ảnh 3: vuông nhỏ
     img:nth-child(3) {
       height: 180px;
     }
 
-    // Ảnh 4: vuông nhỏ
     img:nth-child(4) {
       height: 180px;
     }
 
-    // Ảnh 5: ngang dài, chiếm 2 cột
     img:nth-child(5) {
       grid-column: span 2;
       height: 180px;
@@ -86,39 +81,58 @@
 
     h3 {
       font-family: var(--font-title);
-      font-size: 30px;
+      font-size: 24px;
       background-color: #cba052;
       color: white;
-      padding: 22px 28px;
-      font-weight: 500;
+      padding: 22px 20px;
+      font-weight: 700;
       line-height: 1.4;
       margin-bottom: 16px;
     }
     p {
-      padding: 0 28px;
+      padding: 0 20px;
       font-size: 15px;
       line-height: 1.6;
       margin-bottom: 30px;
     }
 
+    .real-gallery__highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+      padding: 20px 20px;
+      border-radius: 8px;
+
+      .highlight-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 16px;
+
+        .highlight-icon {
+          font-size: 18px;
+          width: 24px;
+          text-align: center;
+          color: white;
+        }
+      }
+    }
+
     .real-gallery__buttons {
       display: flex;
       flex-direction: column;
-      padding: 0 28px;
-      margin-top: auto; // ✅ Đẩy xuống đáy textBox
+      padding: 0 20px;
+      margin-top: auto;
       gap: 10px;
       transition: all var(--transition-medium);
       text-transform: uppercase;
-
-      a {
-        button {
-          width: 100%;
-          padding: 12px 16px;
-          font-weight: 600;
-          font-size: 14px;
-        }
+      @media (max-width: 435px) {
+        padding: 0 20px;
       }
+      // Style chung cho tất cả button
       button {
+        width: 71%; // ✅ Đặt width chung cho cả 2 button
         padding: 12px 16px;
         font-weight: 600;
         font-size: 14px;
@@ -128,25 +142,38 @@
         transition: all var(--transition-medium);
         color: var(--color-main);
 
+        @media (max-width: 435px) {
+          width: 100%;
+        }
+
         &:hover {
           background-color: #cba052;
           color: #ffffff;
           transform: translateY(-2px);
         }
+
         &:active {
           transform: translateY(0);
         }
-        &:nth-child(2) {
-          background-color: transparent;
-          border: 1px solid white;
-          color: white;
+      }
 
-          &:hover {
-            background-color: #cba052;
-            color: #ffffff;
-            transform: translateY(-2px);
-          }
+      // Style riêng cho button thứ 2 (không nằm trong thẻ a)
+      > button {
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+
+        &:hover {
+          background-color: #cba052;
+          color: #ffffff;
+          transform: translateY(-2px);
         }
+      }
+
+      // Đảm bảo thẻ a không ảnh hưởng đến layout
+      a {
+        display: block;
+        text-decoration: none;
       }
     }
   }

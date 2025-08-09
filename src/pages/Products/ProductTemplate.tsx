@@ -1,5 +1,4 @@
 import { useParams, useSearchParams, useLocation } from "react-router-dom";
-import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { productData } from "../../data/ProductData";
 import type { ProductId, Audience } from "../../data/ProductData";
@@ -8,7 +7,6 @@ import DetailSection from "../../components/ProductPage/DetailSection";
 import DimensionSection from "../../components/ProductPage/DimensionSection";
 import InstallationSection from "../../components/ProductPage/InstallationSection";
 import BlueprintSection from "../../components/ProductPage/BlueprintSection";
-import AestheticsModal from "../../components/ProductPage/AestheticsModal";
 import Introduction from "../../components/ProductPage/Introduction";
 import NavBar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
@@ -34,8 +32,6 @@ export default function ProductTemplatePage() {
   const [searchParams] = useSearchParams();
   const location = useLocation();
 
-  const [isAestheticsOpen, setAestheticsOpen] = useState(false);
-
   if (!productId || !isValidProductId(productId)) {
     return <NotFound />;
   }
@@ -43,8 +39,7 @@ export default function ProductTemplatePage() {
   const product = productData[productId];
   const audience = searchParams.get("audience") as Audience | null;
   const seo = getSeoMeta(product, audience);
-  const content =
-    (audience && product.contentVariants?.[audience]) || undefined;
+  const content = (audience && product.contentVariants?.[audience]) || undefined;
   const canonical = `${BASE_URL}/san-pham/${productId}${location.search || ""}`;
 
   return (
@@ -52,9 +47,7 @@ export default function ProductTemplatePage() {
       <Helmet>
         <title>{seo?.metaTitle}</title>
         <meta name="description" content={seo?.metaDescription || ""} />
-        {seo?.keywords && (
-          <meta name="keywords" content={seo.keywords.join(", ")} />
-        )}
+        {seo?.keywords && <meta name="keywords" content={seo.keywords.join(", ")} />}
         <link rel="canonical" href={canonical} />
       </Helmet>
       <Helmet>
@@ -113,20 +106,13 @@ export default function ProductTemplatePage() {
 
       {product.contentTable && (
         <FadeInSection>
-          <ContentTableSection
-            data={product.contentTable}
-            imageUrl="/assets/images/home-lift/hero.jpg"
-          />
+          <ContentTableSection data={product.contentTable} imageUrl="/assets/images/home-lift/hero.jpg" />
         </FadeInSection>
       )}
 
       {product.detailInfo && product.galleryImages && (
         <FadeInSection>
-          <DetailSection
-            data={product.detailInfo}
-            images={product.galleryImages}
-            onOpenAesthetics={() => setAestheticsOpen(true)}
-          />
+          <DetailSection data={product.detailInfo} images={product.galleryImages} />
         </FadeInSection>
       )}
 
@@ -142,10 +128,7 @@ export default function ProductTemplatePage() {
 
       {product.installationSteps && product.installationImage && (
         <FadeInSection>
-          <InstallationSection
-            steps={product.installationSteps}
-            image={product.installationImage}
-          />
+          <InstallationSection steps={product.installationSteps} image={product.installationImage} />
         </FadeInSection>
       )}
 
@@ -153,15 +136,6 @@ export default function ProductTemplatePage() {
         <FadeInSection>
           <BlueprintSection blueprint={product.blueprint} />
         </FadeInSection>
-      )}
-
-      {/* Modal thẩm mỹ cabin */}
-      {product.aestheticsOptions && (
-        <AestheticsModal
-          data={product.aestheticsOptions}
-          open={isAestheticsOpen}
-          onClose={() => setAestheticsOpen(false)}
-        />
       )}
 
       {/* {productId === "thang-may-gia-dinh" && (

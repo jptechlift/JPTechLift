@@ -18,7 +18,7 @@ const quickThumbnails = [
     image: size,
   },
   {
-    label: "Quy trình lắp đặt",
+    label: "Quy trình lắp đặt thang máy",
     targetId: "installation",
     image: install,
   },

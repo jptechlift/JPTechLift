@@ -1,5 +1,6 @@
 import { memo } from "react";
 import styles from "../../styles/pages/ProductsPage/ProductSpecs.module.scss";
+import { useNavigate } from "react-router-dom";
 
 interface Dimension {
   readonly people: string;
@@ -25,6 +26,7 @@ const INSTALLATION_FACTORS = [
 
 const DimensionSection = memo(({ data, className }: Props) => {
   const containerClass = className ? `${styles["product-specs"]} ${className}` : styles["product-specs"];
+  const navigate = useNavigate();
 
   if (!data || data.length === 0) {
     return (
@@ -33,65 +35,68 @@ const DimensionSection = memo(({ data, className }: Props) => {
       </div>
     );
   }
-
   return (
- <section id="size-price" className={styles["product-specs"]}>
-    <h2 className={styles["product-specs__heading"]}>Kích thước và giá lắp đặt</h2>
+    <section id="size-price" className={styles["product-specs"]}>
+      <h2 className={styles["product-specs__heading"]}>Kích thước và giá lắp đặt</h2>
 
-    <div className={styles["product-specs__grid"]}>
-      <div className={styles["product-specs__layout"]}>
-        {/* Kích thước */}
-        <section className={styles["product-specs__dimension-section"]}>
-          <h2 className={styles["product-specs__title"]}>Kích thước thang máy</h2>
-          <div className={styles["product-specs__table-wrapper"]}>
-            <table className={styles["product-specs__table"]}>
-              <thead>
-                <tr>
-                  <th>KHỐI LƯỢNG</th>
-                  <th>KÍCH THƯỚC</th>
-                  <th>TẢI TRỌNG</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.people}</td>
-                    <td>{item.size}</td>
-                    <td>{item.weight}</td>
+      <div className={styles["product-specs__grid"]}>
+        <div className={styles["product-specs__layout"]}>
+          {/* Kích thước */}
+          <section className={styles["product-specs__dimension-section"]}>
+            <h2 className={styles["product-specs__title"]}>Kích thước thang máy</h2>
+            <div className={styles["product-specs__table-wrapper"]}>
+              <table className={styles["product-specs__table"]}>
+                <thead>
+                  <tr>
+                    <th>KHỐI LƯỢNG</th>
+                    <th>KÍCH THƯỚC</th>
+                    <th>TẢI TRỌNG</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+                </thead>
+                <tbody>
+                  {data.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.people}</td>
+                      <td>{item.size}</td>
+                      <td>{item.weight}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
 
-        {/* Giá lắp đặt */}
-        <section className={styles["product-specs__installation-section"]}>
-          <h2 className={styles["product-specs__title"]}>Giá lắp đặt</h2>
-          <div className={styles["product-specs__content"]}>
-            <p className={styles["product-specs__subtitle"]}>
-              Trên thực tế, giá thang máy thay đổi phụ thuộc vào nhiều yếu tố:
-            </p>
-            <ul>
-              {INSTALLATION_FACTORS.map((factor, index) => (
-                <li key={index}>{factor}</li>
-              ))}
-            </ul>
-            <a
-              href="https://zalo.me/3469899057771273254"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "none" }}
-            >
-              <button className={styles["product-specs__button"]} type="button">
-                THẨM MỸ THANG MÁY
-              </button>
-            </a>
-          </div>
-        </section>
+          {/* Giá lắp đặt */}
+          <section className={styles["product-specs__installation-section"]}>
+            <h2 className={styles["product-specs__title"]}>Giá lắp đặt</h2>
+            <div className={styles["product-specs__content"]}>
+              <p className={styles["product-specs__subtitle"]}>
+                Trên thực tế, giá thang máy thay đổi phụ thuộc vào nhiều yếu tố:
+              </p>
+              <ul>
+                {INSTALLATION_FACTORS.map((factor, index) => (
+                  <li key={index}>{factor}</li>
+                ))}
+              </ul>
+              <a
+                href="https://zalo.me/3469899057771273254"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none" }}
+              >
+                <button
+                  className={styles["product-specs__button"]}
+                  type="button"
+                  onClick={() => navigate("/dich-vu-thang-may/tham-my")}
+                >
+                  THẨM MỸ THANG MÁY
+                </button>
+              </a>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 });
 

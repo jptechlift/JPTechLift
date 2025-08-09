@@ -41,14 +41,14 @@ const footerLinks = [
   {
     title: "SẢN PHẨM & DỊCH VỤ",
     items: [
-    { label: "Sản phẩm JPTechLifts", to: "/san-pham/thang-may-gia-dinh" },
+      { label: "Sản phẩm JPTechLifts", to: "/san-pham/thang-may-gia-dinh" },
       { label: "Nâng cấp & sửa chữa", to: "/dich-vu-thang-may/cai-tao-sua-chua" },
     ],
   },
   {
     title: "CÔNG TY CHÚNG TÔI",
     items: [
-     { label: "Về chúng tôi", to: "/gioi-thieu" },
+      { label: "Về chúng tôi", to: "/gioi-thieu" },
       { label: "Lãnh đạo", to: "/gioi-thieu/ban-lanh-dao" },
       { label: "Tin tức", to: "/tin-tuc-thang-may" },
       { label: "Nguyên tắc công ty", to: "/gioi-thieu/nguyen-tac" },
@@ -73,13 +73,19 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       {/* --- Phần nội dung chính --- */}
-      <div className={styles.content}>
+      <div className={styles.footer__content}>
         {/* Logo + MXH */}
-        <div className={styles.column}>
-          <Logo variant="white" className={styles.logo} />
-          <div className={styles.socials}>
+        <div className={styles.footer__column}>
+          <Logo variant="white" className={styles.footer__logo} />
+          <div className={styles.footer__socials}>
             {socialLinks.map((item) => (
-              <a key={item.alt} href={item.href} target="_blank" rel="noopener noreferrer" className={styles.iconLink}>
+              <a
+                key={item.alt}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.footer__socials__iconLink}
+              >
                 <img src={item.icon} alt={item.alt} />
               </a>
             ))}
@@ -88,11 +94,11 @@ export default function Footer() {
 
         {/* SP & Dịch vụ */}
         {footerLinks.map((col) => (
-          <div className={styles.column} key={col.title}>
-            <h4>{col.title}</h4>
-            <ul>
+          <div className={styles.footer__column} key={col.title}>
+            <h4 className={styles.footer__column__title}>{col.title}</h4>
+            <ul className={styles.footer__column__list}>
               {col.items.map((item) => (
-                <li key={item.to}>
+                <li key={item.to} className={styles.footer__column__item}>
                   <Link to={item.to}>{item.label}</Link>
                 </li>
               ))}
@@ -101,15 +107,15 @@ export default function Footer() {
         ))}
 
         {/* Thông tin liên hệ */}
-        <div className={styles.column}>
-          <h4>THÔNG TIN LIÊN HỆ</h4>
+        <div className={styles.footer__column}>
+          <h4 className={styles.footer__column__title}>THÔNG TIN LIÊN HỆ</h4>
           <p>(+84) 277 225 384</p>
           <p>contact.jptechlift@gmail.com</p>
           <p>Địa chỉ: 106/107 Đường Đỗ Năng Tế, Phường An Lạc A, Quận Bình Tân, TP.HCM</p>
         </div>
 
         {/* Bản đồ Google Map */}
-        <div className={styles.map}>
+        <div className={styles.footer__map}>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9096937049844!2d106.6146879748044!3d10.741443189405224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752d77eccf8a89%3A0x2713c9be549abe31!2zMTA2LzEwLzkgxJDhu5cgTsSDbmcgVOG6vw!5e0!3m2!1svi!2s!4v1752058104832!5m2!1svi!2s"
             width="600"
@@ -123,11 +129,11 @@ export default function Footer() {
       </div>
 
       {/* --- Phần cuối --- */}
-      <div className={styles.bottom}>
-        <p>© Copyrights 2025. All Rights Reserved.</p>
-        <div className={styles.links}>
+      <div className={styles.footer__bottom}>
+        <p className={styles.footer__bottom__copyright}>© Copyrights 2025. All Rights Reserved.</p>
+        <div className={styles.footer__bottom__links}>
           {bottomLinks.map((link) => (
-            <Link key={link.label} to={link.to}>
+            <Link key={link.label} to={link.to} className={styles.footer__bottom__link}>
               <img src={link.icon} alt={link.label} /> {link.label}
             </Link>
           ))}

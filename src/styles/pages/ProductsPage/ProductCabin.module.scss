@@ -1,66 +1,321 @@
+// ProductCabin.module.scss
 @use "../../base/variables";
-.cabin-modal__overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); // overlay tối
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
 
-  &__modalContent {
-    background-color: white;
-    border-radius: 12px;
-    padding: 30px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-    animation: fadeIn 0.3s ease-in-out;
+// ==================== BLOCK: .configurator ====================
+.configurator {
+  // Biến và style gốc của component
 
-    h2 {
-      font-size: 24px;
-      margin-bottom: 16px;
+  min-height: 100vh;
+  background-color: var(--color-main);
+  color: var(--color-white);
+  font-family: var(--font-main);
+
+  // --- Elements của .configurator ---
+  &__header {
+    text-align: center;
+    padding: 40px 30px 30px;
+    h1 { font-family: var(--font-title); font-size: 48px; /* ... */
+    @media (max-width: 768px) {
+      font-size: 36px;
     }
-
-    h4 {
-      margin-top: 16px;
-      font-weight: 600;
     }
-
-    ul {
-      margin-top: 8px;
-      margin-left: 20px;
-      list-style: disc;
-      color: #333;
-    }
+    p { font-size: 18px; /* ... */ }
   }
 
-  &__cabin-modal__close {
-    margin-top: 24px;
-    padding: 10px 16px;
-    background-color: var(--color-main);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  &__section {
+    padding: 40px 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
-    &:hover {
-      background-color: #003366;
-    }
+  &__section-title {
+    font-size: 32px;
+    font-family: var(--font-title);
+    font-weight: 800;
+    color: var(--color-white);
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--color-yellow);
+    width: fit-content;
+  }
+
+  &__carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    @media (min-width: 1024px) { flex-direction: row; align-items: flex-start; }
+  }
+
+  &__image-wrapper {
+    flex: none;
+    width: 320px;
+    height: 220px;
+    overflow: hidden;
+    img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    &:hover img { transform: scale(1.05); }
+  }
+
+  &__content {
+    flex: 1;
+    padding: 16px 0;
+    h3 { font-size: 24px; font-family: var(--font-title); color: var(--color-white); }
+    p { font-size: 18px; color: var(--color-gray1); line-height: 1.6; }
+  }
+
+  &__item-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  &__nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-white);
+    color: var(--color-main);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    &:hover:not(:disabled) { background: var(--color-main); color: var(--color-white); transform: scale(1.1); border: 2px solid var(--color-yellow); }
+    &--disabled { background: #cbd5e1; color: #64748b; cursor: not-allowed; }
+  }
+
+  &__nav-dots { display: flex; gap: 8px; }
+  &__nav-dot {
+    width: 12px; height: 12px; border-radius: 50%; border: none; background: #cbd5e1; cursor: pointer; transition: all 0.3s ease;
+    &--active { background: var(--color-main); border: 2px solid var(--color-yellow); transform: scale(1.1); }
+  }
+
+  &__finishes { display: flex; flex-direction: column; gap: 48px; }
+  &__finish-category {
+    background: var(--color-white);  padding: 40px 30px;
+    h4 { font-size: 24px; font-family: var(--font-title); color: var(--color-main); margin: 0 0 24px; padding-bottom: 8px; border-bottom: 2px solid var(--color-yellow); }
+  }
+
+// TÙYA CHỌN 2: Auto-fit với min-width (Mobile 3 cột)
+&__finish-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 24px;
+  
+  // Tablet: 3 cột
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  // Mobile: 3 cột
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  
+  // Mobile nhỏ: 3 cột với gap nhỏ hơn
+  @media screen and (max-width: 360px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+}
+  // THAY THẾ CODE CŨ BẰNG CODE NÀY:
+
+&__finish-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px; // Giảm từ 24px xuống 20px
+  
+  // Tablet: 3 cột
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px; // Giảm từ 20px xuống 16px
+  }
+  
+  // Mobile: 3 cột
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px; // Giảm từ 16px xuống 12px
+  }
+  
+  // Mobile nhỏ: 3 cột với gap nhỏ hơn
+  @media screen and (max-width: 360px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px; // Giảm từ 12px xuống 8px
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+&__finish-item {
+  text-align: center; 
+  cursor: pointer; 
+  padding: 12px 8px; // Giảm từ 16px xuống 12px 8px
+  transition: all 0.2s ease;
+  
+  @media screen and (max-width: 480px) {
+    padding: 8px 4px; // Padding nhỏ hơn trên mobile
+  }
+  
+  &:hover { background: #e9ecef; transform: translateY(-2px); }
+}
+
+&__swatch {
+  width: 80px; 
+  height: 80px; 
+  margin: 0 auto 12px;
+  background-size: cover; 
+  background-position: center; 
+  border: 3px solid transparent; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  transition: all 0.2s ease;
+  
+  // Tablet: giảm size nhẹ
+  @media screen and (max-width: 768px) {
+    width: 70px;
+    height: 70px;
+  }
+  
+  // Mobile: giảm size để vừa với 3 cột
+  @media screen and (max-width: 480px) {
+    width: 60px;
+    height: 60px;
+  }
+  
+  // Mobile nhỏ: size nhỏ hơn nữa
+  @media screen and (max-width: 360px) {
+    width: 50px;
+    height: 50px;
+  }
+  
+  &--selected { 
+    border-color: var(--color-main); 
+    transform: scale(1.05); 
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); 
+  }
+}
+
+&__name { 
+  font-size: 16px; 
+  font-weight: 600; 
+  color: var(--color-main); 
+  margin: 0 0 4px;
+  
+  @media screen and (max-width: 480px) {
+    font-size: 14px; // Nhỏ hơn trên mobile
+  }
+  
+  @media screen and (max-width: 360px) {
+    font-size: 13px;
+  }
+}
+
+&__code { 
+  font-size: 12px; 
+  color: var(--color-text-secondary); 
+  font-family: monospace;
+  
+  @media screen and (max-width: 480px) {
+    font-size: 11px;
+  }
+  
+  @media screen and (max-width: 360px) {
+    font-size: 10px;
+  }
+}
+
+  &__form-section { background: var(--color-white); }
+
+  // =========================================================
+  // === BỔ SUNG CÁC CLASS CHO PHẦN TÓM TẮT VÀ FORM Ở ĐÂY ===
+  // =========================================================
+  &__summary {
+    max-width: 700px;
+    margin: 0 auto 32px;
+    background: #e9ecef;
+    color: var(--color-main);
+    padding: 24px;
+    border: 1px solid var(--color-gray3);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  &__summary-title {
+    font-family: var(--font-title);
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-yellow);
+  }
+
+  &__summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--color-gray3);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    span:first-child {
+      color: var(--color-text-secondary);
+    }
+    
+    strong {
+      font-weight: 600;
+      text-align: right;
+    }
+  }
+
+  &__form {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--color-main);
+  }
+
+  &__form-group {
+    margin-bottom: 20px;
+  }
+
+  &__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--color-gray3);
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    &:focus { outline: none; border-color: var(--color-main); box-shadow: 0 0 0 3px rgba(10, 43, 92, 0.2); }
+  }
+
+  &__submit-button {
+    width: 100%;
+    background: var(--color-main);
+    color: var(--color-white);
+    font-size: 18px;
+    font-weight: 500;
+    padding: 16px 24px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    &:hover { background: #071f42; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
   }
 }
