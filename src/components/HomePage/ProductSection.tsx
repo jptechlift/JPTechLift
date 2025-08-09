@@ -531,7 +531,7 @@ export default function ProductCarouselFullScreen() {
         </Swiper>
       </div>
       {/* Mobile layout */}
-      <div className="md:hidden px-4">
+      <div className="md:hidden px-4 pb-10">
         <div className="text-center">
           <img src={logo} alt="logo" className="h-12 mb-4 mx-auto" />
           <h2 className="text-2xl font-inter font-bold text-[#041E42] uppercase mb-4">
