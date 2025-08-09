@@ -569,7 +569,7 @@ export default function ProductCarouselFullScreen() {
                       data-aos="fade-right"
                       data-aos-delay={idx * 200}
                     >
-                      <h1 className="text-[#041E42] font-inter font-bold text-xl mb-1">
+                      <h1 className="text-[#041E42] font-inter font-bold text-lg mb-1">
                         {f.title}
                       </h1>
                       <p className="text-[#0D1B2A] font-nunito text-lg">
