@@ -1,11 +1,11 @@
-import AboutSection from "../components/home-page/AboutSection";
-import CommitSection from "../components/home-page/CommitSection";
+import AboutSection from "../components/HomePage/AboutSection";
+import CommitSection from "../components/HomePage/CommitSection";
 import HeroFooter from "../components/Footer/HeroFooter";
-import ProductSection from "../components/home-page/ProductSection";
-import ServiceSection from "../components/home-page/ServiceSection";
-import HeroBanner from "../components/home-page/HeroBanner";
+import ProductSection from "../components/HomePage/ProductSection";
+import ServiceSection from "../components/HomePage/ServiceSection";
+import HeroBanner from "../components/HomePage/HeroBanner";
 import Footer from "../components/Footer/Footer";
-import SubBanner from "../components/home-page/SubBanner";
+import SubBanner from "../components/HomePage/SubBanner";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 // import HomePageSeoContent from "../components/SEO/HomePageSeoContent";

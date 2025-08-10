@@ -1,11 +1,11 @@
-import HeaderWithBanner from "../components/home-page/HeaderWithBanner";
-import LeaderSection from "../components/leader-page/LeaderSection";
+import HeaderWithBanner from "../components/HomePage/HeaderWithBanner";
+import LeaderSection from "../components/LeaderPage/LeaderSection";
 import HeroFooter from "../components/Footer/HeroFooter";
 import bannerImg from "../assets/images/Banner-Leadership.png";
 import Footer from "../components/Footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
-import EngineerSection from "../components/leader-page/EngineererSection";
+import EngineerSection from "../components/LeaderPage/EngineererSection";
 
 const LeaderPage = () => {
   return (

@@ -1,4 +1,4 @@
-import type { Slide } from "../components/carousel/Carousel";
+import type { Slide } from "../components/Carousel/Carousel";
 import banner1 from "../assets/images/Banner-img.png";
 import banner2 from "../assets/images/Banner-img1.png";
 import banner3 from "../assets/images/Banner-img2.png";

@@ -1,5 +1,5 @@
-import BlogPageComp from "../components/blog-page/BlogPageSection";
-import HeaderWithBanner from "../components/home-page/HeaderWithBanner";
+import BlogPageComp from "../components/BlogPage/BlogPageSection";
+import HeaderWithBanner from "../components/HomePage/HeaderWithBanner";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 import BlogBanner from "../assets/images/banner-blog.jpg";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import emailjs from "emailjs-com";
-import Alert from "../alert/Alert";
+import Alert from "../Alert/Alert";
 import styles from '../../styles/pages/contact-form/contact-form.module.scss';
 import { provinces } from "../../constants/VietnamProvinces";
 

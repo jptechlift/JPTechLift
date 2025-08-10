@@ -1,5 +1,5 @@
 // src/components/HeroSection.tsx
-import Carousel from "../carousel/Carousel";
+import Carousel from "../Carousel/Carousel";
 import { slides } from "../../data/HeroSlide";
 import NavBar from "../Navbar/Navbar";
 
