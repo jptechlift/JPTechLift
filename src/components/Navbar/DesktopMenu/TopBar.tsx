@@ -1,4 +1,4 @@
-import Logo from "../../Logo/Logo";
+import Logo from "../../logo/Logo";
 import phone from "../../../assets/images/header/Phone_Icon.jpg";
 import email from "../../../assets/images/header/Email_Icon.jpg";
 import flag from "../../../assets/images/header/Flag_Icon.jpg";

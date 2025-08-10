@@ -1,0 +1,179 @@
+// about-us-intro.module.scss
+
+// Block: aboutIntro
+.aboutIntro {
+  max-width: 700px;
+  margin: 56px auto 56px auto;
+  background: #fff;
+  padding: 40px 24px 56px 24px;
+  font-family: 'Inter', 'Nunito Sans', Arial, sans-serif;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+// Element: aboutIntro__title
+.aboutIntro__title {
+  text-align: center;
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #183153;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  margin: 0 auto 8px auto;
+  display: block;
+}
+
+// Element: aboutIntro__titleUnderline
+.aboutIntro__titleUnderline {
+  display: block;
+  margin: 16px auto 0 auto;
+  width: 60px;
+  height: 4px;
+  background: #cba052;
+  border-radius: 2px;
+}
+
+// Element: aboutIntro__content
+.aboutIntro__content {
+  color: #183153;
+  font-size: 1.04rem;
+  line-height: 1.7;
+  text-align: center;
+  margin-top: 24px;
+}
+
+// Element: aboutIntro__greeting
+.aboutIntro__greeting {
+  font-size: 1.08rem;
+  margin-bottom: 24px;
+  color: #183153;
+}
+
+// Element: aboutIntro__text
+.aboutIntro__text {
+  margin-bottom: 24px;
+  color: #183153;
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+
+// Element: aboutIntro__slogan
+.aboutIntro__slogan {
+  font-weight: 600;
+  text-align: center;
+  margin: 36px 0 36px 0;
+  color: #183153;
+  font-size: 1.13rem;
+  letter-spacing: 1px;
+}
+
+// Element: aboutIntro__signature
+.aboutIntro__signature {
+  margin-top: 48px;
+  text-align: right;
+  color: #183153;
+  font-size: 1rem;
+  line-height: 2.1;
+  width: 100%;
+  display: block;
+}
+
+// Element: aboutIntro__signatureInner
+.aboutIntro__signatureInner {
+  display: inline-block;
+  text-align: center;
+}
+
+// Element: aboutIntro__signatureText
+.aboutIntro__signatureText {
+  margin-bottom: 10px;
+  text-align: center;
+  color: #183153;
+}
+
+// Element: aboutIntro__signatureRole
+.aboutIntro__signatureRole {
+  font-weight: 600;
+  font-size: 1.08rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #183153;
+}
+
+// Element: aboutIntro__signatureName
+.aboutIntro__signatureName {
+  font-weight: 700;
+  color: #183153;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  font-size: 1.13rem;
+  text-align: center;
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .aboutIntro {
+    max-width: 98vw;
+    padding: 24px 8px 32px 8px;
+    margin: 24px auto 32px auto;
+  }
+
+  .aboutIntro__title {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .aboutIntro__titleUnderline {
+    width: 40px;
+    height: 3px;
+    margin-top: 10px;
+  }
+
+  .aboutIntro__content {
+    font-size: 0.97rem;
+    margin-top: 10px;
+  }
+
+  .aboutIntro__greeting {
+    font-size: 1rem;
+    margin-bottom: 14px;
+  }
+
+  .aboutIntro__text {
+    margin-bottom: 14px;
+    font-size: 0.97rem;
+  }
+
+  .aboutIntro__slogan {
+    font-size: 1rem;
+    margin: 18px 0 18px 0;
+  }
+
+  .aboutIntro__signature {
+    font-size: 0.97rem;
+    margin-top: 28px;
+    line-height: 2.1;
+    text-align: right;
+  }
+
+  .aboutIntro__signatureInner {
+    display: inline-block;
+    text-align: center;
+  }
+
+  .aboutIntro__signatureText {
+    text-align: center;
+    font-size: 0.97rem;
+  }
+
+  .aboutIntro__signatureRole {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .aboutIntro__signatureName {
+    font-size: 1rem;
+    margin-top: 6px;
+  }
+}

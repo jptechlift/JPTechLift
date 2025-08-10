@@ -1,8 +1,8 @@
-import Accessories from "../../components/ServicePage/AccessoriesPage";
-import Footer from "../../components/Footer/Footer";
+import Accessories from "../../components/service-page/AccessoriesPage";
+import Footer from "../../components/footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
-import NavBar from "../../components/Navbar/Navbar";
+import NavBar from "../../components/navbar/Navbar";
 
 const AccessoriesPage = () => {
   return (
@@ -15,7 +15,7 @@ const AccessoriesPage = () => {
         />
         <link rel="canonical" href={`${BASE_URL}/dich-vu-thang-may/vat-tu-phu-kien`} />
       </Helmet>
-      <NavBar/>
+      <NavBar />
       <Accessories />
       <Footer />
     </div>

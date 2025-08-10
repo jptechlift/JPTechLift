@@ -1,8 +1,8 @@
-import HeaderWithBanner from "../components/HomePage/HeaderWithBanner";
-import PrincipleSection from "../components/PrinciplePage/PrincipleSection";
-import HeroFooter from "../components/Footer/HeroFooter";
+import HeaderWithBanner from "../components/home-page/HeaderWithBanner";
+import PrincipleSection from "../components/principle-page/PrincipleSection";
+import HeroFooter from "../components/footer/HeroFooter";
 import bannerImg from "../assets/images/Banner-Principle.jpg";
-import Footer from "../components/Footer/Footer";
+import Footer from "../components/footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 

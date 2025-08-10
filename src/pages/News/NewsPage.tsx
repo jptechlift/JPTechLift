@@ -1,7 +1,7 @@
-import Footer from "../../components/Footer/Footer";
-import HeroFooter from "../../components/Footer/HeroFooter";
-import HeroBanner from "../../components/HomePage/HeroBanner";
-import ArticleGrid from "../../components/News/ArticleGrid";
+import Footer from "../../components/footer/Footer";
+import HeroFooter from "../../components/footer/HeroFooter";
+import HeroBanner from "../../components/home-page/HeroBanner";
+import ArticleGrid from "../../components/news-page/ArticleGrid";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
 

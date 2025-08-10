@@ -1,5 +1,5 @@
 import { splitTitle } from '../../utils/splitTitle';
-import styles from '../../styles/pages/ProductsPage/ProductIntro.module.scss';
+import styles from '../../styles/pages/product-page/ProductIntro.module.scss';
 
 interface TitleIntroProps {
   title: string;
