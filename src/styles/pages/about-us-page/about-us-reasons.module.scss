@@ -1,0 +1,105 @@
+// about-us-reasons.module.scss
+
+// Block: whyChooseUs
+.whyChooseUs {
+  padding: 56px 0 42px 0;
+  background: #fff;
+}
+
+// Element: whyChooseUs__title
+.whyChooseUs__title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.7rem;
+  color: #183153;
+  font-weight: bold;
+  font-family: 'Inter', Arial, sans-serif;
+  letter-spacing: 0.5px;
+  position: relative;
+
+  // Pseudo-element for underline
+  &::after {
+    content: "";
+    display: block;
+    margin: 18px auto 0 auto;
+    width: 220px;
+    height: 3px;
+    border-radius: 2px;
+    background: #cba052;
+  }
+}
+
+// Element: whyChooseUs__grid
+.whyChooseUs__grid {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+// Element: whyChooseUs__card
+.whyChooseUs__card {
+  background: #fff;
+  padding: 2.1rem 1.2rem 2.1rem 1.2rem;
+  width: 315px;
+  min-width: 260px;
+  text-align: center;
+  box-shadow: none;
+  border: 1.5px solid #183153;
+  transition: box-shadow 0.18s, transform 0.18s;
+  position: relative;
+
+  // Hover state (could be a modifier)
+  &:hover {
+    box-shadow: 0 8px 32px rgba(24, 49, 83, 0.10);
+    transform: translateY(-6px) scale(1.025);
+  }
+}
+
+// Element: whyChooseUs__cardRating
+.whyChooseUs__cardRating {
+  color: #ffc107;
+  font-size: 1.36rem;
+  margin-bottom: 12px;
+  letter-spacing: 3px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+// Element: whyChooseUs__cardTitle
+.whyChooseUs__cardTitle {
+  margin-bottom: 0.9rem;
+  color: #183153;
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+// Element: whyChooseUs__cardText
+.whyChooseUs__cardText {
+  color: #585858;
+  font-size: 1.04rem;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .whyChooseUs__grid {
+    gap: 20px;
+  }
+
+  .whyChooseUs__title {
+    font-size: 1.25rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .whyChooseUs__card {
+    padding: 1.1rem 0.65rem 1.3rem;
+  }
+
+  .whyChooseUs__cardRating {
+    font-size: 1.11rem;
+    margin-bottom: 8px;
+  }
+}

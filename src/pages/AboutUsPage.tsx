@@ -1,11 +1,11 @@
-import Header from "../components/HomePage/HeaderWithBanner";
-import AboutUsIntro from "../components/AboutUsPage/AboutUsIntro";
-import AboutUsBanner from "../components/AboutUsPage/AboutUsBanner";
-import AboutUsReasons from "../components/AboutUsPage/AboutUsReasons";
-import AboutUsNewsBlogs from "../components/AboutUsPage/AboutUsNewsBlogs";
+import Header from "../components/home-page/HeaderWithBanner";
+import AboutUsIntro from "../components/about-us-page/AboutUsIntro";
+import AboutUsBanner from "../components/about-us-page/AboutUsBanner";
+import AboutUsReasons from "../components/about-us-page/AboutUsReasons";
+import AboutUsNewsBlogs from "../components/about-us-page/AboutUsNewsBlogs";
 
 import bannerImg from "../assets/images/Banner_AboutUs_Img.png";
-import Footer from "../components/Footer/Footer";
+import Footer from "../components/footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 

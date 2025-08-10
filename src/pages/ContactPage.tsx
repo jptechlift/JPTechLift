@@ -1,9 +1,9 @@
-import ContactJPTechLiftForm from "../components/ContactForm/ContactForm";
-import HeaderWithBanner from "../components/HomePage/HeaderWithBanner";
+import ContactJPTechLiftForm from "../components/contact-form/ContactForm";
+import HeaderWithBanner from "../components/home-page/HeaderWithBanner";
 import banner from "../assets/images/Banner-img2.png";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
-import Footer from "../components/Footer/Footer";
+import Footer from "../components/footer/Footer";
 
 const ContactJPTechLiftFormPage = () => {
   return (

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import Logo from "../../Logo/Logo";
+import Logo from "../../logo/Logo";
 import styles from "../../../styles/components/Navbar/MobieNavbar/MobileMenu.module.scss";
 import AdvancedSearch from "../AdvancedSearch";
 
@@ -19,12 +19,12 @@ import backIcon from "../../../assets/images/header/Back_Icon.png";
 // ===================================
 const MENU_LEVELS = {
   MAIN: "main",
-  PRODUCT: "product", 
+  PRODUCT: "product",
   SERVICE: "service",
   ABOUT: "about",
 } as const;
 
-type MenuLevel = typeof MENU_LEVELS[keyof typeof MENU_LEVELS];
+type MenuLevel = (typeof MENU_LEVELS)[keyof typeof MENU_LEVELS];
 
 // ===================================
 // 📊 NAVIGATION DATA
@@ -53,32 +53,32 @@ const NAVIGATION_DATA = {
     { label: "QUY TRÌNH DỰ ÁN", path: "/gioi-thieu/quy-trinh-du-an" },
   ],
   socials: [
-    { 
-      href: "https://www.facebook.com/thangmayvietnam", 
-      icon: facebook, 
-      alt: "Facebook" 
+    {
+      href: "https://www.facebook.com/thangmayvietnam",
+      icon: facebook,
+      alt: "Facebook",
     },
-    { 
-      href: "https://www.linkedin.com/company/thang-may-viet-nam", 
-      icon: linkendin, 
-      alt: "LinkedIn" 
+    {
+      href: "https://www.linkedin.com/company/thang-may-viet-nam",
+      icon: linkendin,
+      alt: "LinkedIn",
     },
-    { 
-      href: "https://www.tiktok.com/@thangmayvietnam", 
-      icon: tiktok, 
-      alt: "TikTok" 
+    {
+      href: "https://www.tiktok.com/@thangmayvietnam",
+      icon: tiktok,
+      alt: "TikTok",
     },
-    { 
-      href: "https://x.com/ThangMayVN", 
-      icon: XIcon, 
-      alt: "X (Twitter)" 
+    {
+      href: "https://x.com/ThangMayVN",
+      icon: XIcon,
+      alt: "X (Twitter)",
     },
-    { 
-      href: "https://www.youtube.com/@thangmayvietnam", 
-      icon: youtube, 
-      alt: "YouTube" 
+    {
+      href: "https://www.youtube.com/@thangmayvietnam",
+      icon: youtube,
+      alt: "YouTube",
     },
-  ]
+  ],
 };
 
 // ===================================
@@ -96,7 +96,7 @@ const MobileMenu = () => {
   // 🚀 EVENT HANDLERS (Optimized with useCallback)
   // ===================================
   const handleMenuToggle = useCallback(() => {
-    setIsMenuOpen(prev => !prev);
+    setIsMenuOpen((prev) => !prev);
     if (isMenuOpen) {
       setActiveMenuLevel(MENU_LEVELS.MAIN);
     }
@@ -116,20 +116,20 @@ const MobileMenu = () => {
   // ===================================
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isMenuOpen) {
+      if (e.key === "Escape" && isMenuOpen) {
         handleMenuClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen, handleMenuClose]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
+    document.body.style.overflow = isMenuOpen ? "hidden" : "unset";
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
 
@@ -144,27 +144,18 @@ const MobileMenu = () => {
         aria-label={`Quay lại ${label}`}
       >
         <span className={styles["menu__back-content"]}>
-          <img 
-            src={backIcon} 
-            alt="Quay lại" 
-            className={styles["menu__back-icon"]} 
-          />
+          <img src={backIcon} alt="Quay lại" className={styles["menu__back-icon"]} />
           <span>{label}</span>
         </span>
       </button>
     </li>
   );
 
-  const renderMenuItems = (items: Array<{label: string, path: string}>) => (
+  const renderMenuItems = (items: Array<{ label: string; path: string }>) => (
     <>
       {items.map((item, index) => (
         <li key={`${item.path}-${index}`} className={styles.menu__item}>
-          <Link 
-            to={item.path} 
-            onClick={handleMenuClose}
-            className={styles.menu__link}
-            aria-label={item.label}
-          >
+          <Link to={item.path} onClick={handleMenuClose} className={styles.menu__link} aria-label={item.label}>
             <span>{item.label}</span>
             <ChevronRight size={16} aria-hidden="true" />
           </Link>
@@ -184,11 +175,7 @@ const MobileMenu = () => {
           className={styles.menu__social_link}
           aria-label={`Theo dõi trên ${social.alt}`}
         >
-          <img 
-            src={social.icon} 
-            alt={social.alt}
-            className={styles.menu__social_icon}
-          />
+          <img src={social.icon} alt={social.alt} className={styles.menu__social_icon} />
         </a>
       ))}
     </div>
@@ -197,11 +184,7 @@ const MobileMenu = () => {
   const renderMainMenu = () => (
     <ul className={styles["menu__list"]} role="list">
       <li className={styles["menu__item"]}>
-        <Link
-          to="/"
-          onClick={handleMenuClose}
-          className={styles["menu__link"]}
-        >
+        <Link to="/" onClick={handleMenuClose} className={styles["menu__link"]}>
           <span>TRANG CHỦ</span>
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
@@ -237,21 +220,13 @@ const MobileMenu = () => {
         </button>
       </li>
       <li className={styles["menu__item"]}>
-        <Link 
-          to="/lien-he" 
-          onClick={handleMenuClose}
-          className={styles["menu__link"]}
-        >
+        <Link to="/lien-he" onClick={handleMenuClose} className={styles["menu__link"]}>
           <span>LIÊN HỆ</span>
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </li>
       <li className={styles["menu__item"]}>
-        <Link
-          to="/blog-thang-may"
-          onClick={handleMenuClose}
-          className={styles["menu__link"]}
-        >
+        <Link to="/blog-thang-may" onClick={handleMenuClose} className={styles["menu__link"]}>
           <span>TIN TỨC</span>
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
@@ -259,7 +234,7 @@ const MobileMenu = () => {
     </ul>
   );
 
-  const renderSubMenu = (level: MenuLevel, data: Array<{label: string, path: string}>) => (
+  const renderSubMenu = (level: MenuLevel, data: Array<{ label: string; path: string }>) => (
     <ul className={styles["menu__list"]} role="list">
       {renderBackButton(MENU_LEVELS.MAIN)}
       {renderMenuItems(data)}
@@ -275,7 +250,9 @@ const MobileMenu = () => {
           🔶 HOTLINE BAR
           =================================== */}
       <div className={styles["mobile-navbar__hotline"]} role="banner">
-        <p>Hotline: <a href="tel:+84777275384">(+84) 777 275 384</a></p>
+        <p>
+          Hotline: <a href="tel:+84777275384">(+84) 777 275 384</a>
+        </p>
       </div>
 
       {/* ===================================
@@ -283,32 +260,24 @@ const MobileMenu = () => {
           =================================== */}
       <div className={styles["mobile-navbar__header"]} role="navigation" aria-label="Thanh điều hướng chính">
         {/* Logo */}
-        <Logo 
-          variant="white" 
+        <Logo
+          variant="white"
           className={`${styles["mobile-navbar__logo"]} ${isSearchOpen ? styles["mobile-navbar__logo--hidden"] : ""}`}
         />
 
         {/* Right side controls */}
         <div className={styles["mobile-navbar__controls"]}>
           {/* Advanced Search Component */}
-          <AdvancedSearch 
-            isOpen={isSearchOpen} 
-            setIsOpen={setShowSearch} 
-            scrolled={false}
-          />
+          <AdvancedSearch isOpen={isSearchOpen} setIsOpen={setShowSearch} scrolled={false} />
 
           <div className={styles["mobile-navbar__actions"]}>
             {/* Search Toggle Button */}
-            <button 
-              className={styles["mobile-navbar__search-toggle"]} 
+            <button
+              className={styles["mobile-navbar__search-toggle"]}
               onClick={() => setShowSearch(true)}
               aria-label="Tìm kiếm"
             >
-              <img 
-                src={search} 
-                alt="Tìm kiếm" 
-                className={styles["mobile-navbar__search-icon"]} 
-              />
+              <img src={search} alt="Tìm kiếm" className={styles["mobile-navbar__search-icon"]} />
             </button>
 
             {/* Visual Divider */}
@@ -316,7 +285,9 @@ const MobileMenu = () => {
 
             {/* Hamburger Menu Toggle */}
             <button
-              className={`${styles["mobile-navbar__menu-toggle"]} ${isMenuOpen ? styles["mobile-navbar__menu-toggle--active"] : ""}`}
+              className={`${styles["mobile-navbar__menu-toggle"]} ${
+                isMenuOpen ? styles["mobile-navbar__menu-toggle--active"] : ""
+              }`}
               onClick={handleMenuToggle}
               aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
               aria-expanded={isMenuOpen}
@@ -333,7 +304,7 @@ const MobileMenu = () => {
       {/* ===================================
           📂 DROPDOWN MENU PANEL
           =================================== */}
-      <nav 
+      <nav
         id="mobile-menu"
         className={`${styles["menu"]} ${isMenuOpen ? styles["menu--open"] : ""}`}
         role="navigation"
@@ -355,13 +326,7 @@ const MobileMenu = () => {
       {/* ===================================
           🌑 OVERLAY FOR BACKDROP
           =================================== */}
-      {isMenuOpen && (
-        <div 
-          className={styles["mobile-navbar__overlay"]} 
-          onClick={handleMenuClose}
-          aria-hidden="true"
-        />
-      )}
+      {isMenuOpen && <div className={styles["mobile-navbar__overlay"]} onClick={handleMenuClose} aria-hidden="true" />}
     </header>
   );
 };

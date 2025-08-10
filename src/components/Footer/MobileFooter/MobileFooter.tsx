@@ -1,5 +1,5 @@
 import styles from "../../../styles/components/Footer/MobileFooter/MobileFooter.module.scss";
-import Logo from "../../Logo/Logo";
+import Logo from "../../logo/Logo";
 import facebook from "../../../assets/images/header/Facebook_2_Icon.png";
 import instagram from "../../../assets/images/header/Instagram_Icon.png";
 import youtube from "../../../assets/images/header/Youtube-Icon.png";

@@ -1,31 +1,36 @@
-import { useParams, useSearchParams, useLocation } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { productData } from "../../data/ProductData";
-import type { ProductId, Audience } from "../../data/ProductData";
-import ContentTableSection from "../../components/ProductPage/ContentTableSection";
-import DetailSection from "../../components/ProductPage/DetailSection";
-import DimensionSection from "../../components/ProductPage/DimensionSection";
-import InstallationSection from "../../components/ProductPage/InstallationSection";
-import BlueprintSection from "../../components/ProductPage/BlueprintSection";
-import Introduction from "../../components/ProductPage/Introduction";
-import NavBar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
-import RealGallerySection from "../../components/ProductPage/RealGallerySection";
+
+import NavBar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
+import ContentTableSection from "../../components/product-page/ContentTableSection";
+import DetailSection from "../../components/product-page/DetailSection";
+import DimensionSection from "../../components/product-page/DimensionSection";
+import InstallationSection from "../../components/product-page/InstallationSection";
+import BlueprintSection from "../../components/product-page/BlueprintSection";
+import Introduction from "../../components/product-page/Introduction";
+import RealGallerySection from "../../components/product-page/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
+import { productData } from "../../data/ProductData";
+import type { ProductId, Audience } from "../../data/ProductData";
 import { BASE_URL } from "../../components/SEO/constant";
 import { getSeoMeta } from "../../utils/seo";
-// import HomeLiftSeoContent from "../../components/SEO/HomeLiftSeoContent";
-// import HospitalLiftSeoContent from "../../components/SEO/HospitalLiftSeoContent";
-// import FoodLiftSeoContent from "../../components/SEO/FoodLiftSeoContent";
-// import ObservationLiftSeoContent from "../../components/SEO/ObservationLiftSeoContent";
-// import EscalatorSeoContent from "../../components/SEO/EscalatorSeoContent";
-// import FreightLiftSeoContent from "../../components/SEO/FreightLiftSeoContent";
+
+/**
+ * Checks whether the provided id matches a key in productData.
+ * @param id - Candidate product identifier from the URL.
+ * @returns True if the id exists in productData.
+ */
 
 // Kiểm tra productId hợp lệ
 function isValidProductId(id: string): id is ProductId {
   return id in productData;
 }
+
+/**
+ * Product details page rendered according to the product id and optional audience.
+ */
 
 export default function ProductTemplatePage() {
   const { productId } = useParams();
@@ -43,7 +48,8 @@ export default function ProductTemplatePage() {
   const canonical = `${BASE_URL}/san-pham/${productId}${location.search || ""}`;
 
   return (
-    <div style={{ backgroundColor: "var(--color-gray1)" }}>
+    // Wrapper with neutral background color
+    <div className="bg-[var(--color-gray1)]">
       <Helmet>
         <title>{seo?.metaTitle}</title>
         <meta name="description" content={seo?.metaDescription || ""} />
@@ -83,7 +89,7 @@ export default function ProductTemplatePage() {
       <NavBar />
 
       {/* ✅ HTML breadcrumb bị ẩn khỏi người dùng nhưng vẫn giúp Google hiểu */}
-      <nav aria-label="breadcrumb" style={{ display: "none" }}>
+      <nav aria-label="breadcrumb" className="hidden">
         <ol>
           <li>
             <a href="https://jptechlift.vn">Trang chủ</a>
