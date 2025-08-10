@@ -1,4 +1,4 @@
-import NavBar from "../navbar/Navbar";
+import NavBar from "../Navbar/Navbar";
 import "../../styles/pages/HeaderWithBanner.scss";
 interface HeaderWithBannerProps {
   banner: string;

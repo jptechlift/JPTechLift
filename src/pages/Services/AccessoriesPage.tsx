@@ -1,8 +1,8 @@
 import Accessories from "../../components/service-page/AccessoriesPage";
-import Footer from "../../components/footer/Footer";
+import Footer from "../../components/Footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
-import NavBar from "../../components/navbar/Navbar";
+import NavBar from "../../components/Navbar/Navbar";
 
 const AccessoriesPage = () => {
   return (

@@ -1,8 +1,8 @@
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import NavBar from "../../components/navbar/Navbar";
-import Footer from "../../components/footer/Footer";
+import NavBar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 import ContentTableSection from "../../components/product-page/ContentTableSection";
 import DetailSection from "../../components/product-page/DetailSection";
 import DimensionSection from "../../components/product-page/DimensionSection";

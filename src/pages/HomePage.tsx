@@ -1,10 +1,10 @@
 import AboutSection from "../components/home-page/AboutSection";
 import CommitSection from "../components/home-page/CommitSection";
-import HeroFooter from "../components/footer/HeroFooter";
+import HeroFooter from "../components/Footer/HeroFooter";
 import ProductSection from "../components/home-page/ProductSection";
 import ServiceSection from "../components/home-page/ServiceSection";
 import HeroBanner from "../components/home-page/HeroBanner";
-import Footer from "../components/footer/Footer";
+import Footer from "../components/Footer/Footer";
 import SubBanner from "../components/home-page/SubBanner";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
@@ -15,8 +15,8 @@ const HomePage = () => {
     <div>
       <Helmet>
         <title>
-          Công ty TNHH JP Techlift - Chuyên cung cấp lắp đặt các dòng thang máy
-          gia đình, dân dụng, nhà hàng, khách sạn, doanh nghiệp và bệnh viện.
+          Công ty TNHH JP Techlift - Chuyên cung cấp lắp đặt các dòng thang máy gia đình, dân dụng, nhà hàng, khách sạn,
+          doanh nghiệp và bệnh viện.
         </title>
         <meta
           name="description"

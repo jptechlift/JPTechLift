@@ -4,7 +4,7 @@ import HeaderWithBanner from "../../components/home-page/HeaderWithBanner";
 import ElevatorServicesMobile from "../../components/service-page/ServicePageMobile";
 import ElevatorServicesDesktop from "../../components/service-page/ServicePageDesktop";
 import banner from "../../assets/images/Banner-img.png";
-import Footer from "../../components/footer/Footer";
+import Footer from "../../components/Footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
 const ServicesPage = () => {
