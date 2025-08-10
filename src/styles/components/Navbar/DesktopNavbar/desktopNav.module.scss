@@ -43,9 +43,9 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-
+  }
     /* modifier: item có icon + hiệu ứng underline */
-    &--contact {
+    &__contactIcon {
       cursor: pointer;
 
       span {
@@ -53,17 +53,24 @@
         color: var(--color-main);
         padding-bottom: 2px;
         transition: color var(--transition-medium);
+        a {
+          color: var(--color-main);
+          text-decoration: none;
+        }
 
+        // Gạch chân màu đỏ (đã được thêm lại)
         &::after {
           content: "";
           position: absolute;
-          left: 0; bottom: 0;
-          height: 2px; width: 100%;
+          left: 0;
+          bottom: 0;
+          height: 2px;
+          width: 100%;
           background: var(--color-red);
           transform: scaleX(0);
           transform-origin: left;
           opacity: 0;
-          transition: transform var(--transition-medium), opacity var(--transition-medium);
+          transition: transform 0.3s ease, opacity 0.3s ease;
         }
       }
 
@@ -73,8 +80,11 @@
         filter: brightness(1.2);
       }
 
-      img { width: 26px; height: 22px; }
-    }
+      img {
+        width: 26px;
+        height: 22px;
+      }
+    
   }
 
   /* icon chung + modifier */
@@ -89,7 +99,10 @@
       transition: var(--transition-medium);
 
       /* tip: chỉ hover thay đổi trên parent lang để bền vững hơn */
-      .topBar__lang:hover & { transform: rotate(0deg); filter: brightness(1.2); }
+      .topBar__lang:hover & {
+        transform: rotate(0deg);
+        filter: brightness(1.2);
+      }
     }
 
     &--flag {
@@ -100,7 +113,7 @@
   }
 
   /* khối ngôn ngữ (trigger dropdown) */
-&__lang {
+  &__lang {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -124,7 +137,7 @@
       pointer-events: auto;
       transition-delay: 0s;
     }
-    
+
     /* [UX] "Cầu nối vô hình" để giữ hover khi di chuột xuống */
     &::after {
       content: "";
@@ -136,21 +149,22 @@
       background: transparent;
     }
   }
-  
+
   // Icon bên trong nút trigger
   &__icon_sc {
-      height: 10px;
-      transform: rotate(180deg);
-      transition: var(--transition-medium);
-      
-      .topBar__lang:hover & { transform: rotate(0deg); }
+    height: 10px;
+    transform: rotate(180deg);
+    transition: var(--transition-medium);
+
+    .topBar__lang:hover & {
+      transform: rotate(0deg);
+    }
   }
   &__icon_flag {
-      height: 32px;
-      width: auto;
-      display: block;
+    height: 32px;
+    width: auto;
+    display: block;
   }
-  
 
   /* Dropdown "Đăng nhập" */
   &__langMenu {
@@ -162,7 +176,7 @@
     border-radius: 12px;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05); // Shadow đẹp hơn
     padding: 8px;
-    
+
     /* [UI/UX] Hiệu ứng xuất hiện: Scale-up tinh tế */
     opacity: 0;
     transform-origin: top right;
@@ -170,7 +184,7 @@
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
     transition-delay: 0.15s; // [UX] Độ trễ nhỏ trước khi ẩn đi
-    
+
     /* [UI] Thêm mũi tên nhỏ chỉ lên trên */
     &::before {
       content: "";
@@ -203,7 +217,7 @@
       background: var(--color-main);
       color: #fff;
 
-      &:hover { 
+      &:hover {
         background: #082d5a; // Màu hover tối hơn một chút cho đẹp
       }
     }
@@ -212,7 +226,11 @@
 /* Mobile: nếu parent nào dùng overflow:hidden; → bỏ để dropdown không bị cắt */
 @media (max-width: 768px) {
   /* (tuỳ chọn) mở rộng dropdown 2 bên cho dễ bấm */
-  .topBar__langMenu { left: 12px; right: 12px; min-width: unset; }
+  .topBar__langMenu {
+    left: 12px;
+    right: 12px;
+    min-width: unset;
+  }
 }
 
 /* ===================================
