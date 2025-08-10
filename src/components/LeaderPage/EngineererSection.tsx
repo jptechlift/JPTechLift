@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { engineerers } from "../../data/EngineererData";
-import type { Engineer } from "../../data/EngineererData";
+import { engineerers } from "../../data/engineererData";
+import type { Engineer } from "../../data/engineererData";
 
 export default function LeaderSection() {
   const [selectedEngineer, setSelectedEngineer] = useState<Engineer | null>(

@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { leaders } from "../../data/LeaderData";
-import type { Leader } from "../../data/LeaderData";
+import { leaders } from "../../data/leaderData";
+import type { Leader } from "../../data/leaderData";
 
 export default function LeaderSection() {
   const [selectedLeader, setSelectedLeader] = useState<Leader | null>(null);

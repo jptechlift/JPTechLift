@@ -12,8 +12,8 @@ import Introduction from "../../components/ProductPage/Introduction";
 import RealGallerySection from "../../components/ProductPage/RealGallerySection";
 import FadeInSection from "../../styles/components/common/FadeInSection";
 import NotFound from "../NotFound";
-import { productData } from "../../data/ProductData";
-import type { ProductId, Audience } from "../../data/ProductData";
+import { productData } from "../../data/productData";
+import type { ProductId, Audience } from "../../data/productData";
 import { BASE_URL } from "../../components/SEO/constant";
 import { getSeoMeta } from "../../utils/seo";
 

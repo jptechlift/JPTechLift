@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import các kiểu dữ liệu và SCSS
 import { ConfiguratorItem, FinishingCategory, ElevatorConfiguration } from "../../data/AestheticModalData";
-import styles from "../../styles/pages/product-page/ProductCabin.module.scss";
+import styles from "../../styles/pages/products-page/productCabin.module.scss";
 
 // --- Dữ liệu giả lập ---
 import aes1 from "../../assets/images/productPage_img/AestheticModal/aes1.png";
