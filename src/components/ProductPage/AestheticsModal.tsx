@@ -4,7 +4,7 @@ import React, { useState, FC } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Import các kiểu dữ liệu và SCSS
-import { ConfiguratorItem, FinishingCategory, ElevatorConfiguration } from "../../data/AestheticModalData";
+import { ConfiguratorItem, FinishingCategory, ElevatorConfiguration } from "../../data/aestheticModalData";
 import styles from "../../styles/pages/products-page/productCabin.module.scss";
 
 // --- Dữ liệu giả lập ---
