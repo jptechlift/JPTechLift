@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../../styles/components/Navbar/SearchPanel.module.scss";
+import styles from "../../styles/components/Navbar/searchPanel.module.scss";
 
 import { searchData, popularSearches, type SearchItem } from "../../constants/searchData";
 

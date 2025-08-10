@@ -4,7 +4,7 @@ import facebook from "../../../assets/images/header/Facebook_Icon.png";
 import tiktok from "../../../assets/images/header/TikTok_Icon.png";
 import linkendin from "../../../assets/images/header/Linkedin_Icon.png";
 import search from "../../../assets/images/header/Search_Icon_2.png";
-import styles from "../../../styles/components/Navbar/DesktopNavbar/DesktopNav.module.scss";
+import styles from "../../../styles/components/Navbar/DesktopNavbar/desktopNav.module.scss";
 
 import ProductServiceDropdown from "./ProductServiceDropdown";
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "../../styles/pages/product-page/ProductGallery.module.scss";
+import styles from "../../styles/pages/products-page/productGallery.module.scss";
 import { useNavigate } from "react-router-dom";
 interface Props {
   data: {

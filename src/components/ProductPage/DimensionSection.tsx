@@ -1,5 +1,5 @@
 import { memo } from "react";
-import styles from "../../styles/pages/product-page/ProductSpecs.module.scss";
+import styles from "../../styles/pages/products-page/productSpecs.module.scss";
 import { useNavigate } from "react-router-dom";
 
 interface Dimension {

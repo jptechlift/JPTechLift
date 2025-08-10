@@ -1,6 +1,6 @@
 import MenuBar from "./MenuBar";
 import TopBar from "./TopBar";
-import styles from "../../../styles/components/Navbar/DesktopNavbar/DesktopNav.module.scss";
+import styles from "../../../styles/components/Navbar/DesktopNavbar/desktopNav.module.scss";
 import AdvancedSearch from "../AdvancedSearch";
 import { useEffect, useState } from "react";
 const DesktopMenu = () => {

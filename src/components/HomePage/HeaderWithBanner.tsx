@@ -1,5 +1,5 @@
 import NavBar from "../Navbar/Navbar";
-import "../../styles/pages/HeaderWithBanner.scss";
+import "../../styles/pages/headerWithBanner.scss";
 interface HeaderWithBannerProps {
   banner: string;
   title: string;

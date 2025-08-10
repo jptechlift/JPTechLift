@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../../styles/pages/product-page/ProductProcess.module.scss";
+import styles from "../../styles/pages/products-page/productProcess.module.scss";
 
 interface Step {
   stepTitle: string;

@@ -1,4 +1,4 @@
-import styles from "../../../styles/components/Footer/DesktopFooter/DesktopFooter.module.scss";
+import styles from "../../../styles/components/Footer/DesktopFooter/desktopFooter.module.scss";
 import Logo from "../../Logo/Logo";
 import { Link } from "react-router-dom";
 import facebook from "../../../assets/images/header/Facebook_2_Icon.png";

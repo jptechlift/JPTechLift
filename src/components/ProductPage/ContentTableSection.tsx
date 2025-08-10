@@ -1,4 +1,4 @@
-import styles from "../../styles/pages/product-page/ProductContentTable.module.scss";
+import styles from "../../styles/pages/products-page/productContentTable.module.scss";
 import size from "../../assets/images/productPage_img/home_lift/contentTable_size&price.png";
 import install from "../../assets/images/productPage_img/home_lift/contentTable_realistic.png";
 import gallery from "../../assets/images/productPage_img/home_lift/contentTable_installation.png";
