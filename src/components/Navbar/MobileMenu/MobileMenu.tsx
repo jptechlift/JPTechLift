@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import Logo from "../../logo/Logo";
+import Logo from "../../Logo/Logo";
 import styles from "../../../styles/components/Navbar/MobieNavbar/MobileMenu.module.scss";
 import AdvancedSearch from "../AdvancedSearch";
 

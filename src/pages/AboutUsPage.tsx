@@ -5,7 +5,7 @@ import AboutUsReasons from "../components/about-us-page/AboutUsReasons";
 import AboutUsNewsBlogs from "../components/about-us-page/AboutUsNewsBlogs";
 
 import bannerImg from "../assets/images/Banner_AboutUs_Img.png";
-import Footer from "../components/footer/Footer";
+import Footer from "../components/Footer/Footer";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 

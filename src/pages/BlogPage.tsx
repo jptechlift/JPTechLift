@@ -3,7 +3,7 @@ import HeaderWithBanner from "../components/home-page/HeaderWithBanner";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../components/SEO/constant";
 import BlogBanner from "../assets/images/banner-blog.jpg";
-import Footer from "../components/footer/Footer";
+import Footer from "../components/Footer/Footer";
 
 const BlogPage = () => {
   return (

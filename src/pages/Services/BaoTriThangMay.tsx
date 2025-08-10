@@ -1,6 +1,6 @@
-import HeroFooter from "../../components/footer/HeroFooter";
+import HeroFooter from "../../components/Footer/HeroFooter";
 import HeroBanner from "../../components/home-page/HeroBanner";
-import Footer from "../../components/footer/Footer";
+import Footer from "../../components/Footer/Footer";
 import CaiTaoSuaChuaThangMay from "../../components/service-page/CaiTaoSuaChuaThangMay";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
