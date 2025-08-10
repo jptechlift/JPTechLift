@@ -1,7 +1,7 @@
 import HeroFooter from "../../components/Footer/HeroFooter";
-import HeroBanner from "../../components/home-page/HeroBanner";
+import HeroBanner from "../../components/HomePage/HeroBanner";
 import Footer from "../../components/Footer/Footer";
-import ElevatorConsultation from "../../components/service-page/ElevatorDesignConsulting";
+import ElevatorConsultation from "../../components/ServicePage/ElevatorDesignConsulting";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
 const HomePage = () => {

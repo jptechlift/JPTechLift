@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import HeaderWithBanner from "../../components/home-page/HeaderWithBanner";
-import ElevatorServicesMobile from "../../components/service-page/ServicePageMobile";
-import ElevatorServicesDesktop from "../../components/service-page/ServicePageDesktop";
+import HeaderWithBanner from "../../components/HomePage/HeaderWithBanner";
+import ElevatorServicesMobile from "../../components/ServicePage/ServicePageMobile";
+import ElevatorServicesDesktop from "../../components/ServicePage/ServicePageDesktop";
 import banner from "../../assets/images/Banner-img.png";
 import Footer from "../../components/Footer/Footer";
 import { Helmet } from "react-helmet-async";

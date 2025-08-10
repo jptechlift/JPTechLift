@@ -1,8 +1,8 @@
-import Header from "../components/home-page/HeaderWithBanner";
-import AboutUsIntro from "../components/about-us-page/AboutUsIntro";
-import AboutUsBanner from "../components/about-us-page/AboutUsBanner";
-import AboutUsReasons from "../components/about-us-page/AboutUsReasons";
-import AboutUsNewsBlogs from "../components/about-us-page/AboutUsNewsBlogs";
+import Header from "../components/HomePage/HeaderWithBanner";
+import AboutUsIntro from "../components/AboutUsPage/AboutUsIntro";
+import AboutUsBanner from "../components/AboutUsPage/AboutUsBanner";
+import AboutUsReasons from "../components/AboutUsPage/AboutUsReasons";
+import AboutUsNewsBlogs from "../components/AboutUsPage/AboutUsNewsBlogs";
 
 import bannerImg from "../assets/images/Banner_AboutUs_Img.png";
 import Footer from "../components/Footer/Footer";

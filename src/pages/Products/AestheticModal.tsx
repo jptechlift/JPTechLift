@@ -1,5 +1,5 @@
 import Footer from "../../components/Footer/Footer";
-import AestheticModal from "../../components/product-page/AestheticsModal";
+import AestheticModal from "../../components/ProductPage/AestheticsModal";
 import { Helmet } from "react-helmet-async";
 import { BASE_URL } from "../../components/SEO/constant";
 import NavBar from "../../components/Navbar/Navbar";
