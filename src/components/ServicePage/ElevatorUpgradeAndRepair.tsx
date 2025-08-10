@@ -1,5 +1,5 @@
 
-const CaiTaoSuaChuaThangMay = () => {
+const ElevatorUpgradeAndRepair = () => {
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 bg-white text-[#4a4a4a] font-inter">
       {/* Header với breadcrumb */}
@@ -78,4 +78,4 @@ const CaiTaoSuaChuaThangMay = () => {
   );
 };
 
-export default CaiTaoSuaChuaThangMay;
+export default ElevatorUpgradeAndRepair;

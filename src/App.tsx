@@ -21,6 +21,7 @@ import CaiTaoSuaChuaThangMay from "./pages/Services/CaiTaoSuaChuaThangMayPage";
 import NotFound from "./pages/NotFound";
 import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
+import LoginPage from "./pages/Auth/LoginPage";
 
 const App = () => {
   const RedirectHandler = () => {
@@ -69,6 +70,7 @@ const App = () => {
           <Route path="/san-pham/:productId" element={<ProductTemplatePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

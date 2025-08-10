@@ -4,8 +4,10 @@ import email from "../../../assets/images/header/Email_Icon.jpg";
 import flag from "../../../assets/images/header/Flag_Icon.jpg";
 import polygon from "../../../assets/images/header/Polygon 1.jpg";
 import styles from "../../../styles/components/Navbar/DesktopNavbar/desktopNav.module.scss";
+import { useNavigate } from "react-router-dom";
 
 const TopBar = () => {
+  const navigate = useNavigate();
   return (
     <div className={styles.topBar}>
       {/* Logo */}
@@ -49,6 +51,17 @@ Trân trọng,`
           <img src={polygon} alt="scroll down" className={styles.topBar__icon_sc} />
           <span>VN</span>
           <img src={flag} alt="VN" className={styles.topBar__icon_flag} />
+          {/* ⬇️ Thanh dropdown chỉ gồm Đăng nhập (ẩn mặc định, hover mới hiện) */}
+          <div className={styles.topBar__langMenu} role="menu">
+            <button
+              type="button"
+              className={`${styles.topBar__langItem} ${styles["topBar__langItem--primary"]}`}
+              role="menuitem"
+              onClick={() => navigate("/login")} // điều hướng tới trang login
+            >
+              Đăng nhập
+            </button>
+          </div>
         </div>
       </div>
     </div>

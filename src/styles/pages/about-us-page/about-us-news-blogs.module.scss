@@ -1,88 +1,426 @@
-// about-us-news-blogs.module.scss
-
+@use "../../base/variables";
 // Block: newsBlogs
 .newsBlogs {
-  padding: 0;
-  background: #fff;
+  padding: 80px 20px;
+  background: var(--color-gray1);
+  min-height: 500px;
   display: flex;
   justify-content: center;
-}
+  align-items: center;
 
-// Element: newsBlogs__container
-.newsBlogs__container {
-  display: flex;
-  gap: 72px;
-  justify-content: center;
-  flex-wrap: nowrap;
-  width: 100%;
-  max-width: 1100px;
-  margin: 56px auto 64px auto;
-}
-
-// Element: newsBlogs__card
-.newsBlogs__card {
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  width: 400px;
-  text-align: left;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-// Element: newsBlogs__cardImage
-.newsBlogs__cardImage {
-  width: 100%;
-  height: 260px;
-  object-fit: cover;
-  display: block;
-  border-radius: 4px;
-}
-
-// Element: newsBlogs__cardContent
-.newsBlogs__cardContent {
-  width: 100%;
-  margin-top: 18px;
-}
-
-// Element: newsBlogs__cardTitle
-.newsBlogs__cardTitle {
-  padding: 0 0 0 2px;
-  font-size: 1.25rem;
-  color: #183153;
-  font-weight: 700;
-  text-align: left;
-  margin-bottom: 0.3rem;
-}
-
-// Element: newsBlogs__cardUnderline
-.newsBlogs__cardUnderline {
-  width: 100%;
-  height: 3.5px;
-  background: #183153;
-  border-radius: 2px;
-  margin: 0.3rem 0 0 0;
-}
-
-// Mobile responsive styles
-@media (max-width: 768px) {
-  .newsBlogs__container {
-    gap: 24px;
-    flex-wrap: wrap;
-    max-width: 98vw;
-    margin: 24px auto 24px auto;
+  // Element: container
+  &__container {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  .newsBlogs__card {
-    width: 95vw;
-    max-width: 400px;
+  // Element: card
+  &__card {
+    background: #fff;
+    overflow: hidden;
+    width: 420px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(50px);
+    opacity: 0;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex: 0 0 auto;
+
+    // Modifier: visible
+    &--visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    // Modifier: hovered
+    &--hovered {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-main);
+
+      .newsBlogs__image {
+        transform: scale(1.1);
+      }
+
+      .newsBlogs__overlay {
+        opacity: 1;
+      }
+
+      .newsBlogs__overlayContent {
+        transform: translateY(0);
+      }
+
+      .newsBlogs__overlayIcon {
+        transform: translateX(4px);
+      }
+
+      .newsBlogs__underline {
+        width: 100px;
+      }
+
+      .newsBlogs__action {
+        color: #2563eb;
+      }
+
+      .newsBlogs__actionIcon {
+        transform: translateX(8px);
+      }
+    }
+
+    // Hover state for desktop
+    @media (hover: hover) {
+      &:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        border-color: var(--color-main);
+
+        .newsBlogs__image {
+          transform: scale(1.1);
+        }
+
+        .newsBlogs__overlay {
+          opacity: 1;
+        }
+
+        .newsBlogs__overlayContent {
+          transform: translateY(0);
+        }
+
+        .newsBlogs__overlayIcon {
+          transform: translateX(4px);
+        }
+
+        .newsBlogs__underline {
+          width: 100px;
+        }
+
+        .newsBlogs__action {
+          color: #2563eb;
+        }
+
+        .newsBlogs__actionIcon {
+          transform: translateX(8px);
+        }
+      }
+    }
   }
 
-  .newsBlogs__cardImage {
-    height: 180px;
+  // Element: imageContainer
+  &__imageContainer {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  // Element: image
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  // Element: overlay
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(4, 30, 66, 0.7),
+      /* #041e42 với 70% độ đậm */ rgba(203, 160, 82, 0.7) /* #cba052 với 70% độ đậm */
+    );
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Element: overlayContent
+  &__overlayContent {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    transform: translateY(20px);
+    transition: transform 0.3s ease 0.1s;
+  }
+
+  // Element: overlayIcon
+  &__overlayIcon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  // Element: overlayText
+  &__overlayText {
+    font-weight: 600;
+  }
+
+  // Element: content
+  &__content {
+    padding: 24px 28px;
+    position: relative;
+  }
+
+  // Element: header
+  &__header {
+    margin-bottom: 16px;
+  }
+
+  // Element: title
+  &__title {
+    font-size: 28px;
+    color: #1e293b;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    position: relative;
+  }
+
+  // Element: underline
+  &__underline {
+    width: 60px;
+    height: 4px;
+    background: var(--color-main);
+    transition: width 0.3s ease;
+  }
+
+  // Element: description
+  &__description {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 12px 0;
+    opacity: 0.9;
+  }
+
+  // Element: stats
+  &__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 16px 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  // Element: stat
+  &__stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  // Element: statIcon
+  &__statIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--color-main);
+    flex-shrink: 0;
+  }
+
+  // Element: statText
+  &__statText {
+    font-weight: 500;
+  }
+
+  // Element: action
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--color-main);
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+  }
+
+  // Element: actionText
+  &__actionText {
+    font-weight: 600;
+  }
+
+  // Element: actionIcon
+  &__actionIcon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  // Responsive Design
+  @media (max-width: 1024px) {
+    &__container {
+      gap: 32px;
+      max-width: 900px;
+    }
+
+    &__card {
+      width: 380px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+
+    &__container {
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    &__card {
+      width: 100%;
+      max-width: 420px;
+      transform: translateY(30px);
+
+      &--visible {
+        transform: translateY(0);
+      }
+
+      &--hovered {
+        transform: translateY(-8px) scale(1.01);
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          transform: translateY(-8px) scale(1.01);
+        }
+      }
+    }
+
+    &__imageContainer {
+      height: 180px;
+    }
+
+    &__content {
+      padding: 24px 20px;
+    }
+
+    &__title {
+      font-size: 24px;
+    }
+
+    &__stats {
+      gap: 10px;
+      padding: 16px 0;
+    }
+
+    &__stat {
+      font-size: 13px;
+    }
+
+    &__overlayContent {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 40px 12px;
+
+    &__card {
+      max-width: 100%;
+    }
+
+    &__content {
+      padding: 20px 16px;
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__description {
+      font-size: 14px;
+    }
+
+    &__action {
+      font-size: 14px;
+    }
+
+    &__overlayContent {
+      font-size: 14px;
+    }
+  }
+
+  // Animation delays for staggered entrance
+  &__card:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  &__card:nth-child(2) {
+    animation-delay: 200ms;
+  }
+
+  // Accessibility improvements
+  @media (prefers-reduced-motion: reduce) {
+    &__card {
+      transition: none;
+      transform: none;
+      opacity: 1;
+
+      &--visible {
+        transform: none;
+      }
+
+      &--hovered,
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &__image,
+    &__overlayIcon,
+    &__overlayContent,
+    &__underline,
+    &__action,
+    &__actionIcon {
+      transition: none;
+    }
+  }
+
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    &__card {
+      border: 2px solid #000;
+    }
+
+    &__title {
+      color: #000;
+    }
+
+    &__description,
+    &__stat,
+    &__statText {
+      color: #333;
+    }
+
+    &__underline {
+      background: #000;
+    }
+
+    &__action {
+      color: #000;
+    }
   }
 }

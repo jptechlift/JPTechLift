@@ -78,11 +78,7 @@ const DimensionSection = memo(({ data, className }: Props) => {
                   <li key={index}>{factor}</li>
                 ))}
               </ul>
-              <a
-                href="https://zalo.me/3469899057771273254"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
+              <a              
               >
                 <button
                   className={styles["product-specs__button"]}

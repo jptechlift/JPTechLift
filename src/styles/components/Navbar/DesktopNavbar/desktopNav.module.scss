@@ -9,17 +9,19 @@
   margin: 0 auto;
   position: relative;
 }
-
 /* ===================================
-   🏠 TOP BAR COMPONENT
+   🏠 TOP BAR (BEM)
    =================================== */
 .topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md) var(--spacing-xl);
-  background-color: var(--color-gray1);
+  background: var(--color-gray1);
+  position: relative;
+  z-index: 1100; // Đảm bảo topBar luôn nằm trên menuBar
 
+  /* logo */
   &__logo img {
     height: var(--logo-height);
     width: auto;
@@ -27,92 +29,190 @@
     display: block;
   }
 
+  /* cụm thông tin bên phải */
   &__info {
     display: flex;
-    gap: var(--spacing-xl);
     align-items: center;
+    gap: var(--spacing-xl);
     font-size: 19px;
     color: var(--color-main);
   }
 
+  /* item chung */
   &__item {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
+
+    /* modifier: item có icon + hiệu ứng underline */
+    &--contact {
+      cursor: pointer;
+
+      span {
+        position: relative;
+        color: var(--color-main);
+        padding-bottom: 2px;
+        transition: color var(--transition-medium);
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0; bottom: 0;
+          height: 2px; width: 100%;
+          background: var(--color-red);
+          transform: scaleX(0);
+          transform-origin: left;
+          opacity: 0;
+          transition: transform var(--transition-medium), opacity var(--transition-medium);
+        }
+      }
+
+      &:hover span::after {
+        transform: scaleX(1);
+        opacity: 1;
+        filter: brightness(1.2);
+      }
+
+      img { width: 26px; height: 22px; }
+    }
   }
 
-  &__lang {
-    display: flex;
+  /* icon chung + modifier */
+  &__icon {
+    height: var(--icon-size);
+    width: auto;
+    object-fit: contain;
+
+    &--sc {
+      height: 10px;
+      transform: rotate(180deg);
+      transition: var(--transition-medium);
+
+      /* tip: chỉ hover thay đổi trên parent lang để bền vững hơn */
+      .topBar__lang:hover & { transform: rotate(0deg); filter: brightness(1.2); }
+    }
+
+    &--flag {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+  }
+
+  /* khối ngôn ngữ (trigger dropdown) */
+&__lang {
+    position: relative;
+    display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
     padding: var(--spacing-sm) 9px;
     background: var(--color-white);
     border-radius: var(--border-radius-pill);
     box-shadow: var(--shadow-light);
+    cursor: pointer;
+    transition: transform 0.2s ease; // Thêm transition cho mượt
+
+    /* [UX] Phản hồi khi hover: Nút hơi phồng lên */
+    &:hover {
+      transform: scale(1.03);
+    }
+
+    /* [UX] Hiện dropdown khi hover */
+    &:hover .topBar__langMenu {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+      transition-delay: 0s;
+    }
+    
+    /* [UX] "Cầu nối vô hình" để giữ hover khi di chuột xuống */
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: 12px; // Chiều cao cầu nối
+      background: transparent;
+    }
   }
-
-  &__icon {
-    height: var(--icon-size);
-    width: auto;
-    object-fit: contain;
-
-    &_sc {
+  
+  // Icon bên trong nút trigger
+  &__icon_sc {
       height: 10px;
       transform: rotate(180deg);
       transition: var(--transition-medium);
-
-      &:hover {
-        transform: rotate(0deg);
-        filter: brightness(1.2);
-      }
-    }
-
-    &_flag {
+      
+      .topBar__lang:hover & { transform: rotate(0deg); }
+  }
+  &__icon_flag {
       height: 32px;
       width: auto;
-      object-fit: contain;
       display: block;
+  }
+  
+
+  /* Dropdown "Đăng nhập" */
+  &__langMenu {
+    position: absolute;
+    top: calc(100% + 11px); // Tăng khoảng cách để có chỗ cho mũi tên
+    right: 0;
+    z-index: 100;
+    width: 180px; // Điều chỉnh chiều rộng nếu cần
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05); // Shadow đẹp hơn
+    padding: 8px;
+    
+    /* [UI/UX] Hiệu ứng xuất hiện: Scale-up tinh tế */
+    opacity: 0;
+    transform-origin: top right;
+    transform: scale(0.95) translateY(-5px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition-delay: 0.15s; // [UX] Độ trễ nhỏ trước khi ẩn đi
+    
+    /* [UI] Thêm mũi tên nhỏ chỉ lên trên */
+    &::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      right: 18px;
+      width: 12px;
+      height: 12px;
+      background: var(--color-main);
+      border-top: 1px solid #e9ecef;
+      border-left: 1px solid #e9ecef;
+      transform: rotate(45deg);
     }
   }
 
-  &__contactIcon {
-    display: flex;
-    gap: var(--spacing-xs);
+  /* Nút "Đăng nhập" bên trong dropdown */
+  &__langItem {
+    width: 100%;
+    text-align: center; // Cho chữ ra giữa
+    padding: 12px 14px; // Tăng padding cho nút to hơn
+    border: 0;
+    border: 1px solid #e9ecef;
     cursor: pointer;
-    font-size: 19px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.15s ease;
 
-    span {
-      position: relative;
-      color: var(--color-main);
-      padding-bottom: 2px;
-      transition: color var(--transition-medium);
+    /* Style cho nút chính */
+    &--primary {
+      background: var(--color-main);
+      color: #fff;
 
-      &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 2px;
-        background-color: var(--color-red);
-        width: 100%;
-        transform: scaleX(0);
-        transform-origin: left;
-        opacity: 0;
-        transition: transform var(--transition-medium), opacity var(--transition-medium);
+      &:hover { 
+        background: #082d5a; // Màu hover tối hơn một chút cho đẹp
       }
     }
-
-    &:hover span::after {
-      filter: brightness(1.2);
-      transform: scaleX(1);
-      opacity: 1;
-    }
-
-    img {
-      width: 26px;
-      height: 22px;
-    }
   }
+}
+/* Mobile: nếu parent nào dùng overflow:hidden; → bỏ để dropdown không bị cắt */
+@media (max-width: 768px) {
+  /* (tuỳ chọn) mở rộng dropdown 2 bên cho dễ bấm */
+  .topBar__langMenu { left: 12px; right: 12px; min-width: unset; }
 }
 
 /* ===================================

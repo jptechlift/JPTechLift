@@ -14,7 +14,8 @@ export default function AboutUsIntro() {
   }, []);
 
   return (
-    <section className={styles.aboutIntro}>
+    <section className={styles.aboutIntroSection}>
+    <div className={styles.aboutIntro}>
       <h1
         className={styles.aboutIntro__title}
         data-aos="fade-zoom-in"
@@ -89,6 +90,7 @@ export default function AboutUsIntro() {
           </div>
         </div>
       </div>
+    </div>
     </section>
   );
 }

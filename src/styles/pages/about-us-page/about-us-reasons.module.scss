@@ -1,9 +1,9 @@
 // about-us-reasons.module.scss
-
+@use "../../base/variables";
 // Block: whyChooseUs
 .whyChooseUs {
   padding: 56px 0 42px 0;
-  background: #fff;
+  background: var(--color-gray1);
 }
 
 // Element: whyChooseUs__title
@@ -11,8 +11,8 @@
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2.7rem;
-  color: #183153;
-  font-weight: bold;
+  color: var(--color-main);
+  font-weight: 500;
   font-family: 'Inter', Arial, sans-serif;
   letter-spacing: 0.5px;
   position: relative;
@@ -40,12 +40,12 @@
 // Element: whyChooseUs__card
 .whyChooseUs__card {
   background: #fff;
-  padding: 2.1rem 1.2rem 2.1rem 1.2rem;
-  width: 315px;
+  padding: 2.1rem 1.5rem 2.1rem 1.5rem;
+  width: 285px;
   min-width: 260px;
   text-align: center;
   box-shadow: none;
-  border: 1.5px solid #183153;
+  border: 1.5px solid var(--color-main);
   transition: box-shadow 0.18s, transform 0.18s;
   position: relative;
 
@@ -86,7 +86,9 @@
 // Mobile responsive styles
 @media (max-width: 768px) {
   .whyChooseUs__grid {
-    gap: 20px;
+     display: grid;
+    grid-template-columns: repeat(2, 1fr); // 2 cột bằng nhau
+    gap: 16px; // khoảng cách giữa cột
   }
 
   .whyChooseUs__title {
@@ -96,6 +98,8 @@
 
   .whyChooseUs__card {
     padding: 1.1rem 0.65rem 1.3rem;
+     width: 100%;   // bỏ width cố định
+    min-width: unset;
   }
 
   .whyChooseUs__cardRating {

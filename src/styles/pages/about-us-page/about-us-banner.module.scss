@@ -1,12 +1,13 @@
-
 /* about-us-banner.module.scss */
+@use "../../base/variables";
+
 // Block: aboutBanner
 .aboutBanner {
+  background-color: var(--color-gray1);
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
   padding: 0;
-  background: #fff;
   box-sizing: border-box;
 }
 
@@ -42,12 +43,11 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 900px;
   margin: 0 auto;
   text-align: center;
   color: #fff;
-  font-size: 2.8rem;
-  font-weight: 800;
+  font-size: 2.4rem;
+  font-weight: 500;
   letter-spacing: 1.1px;
   line-height: 1.23;
   padding: 0 38px;
@@ -65,7 +65,7 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  background: #fff;
+  background: var(--color-gray1);
   padding-bottom: 32px;
 }
 
@@ -77,9 +77,9 @@
 
 // Element: aboutBanner__cardTitle
 .aboutBanner__cardTitle {
-  font-size: 1.19rem;
-  font-weight: 800;
-  color: #183153;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-main);
   margin-bottom: 8px;
   letter-spacing: 0.05em;
   font-family: 'Inter','Nunito Sans', Arial, sans-serif;
@@ -90,7 +90,6 @@
   margin: 0 auto 20px auto;
   width: 72px;
   height: 5px;
-  border-radius: 3px;
   background: #cba052;
 }
 
@@ -115,10 +114,10 @@
 
 // Element: aboutBanner__button
 .aboutBanner__button {
-  background: #041e41;
+  background: var(--color-main);
   color: #fff;
-  font-size: 1.12rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 500;
   padding: 14px 38px;
   border: none;
   cursor: pointer;
@@ -129,33 +128,164 @@
   // Modifier: aboutBanner__button--hover (or use :hover)
   &:hover {
     background: #cba052;
-    color: #041e41;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(24,49,83,0.2);
   }
 }
 
-// Mobile responsive modifiers
+// Tablet responsive (768px - 1024px)
+@media (max-width: 1024px) and (min-width: 769px) {
+  .aboutBanner__hero,
+  .aboutBanner__heroImage {
+    height: 420px;
+    min-height: 420px;
+  }
+
+  .aboutBanner__heroText {
+    font-size: 2rem;
+    padding: 0 24px;
+  }
+
+  .aboutBanner__content {
+    margin: 48px auto 0 auto;
+    gap: 32px;
+    padding: 0 24px 24px 24px;
+  }
+
+  .aboutBanner__cardTitle {
+    font-size: 1.4rem;
+  }
+
+  .aboutBanner__cardText {
+    font-size: 1rem;
+  }
+}
+
+// Mobile responsive modifiers (768px and below)
 @media (max-width: 768px) {
+  .aboutBanner__hero,
+  .aboutBanner__heroImage {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+
+  .aboutBanner__heroText {
+    font-size: 1.4rem;
+    max-width: 90vw;
+    padding: 0 20px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+
+  .aboutBanner__content {
+    max-width: 95vw;
+    gap: 28px;
+    margin: 32px auto 0 auto;
+    padding: 0 20px 24px 20px;
+  }
+
+  .aboutBanner__card {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .aboutBanner__cardTitle {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .aboutBanner__cardDivider {
+    width: 48px;
+    height: 4px;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, #cba052, #d4af63);
+  }
+
+  .aboutBanner__cardText {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    max-width: 100%;
+    color: #2c3e50;
+  }
+
+  .aboutBanner__buttonWrapper {
+    margin: 28px 0 0 0;
+  }
+
+  .aboutBanner__button {
+    font-size: 0.98rem;
+    padding: 12px 28px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 12px rgba(24,49,83,0.15);
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 18px rgba(24,49,83,0.25);
+    }
+  }
+}
+
+// Small mobile (480px and below)
+@media (max-width: 480px) {
   .aboutBanner__hero,
   .aboutBanner__heroImage {
     height: 320px !important;
     min-height: 320px !important;
-    max-height: 320px !important;
   }
 
   .aboutBanner__heroText {
-    font-size: 1.17rem;
-    max-width: 98vw;
-    padding: 0 0.5rem;
+    font-size: 1.2rem;
+    padding: 0 16px;
+    max-width: 95vw;
   }
 
   .aboutBanner__content {
-    max-width: 99vw;
-    gap: 22px;
+    max-width: 98vw;
+    gap: 24px;
     margin: 24px auto 0 auto;
+    padding: 0 16px 20px 16px;
   }
 
-  .aboutBanner__card {
-    max-width: 96vw;
+  .aboutBanner__cardTitle {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .aboutBanner__cardDivider {
+    width: 40px;
+    height: 3px;
+    margin-bottom: 14px;
+  }
+
+  .aboutBanner__cardText {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .aboutBanner__buttonWrapper {
+    margin: 24px 0 0 0;
+  }
+
+  .aboutBanner__button {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+// Extra small devices (360px and below)
+@media (max-width: 360px) {
+  .aboutBanner__heroText {
+    font-size: 1.1rem;
+    padding: 0 12px;
+  }
+
+  .aboutBanner__content {
+    padding: 0 12px 16px 12px;
+    gap: 20px;
   }
 
   .aboutBanner__cardTitle {
@@ -163,17 +293,37 @@
   }
 
   .aboutBanner__cardText {
-    font-size: 0.95rem;
-  }
-
-  .aboutBanner__cardDivider {
-    width: 25px;
-    height: 4px;
-    margin-bottom: 10px;
+    font-size: 0.85rem;
   }
 
   .aboutBanner__button {
-    font-size: 0.96rem;
-    padding: 7px 20px;
+    font-size: 0.85rem;
+    padding: 8px 20px;
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .aboutBanner__button {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .aboutBanner__heroText {
+    text-shadow: 0 2px 4px rgba(0,0,0,1);
+  }
+
+  .aboutBanner__cardText {
+    color: #000;
+  }
+
+  .aboutBanner__button {
+    border: 2px solid #fff;
   }
 }
