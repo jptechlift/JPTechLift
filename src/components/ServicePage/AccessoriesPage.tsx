@@ -1,5 +1,5 @@
 import { PanelLeft, CircleDot, DoorOpen, Lightbulb, AlertCircle, Cog } from "lucide-react";
-import styles from "../../styles/pages/services-page/AccessoriesGallery.module.scss";
+import styles from "../../styles/pages/services-page/accessoriesGallery.module.scss";
 import AccessoriesGallery from "./AccessoriesGallery";
 
 const items = [

@@ -1,4 +1,4 @@
-import styles from "../../../styles/components/Navbar/DesktopNavbar/DropdownMenu.module.scss";
+import styles from "../../../styles/components/Navbar/DesktopNavbar/dropdownMenu.module.scss";
 import { Link } from "react-router-dom";
 import { productSlugMap } from "../../../constants/productSlugMap"; // ánh xạ chuẩn
 import type { ProductTitle } from "../../../constants/productSlugMap";

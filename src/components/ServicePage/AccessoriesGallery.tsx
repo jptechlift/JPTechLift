@@ -1,5 +1,5 @@
 import { accessories } from '../../data/accessoriesData';
-import styles from '../../styles/pages/services-page/Accessories.module.scss';
+import styles from '../../styles/pages/services-page/accessories.module.scss';
 
 export default function AccessoriesGallery() {
   return (

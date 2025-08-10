@@ -1,4 +1,4 @@
-import styles from "../../styles/pages/product-page/RealGallerySection.module.scss";
+import styles from "../../styles/pages/products-page/realGallerySection.module.scss";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

@@ -1,4 +1,4 @@
-import styles from "../../../styles/components/Footer/MobileFooter/MobileFooter.module.scss";
+import styles from "../../../styles/components/Footer/MobileFooter/mobileFooter.module.scss";
 import Logo from "../../Logo/Logo";
 import facebook from "../../../assets/images/header/Facebook_2_Icon.png";
 import instagram from "../../../assets/images/header/Instagram_Icon.png";

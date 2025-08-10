@@ -1,4 +1,4 @@
-import styles from "../../styles/pages/product-page/ProductDrawing.module.scss";
+import styles from "../../styles/pages/products-page/productDrawing.module.scss";
 import { useNavigate } from "react-router-dom";
 interface Props {
   blueprint: {

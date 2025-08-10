@@ -1,5 +1,5 @@
 // src/components/product/Introduction.tsx
-import styles from "../../styles/pages/product-page/ProductIntro.module.scss";
+import styles from "../../styles/pages/products-page/productIntro.module.scss";
 import TitleIntro from "../Navbar/TitleIntro";
 interface Props {
   title: string;
