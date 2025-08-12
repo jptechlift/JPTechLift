@@ -4,10 +4,11 @@ import email from "../../../assets/images/header/Email_Icon.jpg";
 import flag from "../../../assets/images/header/Flag_Icon.jpg";
 import polygon from "../../../assets/images/header/Polygon 1.jpg";
 import styles from "../../../styles/components/Navbar/DesktopNavbar/desktopNav.module.scss";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import LoginModal from "../../Auth/LoginModal";
 
 const TopBar = () => {
-  const navigate = useNavigate();
+  const [showLogin, setShowLogin] = useState(false);
   return (
     <div className={styles.topBar}>
       {/* Logo */}
@@ -57,13 +58,14 @@ Trân trọng,`
               type="button"
               className={`${styles.topBar__langItem} ${styles["topBar__langItem--primary"]}`}
               role="menuitem"
-              onClick={() => navigate("/login")} // điều hướng tới trang login
+             onClick={() => setShowLogin(true)}
             >
               Đăng nhập
             </button>
           </div>
         </div>
       </div>
+       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
     </div>
   );
 };

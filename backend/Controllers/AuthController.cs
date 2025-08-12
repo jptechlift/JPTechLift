@@ -12,7 +12,8 @@ namespace Backend.Controllers
         {
             if (model.Username == "admin" && model.Password == "password")
             {
-                return Ok(new { message = "Login successful" });
+                            // Return a simple token for the frontend to store
+                return Ok(new { token = "fake-jwt-token" });
             }
             return Unauthorized(new { message = "Invalid credentials" });
         }
