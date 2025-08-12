@@ -4,11 +4,10 @@ import email from "../../../assets/images/header/Email_Icon.jpg";
 import flag from "../../../assets/images/header/Flag_Icon.jpg";
 import polygon from "../../../assets/images/header/Polygon 1.jpg";
 import styles from "../../../styles/components/Navbar/DesktopNavbar/desktopNav.module.scss";
-import { useState } from "react";
-import LoginModal from "../../Auth/LoginModal";
+import { Link } from "react-router-dom";
 
 const TopBar = () => {
-  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <div className={styles.topBar}>
       {/* Logo */}
@@ -54,18 +53,14 @@ Trân trọng,`
           <img src={flag} alt="VN" className={styles.topBar__icon_flag} />
           {/* ⬇️ Thanh dropdown chỉ gồm Đăng nhập (ẩn mặc định, hover mới hiện) */}
           <div className={styles.topBar__langMenu} role="menu">
-            <button
-              type="button"
-              className={`${styles.topBar__langItem} ${styles["topBar__langItem--primary"]}`}
-              role="menuitem"
-             onClick={() => setShowLogin(true)}
-            >
+            {/* SỬA NÚT NÀY */}
+            <Link to="/login" className={`${styles.topBar__langItem} ${styles["topBar__langItem--primary"]}`}>
               Đăng nhập
-            </button>
+            </Link>
           </div>
         </div>
       </div>
-       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+    
     </div>
   );
 };

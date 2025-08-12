@@ -1,6 +1,13 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Allow the React frontend to call the API
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    // Dòng này sẽ yêu cầu backend không phân biệt chữ hoa-thường
+    // khi đọc tên thuộc tính từ JSON mà frontend gửi lên.
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+});
+// Configure CORS to allow requests from the frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -19,10 +26,34 @@ app.UseCors("AllowFrontend");
 // ----- Authentication -----
 app.MapPost("/api/login", (LoginRequest request) =>
 {
-    // Very basic credential check and fake token generation
-    if (request.Username == "admin" && request.Password == "password")
+     // ================================================================
+    // ===== BẮT ĐẦU VÙNG CODE GỠ LỖI (DEBUGGING) =======================
+    // ================================================================
+    Console.WriteLine("-----------------------------------------");
+    Console.WriteLine(">>> ĐÃ NHẬN ĐƯỢC YÊU CẦU ĐĂNG NHẬP <<<");
+
+    // Kiểm tra xem đối tượng request có bị null không
+    if (request == null)
     {
-        return Results.Ok(new { token = "fake-jwt-token" });
+        Console.WriteLine(">>> LỖI: Toàn bộ đối tượng request nhận được là NULL.");
+    }
+    else
+    {
+        // In ra giá trị thực tế của Username và Password mà backend nhận được
+        // Dùng '?? "NULL"' để tránh lỗi nếu thuộc tính bị null
+        Console.WriteLine($"--> Username nhận được: '{request.Username ?? "NULL"}'");
+        Console.WriteLine($"--> Password nhận được: '{request.Password ?? "NULL"}'");
+    }
+    
+    Console.WriteLine("-----------------------------------------");
+    // ================================================================
+    // ===== KẾT THÚC VÙNG CODE GỠ LỖI =================================
+    // ================================================================
+    // Very basic credential check and fake token generation
+    if (request.Username == "admin" && request.Password == "1")
+    {
+        // Trả về một đối tượng JSON chứa cả message và token
+    return Results.Ok(new { message = "Login successful", token = "day-la-mot-token-gia-dinh-dung-chuan" });
     }
 
     return Results.Text("Invalid credentials", statusCode: StatusCodes.Status401Unauthorized);
