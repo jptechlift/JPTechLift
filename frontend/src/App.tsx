@@ -21,7 +21,8 @@ import CaiTaoSuaChuaThangMay from "./pages/Services/ElevatorUpgradeAndRepairPage
 import NotFound from "./pages/NotFound";
 import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
-import LoginPage from "./pages/Auth/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
   const RedirectHandler = () => {
@@ -66,11 +67,19 @@ const App = () => {
           <Route path="/dich-vu-thang-may/cai-tao-sua-chua" element={<CaiTaoSuaChuaThangMay />} />
           <Route path="/dich-vu-thang-may/vat-tu-phu-kien" element={<AccessoriesPage />} />
           <Route path="/thang-may-gia-dinh" element={<Navigate to="/san-pham/thang-may-gia-dinh" replace />} />
+          
           {/* PRODUCT: chỉ còn 1 route động */}
           <Route path="/san-pham/:productId" element={<ProductTemplatePage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
+         <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <DashboardPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
