@@ -21,7 +21,9 @@ import CaiTaoSuaChuaThangMay from "./pages/Services/ElevatorUpgradeAndRepairPage
 import NotFound from "./pages/NotFound";
 import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
-import LoginPage from "./pages/Auth/LoginPage";
+import LoginPage from "./pages/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
+import PrivateRoute from "./routes/PrivateRoute";
 
 const App = () => {
   const RedirectHandler = () => {
@@ -71,6 +73,14 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <DashboardPage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
