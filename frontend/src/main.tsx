@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
-import './styles/fonts.scss';
-import './styles/index.scss';
+import "./styles/fonts.scss";
+import "./styles/index.scss";
 import App from "./App";
-import CreateBlogForm from "./components/CreateBlogPage/CreateBlogForm";
+import CreateBlogForm from "./pages/CreateBlogForm";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

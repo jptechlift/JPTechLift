@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import NavBar from "../../src/components/Navbar/Navbar";
+import Footer from "../../src/components/Footer/Footer";
 
 const CreateBlogForm: React.FC = () => {
   // State để lưu trữ loại blog đang được chọn
@@ -193,8 +195,9 @@ const CreateBlogForm: React.FC = () => {
   );
 
   return (
-    <div className="bg-texture-bg bg-texture-pattern bg-[length:8px_8px] min-h-screen p-8 font-sans">
-      <div className="flex flex-col md:flex-row justify-between">
+    <div className="bg-texture-bg bg-texture-pattern bg-[length:8px_8px] min-h-screen font-sans flex flex-col">
+      <NavBar />
+      <div className="flex flex-col md:flex-row justify-between flex-1 p-8">
         {/* Cột trái chứa form */}
         <div className="w-full md:w-2/3 md:pr-10">
           <p className="text-sm text-gray-600">
@@ -210,7 +213,7 @@ const CreateBlogForm: React.FC = () => {
           <h1 className="text-2xl font-bold text-[#041E41] mt-4 mb-2">
             Thiết kế nội dung cho Blog
           </h1>
-          <p className="text-gray-700 mb-6">    
+          <p className="text-gray-700 mb-6">
             Bạn hãy điền tất cả nội dung chính vào các trường và hệ thống sẽ tự
             tạo nội dung cho Blog.
           </p>
@@ -258,6 +261,7 @@ const CreateBlogForm: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
