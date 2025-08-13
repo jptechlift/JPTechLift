@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Backend.Data;
+using Backend.Models;
 
 namespace Backend.Controllers
 {
@@ -7,6 +8,12 @@ namespace Backend.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
+        private readonly AppDbContext _context;
+
+        public BlogController(AppDbContext context)
+        {
+            _context = context;
+        }
         // POST api/blog
         [HttpPost]
         public async Task<IActionResult> CreateBlog([FromBody] BlogRequest blogRequest)
@@ -16,11 +23,22 @@ namespace Backend.Controllers
                 return BadRequest("Invalid data.");
             }
 
-            // Giả sử bạn lưu blog vào cơ sở dữ liệu hoặc xử lý dữ liệu ở đây
-            // Ví dụ:
-            // _blogService.Save(blogRequest);
+            var blog = new Blog
+            {
+                BlogType = blogRequest.BlogType,
+                BlogTopic = blogRequest.BlogTopic,
+                BlogPurpose = blogRequest.BlogPurpose,
+                SeoKeywords = blogRequest.SeoKeywords,
+                ProductName = blogRequest.ProductName,
+                ProductType = blogRequest.ProductType,
+                ShortDescription = blogRequest.ShortDescription,
+                TechnicalSpecs = blogRequest.TechnicalSpecs,
+                Features = blogRequest.Features
+            };
 
-            return Ok(new { message = "Blog đã được tạo thành công!" });
+            _context.Blogs.Add(blog);
+            await _context.SaveChangesAsync();
+              return Ok(new { message = "Blog đã được tạo thành công!", blog.Id });
         }
     }
 
