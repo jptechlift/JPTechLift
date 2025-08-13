@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import Layout from "./layouts/layout";
@@ -45,7 +39,7 @@ const App = () => {
     return null;
   };
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <>
       <RedirectHandler />
       <ScrollToTop />
       <Routes>
@@ -113,7 +107,7 @@ const App = () => {
         </Route>
         <Route path="/login" element={<LoginPage />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

@@ -14,12 +14,16 @@
     "test": "npm run lint && vitest run",
     "sync-deploy": "git push origin deploy && git push test deploy:main",
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
-    "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs"
+      "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs",
+    "dev:ssr": "tsx server.ts",
+    "build:ssr": "vite build && vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "serve:ssr": "node server.js"
   },
   "dependencies": {
     "aos": "^2.3.4",
     "clsx": "^2.1.1",
     "emailjs-com": "^3.2.0",
+     "express": "^5.1.0",
     "framer-motion": "^12.23.0",
     "lucide-react": "^0.525.0",
     "react": "^18.3.1",
@@ -32,7 +36,8 @@
     "swiper": "^11.2.10",
     "vite-plugin-pages-sitemap": "^1.7.1",
     "vite-plugin-robots": "^1.0.5",
-    "vite-plugin-sitemap": "^0.8.2"
+    "vite-plugin-sitemap": "^0.8.2",
+    "vite-plugin-ssr": "^0.4.142"
   },
   "devDependencies": {
     "@eslint/js": "^8.56.0",

@@ -3,20 +3,33 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path from "path";
 import { productSlugMap } from "./src/constants/productSlugMap";
+import ssr from "vite-plugin-ssr/plugin";
 
 // 🧭 Tạo sitemap.xml khi build xong
 function generateSitemap() {
-  const hostname = process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
+  const hostname =
+    process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
 
   const staticRoutes = [
-    "", "gioi-thieu", "gioi-thieu/ban-lanh-dao", "gioi-thieu/nguyen-tac",
-    "gioi-thieu/quy-trinh-du-an", "tin-tuc-thang-may", "blog-thang-may", "lien-he",
-    "dich-vu-thang-may", "dich-vu-thang-may/lap-dat-thang-may", "dich-vu-thang-may/tu-van-thiet-ke",
-    "dich-vu-thang-may/huong-dan-van-hanh", "dich-vu-thang-may/bao-tri-thang-may",
+    "",
+    "gioi-thieu",
+    "gioi-thieu/ban-lanh-dao",
+    "gioi-thieu/nguyen-tac",
+    "gioi-thieu/quy-trinh-du-an",
+    "tin-tuc-thang-may",
+    "blog-thang-may",
+    "lien-he",
+    "dich-vu-thang-may",
+    "dich-vu-thang-may/lap-dat-thang-may",
+    "dich-vu-thang-may/tu-van-thiet-ke",
+    "dich-vu-thang-may/huong-dan-van-hanh",
+    "dich-vu-thang-may/bao-tri-thang-may",
     "dich-vu-thang-may/cai-tao-sua-chua",
   ];
 
-  const productRoutes = Object.values(productSlugMap).map((slug) => `/san-pham/${slug}`);
+  const productRoutes = Object.values(productSlugMap).map(
+    (slug) => `/san-pham/${slug}`
+  );
   const urls = [...staticRoutes.map((r) => `/${r}`), ...productRoutes];
   const today = new Date().toISOString().split("T")[0];
 
@@ -48,5 +61,9 @@ export default defineConfig({
   plugins: [
     react(),
     sitemapPlugin(), // ✅ Chỉ giữ lại plugin tạo sitemap
+    ssr(),
   ],
+  build: {
+    ssr: "src/entry-server.tsx",
+  },
 });
