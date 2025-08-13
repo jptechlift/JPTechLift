@@ -23,3 +23,6 @@ public/sitemap.xml
 *.njsproj
 *.sln
 *.sw?
+
+#DATABASE + API
+.env

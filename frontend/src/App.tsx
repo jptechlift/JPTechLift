@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
 import LoginPage from "./pages/Auth/LoginPage";
+import CreateBlogPage from "./pages/CreateBlogPage";
 
 const App = () => {
   const RedirectHandler = () => {
@@ -68,6 +69,7 @@ const App = () => {
           <Route path="/thang-may-gia-dinh" element={<Navigate to="/san-pham/thang-may-gia-dinh" replace />} />
           {/* PRODUCT: chỉ còn 1 route động */}
           <Route path="/san-pham/:productId" element={<ProductTemplatePage />} />
+          <Route path="/tao-blog" element={<CreateBlogPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
