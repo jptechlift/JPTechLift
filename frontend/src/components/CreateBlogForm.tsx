@@ -12,8 +12,13 @@ const CreateBlogForm: React.FC = () => {
 
   const productTypeOptions = [
     { value: "", label: "Loại thang máy" },
-    { value: "home", label: "Thang máy gia đình" },
-    { value: "load", label: "Thang máy tải hàng" },
+    { value: "home-lift", label: "Thang máy gia đình" },
+    { value: "freight-lift", label: "Thang máy tải hàng" },
+    { value: "panorama-lift", label: "Thang máy quan sát"},
+    { value: "hospital-lift", label: "Thang máy bệnh viện"},
+    { value: "passenger-lift", label: "Thang máy hành khách"},
+    { value: "dumpwaiter", label: "Thang tải thực phẩm"},
+    { value: "escalator", label: "Thang trượt - thang cuốn"}
   ];
 
   // Component form cho "Blog theo chủ đề"
