@@ -15,8 +15,7 @@
     "sync-deploy": "git push origin deploy && git push test deploy:main",
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
     "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs",
-    "start": "concurrently \"npm run client\" \"npm run server\"",
-    "client": "npm start",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
     "server": "dotnet run --project ../backend"
   },
   "dependencies": {

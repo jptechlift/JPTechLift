@@ -66,7 +66,7 @@ const CreateBlogForm: React.FC = () => {
 
   // Component form cho "Blog theo chủ đề"
   const TopicBlogForm = () => (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-4">
         {/* Chủ đề bài Blog */}
         <div>
@@ -134,7 +134,7 @@ const CreateBlogForm: React.FC = () => {
 
   // Component form cho "Blog về sản phẩm"
   const ProductBlogForm = ({ productTypeOptions }: { productTypeOptions: { value: string, label: string }[] }) => (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-4">
         {/* Tên và Loại thang máy */}
         <div className="grid grid-cols-2 gap-4">
