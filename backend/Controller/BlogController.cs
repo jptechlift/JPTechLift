@@ -7,6 +7,13 @@ namespace Backend.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
+         private readonly ApplicationDbContext _context;
+
+        public BlogController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         // POST api/blog
         [HttpPost]
         public async Task<IActionResult> CreateBlog([FromBody] BlogRequest blogRequest)
@@ -16,11 +23,45 @@ namespace Backend.Controllers
                 return BadRequest("Invalid data.");
             }
 
-            // Giả sử bạn lưu blog vào cơ sở dữ liệu hoặc xử lý dữ liệu ở đây
-            // Ví dụ:
-            // _blogService.Save(blogRequest);
+           var blog = new Blog
+            {
+                Title = blogRequest.BlogType == "product" ? blogRequest.ProductName : blogRequest.BlogTopic,
+                Username = blogRequest.Username
+            };
 
-            return Ok(new { message = "Blog đã được tạo thành công!" });
+            _context.Blogs.Add(blog);
+            await _context.SaveChangesAsync();
+
+            if (blogRequest.BlogType == "product")
+            {
+                var product = new ProductBlog
+                {
+                    BlogId = blog.Id,
+                    ProductName = blogRequest.ProductName,
+                    ProductType = blogRequest.ProductType,
+                    Description = blogRequest.ShortDescription,
+                    Size = blogRequest.TechnicalSpecs,
+                    Volumn = blogRequest.TechnicalSpecs,
+                    Feature = blogRequest.Features,
+                    Keyword = blogRequest.SeoKeywords
+                };
+                _context.ProductBlogs.Add(product);
+            }
+            else if (blogRequest.BlogType == "topic")
+            {
+                var topic = new TopicBlog
+                {
+                    BlogId = blog.Id,
+                    Topic = blogRequest.BlogTopic,
+                    Content = blogRequest.BlogPurpose,
+                    Keywords = blogRequest.SeoKeywords
+                };
+                _context.TopicBlogs.Add(topic);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Blog đã được tạo thành công!", blogId = blog.Id });
         }
     }
 
@@ -36,5 +77,6 @@ namespace Backend.Controllers
         public string ShortDescription { get; set; }
         public string TechnicalSpecs { get; set; }
         public string Features { get; set; }
+        public string Username { get; set; }
     }
 }
