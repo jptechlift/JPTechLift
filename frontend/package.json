@@ -16,7 +16,7 @@
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
     "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs",
     "start": "concurrently \"npm run dev\" \"npm run server\"",
-    "server": "dotnet run --project ../backend"
+    "server": "BACKEND_PORT=5000 dotnet run --project ../backend"
   },
   "dependencies": {
     "aos": "^2.3.4",

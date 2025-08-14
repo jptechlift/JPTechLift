@@ -15,7 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(ConvertConnectionString(databaseUrl)));
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5001";
+// Use a dedicated environment variable for the backend port to avoid
+// clashing with the PORT variable used by other tools (e.g. Vite).
+var port = Environment.GetEnvironmentVariable("BACKEND_PORT") ?? "5000";
+
 builder.WebHost.UseUrls($"http://*:{port}");
 
 var app = builder.Build();
