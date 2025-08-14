@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using backend.Data;  // Đảm bảo thêm namespace DbContext
 
 namespace Backend.Controllers
 {
@@ -23,7 +24,7 @@ namespace Backend.Controllers
                 return BadRequest("Invalid data.");
             }
 
-           var blog = new Blog
+            var blog = new Blog
             {
                 Title = blogRequest.BlogType == "product" ? blogRequest.ProductName : blogRequest.BlogTopic,
                 Username = blogRequest.Username
@@ -32,6 +33,7 @@ namespace Backend.Controllers
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 
+            // Xử lý theo BlogType
             if (blogRequest.BlogType == "product")
             {
                 var product = new ProductBlog
