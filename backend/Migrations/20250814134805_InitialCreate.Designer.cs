@@ -12,7 +12,7 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250814065032_InitialCreate")]
+    [Migration("20250814134805_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,13 +50,9 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Username1")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Username1");
+                    b.HasIndex("Username");
 
                     b.ToTable("Blogs");
                 });
@@ -96,7 +92,7 @@ namespace backend.Migrations
 
                     b.HasKey("BlogId");
 
-                    b.ToTable("ProductBlog");
+                    b.ToTable("ProductBlogs");
                 });
 
             modelBuilder.Entity("TopicBlog", b =>
@@ -118,7 +114,7 @@ namespace backend.Migrations
 
                     b.HasKey("BlogId");
 
-                    b.ToTable("TopicBlog");
+                    b.ToTable("TopicBlogs");
                 });
 
             modelBuilder.Entity("User", b =>
@@ -157,7 +153,7 @@ namespace backend.Migrations
                 {
                     b.HasOne("User", "User")
                         .WithMany("Blogs")
-                        .HasForeignKey("Username1")
+                        .HasForeignKey("Username")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -188,11 +184,9 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Blog", b =>
                 {
-                    b.Navigation("ProductBlog")
-                        .IsRequired();
+                    b.Navigation("ProductBlog");
 
-                    b.Navigation("TopicBlog")
-                        .IsRequired();
+                    b.Navigation("TopicBlog");
                 });
 
             modelBuilder.Entity("User", b =>

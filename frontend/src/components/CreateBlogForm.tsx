@@ -47,7 +47,7 @@ const CreateBlogForm: React.FC = () => {
     // Tạo đối tượng blogRequest từ dữ liệu trong form
     const blogRequest = {
       blogType,
-      username: "user123", // Gán tên người dùng (có thể lấy từ session hoặc props)
+      username: "baodhg", // Gán tên người dùng (có thể lấy từ session hoặc props)
       ...productDetails, // Nếu BlogType là "product"
       ...topicDetails, // Nếu BlogType là "topic"
     };

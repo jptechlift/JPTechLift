@@ -39,22 +39,21 @@ namespace backend.Migrations
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsPublished = table.Column<bool>(type: "boolean", nullable: true),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    Username1 = table.Column<string>(type: "text", nullable: false)
+                    Username = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Blogs_Users_Username1",
-                        column: x => x.Username1,
+                        name: "FK_Blogs_Users_Username",
+                        column: x => x.Username,
                         principalTable: "Users",
                         principalColumn: "Username",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductBlog",
+                name: "ProductBlogs",
                 columns: table => new
                 {
                     BlogId = table.Column<int>(type: "integer", nullable: false),
@@ -68,9 +67,9 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductBlog", x => x.BlogId);
+                    table.PrimaryKey("PK_ProductBlogs", x => x.BlogId);
                     table.ForeignKey(
-                        name: "FK_ProductBlog_Blogs_BlogId",
+                        name: "FK_ProductBlogs_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
                         principalColumn: "Id",
@@ -78,7 +77,7 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TopicBlog",
+                name: "TopicBlogs",
                 columns: table => new
                 {
                     BlogId = table.Column<int>(type: "integer", nullable: false),
@@ -88,9 +87,9 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TopicBlog", x => x.BlogId);
+                    table.PrimaryKey("PK_TopicBlogs", x => x.BlogId);
                     table.ForeignKey(
-                        name: "FK_TopicBlog_Blogs_BlogId",
+                        name: "FK_TopicBlogs_Blogs_BlogId",
                         column: x => x.BlogId,
                         principalTable: "Blogs",
                         principalColumn: "Id",
@@ -98,19 +97,19 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Blogs_Username1",
+                name: "IX_Blogs_Username",
                 table: "Blogs",
-                column: "Username1");
+                column: "Username");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductBlog");
+                name: "ProductBlogs");
 
             migrationBuilder.DropTable(
-                name: "TopicBlog");
+                name: "TopicBlogs");
 
             migrationBuilder.DropTable(
                 name: "Blogs");

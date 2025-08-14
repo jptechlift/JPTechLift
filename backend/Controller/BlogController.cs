@@ -30,6 +30,8 @@ namespace Backend.Controllers
                 Username = blogRequest.Username
             };
 
+            Console.WriteLine($"--- Attempting to save blog for user: '[{blog.Username}]' ---");
+
             _context.Blogs.Add(blog);
             await _context.SaveChangesAsync();
 

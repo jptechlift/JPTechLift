@@ -15,7 +15,7 @@
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
     "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs",
     "frontend": "npm --prefix frontend run dev",
-    "backend": "cd ../backend && dotnet watch run",
+    "backend": "cd backend && dotnet watch run",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "dependencies": {
