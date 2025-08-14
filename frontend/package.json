@@ -14,7 +14,10 @@
     "test": "npm run lint && vitest run",
     "sync-deploy": "git push origin deploy && git push test deploy:main",
     "generate-sitemap": "node .sitemap-build/generate-sitemap.js",
-    "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs"
+    "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "client": "npm start",
+    "server": "dotnet run --project ../backend"
   },
   "dependencies": {
     "aos": "^2.3.4",
@@ -47,6 +50,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",

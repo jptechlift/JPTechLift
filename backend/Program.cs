@@ -2,31 +2,39 @@ using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 
-public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// load environment variables
+Env.Load();
+
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ?? string.Empty;
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(ConvertConnectionString(databaseUrl)));
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
 {
-    public static void Main(string[] args)
-    {
-        Env.Load();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-        var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ?? string.Empty;
+app.UseRouting();
+app.UseAuthorization();
 
-        var builder = WebApplication.CreateBuilder(args);
+// basic root endpoint so '/' doesn't 404
+app.MapGet("/", () => Results.Redirect("/swagger"));
+app.MapControllers();
 
-        builder.Services.AddControllers();
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(ConvertConnectionString(databaseUrl)));
+app.Run();
 
-        var app = builder.Build();
-
-        app.MapControllers();
-
-        app.Run();
-    }
-
-    private static string ConvertConnectionString(string url)
-    {
-        var uri = new Uri(url);
-        var userInfo = uri.UserInfo.Split(':');
-        return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
-    }
+static string ConvertConnectionString(string url)
+{
+    var uri = new Uri(url);
+    var userInfo = uri.UserInfo.Split(':');
+    return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
 }
