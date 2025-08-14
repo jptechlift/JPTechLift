@@ -25,4 +25,4 @@ public/sitemap.xml
 *.sw?
 
 #DATABASE + API
-.env
+backend/.env
