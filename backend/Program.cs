@@ -1,4 +1,4 @@
-using DotNetEnv;
+// using DotNetEnv; // Tạm thời không dùng DotNetEnv nữa
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 
@@ -7,19 +7,26 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-// load environment variables
-Env.Load();
+// ====================================================================
+// BƯỚC 1: SỬA LỖI BẰNG CÁCH GÁN CỨNG CHUỖI KẾT NỐI
+// Chúng ta sẽ bỏ qua việc đọc file .env và biến môi trường để đảm bảo
+// backend kết nối đến đúng database mà bạn đang xem trên pgAdmin.
+// ====================================================================
+var hardcodedConnectionString = "Host=localhost;Port=5432;Database=JPTechLift;Username=postgres;Password=jptechlift";
 
-var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL") ?? string.Empty;
-Console.WriteLine($"--- Backend is connecting with URL: {databaseUrl} ---");
+// Thêm một dòng log thật lớn để bạn biết chắc chắn code mới đã được chạy
+Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+Console.WriteLine("!!! CẢNH BÁO: ĐANG SỬ DỤNG CHUỖI KẾT NỐI GÁN CỨNG ĐỂ DEBUG !!!");
+Console.WriteLine($"!!! -> {hardcodedConnectionString}");
+Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-// *** BƯỚC 1: Thêm dịch vụ CORS ***
+
+// *** Thêm dịch vụ CORS ***
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          // Thay "http://localhost:5173" bằng địa chỉ thực tế của React app
                           policy.WithOrigins("http://localhost:5173") 
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
@@ -29,10 +36,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(ConvertConnectionString(databaseUrl)));
 
-var port = Environment.GetEnvironmentVariable("BACKEND_PORT") ?? "5000";
+// ====================================================================
+// BƯỚC 2: SỬ DỤNG CHUỖI KẾT NỐI ĐÃ GÁN CỨNG Ở TRÊN
+// ====================================================================
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+    options.UseNpgsql(hardcodedConnectionString) // <-- Sử dụng biến mới ở đây
+           .EnableDetailedErrors());
+
+var port = "5000"; // Tạm thời gán cứng cổng backend luôn cho chắc chắn
 builder.WebHost.UseUrls($"http://localhost:{port}");
 
 var app = builder.Build();
@@ -44,21 +56,19 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-
-// *** BƯỚC 2: Thêm CORS middleware vào pipeline ***
-// Vị trí rất quan trọng: Phải đặt sau UseRouting và trước UseAuthorization.
 app.UseCors(MyAllowSpecificOrigins);
-
 app.UseAuthorization();
-
 app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
 
 app.Run();
 
+// Hàm này không còn cần thiết nữa vì chúng ta đã dùng chuỗi kết nối chuẩn
+/*
 static string ConvertConnectionString(string url)
 {
     var uri = new Uri(url);
     var userInfo = uri.UserInfo.Split(':');
     return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
 }
+*/
