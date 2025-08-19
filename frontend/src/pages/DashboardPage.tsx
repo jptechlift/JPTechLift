@@ -3,18 +3,19 @@ import { User, Edit3, FileText, Settings, Home, Upload, Save, Camera, Phone, Mai
 
 // Mock services (replace with your actual services)
 const user = {
-  get: () => Promise.resolve({
-    name: "John Doe",
-    phone: "+84 123 456 789",
-    email: "john@example.com",
-    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    coverUrl: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=200&fit=crop"
-  }),
-  update: (data: any) => Promise.resolve(data)
+  get: () =>
+    Promise.resolve<UserProfile>({
+      name: "John Doe",
+      phone: "+84 123 456 789",
+      email: "john@example.com",
+      avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      coverUrl: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=200&fit=crop",
+    }),
+  update: (data: UserProfile) => Promise.resolve(data),
 };
 
 const blog = {
-  create: (data: any) => Promise.resolve(data)
+  create: (data: BlogPost) => Promise.resolve(data),
 };
 
 interface UserProfile {
@@ -67,7 +68,7 @@ export default function DashboardPage() {
       await user.update(profile);
       setMessage("Profile updated successfully!");
       setTimeout(() => setMessage(""), 3000);
-    } catch (error) {
+    } catch {
       setMessage("Error updating profile");
     }
     setIsLoading(false);
@@ -82,8 +83,7 @@ export default function DashboardPage() {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = () =>
-        setBlogPost((prev) => ({ ...prev, imageUrl: reader.result as string }));
+      reader.onload = () => setBlogPost((prev) => ({ ...prev, imageUrl: reader.result as string }));
       reader.readAsDataURL(file);
     }
   };
@@ -96,7 +96,7 @@ export default function DashboardPage() {
       setBlogPost({ title: "", content: "", imageUrl: "" });
       setMessage("Blog post created successfully!");
       setTimeout(() => setMessage(""), 3000);
-    } catch (error) {
+    } catch {
       setMessage("Error creating blog post");
     }
     setIsLoading(false);
@@ -129,7 +129,10 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img
-                  src={profile.avatarUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"}
+                  src={
+                    profile.avatarUrl ||
+                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"
+                  }
                   alt="Avatar"
                   className="w-14 h-14 rounded-2xl object-cover ring-4 ring-blue-100"
                 />
@@ -157,9 +160,11 @@ export default function DashboardPage() {
                         : "text-gray-600 hover:bg-gray-50 hover:text-gray-800"
                     }`}
                   >
-                    <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${
-                      activeTab === item.id ? "text-white" : ""
-                    }`} />
+                    <Icon
+                      className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+                        activeTab === item.id ? "text-white" : ""
+                      }`}
+                    />
                     <span className="font-medium">{item.label}</span>
                   </button>
                 );
@@ -234,7 +239,7 @@ export default function DashboardPage() {
                           placeholder="Enter your full name"
                         />
                       </div>
-                      
+
                       <div className="space-y-2">
                         <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                           <Phone className="w-4 h-4" />
@@ -361,7 +366,11 @@ export default function DashboardPage() {
                       <label htmlFor="blog-image" className="cursor-pointer">
                         {blogPost.imageUrl ? (
                           <div className="space-y-2">
-                            <img src={blogPost.imageUrl} alt="Preview" className="max-w-full h-48 mx-auto rounded-lg object-cover" />
+                            <img
+                              src={blogPost.imageUrl}
+                              alt="Preview"
+                              className="max-w-full h-48 mx-auto rounded-lg object-cover"
+                            />
                             <p className="text-sm text-gray-600">Click to change image</p>
                           </div>
                         ) : (
@@ -409,7 +418,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl border border-white/50 p-6">
                   <h3 className="text-xl font-semibold text-gray-800 mb-4">Analytics</h3>
                   <div className="space-y-4">
@@ -439,7 +448,7 @@ export default function DashboardPage() {
                       <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow-sm"></div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-4 bg-gray-50/50 rounded-xl">
                     <div>
                       <h4 className="font-medium text-gray-800">Dark Mode</h4>

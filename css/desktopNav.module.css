@@ -1,0 +1,374 @@
+@charset "UTF-8";
+:root {
+  --color-main: #041e42;
+  --color-red: #d64344;
+  --color-yellow: #cba052;
+  --color-white: #ffffff;
+  --color-gray: #bfbfbf;
+  --color-gray1: #fafaf9;
+  --font-main: "Nunito Sans", sans-serif;
+  --font-title: "Inter", sans-serif;
+  --spacing-xs: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --logo-height: 76px;
+  --icon-size: 24px;
+  --icon-size-sm: 20px;
+  --menu-height: 65px;
+  --border-radius: 10px;
+  --border-radius-sm: 8px;
+  --border-radius-pill: 30px;
+  --shadow-light: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.4s ease;
+}
+
+/* ===================================
+   🔧 BASE LAYOUT & WRAPPER
+   =================================== */
+.desktopMenu {
+  font-family: var(--font-main);
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ===================================
+   🏠 TOP BAR (BEM)
+   =================================== */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--color-gray1);
+  position: relative;
+  z-index: 1100;
+  /* logo */
+  /* cụm thông tin bên phải */
+  /* item chung */
+  /* modifier: item có icon + hiệu ứng underline */
+  /* icon chung + modifier */
+  /* khối ngôn ngữ (trigger dropdown) */
+  /* Dropdown "Đăng nhập" */
+  /* Nút "Đăng nhập" bên trong dropdown */
+}
+.topBar__logo img {
+  height: var(--logo-height);
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+.topBar__info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  font-size: 19px;
+  color: var(--color-main);
+}
+.topBar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+.topBar__contactIcon {
+  cursor: pointer;
+}
+.topBar__contactIcon span {
+  position: relative;
+  color: var(--color-main);
+  padding-bottom: 2px;
+  transition: color var(--transition-medium);
+}
+.topBar__contactIcon span a {
+  color: var(--color-main);
+  text-decoration: none;
+}
+.topBar__contactIcon span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--color-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.topBar__contactIcon:hover span::after {
+  transform: scaleX(1);
+  opacity: 1;
+  filter: brightness(1.2);
+}
+.topBar__contactIcon img {
+  width: 26px;
+  height: 22px;
+}
+.topBar__icon {
+  height: var(--icon-size);
+  width: auto;
+  object-fit: contain;
+}
+.topBar__icon--sc {
+  height: 10px;
+  transform: rotate(180deg);
+  transition: var(--transition-medium);
+  /* tip: chỉ hover thay đổi trên parent lang để bền vững hơn */
+}
+.topBar__lang:hover .topBar__icon--sc {
+  transform: rotate(0deg);
+  filter: brightness(1.2);
+}
+.topBar__icon--flag {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+.topBar__lang {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) 9px;
+  background: var(--color-white);
+  border-radius: var(--border-radius-pill);
+  box-shadow: var(--shadow-light);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  /* [UX] Phản hồi khi hover: Nút hơi phồng lên */
+  /* [UX] Hiện dropdown khi hover */
+  /* [UX] "Cầu nối vô hình" để giữ hover khi di chuột xuống */
+}
+.topBar__lang:hover {
+  transform: scale(1.03);
+}
+.topBar__lang:hover .topBar__langMenu {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+.topBar__lang::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+  background: transparent;
+}
+.topBar__icon_sc {
+  height: 10px;
+  transform: rotate(180deg);
+  transition: var(--transition-medium);
+}
+.topBar__lang:hover .topBar__icon_sc {
+  transform: rotate(0deg);
+}
+.topBar__icon_flag {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+.topBar__langMenu {
+  position: absolute;
+  top: calc(100% + 11px);
+  right: 0;
+  z-index: 100;
+  width: 180px;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  /* [UI/UX] Hiệu ứng xuất hiện: Scale-up tinh tế */
+  opacity: 0;
+  transform-origin: top right;
+  transform: scale(0.95) translateY(-5px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition-delay: 0.15s;
+  /* [UI] Thêm mũi tên nhỏ chỉ lên trên */
+}
+.topBar__langMenu::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  right: 18px;
+  width: 12px;
+  height: 12px;
+  background: var(--color-main);
+  border-top: 1px solid #e9ecef;
+  border-left: 1px solid #e9ecef;
+  transform: rotate(45deg);
+}
+.topBar__langItem {
+  width: 100%;
+  text-align: center;
+  padding: 12px 14px;
+  border: 0;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.15s ease;
+  /* Style cho nút chính */
+}
+.topBar__langItem--primary {
+  background: var(--color-main);
+  color: #fff;
+}
+.topBar__langItem--primary:hover {
+  background: #082d5a;
+}
+
+/* Mobile: nếu parent nào dùng overflow:hidden; → bỏ để dropdown không bị cắt */
+@media (max-width: 768px) {
+  /* (tuỳ chọn) mở rộng dropdown 2 bên cho dễ bấm */
+  .topBar__langMenu {
+    left: 12px;
+    right: 12px;
+    min-width: unset;
+  }
+}
+/* ===================================
+   🧩 MENU BAR COMPONENT
+   =================================== */
+.menuWrapper {
+  transition: all 0.4s ease-in-out;
+  transform: scale(1);
+  background-color: transparent;
+  position: relative;
+  z-index: 1000;
+}
+.menuWrapper.menuBarScrolled {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  width: 100%;
+  border-radius: 0;
+  z-index: 1000;
+  transform: translateY(0px);
+  box-shadow: var(--shadow-heavy);
+}
+
+.menuBar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--menu-height);
+  background-color: var(--color-main);
+  padding: 2%;
+  overflow: visible;
+  transition: transform 2s ease, background-color 2s ease, box-shadow 2s ease, padding 2s ease;
+  border-bottom: 2px solid var(--color-gray);
+}
+.menuBar__left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.menuBar__list {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  list-style: none;
+  margin-left: 34px;
+  padding: 0;
+  height: 100%;
+}
+.menuBar__icons {
+  display: flex;
+  align-items: center;
+}
+.menuBar__icons > a {
+  display: inline-block;
+  padding: 0 var(--spacing-sm);
+  transition: var(--transition-medium);
+  cursor: pointer;
+}
+.menuBar__icons > a:hover {
+  filter: brightness(1.2);
+  transform: scale(1.1);
+}
+.menuBar__icons > a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.menuBar__iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-right: 10px;
+  margin-left: 30px;
+  padding-left: 40px;
+  border-left: 2px solid var(--color-gray);
+  display: flex;
+  align-items: center;
+}
+.menuBar__iconButton img {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* ===================================
+   📋 MENU ITEMS
+   =================================== */
+.menuItem {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}
+.menuItem:not(:last-child) {
+  margin-right: 50px;
+}
+
+.menuBar__link {
+  all: unset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--color-gray);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 0 2px 0;
+  transition: color var(--transition-medium);
+  height: 100%;
+  box-sizing: border-box;
+}
+.menuBar__link::after {
+  content: "";
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform var(--transition-medium), opacity var(--transition-medium);
+}
+.menuBar__link:hover {
+  filter: brightness(1.2);
+}
+.menuBar__link:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.dropdownWrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+}/*# sourceMappingURL=desktopNav.module.css.map */

@@ -1,0 +1,304 @@
+/* about-us-banner.module.scss */
+:root {
+  --color-main: #041e42;
+  --color-red: #d64344;
+  --color-yellow: #cba052;
+  --color-white: #ffffff;
+  --color-gray: #bfbfbf;
+  --color-gray1: #fafaf9;
+  --font-main: "Nunito Sans", sans-serif;
+  --font-title: "Inter", sans-serif;
+  --spacing-xs: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --logo-height: 76px;
+  --icon-size: 24px;
+  --icon-size-sm: 20px;
+  --menu-height: 65px;
+  --border-radius: 10px;
+  --border-radius-sm: 8px;
+  --border-radius-pill: 30px;
+  --shadow-light: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-heavy: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.4s ease;
+}
+
+.aboutBanner {
+  background-color: var(--color-gray1);
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.aboutBanner__hero {
+  width: 100vw;
+  min-height: 540px;
+  height: 540px;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.aboutBanner__heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.9) saturate(1.08);
+  z-index: 1;
+  background: #000;
+}
+
+.aboutBanner__heroText {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 500;
+  letter-spacing: 1.1px;
+  line-height: 1.23;
+  padding: 0 38px;
+  text-shadow: 0 8px 42px rgba(0, 0, 0, 0.96), 0 2px 12px rgba(0, 0, 0, 0.74);
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.aboutBanner__content {
+  width: 100%;
+  max-width: 600px;
+  margin: 64px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  background: var(--color-gray1);
+  padding-bottom: 32px;
+}
+
+.aboutBanner__card {
+  width: 100%;
+  text-align: center;
+}
+
+.aboutBanner__cardTitle {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-main);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
+}
+
+.aboutBanner__cardDivider {
+  margin: 0 auto 20px auto;
+  width: 72px;
+  height: 5px;
+  background: #cba052;
+}
+
+.aboutBanner__cardText {
+  font-size: 1.08rem;
+  color: #183153;
+  font-weight: 400;
+  line-height: 1.7;
+  margin: 0 auto;
+  max-width: 550px;
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
+}
+
+.aboutBanner__buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 0 0;
+  width: 100%;
+}
+
+.aboutBanner__button {
+  background: var(--color-main);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 38px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 10px rgba(24, 49, 83, 0.13);
+  transition: background 0.18s, box-shadow 0.23s;
+}
+.aboutBanner__button:hover {
+  background: #cba052;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(24, 49, 83, 0.2);
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .aboutBanner__hero,
+  .aboutBanner__heroImage {
+    height: 420px;
+    min-height: 420px;
+  }
+  .aboutBanner__heroText {
+    font-size: 2rem;
+    padding: 0 24px;
+  }
+  .aboutBanner__content {
+    margin: 48px auto 0 auto;
+    gap: 32px;
+    padding: 0 24px 24px 24px;
+  }
+  .aboutBanner__cardTitle {
+    font-size: 1.4rem;
+  }
+  .aboutBanner__cardText {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .aboutBanner__hero,
+  .aboutBanner__heroImage {
+    height: 360px !important;
+    min-height: 360px !important;
+    max-height: 360px !important;
+  }
+  .aboutBanner__heroText {
+    font-size: 1.4rem;
+    max-width: 90vw;
+    padding: 0 20px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    font-weight: 600;
+  }
+  .aboutBanner__content {
+    max-width: 95vw;
+    gap: 28px;
+    margin: 32px auto 0 auto;
+    padding: 0 20px 24px 20px;
+  }
+  .aboutBanner__card {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+  .aboutBanner__cardTitle {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .aboutBanner__cardDivider {
+    width: 48px;
+    height: 4px;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, #cba052, #d4af63);
+  }
+  .aboutBanner__cardText {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    max-width: 100%;
+    color: #2c3e50;
+  }
+  .aboutBanner__buttonWrapper {
+    margin: 28px 0 0 0;
+  }
+  .aboutBanner__button {
+    font-size: 0.98rem;
+    padding: 12px 28px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 12px rgba(24, 49, 83, 0.15);
+  }
+  .aboutBanner__button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 18px rgba(24, 49, 83, 0.25);
+  }
+}
+@media (max-width: 480px) {
+  .aboutBanner__hero,
+  .aboutBanner__heroImage {
+    height: 320px !important;
+    min-height: 320px !important;
+  }
+  .aboutBanner__heroText {
+    font-size: 1.2rem;
+    padding: 0 16px;
+    max-width: 95vw;
+  }
+  .aboutBanner__content {
+    max-width: 98vw;
+    gap: 24px;
+    margin: 24px auto 0 auto;
+    padding: 0 16px 20px 16px;
+  }
+  .aboutBanner__cardTitle {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  .aboutBanner__cardDivider {
+    width: 40px;
+    height: 3px;
+    margin-bottom: 14px;
+  }
+  .aboutBanner__cardText {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .aboutBanner__buttonWrapper {
+    margin: 24px 0 0 0;
+  }
+  .aboutBanner__button {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+@media (max-width: 360px) {
+  .aboutBanner__heroText {
+    font-size: 1.1rem;
+    padding: 0 12px;
+  }
+  .aboutBanner__content {
+    padding: 0 12px 16px 12px;
+    gap: 20px;
+  }
+  .aboutBanner__cardTitle {
+    font-size: 1rem;
+  }
+  .aboutBanner__cardText {
+    font-size: 0.85rem;
+  }
+  .aboutBanner__button {
+    font-size: 0.85rem;
+    padding: 8px 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aboutBanner__button {
+    transition: none;
+  }
+  .aboutBanner__button:hover {
+    transform: none;
+  }
+}
+@media (prefers-contrast: high) {
+  .aboutBanner__heroText {
+    text-shadow: 0 2px 4px rgb(0, 0, 0);
+  }
+  .aboutBanner__cardText {
+    color: #000;
+  }
+  .aboutBanner__button {
+    border: 2px solid #fff;
+  }
+}/*# sourceMappingURL=about-us-banner.module.css.map */

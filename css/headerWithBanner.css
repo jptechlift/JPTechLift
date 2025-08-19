@@ -1,0 +1,6 @@
+/**
+ * Styles for the HeaderWithBanner component using BEM naming.
+ */
+.header-with-banner__title {
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}/*# sourceMappingURL=headerWithBanner.css.map */

@@ -5,8 +5,16 @@ using BCrypt.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+public class LoginRequest
+{
+    public string Username { get; set; }
+    public string Password { get; set; }
+}
 
 namespace Backend.Controllers
+
+
 {
     [Route("api/[controller]")]
     [ApiController]
