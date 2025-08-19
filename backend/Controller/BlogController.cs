@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;  // Đảm bảo thêm namespace DbContext
+using System.Text; // Thêm để dùng StringBuilder
 
 namespace Backend.Controllers
 {
@@ -18,9 +19,9 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBlog([FromBody] BlogRequest blogRequest)
         {
-            if (blogRequest == null)
+            if (blogRequest == null || string.IsNullOrEmpty(blogRequest.Username))
             {
-                return BadRequest("Invalid data.");
+                return BadRequest("Invalid data or missing username.");
             }
             await using var context = await _contextFactory.CreateDbContextAsync();
 
@@ -28,7 +29,7 @@ namespace Backend.Controllers
                 .AnyAsync(u => u.Username == blogRequest.Username);
             if (!userExists)
             {
-                return NotFound("User not found.");
+                return NotFound($"User '{blogRequest.Username}' not found.");
             }
 
 
@@ -53,7 +54,7 @@ namespace Backend.Controllers
                     ProductType = blogRequest.ProductType,
                     Description = blogRequest.ShortDescription,
                     Size = blogRequest.TechnicalSpecs,
-                    Volumn = blogRequest.TechnicalSpecs,
+                    Volumn = blogRequest.Load, // THAY ĐỔI 2: Sử dụng thuộc tính mới
                     Feature = blogRequest.Features,
                     Keyword = blogRequest.SeoKeywords
                 };
@@ -76,13 +77,10 @@ namespace Backend.Controllers
             return Ok(new { message = "Blog đã được tạo thành công!", blogId = blog.Id });
         }
 
-        // =================================================================
-        // DÁN PHƯƠNG THỨC "THÁM TỬ" NÀY VÀO
-        // =================================================================
         [HttpGet("diagnose-user/{username}")]
         public async Task<IActionResult> DiagnoseUser(string username)
         {
-            var report = new System.Text.StringBuilder();
+            var report = new StringBuilder();
             report.AppendLine($"--- DIAGNOSTIC REPORT FOR USER: '{username}' ---");
             report.AppendLine();
 
@@ -90,13 +88,11 @@ namespace Backend.Controllers
 
             try
             {
-                // TEST 1: CHẠY LẠI CHÍNH XÁC CÂU LỆNH GÂY LỖI
                 report.AppendLine("TEST 1: Running the failing AnyAsync query...");
                 bool userExists = await context.Users.AnyAsync(u => u.Username == username);
                 report.AppendLine($" -> Result: {userExists}");
                 report.AppendLine("--------------------------------------------------");
 
-                // TEST 2: LẤY TOÀN BỘ DANH SÁCH USERS VÀ SO SÁNH TRONG C#
                 report.AppendLine("TEST 2: Fetching ALL users and comparing in C# code...");
                 var allUsers = await context.Users.ToListAsync();
                 report.AppendLine($" -> Found {allUsers.Count} user(s) in the database.");
@@ -104,9 +100,8 @@ namespace Backend.Controllers
                 bool manualMatchFound = false;
                 foreach (var dbUser in allUsers)
                 {
-                    // So sánh từng byte để tìm ký tự ẩn
-                    var inputBytes = System.Text.Encoding.UTF8.GetBytes(username);
-                    var dbBytes = System.Text.Encoding.UTF8.GetBytes(dbUser.Username);
+                    var inputBytes = Encoding.UTF8.GetBytes(username);
+                    var dbBytes = Encoding.UTF8.GetBytes(dbUser.Username);
 
                     report.AppendLine();
                     report.AppendLine($"   - Comparing input '{username}' (Length: {username.Length}) with DB user '{dbUser.Username}' (Length: {dbUser.Username.Length})");
@@ -123,7 +118,6 @@ namespace Backend.Controllers
                 report.AppendLine($" -> Overall Manual C# Match Found: {manualMatchFound}");
                 report.AppendLine("--------------------------------------------------");
 
-                // KẾT LUẬN
                 report.AppendLine("CONCLUSION:");
                 if (userExists && manualMatchFound)
                 {
@@ -158,6 +152,7 @@ namespace Backend.Controllers
         public string ProductType { get; set; }
         public string ShortDescription { get; set; }
         public string TechnicalSpecs { get; set; }
+        public string Load { get; set; } // THAY ĐỔI 1: Thêm thuộc tính này
         public string Features { get; set; }
         public string Username { get; set; }
     }
