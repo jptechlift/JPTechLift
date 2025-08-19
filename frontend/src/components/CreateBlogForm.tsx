@@ -1,6 +1,213 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// =================================================================
+// CÁC COMPONENT CON ĐƯỢC ĐƯA RA BÊN NGOÀI
+// =================================================================
+
+// Component form cho "Blog về sản phẩm"
+// Nó nhận state và các hàm xử lý thông qua props
+const ProductBlogForm = ({ productDetails, setProductDetails, handleSubmit, productTypeOptions }) => (
+  <form onSubmit={handleSubmit}>
+    <div className="space-y-4">
+      {/* Tên và Loại thang máy */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            htmlFor="product-name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Tên thang máy:
+          </label>
+          <input
+            id="product-name"
+            type="text"
+            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+            value={productDetails.productName}
+            onChange={(e) => setProductDetails(prev => ({ ...prev, productName: e.target.value }))}
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="product-type"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Loại thang máy:
+          </label>
+          <select
+            id="product-type"
+            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41] bg-white"
+            value={productDetails.productType}
+            onChange={(e) => setProductDetails(prev => ({ ...prev, productType: e.target.value }))}
+          >
+            {productTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Mô tả ngắn */}
+      <div>
+        <label
+          htmlFor="short-description"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Mô tả ngắn:
+        </label>
+        <textarea
+          id="short-description"
+          rows={2}
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={productDetails.shortDescription}
+          onChange={(e) => setProductDetails(prev => ({ ...prev, shortDescription: e.target.value }))}
+        />
+      </div>
+
+      {/* Thông số kỹ thuật */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Thông số kĩ thuật:
+        </label>
+        <input
+          type="text"
+          placeholder="Kích thước"
+          className="w-full px-3 py-2 mb-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={productDetails.technicalSpecs}
+          onChange={(e) => setProductDetails(prev => ({ ...prev, technicalSpecs: e.target.value }))}
+        />
+        {/* SỬA LỖI TRÙNG LẶP DỮ LIỆU TẠI ĐÂY */}
+        <input
+          type="text"
+          placeholder="Tải trọng"
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={productDetails.load} // Sử dụng state 'load' riêng
+          onChange={(e) => setProductDetails(prev => ({ ...prev, load: e.target.value }))} // Cập nhật state 'load'
+        />
+      </div>
+
+      {/* Tính năng & Ưu điểm */}
+      <div>
+        <label
+          htmlFor="features"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Tính năng & Ưu điểm (từ khoá cách nhau bởi dấu ';'):
+        </label>
+        <textarea
+          id="features"
+          rows={2}
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={productDetails.features}
+          onChange={(e) => setProductDetails(prev => ({ ...prev, features: e.target.value }))}
+        />
+      </div>
+
+      {/* Từ khoá SEO */}
+      <div>
+        <label
+          htmlFor="seo-keywords-product"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Từ khoá SEO (từ khoá cách nhau bởi dấu ';'):
+        </label>
+        <textarea
+          id="seo-keywords-product"
+          rows={2}
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={productDetails.seoKeywords}
+          onChange={(e) => setProductDetails(prev => ({ ...prev, seoKeywords: e.target.value }))}
+        />
+      </div>
+
+      {/* Nút Tạo Blog */}
+      <div>
+        <button
+          type="submit"
+          className="px-6 py-2 border-2 border-[#041E41] text-black font-semibold hover:bg-[#cba053] hover:text-[#041E41] focus:outline-none"
+        >
+          + TẠO BLOG
+        </button>
+      </div>
+    </div>
+  </form>
+);
+
+
+// Component form cho "Blog theo chủ đề"
+const TopicBlogForm = ({ topicDetails, setTopicDetails, handleSubmit }) => (
+  <form onSubmit={handleSubmit}>
+    <div className="space-y-4">
+      {/* Chủ đề bài Blog */}
+      <div>
+        <label
+          htmlFor="blog-topic"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Chủ đề bài Blog:
+        </label>
+        <input
+          id="blog-topic"
+          type="text"
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={topicDetails.blogTopic}
+          onChange={(e) => setTopicDetails(prev => ({ ...prev, blogTopic: e.target.value }))}
+        />
+      </div>
+
+      {/* Mục đích bài Blog */}
+      <div>
+        <label
+          htmlFor="blog-purpose"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Mục đích bài Blog:
+        </label>
+        <input
+          id="blog-purpose"
+          type="text"
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={topicDetails.blogPurpose}
+          onChange={(e) => setTopicDetails(prev => ({ ...prev, blogPurpose: e.target.value }))}
+        />
+      </div>
+
+      {/* Từ khoá SEO */}
+      <div>
+        <label
+          htmlFor="seo-keywords-topic"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Từ khoá SEO (từ khoá cách nhau bởi dấu ';'):
+        </label>
+        <textarea
+          id="seo-keywords-topic"
+          rows={3}
+          className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
+          value={topicDetails.seoKeywords}
+          onChange={(e) => setTopicDetails(prev => ({ ...prev, seoKeywords: e.target.value }))}
+        />
+      </div>
+
+      {/* Nút Tạo Blog */}
+      <div>
+        <button
+          type="submit"
+          className="px-6 py-2 border-2 border-[#041E41] text-black font-semibold hover:bg-[#cba053] hover:text-[#041E41] focus:outline-none"
+        >
+          + TẠO BLOG
+        </button>
+      </div>
+    </div>
+  </form>
+);
+
+
+// =================================================================
+// COMPONENT CHA CHÍNH
+// =================================================================
 const CreateBlogForm: React.FC = () => {
   // State để lưu trữ loại blog đang được chọn
   const [blogType, setBlogType] = useState<string>("");
@@ -11,6 +218,7 @@ const CreateBlogForm: React.FC = () => {
     productType: "",
     shortDescription: "",
     technicalSpecs: "",
+    load: "", // THÊM STATE RIÊNG CHO TẢI TRỌNG
     features: "",
     seoKeywords: "",
   });
@@ -45,12 +253,16 @@ const CreateBlogForm: React.FC = () => {
     event.preventDefault();
 
     // Tạo đối tượng blogRequest từ dữ liệu trong form
-    const blogRequest = {
+    const blogRequest = blogType === 'product' ? {
       blogType,
-      username: "baodhg", // Gán tên người dùng (có thể lấy từ session hoặc props)
-      ...productDetails, // Nếu BlogType là "product"
-      ...topicDetails, // Nếu BlogType là "topic"
+      username: "baodhg",
+      ...productDetails,
+    } : {
+      blogType,
+      username: "baodhg",
+      ...topicDetails,
     };
+
 
     try {
       // Gửi dữ liệu qua POST đến backend
@@ -63,202 +275,6 @@ const CreateBlogForm: React.FC = () => {
       alert('Đã xảy ra lỗi khi tạo blog!');
     }
   };
-
-  // Component form cho "Blog theo chủ đề"
-  const TopicBlogForm = () => (
-    <form onSubmit={handleSubmit}>
-      <div className="space-y-4">
-        {/* Chủ đề bài Blog */}
-        <div>
-          <label
-            htmlFor="blog-topic"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Chủ đề bài Blog:
-          </label>
-          <input
-            id="blog-topic"
-            type="text"
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={topicDetails.blogTopic}
-            onChange={(e) => setTopicDetails({ ...topicDetails, blogTopic: e.target.value })}
-          />
-        </div>
-
-        {/* Mục đích bài Blog */}
-        <div>
-          <label
-            htmlFor="blog-purpose"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Mục đích bài Blog:
-          </label>
-          <input
-            id="blog-purpose"
-            type="text"
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={topicDetails.blogPurpose}
-            onChange={(e) => setTopicDetails({ ...topicDetails, blogPurpose: e.target.value })}
-          />
-        </div>
-
-        {/* Từ khoá SEO */}
-        <div>
-          <label
-            htmlFor="seo-keywords-topic"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Từ khoá SEO (từ khoá cách nhau bởi dấu ';'):
-          </label>
-          <textarea
-            id="seo-keywords-topic"
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#] focus:border-[#041E41]"
-            value={topicDetails.seoKeywords}
-            onChange={(e) => setTopicDetails({ ...topicDetails, seoKeywords: e.target.value })}
-          />
-        </div>
-
-        {/* Nút Tạo Blog */}
-        <div>
-          <button
-            type="submit"
-            className="px-6 py-2 border-2 border-[#041E41] text-black font-semibold hover:bg-[#cba053] hover:text-[#041E41] focus:outline-none"
-          >
-            + TẠO BLOG
-          </button>
-        </div>
-      </div>
-    </form>
-  );
-
-  // Component form cho "Blog về sản phẩm"
-  const ProductBlogForm = ({ productTypeOptions }: { productTypeOptions: { value: string, label: string }[] }) => (
-    <form onSubmit={handleSubmit}>
-      <div className="space-y-4">
-        {/* Tên và Loại thang máy */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="product-name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Tên thang máy:
-            </label>
-            <input
-              id="product-name"
-              type="text"
-              className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-              value={productDetails.productName}
-              onChange={(e) => setProductDetails({ ...productDetails, productName: e.target.value })}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="product-type"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Loại thang máy:
-            </label>
-            <select
-              id="product-type"
-              className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41] bg-white"
-              value={productDetails.productType}
-              onChange={(e) => setProductDetails({ ...productDetails, productType: e.target.value })}
-            >
-              {productTypeOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Mô tả ngắn */}
-        <div>
-          <label
-            htmlFor="short-description"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Mô tả ngắn:
-          </label>
-          <textarea
-            id="short-description"
-            rows={2}
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={productDetails.shortDescription}
-            onChange={(e) => setProductDetails({ ...productDetails, shortDescription: e.target.value })}
-          />
-        </div>
-
-        {/* Thông số kỹ thuật */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Thông số kĩ thuật:
-          </label>
-          <input
-            type="text"
-            placeholder="Kích thước"
-            className="w-full px-3 py-2 mb-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={productDetails.technicalSpecs}
-            onChange={(e) => setProductDetails({ ...productDetails, technicalSpecs: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="Tải trọng"
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={productDetails.features}
-            onChange={(e) => setProductDetails({ ...productDetails, features: e.target.value })}
-          />
-        </div>
-
-        {/* Tính năng & Ưu điểm */}
-        <div>
-          <label
-            htmlFor="features"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Tính năng & Ưu điểm (từ khoá cách nhau bởi dấu ';'):
-          </label>
-          <textarea
-            id="features"
-            rows={2}
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={productDetails.features}
-            onChange={(e) => setProductDetails({ ...productDetails, features: e.target.value })}
-          />
-        </div>
-
-        {/* Từ khoá SEO */}
-        <div>
-          <label
-            htmlFor="seo-keywords-product"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Từ khoá SEO (từ khoá cách nhau bởi dấu ';'):
-          </label>
-          <textarea
-            id="seo-keywords-product"
-            rows={2}
-            className="w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#041E41] focus:border-[#041E41]"
-            value={productDetails.seoKeywords}
-            onChange={(e) => setProductDetails({ ...productDetails, seoKeywords: e.target.value })}
-          />
-        </div>
-
-        {/* Nút Tạo Blog */}
-        <div>
-          <button
-            type="submit"
-            className="px-6 py-2 border-2 border-[#041E41] text-black font-semibold hover:bg-[#cba053] hover:text-[#041E41] focus:outline-none"
-          >
-            + TẠO BLOG
-          </button>
-        </div>
-      </div>
-    </form>
-  );
 
   return (
     <div className="bg-texture-bg bg-texture-pattern bg-[length:8px_8px] min-h-screen p-8 font-sans">
@@ -297,21 +313,22 @@ const CreateBlogForm: React.FC = () => {
             </select>
           </div>
 
-          {/* Hiển thị form tương ứng dựa vào state */}
-          {blogType === "product" && <ProductBlogForm productTypeOptions={productTypeOptions} />}
-          {blogType === "topic" && <TopicBlogForm />}
-        </div>
-
-        {/* Cột phải hiển thị danh sách Blog */}
-        <div className="w-full md:w-1/3 mt-8 md:mt-10">
-          <h2 className="text-lg font-bold text-[#041E41] mb-4 text-center">
-            DANH SÁCH CÁC BLOG
-          </h2>
-          <div className="space-y-2">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div key={index} className="h-12 border border-[#041E41] rounded"></div>
-            ))}
-          </div>
+          {/* Hiển thị form tương ứng, truyền props vào các component con */}
+          {blogType === "product" && (
+            <ProductBlogForm
+              productDetails={productDetails}
+              setProductDetails={setProductDetails}
+              handleSubmit={handleSubmit}
+              productTypeOptions={productTypeOptions}
+            />
+          )}
+          {blogType === "topic" && (
+            <TopicBlogForm
+              topicDetails={topicDetails}
+              setTopicDetails={setTopicDetails}
+              handleSubmit={handleSubmit}
+            />
+          )}
         </div>
       </div>
     </div>
