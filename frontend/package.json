@@ -17,6 +17,7 @@
     "postbuild": "node scripts/copy404.cjs && node scripts/generateRedirects.cjs"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.2",
     "aos": "^2.3.4",
     "clsx": "^2.1.1",
     "emailjs-com": "^3.2.0",
