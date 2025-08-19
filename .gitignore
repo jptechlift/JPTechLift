@@ -2,3 +2,5 @@ node_modules/
 backend/bin/
 backend/obj/
 frontend/node_modules/
+backend.Tests/bin/
+backend.Tests/obj/

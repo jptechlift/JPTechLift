@@ -5,6 +5,8 @@ import './styles/fonts.scss';
 import './styles/index.scss';
 import App from "./App";
 
+console.log('VITE_API_URL', import.meta.env.VITE_API_URL);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HelmetProvider>

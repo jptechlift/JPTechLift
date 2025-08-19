@@ -4,6 +4,12 @@ namespace Backend.Models
     {
         public int Id { get; set; }
         public string Username { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty; // Để lưu trữ password đã hash
+        public string PasswordHash { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string Role { get; set; } = "user";
+        public bool IsActive { get; set; } = true;
+        public string? Avatar { get; set; }
     }
 }

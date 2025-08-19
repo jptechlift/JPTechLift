@@ -6,11 +6,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-public class LoginRequest
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
-}
 
 namespace Backend.Controllers
 
@@ -41,14 +36,14 @@ namespace Backend.Controllers
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                var command = new NpgsqlCommand("SELECT id, username, password_hash FROM users WHERE username = @username LIMIT 1", conn);
+                 var command = new NpgsqlCommand("SELECT id, username, passwordhash FROM users WHERE username = @username LIMIT 1", conn);
                 command.Parameters.AddWithValue("username", username);
 
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        var storedHash = reader.GetString(reader.GetOrdinal("password_hash"));
+                      var storedHash = reader.GetString(reader.GetOrdinal("passwordhash"));
                         if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                         {
                             return new User
