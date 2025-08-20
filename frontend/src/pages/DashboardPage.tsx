@@ -1,18 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { User, Edit3, FileText, Settings, Home, Upload, Save, Camera, Phone, Mail, Globe } from "lucide-react";
-
-// Mock services (replace with your actual services)
-const user = {
-  get: () =>
-    Promise.resolve<UserProfile>({
-      name: "John Doe",
-      phone: "+84 123 456 789",
-      email: "john@example.com",
-      avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-      coverUrl: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=200&fit=crop",
-    }),
-  update: (data: UserProfile) => Promise.resolve(data),
-};
+import { user } from "../services/user";
 
 const blog = {
   create: (data: BlogPost) => Promise.resolve(data),
@@ -50,10 +38,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    user
-      .get()
-      .then(setProfile)
-      .catch(() => {});
+     user.get().then(setProfile).catch(console.error);
   }, []);
 
   const handleProfileChange = (e: ChangeEvent<HTMLInputElement>) => {

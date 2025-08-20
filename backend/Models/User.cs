@@ -10,6 +10,7 @@ namespace Backend.Models
         public DateTime CreatedDate { get; set; }
         public string Role { get; set; } = "user";
         public bool IsActive { get; set; } = true;
-        public string? Avatar { get; set; }
+         public string? AvatarUrl { get; set; }
+        public string? CoverUrl { get; set; }
     }
 }

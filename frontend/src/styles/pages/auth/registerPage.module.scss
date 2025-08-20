@@ -1,75 +1,441 @@
-@use "../../base/variables";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito+Sans:wght@400;600;700&display=swap');
 
-.registerPage {
+// Colors
+$color-primary: #041e42;
+$color-primary-light: #052a5a;
+$color-accent: #f59e0b;
+$color-white: #ffffff;
+$color-gray-50: #f9fafb;
+$color-gray-100: #f3f4f6;
+$color-gray-200: #e5e7eb;
+$color-gray-400: #9ca3af;
+$color-gray-500: #6b7280;
+$color-gray-700: #374151;
+$color-blue-50: #eff6ff;
+$color-blue-900: #1e3a8a;
+$color-red-50: #fef2f2;
+$color-red-500: #ef4444;
+$color-red-700: #b91c1c;
+
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+
+// Mixins
+@mixin focus-state {
+  outline: none;
+  border-color: $color-primary;
+  background-color: $color-white;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+@mixin hover-lift {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+@mixin smooth-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Main container
+.register {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-main);
-  background: #f8fafc;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Nunito Sans', sans-serif;
 
+  @media (max-width: $mobile) {
+    padding: 0.5rem;
+  }
+
+  // Card container
   &__container {
-    background: #fff;
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
+    background: $color-white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     width: 100%;
-    max-width: 420px;
+    max-width: 28rem;
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: $mobile) {
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+    }
+  }
+
+  // Top accent bar
+  &__accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, $color-primary, $color-accent);
+  }
+
+  // Header section
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
   }
 
   &__title {
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+
+    @media (max-width: $mobile) {
+      font-size: 1.25rem;
+    }
   }
 
+  &__underline {
+    width: 2.5rem;
+    height: 4px;
+    background: $color-accent;
+    border-radius: 9999px;
+    margin: 0 auto;
+  }
+
+  // Form
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  // Form sections
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__optional {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  // Fields
   &__field {
-    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
   }
 
+  &__field_compact {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+
+    @media (max-width: $mobile) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Labels
   &__label {
     display: block;
-    margin-bottom: var(--spacing-xs);
+    font-size: 0.75rem;
     font-weight: 600;
+    color: $color-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
   }
 
+  &__label_compact {
+    display: block;
+    font-size: 0.75rem;
+    color: $color-gray-500;
+    margin-bottom: 0.25rem;
+  }
+
+  // Inputs
   &__input {
     width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid #d1d5db;
-    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    background: $color-gray-50;
+    border: 2px solid $color-gray-200;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    @include smooth-transition;
+
+    &::placeholder {
+      color: $color-gray-400;
+    }
+
+    &:hover {
+      border-color: $color-gray-400;
+    }
+
+    &:focus {
+      @include focus-state;
+    }
   }
 
-  &__fieldCheckbox {
-    margin-bottom: var(--spacing-md);
+  &__input_compact {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: $color-gray-50;
+    border: 1px solid $color-gray-200;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    @include smooth-transition;
+
+    &::placeholder {
+      color: $color-gray-400;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      background-color: $color-white;
+    }
   }
 
-  &__checkboxLabel {
+  // Divider
+  &__divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  &__divider_line {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
+
+    &::before {
+      content: '';
+      width: 100%;
+      border-top: 1px solid $color-gray-200;
+    }
   }
 
-  &__error {
-    color: red;
-    margin-bottom: var(--spacing-sm);
+  &__divider_text {
+    position: relative;
+    background: $color-white;
+    padding: 0 1rem;
+
+    span {
+      font-size: 0.75rem;
+      color: $color-gray-500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
   }
 
-  &__submitButton {
-    width: 100%;
-    padding: var(--spacing-sm);
-    background: var(--color-main);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius-sm);
+  // Checkbox
+  &__checkbox_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background: $color-blue-50;
+    border-radius: 0.5rem;
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: $color-blue-900;
     cursor: pointer;
+    user-select: none;
   }
 
+  &__checkbox_input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: $color-primary;
+    border-radius: 0.25rem;
+
+    &:focus {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+  }
+
+  &__checkbox_text {
+    font-size: 0.875rem;
+  }
+
+  // Error message
+  &__error {
+    background: $color-red-50;
+    border-left: 4px solid $color-red-500;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    color: $color-red-700;
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  // Submit button
+  &__button {
+    width: 100%;
+    padding: 1rem 0;
+    background: linear-gradient(135deg, $color-primary, $color-primary-light);
+    color: $color-white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    @include smooth-transition;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: 1.5rem;
+
+    &:hover:not(:disabled) {
+      @include hover-lift;
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &_loading {
+      background: $color-primary;
+    }
+  }
+
+  &__button_text {
+    display: block;
+    transition: opacity 0.2s ease;
+
+    .register__button_loading & {
+      opacity: 0;
+    }
+  }
+
+  &__button_spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid $color-white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  &__button_shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease;
+
+    .register__button:hover & {
+      transform: translateX(100%);
+    }
+  }
+
+  // Footer
   &__footer {
-    margin-top: var(--spacing-md);
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid $color-gray-200;
     text-align: center;
   }
 
   &__link {
-    color: var(--color-main);
+    color: $color-primary;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    @include smooth-transition;
+    position: relative;
+    display: inline-block;
+
+    &:hover {
+      color: $color-accent;
+    }
+  }
+
+  &__link_underline {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $color-accent;
+    @include smooth-transition;
+
+    .register__link:hover & {
+      width: 100%;
+    }
+  }
+}
+
+// Animations
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $mobile) {
+  .register {
+    &__container {
+      margin: 0.5rem;
+    }
+
+    &__form {
+      gap: 1.25rem;
+    }
+
+    &__section {
+      gap: 0.875rem;
+    }
+
+    &__button {
+      padding: 0.875rem 0;
+      font-size: 0.875rem;
+    }
   }
 }

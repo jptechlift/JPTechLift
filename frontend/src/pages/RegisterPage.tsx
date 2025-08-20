@@ -1,7 +1,7 @@
 import { useState } from "react";
+import styles from "../styles/pages/auth/registerPage.module.scss";
 import { useNavigate } from "react-router-dom";
 import { auth, RegisterPayload } from "../services/auth";
-import styles from "../styles/pages/auth/registerPage.module.scss";
 
 export default function RegisterPage() {
   const [form, setForm] = useState<RegisterPayload>({
@@ -15,7 +15,7 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+ const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -38,110 +38,194 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={styles.registerPage}>
-      <div className={styles.registerPage__container}>
-        <h1 className={styles.registerPage__title}>Create Account</h1>
-        <form onSubmit={handleSubmit} className={styles.registerPage__form}>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="username" className={styles.registerPage__label}>
-              Username
-            </label>
-            <input
-              id="username"
-              name="username"
-              type="text"
-              className={styles.registerPage__input}
-              value={form.username}
-              onChange={handleChange}
-              required
-            />
+    <div className={styles.register}>
+      <div className={styles.register__container}>
+        <div className={styles.register__accent}></div>
+        
+        <div className={styles.register__header}>
+          <h1 className={styles.register__title}>Create Account</h1>
+          <div className={styles.register__underline}></div>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.register__form}>
+          {/* Essential Fields */}
+          <div className={styles.register__section}>
+            <div className={styles.register__field}>
+              <label 
+                htmlFor="username" 
+                className={styles.register__label}
+              >
+                Username
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                className={styles.register__input}
+                value={form.username}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+
+            <div className={styles.register__field}>
+              <label 
+                htmlFor="email" 
+                className={styles.register__label}
+              >
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                className={styles.register__input}
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div className={styles.register__field}>
+              <label 
+                htmlFor="password" 
+                className={styles.register__label}
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                className={styles.register__input}
+                value={form.password}
+                onChange={handleChange}
+                placeholder="Create a strong password"
+                required
+              />
+            </div>
           </div>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="email" className={styles.registerPage__label}>
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className={styles.registerPage__input}
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
+
+          {/* Optional Fields Divider */}
+          <div className={styles.register__divider}>
+            <div className={styles.register__divider_line}></div>
+            <div className={styles.register__divider_text}>
+              <span>Optional Information</span>
+            </div>
           </div>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="password" className={styles.registerPage__label}>
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              className={styles.registerPage__input}
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
+
+          {/* Optional Fields */}
+          <div className={styles.register__optional}>
+            <div className={styles.register__row}>
+              <div className={styles.register__field_compact}>
+                <label 
+                  htmlFor="phoneNumber" 
+                  className={styles.register__label_compact}
+                >
+                  Phone
+                </label>
+                <input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  className={styles.register__input_compact}
+                  value={form.phoneNumber || ""}
+                  onChange={handleChange}
+                  placeholder="Phone number"
+                />
+              </div>
+
+              <div className={styles.register__field_compact}>
+                <label 
+                  htmlFor="role" 
+                  className={styles.register__label_compact}
+                >
+                  Role
+                </label>
+                <input
+                  id="role"
+                  name="role"
+                  type="text"
+                  className={styles.register__input_compact}
+                  value={form.role || ""}
+                  onChange={handleChange}
+                  placeholder="Your role"
+                />
+              </div>
+            </div>
+
+            <div className={styles.register__field_compact}>
+              <label 
+                htmlFor="avatar" 
+                className={styles.register__label_compact}
+              >
+                Avatar URL
+              </label>
+              <input
+                id="avatar"
+                name="avatar"
+                type="url"
+                className={styles.register__input_compact}
+                value={form.avatar || ""}
+                onChange={handleChange}
+                placeholder="https://example.com/avatar.jpg"
+              />
+            </div>
           </div>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="phoneNumber" className={styles.registerPage__label}>
-              Phone Number
-            </label>
-            <input
-              id="phoneNumber"
-              name="phoneNumber"
-              type="tel"
-              className={styles.registerPage__input}
-              value={form.phoneNumber || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="avatar" className={styles.registerPage__label}>
-              Avatar URL
-            </label>
-            <input
-              id="avatar"
-              name="avatar"
-              type="text"
-              className={styles.registerPage__input}
-              value={form.avatar || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.registerPage__field}>
-            <label htmlFor="role" className={styles.registerPage__label}>
-              Role
-            </label>
-            <input
-              id="role"
-              name="role"
-              type="text"
-              className={styles.registerPage__input}
-              value={form.role || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styles.registerPage__fieldCheckbox}>
-            <label className={styles.registerPage__checkboxLabel}>
+
+          {/* Account Status */}
+          <div className={styles.register__checkbox_container}>
+            <label className={styles.register__checkbox}>
               <input
                 type="checkbox"
                 name="isActive"
                 checked={form.isActive ?? false}
                 onChange={handleChange}
+                className={styles.register__checkbox_input}
               />
-              Active
+              <span className={styles.register__checkbox_text}>
+                Activate account immediately
+              </span>
             </label>
           </div>
-          {error && <div className={styles.registerPage__error}>{error}</div>}
-          <button type="submit" className={styles.registerPage__submitButton} disabled={loading}>
-            {loading ? "Registering..." : "Register"}
+
+          {/* Error Message */}
+          {error && (
+            <div className={styles.register__error}>
+              {error}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button 
+            type="submit" 
+            className={`${styles.register__button} ${loading ? styles.register__button_loading : ''}`}
+            disabled={loading}
+          >
+            <span className={styles.register__button_text}>
+              Create Account
+            </span>
+            
+            {loading && (
+              <div className={styles.register__button_spinner}>
+                <div className={styles.register__spinner}></div>
+              </div>
+            )}
+
+            <div className={styles.register__button_shine}></div>
           </button>
         </form>
-        <div className={styles.registerPage__footer}>
-          <a href="/login" className={styles.registerPage__link}>
+
+        {/* Footer */}
+        <div className={styles.register__footer}>
+          <a 
+            href="/login" 
+            className={styles.register__link}
+          >
             Already have an account? Sign in
+            <span className={styles.register__link_underline}></span>
           </a>
         </div>
       </div>

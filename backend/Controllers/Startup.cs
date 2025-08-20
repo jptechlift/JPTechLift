@@ -1,3 +1,10 @@
+
+using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
+
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
@@ -11,6 +18,7 @@ public class Startup
         });
 
         services.AddControllers();
+        services.AddAuthorization();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -18,7 +26,8 @@ public class Startup
         app.UseRouting();
 
         app.UseCors("AllowFrontend");  // Kích hoạt CORS
-
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();  // Định nghĩa các API endpoint

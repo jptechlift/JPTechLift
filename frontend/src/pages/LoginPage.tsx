@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Lock, User, ArrowRight } from "lucide-react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import styles from "../styles/pages/auth/loginPage.module.scss";
 import { auth } from "../services/auth";
@@ -44,30 +44,35 @@ export default function LoginPage() {
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <div className={styles.loginPage}>
+        {/* Background Elements */}
         <div className={styles.loginPage__background}>
           <div className={styles.loginPage__backgroundShape}></div>
           <div className={styles.loginPage__backgroundShape}></div>
         </div>
 
+        {/* Main Container */}
         <div className={styles.loginPage__container}>
           <div className={styles.loginPage__card}>
+            {/* Header */}
             <div className={styles.loginPage__header}>
               <div className={styles.loginPage__logo}>
                 <div className={styles.loginPage__logoIcon}>
-                  <Lock size={32} />
+                  <Lock size={24} />
                 </div>
               </div>
               <h1 className={styles.loginPage__title}>Welcome Back</h1>
-              <p className={styles.loginPage__subtitle}>Please sign in to your account to continue</p>
+              <p className={styles.loginPage__subtitle}>Sign in to continue to your account</p>
             </div>
 
+            {/* Form */}
             <form onSubmit={handleSubmit} className={styles.loginPage__form}>
+              {/* Email Input */}
               <div className={styles.loginPage__field}>
-                <label htmlFor="username" className={styles.loginPage__label}>
-                  Username
+                <label htmlFor="email" className={styles.loginPage__label}>
+                  Email
                 </label>
                 <div className={styles.loginPage__inputWrapper}>
-                  <User className={styles.loginPage__inputIcon} size={20} />
+                  <User className={styles.loginPage__inputIcon} size={18} />
                   <input
                     id="username"
                     type="text"
@@ -80,12 +85,13 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {/* Password Input */}
               <div className={styles.loginPage__field}>
                 <label htmlFor="password" className={styles.loginPage__label}>
                   Password
                 </label>
                 <div className={styles.loginPage__inputWrapper}>
-                  <Lock className={styles.loginPage__inputIcon} size={20} />
+                  <Lock className={styles.loginPage__inputIcon} size={18} />
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
@@ -100,47 +106,63 @@ export default function LoginPage() {
                     className={styles.loginPage__togglePassword}
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
               </div>
-              <label className={styles.loginPage__rememberMe}>
-                <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-                <span>Remember Me</span>
-              </label>
+
+              {/* Remember Me & Forgot Password */}
+              <div className={styles.loginPage__options}>
+                <label className={styles.loginPage__rememberMe}>
+                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                  <span>Remember me</span>
+                </label>
+                <a href="#" className={styles.loginPage__link}>
+                  Forgot password?
+                </a>
+              </div>
+
+              {/* Error Message */}
               {error && <div className={styles.loginPage__error}>{error}</div>}
 
+              {/* Submit Button */}
               <button type="submit" className={styles.loginPage__submitButton} disabled={loading}>
                 {loading ? (
                   <>
                     <div className={styles.loginPage__spinner}></div>
-                    Signing in...
+                    <span>Signing in...</span>
                   </>
                 ) : (
-                  "Sign In"
+                  <>
+                    <span>Sign In</span>
+                    <ArrowRight size={18} />
+                  </>
                 )}
               </button>
 
+              {/* Divider */}
               <div className={styles.loginPage__divider}>
-                <span>or</span>
+                <span>or continue with</span>
               </div>
 
+              {/* Google OAuth */}
               <div className={styles.loginPage__oauth}>
                 <GoogleLogin
                   onSuccess={(cred) => handleGoogleSuccess(cred.credential)}
                   onError={() => setError("Google login failed")}
                 />
               </div>
-              
-              <div className={styles.loginPage__footer}>
-                <a href="#" className={styles.loginPage__link}>
-                  Forgot your password?
-                </a>
-                  <Link to="/register" className={styles.loginPage__link}>
+            </form>
+
+            {/* Footer */}
+            <div className={styles.loginPage__footer}>
+              <p>
+                Don't have an account?{" "}
+                <Link to="/register" className={styles.loginPage__link}>
                   Create account
                 </Link>
-              </div>
-            </form>
+              </p>
+            </div>
           </div>
         </div>
       </div>
