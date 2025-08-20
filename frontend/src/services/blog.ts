@@ -1,30 +1,44 @@
+import axios from "axios";
+
 export interface BlogPost {
   id?: string;
   title: string;
   content: string;
   imageUrl?: string;
 }
-import { auth } from "./auth";
+
+export type ProductDetails = {
+  productName: string;
+  productType: string;
+};
+
+export type TopicDetails = {
+  topic: string;
+  content: string;
+};
+
+export type BlogRequest = {
+  blogType: "product" | "topic";
+  productDetails?: ProductDetails;
+  topicDetails?: TopicDetails;
+};
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const blog = {
+  
   async list(): Promise<BlogPost[]> {
     const res = await fetch(`${API_URL}/blogs`);
     if (!res.ok) throw new Error("Failed to load blogs");
     return res.json();
   },
-  async create(post: BlogPost): Promise<BlogPost> {
-    const token = auth.getToken();
-    const res = await fetch(`${API_URL}/blogs`, {
-      method: "POST",
+
+  create(data: BlogRequest) {
+    const token = localStorage.getItem("token");
+    return axios.post("http://localhost:5000/api/blog", data, {
       headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(post),
     });
-    if (!res.ok) throw new Error("Failed to create blog");
-    return res.json();
   },
 };
