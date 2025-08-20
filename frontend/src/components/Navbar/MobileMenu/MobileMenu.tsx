@@ -231,6 +231,18 @@ const MobileMenu = () => {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </li>
+        <li className={styles["menu__item"]}>
+        <Link to="/login" onClick={handleMenuClose} className={styles["menu__link"]}>
+          <span>ĐĂNG NHẬP</span>
+          <ChevronRight size={16} aria-hidden="true" />
+        </Link>
+      </li>
+      <li className={styles["menu__item"]}>
+        <Link to="/register" onClick={handleMenuClose} className={styles["menu__link"]}>
+          <span>ĐĂNG KÝ</span>
+          <ChevronRight size={16} aria-hidden="true" />
+        </Link>
+      </li>
     </ul>
   );
 

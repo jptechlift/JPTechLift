@@ -15,7 +15,7 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly string _connectionString = "Host=your_host;Username=your_user;Password=your_password;Database=your_db";
+        private readonly string _connectionString = "Host=localhost;Username=postgres;Password=1;Database=auth_db";
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest request)

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import styles from "../styles/pages/auth/loginPage.module.scss";
@@ -136,6 +136,9 @@ export default function LoginPage() {
                 <a href="#" className={styles.loginPage__link}>
                   Forgot your password?
                 </a>
+                  <Link to="/register" className={styles.loginPage__link}>
+                  Create account
+                </Link>
               </div>
             </form>
           </div>

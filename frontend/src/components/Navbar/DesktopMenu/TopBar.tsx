@@ -57,6 +57,9 @@ Trân trọng,`
             <Link to="/login" className={`${styles.topBar__langItem} ${styles["topBar__langItem--primary"]}`}>
               Đăng nhập
             </Link>
+             <Link to="/register" className={styles.topBar__langItem}>
+              Đăng ký
+            </Link>
           </div>
         </div>
       </div>

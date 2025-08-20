@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivateRoute from "./routes/PrivateRoute";
 
@@ -73,6 +74,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+         <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/dashboard"
           element={

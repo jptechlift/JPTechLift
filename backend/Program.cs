@@ -56,42 +56,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Ensure database and tables exist
-using (var scope = app.Services.CreateScope())
-{
-    var dataSource = scope.ServiceProvider.GetRequiredService<NpgsqlDataSource>();
-    using var conn = dataSource.OpenConnection();
-    conn.Execute(@"
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            username VARCHAR(255),
-            passwordhash TEXT,
-            email VARCHAR(255),
-            phonenumber VARCHAR(15),
-            createddate TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-            role VARCHAR(50) DEFAULT 'user',
-            isactive BOOLEAN DEFAULT TRUE,
-            avatar TEXT
-        );
-        CREATE TABLE IF NOT EXISTS blogs (
-            id SERIAL PRIMARY KEY,
-            user_id INT REFERENCES users(id),
-            title TEXT,
-            content TEXT
-        );
-        CREATE TABLE IF NOT EXISTS productblogs (
-            id SERIAL PRIMARY KEY,
-            user_id INT REFERENCES users(id),
-            title TEXT,
-            content TEXT
-        );
-        CREATE TABLE IF NOT EXISTS topicblogs (
-            id SERIAL PRIMARY KEY,
-            user_id INT REFERENCES users(id),
-            title TEXT,
-            content TEXT
-        );
-    ");
-}
+
 
 string GenerateJwt(int userId, string username)
 {
@@ -111,29 +76,38 @@ string GenerateJwt(int userId, string username)
 app.MapPost("/register", async (RegisterRequest request, NpgsqlDataSource dataSource) =>
 {
     using var conn = dataSource.OpenConnection();
+
+    var exists = await conn.ExecuteScalarAsync<int?>
+    (
+        "SELECT 1 FROM users WHERE username = @Username",
+        new { request.Username }
+    );
+
+    if (exists.HasValue)
+    {
+        return Results.BadRequest(new { message = "Username already exists" });
+    }
+
     var hash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-     const string sql = @"INSERT INTO users (username, passwordhash, email, phonenumber, role, isactive, avatar)
-                         VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @Avatar)
-                         RETURNING id;";
-    try
+
+    const string sql = @"INSERT INTO users (username, passwordhash, email, phonenumber, role, isactive, avatar)
+                        VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @Avatar)
+                        RETURNING id;";
+
+    var id = await conn.ExecuteScalarAsync<int>(sql, new
     {
-         var id = await conn.ExecuteScalarAsync<int>(sql, new
-        {
-            request.Username,
-            Hash = hash,
-            request.Email,
-            request.PhoneNumber,
-            request.Role,
-            request.IsActive,
-            request.Avatar
-        });
-        return Results.Ok(new { id });
-    }
-    catch
-    {
-        return Results.BadRequest(new { message = "User exists" });
-    }
+        request.Username,
+        Hash = hash,
+        request.Email,
+        request.PhoneNumber,
+        request.Role,
+        request.IsActive,
+        request.Avatar
+    });
+
+    return Results.Ok(new { id });
 });
+
 
 app.MapPost("/login", async (LoginRequest request, NpgsqlDataSource dataSource) =>
 {

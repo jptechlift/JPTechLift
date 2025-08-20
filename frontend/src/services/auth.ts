@@ -7,6 +7,16 @@ export interface LoginResult {
   token: string;
 }
 
+export interface RegisterPayload {
+  username: string;
+  password: string;
+  email: string;
+  phoneNumber?: string;
+  avatar?: string;
+  role?: string;
+  isActive?: boolean;
+}
+
 const API_URL = import.meta.env.VITE_API_URL as string;
 const TOKEN_KEY = "auth_token";
 
@@ -45,6 +55,14 @@ async function loginWithGoogle(credential: string): Promise<LoginResult> {
   return { token: data.token };
 }
 
+async function register(p: RegisterPayload): Promise<number> {
+  const data = await request("/register", {
+    method: "POST",
+    body: JSON.stringify(p),
+  });
+  return data.id;
+}
+
 function saveToken(t: string) {
   localStorage.setItem(TOKEN_KEY, t);
 }
@@ -56,6 +74,7 @@ function clearToken() {
 export const auth = {
   login,
   loginWithGoogle,
+  register,
   saveToken,
   logout: clearToken,
   getToken,
