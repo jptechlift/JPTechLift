@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
@@ -11,10 +12,16 @@ namespace Backend.Controllers
     [Route("api/user")]
     public class UserController : ControllerBase
     {
-        private readonly string _connectionString = "Host=localhost;Username=postgres;Password=1;Database=auth_db";
+        private readonly NpgsqlDataSource _dataSource;
 
+        public UserController(NpgsqlDataSource dataSource)
+        {
+            _dataSource = dataSource;
+        }
+
+        // Retrieve the profile of the currently authenticated user.
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             var idValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (idValue == null)
@@ -22,12 +29,11 @@ namespace Backend.Controllers
                 return Unauthorized();
             }
 
-            using var conn = new NpgsqlConnection(_connectionString);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar FROM users WHERE id = @id", conn);
+            await using var conn = await _dataSource.OpenConnectionAsync();
+            await using var cmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar FROM users WHERE id = @id", conn);
             cmd.Parameters.AddWithValue("id", int.Parse(idValue));
-            using var reader = cmd.ExecuteReader();
-            if (!reader.Read())
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (!await reader.ReadAsync())
             {
                 return NotFound();
             }
@@ -42,6 +48,7 @@ namespace Backend.Controllers
             return Ok(result);
         }
 
+        // Payload used when updating the user's profile. All fields are optional.
         public class ProfilePayload
         {
             public string? Name { get; set; }
@@ -50,8 +57,9 @@ namespace Backend.Controllers
             public string? Avatar { get; set; }
         }
 
+        // Update the profile of the currently authenticated user.
         [HttpPut]
-        public IActionResult Put([FromBody] ProfilePayload payload)
+        public async Task<IActionResult> Put([FromBody] ProfilePayload payload)
         {
             var idValue = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (idValue == null)
@@ -59,9 +67,8 @@ namespace Backend.Controllers
                 return Unauthorized();
             }
 
-            using var conn = new NpgsqlConnection(_connectionString);
-            conn.Open();
-            var cmd = new NpgsqlCommand(@"UPDATE users SET 
+            await using var conn = await _dataSource.OpenConnectionAsync();
+            await using var cmd = new NpgsqlCommand(@"UPDATE users SET
                                         username = COALESCE(@Name, username),
                                         phonenumber = COALESCE(@Phone, phonenumber),
                                         email = COALESCE(@Email, email),
@@ -72,8 +79,24 @@ namespace Backend.Controllers
             cmd.Parameters.AddWithValue("Email", (object?)payload.Email ?? DBNull.Value);
             cmd.Parameters.AddWithValue("Avatar", (object?)payload.Avatar ?? DBNull.Value);
             cmd.Parameters.AddWithValue("Id", int.Parse(idValue));
-            cmd.ExecuteNonQuery();
-            return Ok();
+            await cmd.ExecuteNonQueryAsync();
+            
+            var selectCmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar FROM users WHERE id = @Id", conn);
+            selectCmd.Parameters.AddWithValue("Id", int.Parse(idValue));
+            using var reader = selectCmd.ExecuteReader();
+            if (!reader.Read())
+            {
+                return NotFound();
+            }
+
+            var result = new
+            {
+                name = reader.GetString(reader.GetOrdinal("username")),
+                phone = reader.IsDBNull(reader.GetOrdinal("phonenumber")) ? null : reader.GetString(reader.GetOrdinal("phonenumber")),
+                email = reader.GetString(reader.GetOrdinal("email")),
+                avatar = reader.IsDBNull(reader.GetOrdinal("avatar")) ? null : reader.GetString(reader.GetOrdinal("avatar"))
+            };
+            return Ok(result);
         }
     }
 }

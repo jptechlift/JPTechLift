@@ -1,18 +1,10 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { User, Edit3, FileText, Settings, Home, Upload, Save, Camera, Phone, Mail, Globe } from "lucide-react";
-import { user } from "../services/user";
+import { user, UserProfile } from "../services/user";
 
 const blog = {
   create: (data: BlogPost) => Promise.resolve(data),
 };
-
-interface UserProfile {
-  name: string;
-  phone: string;
-  email: string;
-  avatarUrl: string;
-  coverUrl: string;
-}
 
 interface BlogPost {
   title: string;
@@ -23,10 +15,10 @@ interface BlogPost {
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("profile");
   const [profile, setProfile] = useState<UserProfile>({
-    name: "",
-    phone: "",
+    username: "",
+    phoneNumber: "",
     email: "",
-    avatarUrl: "",
+    avatar: "",
     coverUrl: "",
   });
   const [blogPost, setBlogPost] = useState<BlogPost>({
@@ -38,7 +30,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-     user.get().then(setProfile).catch(console.error);
+    user.get().then(setProfile).catch(console.error);
   }, []);
 
   const handleProfileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +107,7 @@ export default function DashboardPage() {
               <div className="relative">
                 <img
                   src={
-                    profile.avatarUrl ||
+                    profile.avatar ||
                     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face"
                   }
                   alt="Avatar"
@@ -124,7 +116,7 @@ export default function DashboardPage() {
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
               <div>
-                <h1 className="font-bold text-xl text-gray-800">{profile.name || "User"}</h1>
+                <h1 className="font-bold text-xl text-gray-800">{profile.username || "User"}</h1>
                 <p className="text-sm text-gray-500">Welcome back!</p>
               </div>
             </div>
@@ -217,8 +209,8 @@ export default function DashboardPage() {
                           Full Name
                         </label>
                         <input
-                          name="name"
-                          value={profile.name}
+                          name="username"
+                          value={profile.username}
                           onChange={handleProfileChange}
                           className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white/50 backdrop-blur-sm"
                           placeholder="Enter your full name"
@@ -231,8 +223,8 @@ export default function DashboardPage() {
                           Phone Number
                         </label>
                         <input
-                          name="phone"
-                          value={profile.phone}
+                          name="phoneNumber"
+                          value={profile.phoneNumber}
                           onChange={handleProfileChange}
                           className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white/50 backdrop-blur-sm"
                           placeholder="Enter your phone number"
@@ -261,8 +253,8 @@ export default function DashboardPage() {
                         Avatar URL
                       </label>
                       <input
-                        name="avatarUrl"
-                        value={profile.avatarUrl}
+                        name="avatar"
+                        value={profile.avatar}
                         onChange={handleProfileChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white/50 backdrop-blur-sm"
                         placeholder="Enter avatar image URL"

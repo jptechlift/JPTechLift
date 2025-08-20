@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
 
 namespace Backend.Controllers
 
@@ -13,14 +14,22 @@ namespace Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // Handles user authentication and JWT token generation.
     public class AuthController : ControllerBase
     {
-        private readonly string _connectionString = "Host=localhost;Username=postgres;Password=1;Database=auth_db";
+        private readonly NpgsqlDataSource _dataSource;
+        private readonly string _jwtSecret;
+
+        public AuthController(NpgsqlDataSource dataSource, IConfiguration config)
+        {
+            _dataSource = dataSource;
+            _jwtSecret = config["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret not configured");
+        }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = ValidateUser(request.Username, request.Password);
+            var user = await ValidateUserAsync(request.Username, request.Password);
 
             if (user == null)
             {
@@ -31,37 +40,34 @@ namespace Backend.Controllers
             return Ok(new { token });
         }
 
-        private User? ValidateUser(string username, string password)
+        // Validate the user credentials against the database.
+        private async Task<User?> ValidateUserAsync(string username, string password)
         {
-            using (var conn = new NpgsqlConnection(_connectionString))
-            {
-                conn.Open();
-                 var command = new NpgsqlCommand("SELECT id, username, passwordhash FROM users WHERE username = @username LIMIT 1", conn);
-                command.Parameters.AddWithValue("username", username);
+            await using var conn = await _dataSource.OpenConnectionAsync();
+            await using var command = new NpgsqlCommand("SELECT id, username, passwordhash FROM users WHERE username = @username LIMIT 1", conn);
+            command.Parameters.AddWithValue("username", username);
 
-                using (var reader = command.ExecuteReader())
+            await using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                var storedHash = reader.GetString(reader.GetOrdinal("passwordhash"));
+                if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                 {
-                    if (reader.Read())
+                    return new User
                     {
-                      var storedHash = reader.GetString(reader.GetOrdinal("passwordhash"));
-                        if (BCrypt.Net.BCrypt.Verify(password, storedHash))
-                        {
-                            return new User
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                Username = reader.GetString(reader.GetOrdinal("username"))
-                            };
-                        }
-                    }
+                        Id = reader.GetInt32(reader.GetOrdinal("id")),
+                        Username = reader.GetString(reader.GetOrdinal("username"))
+                    };
                 }
             }
             return null;
         }
 
+        // Generate a JWT token for the authenticated user.
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("your-secret-key");
+            var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]

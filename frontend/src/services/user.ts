@@ -2,32 +2,39 @@ export interface UserProfile {
   username: string;
   phoneNumber: string;
   email: string;
-  avatarUrl: string;
+  avatar: string;
   coverUrl: string;
 }
 import { auth } from "./auth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const toUserProfile = (data: any): UserProfile => ({
-  username: data.username ?? "",
-  phoneNumber: data.phoneNumber ?? "",
+const toUserProfile = (data: {
+  name?: string;
+  phone?: string;
+  email?: string;
+  avatar?: string;
+  coverUrl?: string;
+}): UserProfile => ({
+  username: data.name ?? "",
+  phoneNumber: data.phone ?? "",
   email: data.email ?? "",
-  avatarUrl: data.avatarUrl ?? "",
+  avatar: data.avatar ?? "",
   coverUrl: data.coverUrl ?? "",
 });
 
 const fromUserProfile = (profile: UserProfile) => ({
+  name: profile.username,
+  phone: profile.phoneNumber,
   email: profile.email,
-  phoneNumber: profile.phoneNumber,
-  avatarUrl: profile.avatarUrl,
+  avatar: profile.avatar,
   coverUrl: profile.coverUrl,
 });
 
 export const user = {
   async get(): Promise<UserProfile> {
     const token = auth.getToken();
-    const res = await fetch(`${API_URL}/user`, {
+    const res = await fetch(`${API_URL}/api/user`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
     if (!res.ok) throw new Error("Failed to load profile");
@@ -36,7 +43,7 @@ export const user = {
   },
   async update(profile: UserProfile): Promise<UserProfile> {
     const token = auth.getToken();
-    const res = await fetch(`${API_URL}/user`, {
+    const res = await fetch(`${API_URL}/api/user`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
