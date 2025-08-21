@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   padding: 60px 16px;
-  background-color: var(--color-gray1);
+  background-color: var(--color-gray-light);
   text-align: center;
 
   &__container {
@@ -26,16 +26,16 @@
     width: 70%;
     font-size: 28px;
     font-weight: 500;
-    color: var(--color-main); // Màu xanh đậm
+    color: var(--color-primary); // Màu xanh đậm
     margin-bottom: 12px;
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
   }
 
   &__titleLine {
     display: block;
     width: 80px;
     height: 3px;
-    background-color: var(--color-yellow);
+    background-color: var(--color-warning);
     margin: 0 auto 24px;
     border-radius: 2px;
   }
@@ -46,15 +46,15 @@
     justify-content: center;
     margin-top: 16px;
     &__link {
-      font-family: var(--font-main);
+      font-family: var(--font-body);
       font-size: 14px;
-      color: var(--color-main);
+      color: var(--color-primary);
       text-decoration: none;
       font-weight: 600;
       transition: color 0.3s ease;
 
       &:hover {
-        color: var(--color-red);
+        color: var(--color-accent);
         text-decoration: underline;
       }
     }
@@ -80,7 +80,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
     h4 {
-      font-family: var(--font-title);
+      font-family: var(--font-heading);
       font-size: 22px;
       font-weight: 500;
       margin-bottom: 12px;
@@ -98,12 +98,12 @@
   }
 
   &__link-btn {
-    font-family: var(--font-main);
+    font-family: var(--font-body);
     display: inline-block;
     width: 100%;
     font-size: 14px;
     padding: 10px 0;
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     color: #fff;
     text-decoration: none;
     font-weight: 600;

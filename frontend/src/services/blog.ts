@@ -21,6 +21,7 @@ export type BlogRequest = {
   blogType: "product" | "topic";
   productDetails?: ProductDetails;
   topicDetails?: TopicDetails;
+  content?: string; // final content when publishing
 };
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -33,9 +34,27 @@ export const blog = {
     return res.json();
   },
 
+  generatePreview(data: BlogRequest) {
+    const token = localStorage.getItem("token");
+    return axios.post("http://localhost:5000/api/blog/generate-preview", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
   create(data: BlogRequest) {
     const token = localStorage.getItem("token");
     return axios.post("http://localhost:5000/api/blog", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
+  recent() {
+    const token = localStorage.getItem("token");
+    return axios.get("http://localhost:5000/api/blog/recent", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

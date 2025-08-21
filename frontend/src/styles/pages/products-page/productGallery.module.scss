@@ -1,7 +1,7 @@
 @use "../../base/variables";
 
 .product-gallery {
-  background-color: var(--color-main);
+  background-color: var(--color-primary);
   width: 100vw; // Force full viewport width
   margin-left: calc(-50vw + 50%); // Center it and break out of container
   display: flex;
@@ -164,7 +164,7 @@
       padding-left: 40px; // Add spacing between image and info
     }
     h2 {
-      font-family: var(--font-title);
+      font-family: var(--font-heading);
       font-size: 24px;
       margin-bottom: 12px;
       font-weight: 700;
@@ -184,7 +184,7 @@
       li {
         margin-bottom: 16px;
         padding-bottom: 4px;
-        border-bottom: 1px solid var(--color-red);
+        border-bottom: 1px solid var(--color-accent);
       }
     }
   }
@@ -192,7 +192,7 @@
    🎯 BUTTONS CONTAINER
    =================================== */
   &__buttons-container {
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     width: 100vw; // Force full viewport width
     margin-left: calc(-50vw + 50%); // Center it and break out of container
     padding: 32px 20px; // Đồng bộ với real gallery trên mobile
@@ -232,7 +232,7 @@
     .product-gallery__button {
       width: 27vw;
       background-color: var(--color-white);
-      color: var(--color-main);
+      color: var(--color-primary);
       font-weight: 600;
       padding: 12px 32px;
       border: none;
@@ -240,7 +240,7 @@
       transition: all var(--transition-medium);
       text-align: center;
       font-size: 14px;
-      border: 1px solid var(--color-main);
+      border: 1px solid var(--color-primary);
 
       &:hover {
         background-color: #cba052;

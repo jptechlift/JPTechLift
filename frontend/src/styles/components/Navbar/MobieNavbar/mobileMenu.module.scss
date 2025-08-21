@@ -7,7 +7,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: var(--font-main);
+  font-family: var(--font-body);
   padding-top: 111px;
 
   @media (min-width: 768px) {
@@ -33,7 +33,7 @@ body {
      🔶 HOTLINE - Element
      =================================== */
   &__hotline {
-    background-color: var(--color-yellow);
+    background-color: var(--color-warning);
     color: var(--color-white);
     text-align: center;
     font-size: 14px;
@@ -50,7 +50,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     padding: 15px 0;
     border-bottom: 1px solid var(--color-gray);
   }
@@ -129,7 +129,7 @@ body {
   }
 
   &__search-button {
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     color: white;
     border: none;
     border-radius: 50%;
@@ -278,13 +278,12 @@ body {
      =================================== */
   &__item {
     padding: 7px 0;
-    border-bottom: 1px solid var(--color-yellow);
+  border-bottom: 1px solid var(--color-warning);
 
     // Item modifier - back button style
     &--back {
       padding: 7px 0;
-      border-bottom: 1px solid var(--color-yellow);
-    }
+      border-bottom: 1px solid var(--color-warning);
   }
 
   /* ===================================
@@ -296,7 +295,7 @@ body {
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    color: var(--color-main);
+    color: var(--color-primary);
     font-weight: 500;
     transition: 0.3s;
     width: 100%;
@@ -309,7 +308,7 @@ body {
     text-align: left;
 
     &:hover {
-      color: var(--color-yellow);
+      color: var(--color-warning);
     }
   }
 
@@ -331,7 +330,7 @@ body {
      📱 SOCIALS - Element
      =================================== */
   &__socials {
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     display: flex;
     justify-content: start;
     gap: 30px;
@@ -397,4 +396,5 @@ body {
       padding: 20px 16px;
     }
   }
+}
 }

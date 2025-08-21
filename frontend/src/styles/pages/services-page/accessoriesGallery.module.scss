@@ -10,7 +10,7 @@ $yellow: #cba052;
     text-align: center;
     font-size: 24px;
     font-weight: 700;
-    color: var(--color-main);
+    color: var(--color-primary);
     margin-bottom: 24px;
   }
 
@@ -80,13 +80,13 @@ $yellow: #cba052;
   &__name {
     font-size: 18px;
     font-weight: 600;
-    color: var(--color-main);
+    color: var(--color-primary);
     margin: 8px 0 4px;
   }
 
   &__desc {
     font-size: 14px;
-    color: var(--color-main);
+    color: var(--color-primary);
     margin-bottom: 8px;
     opacity: 0.9;
   }
@@ -94,7 +94,7 @@ $yellow: #cba052;
   &__price {
     font-weight: 600;
     margin-bottom: 12px;
-    color: var(--color-main);
+    color: var(--color-primary);
   }
 
   &__cta {

@@ -6,7 +6,7 @@
   padding-bottom: 60px;
 
   &__heading {
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     font-weight: 500;
     text-align: center;
     font-size: 28px;
@@ -18,7 +18,7 @@
       display: block;
       width: 60px;
       height: 3px;
-      background-color: var(--color-yellow);
+      background-color: var(--color-warning);
       margin: 12px auto 0;
     }
   }
@@ -26,7 +26,7 @@
   &__background {
     width: 100%;
     padding: 0px 20px;
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
   }
   &__wrapper {
     max-width: 1280px;
@@ -86,7 +86,7 @@
     padding-bottom: 28px;
 
     h3 {
-      font-family: var(--font-title);
+      font-family: var(--font-heading);
       font-size: 24px;
       color: white;
       padding: 22px 20px;
@@ -99,7 +99,7 @@
         display: block;
         width: 200px;
         height: 3px;
-        background-color: var(--color-yellow);
+        background-color: var(--color-warning);
         margin: 12px 0 0;
       }
     }
@@ -154,7 +154,7 @@
         border: none;
         background-color: white;
         transition: all var(--transition-medium);
-        color: var(--color-main);
+        color: var(--color-primary);
 
         @media (max-width: 435px) {
           width: 100%;

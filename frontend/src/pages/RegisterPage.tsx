@@ -155,24 +155,6 @@ export default function RegisterPage() {
                 />
               </div>
             </div>
-
-            <div className={styles.register__field_compact}>
-              <label 
-                htmlFor="avatar" 
-                className={styles.register__label_compact}
-              >
-                Avatar URL
-              </label>
-              <input
-                id="avatar"
-                name="avatar"
-                type="url"
-                className={styles.register__input_compact}
-                value={form.avatar || ""}
-                onChange={handleChange}
-                placeholder="https://example.com/avatar.jpg"
-              />
-            </div>
           </div>
 
           {/* Account Status */}

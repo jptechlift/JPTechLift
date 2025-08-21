@@ -1,27 +1,29 @@
 :root {
-  --color-main: #041e42;
-  --color-red: #d64344;
-  --color-yellow: #cba052;
+  /* Design tokens shared with Tailwind (see tailwind.config.js) */
+  --color-primary: #041e42;
+  --color-accent: #d64344;
+  --color-warning: #cba052;
   --color-white: #ffffff;
   --color-gray: #bfbfbf;
-  --color-gray1: #fafaf9;
+  --color-gray-light: #fafaf9;
 
-  --font-main: "Nunito Sans", sans-serif;
-  --font-title: "Inter", sans-serif;
+  --font-heading: "Inter", sans-serif;
+  --font-body: "Nunito Sans", sans-serif;
 
-  --spacing-xs: 6px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 24px;
+  /* Spacing scale aligned with Tailwind (1.5,2,3,4,6) */
+  --space-xs: 0.375rem; /* Tailwind 1.5 -> 6px */
+  --space-sm: 0.5rem;   /* Tailwind 2 -> 8px */
+  --space-md: 0.75rem;  /* Tailwind 3 -> 12px */
+  --space-lg: 1rem;     /* Tailwind 4 -> 16px */
+  --space-xl: 1.5rem;   /* Tailwind 6 -> 24px */
 
-  --logo-height: 76px;
-  --icon-size: 24px;
-  --icon-size-sm: 20px;
-  --menu-height: 65px;
-  --border-radius: 10px;
-  --border-radius-sm: 8px;
-  --border-radius-pill: 30px;
+  --logo-height: 4.75rem; /* 76px */
+  --icon-size: 1.5rem;    /* 24px */
+  --icon-size-sm: 1.25rem;/* 20px */
+  --menu-height: 4.0625rem; /* 65px */
+  --border-radius: 0.625rem; /* 10px */
+  --border-radius-sm: 0.5rem; /* 8px */
+  --border-radius-pill: 1.875rem; /* 30px */
 
   --shadow-light: 0 2px 2px 2px rgba(0, 0, 0, 0.25);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);

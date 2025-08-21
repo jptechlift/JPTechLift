@@ -3,7 +3,7 @@
 
 // Block: aboutBanner
 .aboutBanner {
-  background-color: var(--color-gray1);
+  background-color: var(--color-gray-light);
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
@@ -51,8 +51,8 @@
   letter-spacing: 1.1px;
   line-height: 1.23;
   padding: 0 38px;
-  text-shadow: 0 8px 42px rgba(0,0,0,0.96), 0 2px 12px rgba(0,0,0,0.74);
-  font-family: 'Inter', 'Nunito Sans', Arial, sans-serif;
+  text-shadow: 0 8px 42px rgba(0, 0, 0, 0.96), 0 2px 12px rgba(0, 0, 0, 0.74);
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
   box-sizing: border-box;
 }
 
@@ -65,7 +65,7 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  background: var(--color-gray1);
+  background-color: var(--color-gray-light);
   padding-bottom: 32px;
 }
 
@@ -79,10 +79,10 @@
 .aboutBanner__cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
-  color: var(--color-main);
+  color: var(--color-primary);
   margin-bottom: 8px;
   letter-spacing: 0.05em;
-  font-family: 'Inter','Nunito Sans', Arial, sans-serif;
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
 }
 
 // Element: aboutBanner__cardDivider
@@ -101,7 +101,7 @@
   line-height: 1.7;
   margin: 0 auto;
   max-width: 550px;
-  font-family: 'Inter','Nunito Sans',Arial,sans-serif;
+  font-family: "Inter", "Nunito Sans", Arial, sans-serif;
 }
 
 // Element: aboutBanner__buttonWrapper
@@ -114,7 +114,7 @@
 
 // Element: aboutBanner__button
 .aboutBanner__button {
-  background: var(--color-main);
+  color: var(--color-primary);
   color: #fff;
   font-size: 1rem;
   font-weight: 500;
@@ -122,14 +122,14 @@
   border: none;
   cursor: pointer;
   letter-spacing: 1px;
-  box-shadow: 0 2px 10px rgba(24,49,83,0.13);
+  box-shadow: 0 2px 10px rgba(24, 49, 83, 0.13);
   transition: background 0.18s, box-shadow 0.23s;
 
   // Modifier: aboutBanner__button--hover (or use :hover)
   &:hover {
     background: #cba052;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(24,49,83,0.2);
+    box-shadow: 0 4px 15px rgba(24, 49, 83, 0.2);
   }
 }
 
@@ -220,11 +220,11 @@
     padding: 12px 28px;
     font-weight: 500;
     letter-spacing: 0.5px;
-    box-shadow: 0 3px 12px rgba(24,49,83,0.15);
-    
+    box-shadow: 0 3px 12px rgba(24, 49, 83, 0.15);
+
     &:hover {
       transform: translateY(-1px);
-      box-shadow: 0 5px 18px rgba(24,49,83,0.25);
+      box-shadow: 0 5px 18px rgba(24, 49, 83, 0.25);
     }
   }
 }
@@ -306,7 +306,7 @@
 @media (prefers-reduced-motion: reduce) {
   .aboutBanner__button {
     transition: none;
-    
+
     &:hover {
       transform: none;
     }
@@ -316,7 +316,7 @@
 // High contrast mode
 @media (prefers-contrast: high) {
   .aboutBanner__heroText {
-    text-shadow: 0 2px 4px rgba(0,0,0,1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
   }
 
   .aboutBanner__cardText {

@@ -1,98 +1,135 @@
 using System.Security.Claims;
+using Backend.Models;
+using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Controllers
+namespace Backend.Controllers;
+
+[ApiController]
+[Route("api/blog")]
+public class BlogController : ControllerBase
 {
-    [ApiController]
-    [Route("api/blog")]
-    public class BlogController : ControllerBase
+    private readonly ApplicationDbContext _context;
+    private readonly AiBlogService _ai;
+
+    public BlogController(ApplicationDbContext context, AiBlogService ai)
     {
-        private readonly NpgsqlDataSource _dataSource;
-        public BlogController(NpgsqlDataSource dataSource)
-        {
-            _dataSource = dataSource;
-        }
-
-        public class ProductDetails
-        {
-            public string ProductName { get; set; } = string.Empty;
-            public string ProductType { get; set; } = string.Empty;
-        }
-
-        public class TopicDetails
-        {
-            public string Topic { get; set; } = string.Empty;
-            public string Content { get; set; } = string.Empty;
-        }
-
-        public class BlogRequest
-        {
-            public string BlogType { get; set; } = string.Empty;
-            public ProductDetails? ProductDetails { get; set; }
-            public TopicDetails? TopicDetails { get; set; }
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Post([FromBody] BlogRequest request)
-        {
-            var username = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(username))
-            {
-                return Unauthorized();
-            }
-
-            await using var conn = await _dataSource.OpenConnectionAsync();
-            await using var tx = await conn.BeginTransactionAsync();
-            try
-            {
-                var title = request.BlogType == "product"
-                    ? request.ProductDetails?.ProductName
-                    : request.TopicDetails?.Topic;
-                if (title == null)
-                {
-                    return BadRequest("Invalid blog type or missing details.");
-                }
-
-                int blogId;
-                await using (var cmd = new NpgsqlCommand("INSERT INTO blogs (title, username) VALUES (@title, @username) RETURNING id", conn, tx))
-                {
-                    cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("username", username);
-                    blogId = (int)await cmd.ExecuteScalarAsync();
-                }
-
-                if (request.BlogType == "product" && request.ProductDetails != null)
-                {
-                    await using var cmd = new NpgsqlCommand("INSERT INTO productblogs (blogid, productname, producttype) VALUES (@id, @name, @type)", conn, tx);
-                    cmd.Parameters.AddWithValue("id", blogId);
-                    cmd.Parameters.AddWithValue("name", request.ProductDetails.ProductName);
-                    cmd.Parameters.AddWithValue("type", request.ProductDetails.ProductType);
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                else if (request.BlogType == "topic" && request.TopicDetails != null)
-                {
-                    await using var cmd = new NpgsqlCommand("INSERT INTO topicblogs (blogid, topic, content) VALUES (@id, @topic, @content)", conn, tx);
-                    cmd.Parameters.AddWithValue("id", blogId);
-                    cmd.Parameters.AddWithValue("topic", request.TopicDetails.Topic);
-                    cmd.Parameters.AddWithValue("content", request.TopicDetails.Content);
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                else
-                {
-                    return BadRequest("Invalid blog type or missing details.");
-                }
-
-                await tx.CommitAsync();
-                return Ok(new { message = "Blog đã được tạo thành công!", blogId });
-            }
-            catch (Exception)
-            {
-                await tx.RollbackAsync();
-                return StatusCode(500, "An internal error occurred while creating the blog.");
-            }
-        }
+        _context = context;
+        _ai = ai;
     }
+
+    [HttpPost("generate-preview")]
+    [Authorize]
+    public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
+    {
+        var title = request.BlogType == "product"
+            ? request.ProductDetails?.ProductName
+            : request.TopicDetails?.Topic;
+        if (title == null)
+            return BadRequest();
+
+        var generated = await _ai.GenerateContentAsync(title);
+        return Ok(new { generatedContent = generated });
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Publish([FromBody] BlogRequest request)
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var blog = new Blog
+        {
+            Title = request.BlogType == "product" ? request.ProductDetails!.ProductName : request.TopicDetails!.Topic,
+            Username = username,
+            Content = request.Content,
+            IsPublished = true,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+        };
+
+        await using var tx = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            _context.Blogs.Add(blog);
+            await _context.SaveChangesAsync();
+
+            if (request.BlogType == "product" && request.ProductDetails != null)
+            {
+                _context.ProductBlogs.Add(new ProductBlog
+                {
+                    BlogId = blog.Id,
+                    ProductName = request.ProductDetails.ProductName,
+                    ProductType = request.ProductDetails.ProductType,
+                    Description = request.ProductDetails.Description ?? string.Empty,
+                    Size = request.ProductDetails.Size ?? string.Empty,
+                    Volumn = request.ProductDetails.Volumn ?? string.Empty,
+                    Feature = request.ProductDetails.Feature ?? string.Empty,
+                    Keyword = request.ProductDetails.Keyword ?? string.Empty,
+                });
+            }
+            else if (request.BlogType == "topic" && request.TopicDetails != null)
+            {
+                _context.TopicBlogs.Add(new TopicBlog
+                {
+                    BlogId = blog.Id,
+                    Topic = request.TopicDetails.Topic,
+                    Content = request.TopicDetails.Content,
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            await tx.CommitAsync();
+        }
+        catch
+        {
+            await tx.RollbackAsync();
+            throw;
+        }
+
+        return Ok(new { blog.Id });
+    }
+
+    [HttpGet("recent")]
+    [Authorize]
+    public async Task<IActionResult> Recent()
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name);
+        var recentBlogs = await _context.Blogs
+            .Where(b => b.Username == username)
+            .OrderByDescending(b => b.UpdatedDate)
+            .Take(5)
+            .Select(b => new { b.Id, b.Title })
+            .ToListAsync();
+        return Ok(recentBlogs);
+    }
+}
+
+public class BlogRequest
+{
+    public string BlogType { get; set; } = string.Empty;
+    public ProductDetails? ProductDetails { get; set; }
+        = null;
+    public TopicDetails? TopicDetails { get; set; }
+        = null;
+    public string? Content { get; set; }
+        = null;
+}
+
+public class ProductDetails
+{
+    public string ProductName { get; set; } = string.Empty;
+    public string ProductType { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string Size { get; set; } = string.Empty;
+    public string Volumn { get; set; } = string.Empty;
+    public string Feature { get; set; } = string.Empty;
+    public string Keyword { get; set; } = string.Empty;
+}
+
+public class TopicDetails
+{
+    public string Topic { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 }

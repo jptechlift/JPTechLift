@@ -1,7 +1,7 @@
 @use "../../base/variables";
 
 .product-intro {
-  background-color: var(--color-main); // nền xanh đậm
+  background-color: var(--color-primary); // nền xanh đậm
   color: var(--color-white);
 
   &__container {
@@ -10,7 +10,7 @@
     margin: 0 auto;
     align-items: stretch; // Đảm bảo cả text và image có cùng chiều cao
     min-height: 400px; // Thêm min-height để đảm bảo có chiều cao tối thiểu
-    font-family: var(--font-main);
+    font-family: var(--font-body);
   }
 
   &__text {
@@ -24,7 +24,7 @@
 
   &__title {
     width: 64%;
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     font-size: 48px; // Giảm từ 62px xuống 48px
     line-height: 1.2;
     font-weight: 800;
@@ -40,11 +40,11 @@
       display: block;
       width: 50%;
       height: 3px;
-      background-color: var(--color-yellow);
+      background-color: var(--color-warning);
       margin: 10px 0 0; // Giảm từ 12px xuống 10px
     }
     .highlight {
-      color: var(--color-yellow);
+      color: var(--color-warning);
       font-weight: 800;
     }
   }
@@ -54,7 +54,7 @@
     font-size: 18px; // Giảm từ 20px xuống 18px
     font-weight: 300;
     line-height: 1.5; // Giảm từ 1.6 xuống 1.5
-    color: var(--color-gray1);
+    color: var(--color-gray-light);
 
     strong {
       font-weight: 700;
@@ -66,7 +66,7 @@
     padding-top: 30px; // Giảm từ 40px xuống 30px
     font-size: 18px; // Giảm từ 20px xuống 18px
     font-weight: 300;
-    color: var(--color-gray1);
+    color: var(--color-gray-light);
     line-height: 1.5; // Giảm từ 1.6 xuống 1.5
   }
 

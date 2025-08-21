@@ -10,7 +10,8 @@ namespace Backend.Models
         public DateTime CreatedDate { get; set; }
         public string Role { get; set; } = "user";
         public bool IsActive { get; set; } = true;
-         public string? AvatarUrl { get; set; }
-        public string? CoverUrl { get; set; }
+        public string? AvatarUrl { get; set; }
+        public string? CoverUrl { get; set; }        
+        public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
     }
 }

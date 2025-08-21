@@ -29,16 +29,16 @@
     margin-top: 60px;
     width: 100%;
     font-weight: 500;
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     margin-bottom: 30px;
-    color: var(--color-main); // ✅ CHỈNH Ở ĐÂY
+    color: var(--color-primary); // ✅ CHỈNH Ở ĐÂY
 
     &::after {
       content: "";
       display: block;
       width: 60px;
       height: 3px;
-      background-color: var(--color-yellow);
+      background-color: var(--color-warning);
       margin: 12px auto 0;
     }
   }
@@ -74,7 +74,7 @@
     font-size: 15px;
   }
   &__description {
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     margin-bottom: 8px;
     font-size: 24px;
     font-weight: 700;
@@ -128,8 +128,8 @@
     max-width: 400px; // ✅ giới hạn để nút không quá to
     padding: 12px 24px;
     background-color: #fff;
-    font-family: var(--font-main);
-    color: var(--color-main);
+    font-family: var(--font-body);
+    color: var(--color-primary);
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.5px;

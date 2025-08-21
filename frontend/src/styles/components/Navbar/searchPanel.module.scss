@@ -10,7 +10,7 @@
   right: 0;
   top: 165px;
   transition: top 0.3s ease;
-  background-color: var(--color-main);
+  background-color: var(--color-primary);
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   box-shadow: var(--shadow-medium);
 
@@ -20,7 +20,7 @@
     height: 100vh;
     max-width: 100%;
     border-radius: 0;
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: var(--space-xl) var(--space-lg);
   }
   &.searchPanelScrolled {
     top: 65px; // ✅ sẽ ghi đè chính xác vì nằm cùng selector gốc
@@ -96,7 +96,7 @@
       &.active,
       &:hover {
         background-color: #fff;
-        color: var(--color-main);
+        color: var(--color-primary);
       }
     }
   }

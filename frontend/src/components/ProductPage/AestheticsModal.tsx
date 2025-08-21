@@ -245,7 +245,7 @@ const ElevatorConfigurator: FC = () => {
 
         {/* === PHẦN 3: TÓM TẮT VÀ FORM (Đầy đủ) === */}
         <section className={cx(styles.configurator__section, styles["configurator__form-section"])}>
-          <h2 className={styles["configurator__section-title"]} style={{ color: "var(--color-main)" }}>
+            <h2 className={styles["configurator__section-title"]} style={{ color: "var(--color-primary)" }}>
             3. Hoàn Tất và Gửi Yêu Cầu
           </h2>
           <div className={styles.configurator__summary}>

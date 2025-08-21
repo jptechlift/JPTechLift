@@ -2,7 +2,7 @@
 @use "../../base/variables";
 // Block: aboutIntro
 .aboutIntroSection {
-  background: var(--color-gray1);
+  background: var(--color-gray-light);
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -11,7 +11,7 @@
 .aboutIntro {
   max-width: 700px;
   margin: 56px auto 56px auto;
-  background: var(--color-gray1);
+background: var(--color-gray-light);
   padding: 40px 24px 56px 24px;
   font-family: "Inter", "Nunito Sans", Arial, sans-serif;
   border-radius: 0;
@@ -23,7 +23,7 @@
   text-align: center;
   font-size: 2.3rem;
   font-weight: 500;
-  color: var(--color-main);
+  color: var(--color-primary);
   letter-spacing: 1px;
   text-transform: uppercase;
   position: relative;
@@ -43,7 +43,7 @@
 
 // Element: aboutIntro__content
 .aboutIntro__content {
-  color: var(--color-main);
+  color: var(--color-primary);
   font-size: 1.04rem;
   line-height: 1.7;
   text-align: center;
@@ -70,7 +70,7 @@
   font-weight: 500;
   text-align: center;
   margin: 36px 0 36px 0;
-  color: var(--color-main);
+  color: var(--color-primary);
   font-size: 1.13rem;
   letter-spacing: 1px;
 }

@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using Backend.Models;
+using Backend.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +35,11 @@ builder.Services.AddSingleton<NpgsqlDataSource>(sp =>
     var cs = builder.Configuration.GetConnectionString("DefaultConnection");
     return new NpgsqlDataSourceBuilder(cs).Build();
 });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<AiBlogService>();
 
 // JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

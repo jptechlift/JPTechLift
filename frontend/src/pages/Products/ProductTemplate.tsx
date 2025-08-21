@@ -49,7 +49,7 @@ export default function ProductTemplatePage() {
 
   return (
     // Wrapper with neutral background color
-    <div className="bg-[var(--color-gray1)]">
+  <div className="bg-[var(--color-gray-light)]">
       <Helmet>
         <title>{seo?.metaTitle}</title>
         <meta name="description" content={seo?.metaDescription || ""} />

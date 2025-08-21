@@ -6,10 +6,10 @@
   padding: 0px 20px; // ✅ Match với real-gallery và product-specs
 
   &__title {
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     font-size: 28px;
     font-weight: 500 !important;
-    color: var(--color-main);
+    color: var(--color-primary);
     text-align: center;
     margin-bottom: 30px; // ✅ Match với các section khác
     position: relative;
@@ -19,7 +19,7 @@
       display: block;
       width: 60px; // ✅ Match với các section khác
       height: 3px;
-      background-color: var(--color-yellow);
+      background-color: var(--color-warning);
       margin: 12px auto 0;
     }
   }
@@ -80,9 +80,9 @@
 
   &__stage-title {
     font-size: 18px;
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     font-weight: 500;
-    background-color: var(--color-main);
+    background-color: var(--color-primary);
     color: white;
     padding: 12px 16px; // Tăng padding một chút
     margin-bottom: 0; // Remove margin bottom
@@ -139,7 +139,7 @@
   &__description {
     padding: 16px 22px;
     font-size: 16px;
-    color: var(--color-main);
+    color: var(--color-primary);
     margin-bottom: 12px;
     line-height: 1.6;
     transition: filter 0.3s ease;
@@ -178,7 +178,7 @@
       line-height: 1.5;
 
       strong {
-        color: var(--color-main);
+        color: var(--color-primary);
       }
     }
   }

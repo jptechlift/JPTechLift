@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-main);
+  font-family: var(--font-body);
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
   position: relative;
   overflow: hidden;
@@ -110,7 +110,7 @@
   }
 
   &__title {
-    font-family: var(--font-title);
+    font-family: var(--font-heading);
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
