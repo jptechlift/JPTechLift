@@ -2,33 +2,56 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import ProductBlogForm, { ProductDetails } from "../blog/ProductBlogForm";
-import TopicBlogForm, { TopicDetails } from "./TopicBlogForm";
+import ProductBlogForm from "../blog/ProductBlogForm";
+import TopicBlogForm from "./TopicBlogForm";
 import RecentPosts from "./RecentPosts";
 import { blog, BlogRequest } from "../../../services/blog";
 
-const productSchema = z.object({
-  productName: z.string().min(1),
-  productType: z.string().min(1),
-});
-const topicSchema = z.object({
-  topic: z.string().min(1),
-  content: z.string().min(1),
+const productDetailsSchema = z.object({
+  productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
+  productType: z.string().min(1, "Vui lòng chọn loại sản phẩm"),
+  targetAudience: z.string().min(10, "Mô tả đối tượng khách hàng (ít nhất 10 ký tự)"),
+  keySellingPoints: z.string().min(10, "Nêu bật ít nhất một lợi ích chính (mỗi ý một dòng)"),
+  seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
+  toneOfVoice: z.enum([
+    "Chuyên nghiệp & Kỹ thuật",
+    "Thân thiện & Thuyết phục",
+    "Sang trọng & Cao cấp",
+  ]),
+  useCases: z.string().optional(),
+  technicalHighlights: z.string().optional(),
+  callToAction: z.string().optional(),
 });
 
-const schema = z.object({
-  blogType: z.enum(["product", "topic"]),
-  productDetails: productSchema.optional(),
-  topicDetails: topicSchema.optional(),
-}).refine(
-  (data) =>
-    (data.blogType === "product" && data.productDetails) ||
-    (data.blogType === "topic" && data.topicDetails),
-  {
-    message: "Details are required",
-    path: ["productDetails"],
-  }
-);
+const topicDetailsSchema = z.object({
+  articleTitle: z.string().min(10, "Tiêu đề cần ít nhất 10 ký tự"),
+  targetAudience: z.string().min(10, "Mô tả đối tượng độc giả (ít nhất 10 ký tự)"),
+  mainPoints: z.string().min(20, "Vui lòng phác thảo các ý chính (mỗi ý một dòng)"),
+  seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
+  toneOfVoice: z.enum([
+    "Hướng dẫn & Giáo dục",
+    "Phân tích & Chuyên gia",
+    "Tin tức & Cập nhật",
+  ]),
+  angle: z.string().optional(),
+  callToAction: z.string().optional(),
+});
+
+const schema = z
+  .object({
+    blogType: z.enum(["product", "topic"]),
+    productDetails: productDetailsSchema.optional(),
+    topicDetails: topicDetailsSchema.optional(),
+  })
+  .refine(
+    (data) =>
+      (data.blogType === "product" && data.productDetails) ||
+      (data.blogType === "topic" && data.topicDetails),
+    {
+      message: "Details are required",
+      path: ["productDetails"],
+    }
+  );
 
 export type FormValues = z.infer<typeof schema>;
 
@@ -37,32 +60,37 @@ export default function CreateBlogForm() {
     register,
     handleSubmit,
     watch,
-    setValue,
-    getValues,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { blogType: "product" },
   });
 
   const blogType = watch("blogType");
-  const [preview, setPreview] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  const [finalTitle, setFinalTitle] = useState("");
+  const [finalSlug, setFinalSlug] = useState("");
+  const [finalContent, setFinalContent] = useState("");
 
   const onGenerate = async (data: FormValues) => {
-    setLoading(true);
-    setPreview("");
-    try {
-      const res = await blog.generatePreview(data as BlogRequest);
-      setPreview(res.data.generatedContent);
-    } finally {
-      setLoading(false);
-    }
+    setFinalTitle("");
+    setFinalSlug("");
+    setFinalContent("");
+    const res = await blog.generatePreview(data as BlogRequest);
+    setFinalTitle(res.data.title);
+    setFinalSlug(res.data.slug);
+    setFinalContent(res.data.content);
   };
 
   const onPublish = async (data: FormValues) => {
-    await blog.create({ ...(data as BlogRequest), content: preview });
-    setPreview("");
+    await blog.create({
+      ...(data as BlogRequest),
+      title: finalTitle,
+      slug: finalSlug,
+      content: finalContent,
+    });
+    setFinalTitle("");
+    setFinalSlug("");
+    setFinalContent("");
   };
 
   return (
@@ -78,7 +106,7 @@ export default function CreateBlogForm() {
           <select
             {...register("blogType")}
             className="p-3 rounded-xl border border-gray-200"
-            disabled={loading}
+            disabled={isSubmitting}
           >
             <option value="product">Product</option>
             <option value="topic">Topic</option>
@@ -86,24 +114,14 @@ export default function CreateBlogForm() {
         </div>
 
         {blogType === "product" ? (
-          <ProductBlogForm
-            details={(getValues("productDetails") as ProductDetails) || { productName: "", productType: "" }}
-            setDetails={(d) => setValue("productDetails", d)}
-            error={errors.productDetails?.productName}
-            disabled={loading}
-          />
+          <ProductBlogForm register={register} errors={errors} disabled={isSubmitting} />
         ) : (
-          <TopicBlogForm
-            details={(getValues("topicDetails") as TopicDetails) || { topic: "", content: "" }}
-            setDetails={(d) => setValue("topicDetails", d)}
-            error={errors.topicDetails?.topic}
-            disabled={loading}
-          />
+          <TopicBlogForm register={register} errors={errors} disabled={isSubmitting} />
         )}
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isSubmitting}
           className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
         >
           ✨ Tạo bản nháp với AI
@@ -111,12 +129,24 @@ export default function CreateBlogForm() {
       </form>
       <div className="w-2/5 space-y-4">
         <div className="p-4 border rounded-xl min-h-40">
-          {loading && <p>AI đang sáng tạo...</p>}
-          {!loading && preview && (
+          {isSubmitting && <p>AI đang sáng tạo...</p>}
+          {!isSubmitting && finalContent && (
             <>
+              <input
+                value={finalTitle}
+                onChange={(e) => setFinalTitle(e.target.value)}
+                className="w-full p-2 border rounded-md mb-2"
+                placeholder="Tiêu đề bài viết"
+              />
+              <input
+                value={finalSlug}
+                onChange={(e) => setFinalSlug(e.target.value)}
+                className="w-full p-2 border rounded-md mb-2"
+                placeholder="Đường dẫn bài viết"
+              />
               <textarea
-                value={preview}
-                onChange={(e) => setPreview(e.target.value)}
+                value={finalContent}
+                onChange={(e) => setFinalContent(e.target.value)}
                 className="w-full h-48 border p-2"
               />
               <div className="flex gap-2 mt-2">
@@ -137,7 +167,7 @@ export default function CreateBlogForm() {
               </div>
             </>
           )}
-          {!loading && !preview && (
+          {!isSubmitting && !finalContent && (
             <p className="text-sm text-gray-500">Preview will appear here</p>
           )}
         </div>

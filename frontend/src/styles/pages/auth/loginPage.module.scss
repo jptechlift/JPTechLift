@@ -1,17 +1,80 @@
 @use "../../base/variables";
 
+// Using CSS custom properties from variables
+$color-primary: var(--color-primary);
+$color-accent: var(--color-accent);
+$color-warning: var(--color-warning);
+$color-white: var(--color-white);
+$color-gray: var(--color-gray);
+$color-gray-light: var(--color-gray-light);
+
+// Additional colors for form states
+$color-gray-50: #f9fafb;
+$color-gray-100: #f3f4f6;
+$color-gray-200: #e5e7eb;
+$color-gray-400: #9ca3af;
+$color-gray-500: #6b7280;
+$color-gray-600: #4b5563;
+$color-gray-700: #374151;
+$color-gray-800: #1f2937;
+$color-blue-50: #eff6ff;
+$color-blue-600: #2563eb;
+$color-red-50: #fef2f2;
+$color-red-500: #ef4444;
+$color-red-600: #dc2626;
+
+// Using design tokens
+$space-xs: var(--space-xs);
+$space-sm: var(--space-sm);
+$space-md: var(--space-md);
+$space-lg: var(--space-lg);
+$space-xl: var(--space-xl);
+$border-radius: var(--border-radius);
+$border-radius-sm: var(--border-radius-sm);
+$shadow-light: var(--shadow-light);
+$shadow-medium: var(--shadow-medium);
+$shadow-heavy: var(--shadow-heavy);
+$transition-fast: var(--transition-fast);
+$transition-medium: var(--transition-medium);
+
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+
+// Mixins consistent with register
+@mixin focus-state {
+  outline: none;
+  border-color: $color-primary;
+  background-color: $color-white;
+  box-shadow: $shadow-medium;
+  transform: translateY(-2px);
+}
+
+@mixin hover-lift {
+  transform: translateY(-2px);
+  box-shadow: $shadow-medium;
+}
+
+@mixin smooth-transition {
+  transition: all $transition-fast;
+}
+
 .loginPage {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-body);
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  background: linear-gradient(135deg, $color-primary 0%, $color-accent 100%);
   position: relative;
   overflow: hidden;
-  padding: 1rem;
+  padding: $space-lg;
 
-  // Simplified background
+  @media (max-width: $mobile) {
+    padding: $space-sm;
+  }
+
+  // Background elements similar to register
   &__background {
     position: absolute;
     inset: 0;
@@ -21,7 +84,7 @@
   &__backgroundShape {
     position: absolute;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(99, 102, 241, 0.08));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
     backdrop-filter: blur(60px);
     animation: floatGentle 12s ease-in-out infinite;
 
@@ -52,23 +115,38 @@
     }
   }
 
-  // Clean container
   &__container {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 420px;
+    max-width: 28rem;
   }
 
-  // Modern card design
+  // Card design matching register
   &__card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: $color-white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-heavy;
     padding: 2.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
     animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @media (max-width: $mobile) {
+      padding: $space-xl;
+      border-radius: $border-radius-sm;
+    }
+
+    // Top accent bar like register
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, $color-primary, $color-accent);
+    }
 
     @keyframes slideIn {
       from {
@@ -82,14 +160,14 @@
     }
   }
 
-  // Clean header
+  // Header section
   &__header {
     text-align: center;
     margin-bottom: 2rem;
   }
 
   &__logo {
-    margin-bottom: 1.5rem;
+    margin-bottom: $space-xl;
   }
 
   &__logoIcon {
@@ -98,54 +176,71 @@
     justify-content: center;
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-radius: 16px;
-    color: white;
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    transition: transform 0.3s ease;
+    background: linear-gradient(135deg, $color-primary, $color-accent);
+    border-radius: $space-lg;
+    color: $color-white;
+    box-shadow: $shadow-medium;
+    @include smooth-transition;
 
     &:hover {
-      transform: translateY(-2px);
+      @include hover-lift;
     }
   }
 
   &__title {
     font-family: var(--font-heading);
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    color: #1f2937;
+    margin: 0 0 $space-sm 0;
+    color: $color-primary;
     line-height: 1.2;
+
+    @media (max-width: $mobile) {
+      font-size: 1.25rem;
+    }
   }
 
   &__subtitle {
     font-size: 0.95rem;
-    color: #6b7280;
+    color: $color-gray-500;
     margin: 0;
     line-height: 1.5;
+
+    // Underline accent like register
+    &::after {
+      content: '';
+      display: block;
+      width: 2.5rem;
+      height: 4px;
+      background: $color-accent;
+      border-radius: 9999px;
+      margin: $space-sm auto 0;
+    }
   }
 
-  // Streamlined form
+  // Form styling
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: $space-xl;
   }
 
   &__field {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: $space-sm;
   }
 
   &__label {
-    font-weight: 500;
-    color: #374151;
-    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-primary;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-left: 0.25rem;
   }
 
-  // Clean input design
+  // Input styling matching register
   &__inputWrapper {
     position: relative;
     display: flex;
@@ -153,120 +248,141 @@
 
     &:focus-within {
       .loginPage__inputIcon {
-        color: #3b82f6;
+        color: $color-primary;
       }
     }
   }
 
   &__inputIcon {
     position: absolute;
-    left: 1rem;
-    color: #9ca3af;
-    transition: color 0.2s ease;
+    left: $space-lg;
+    color: $color-gray-400;
+    @include smooth-transition;
     pointer-events: none;
     z-index: 1;
   }
 
   &__input {
     width: 100%;
-    padding: 0.875rem 1rem 0.875rem 2.75rem !important;
-    background: rgba(249, 250, 251, 0.8);
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 0.95rem !important;
-    color: black !important;
-    transition: all 0.2s ease;
+    padding: $space-md $space-lg $space-md 2.75rem !important;
+    background: $color-gray-light;
+    border: 2px solid $color-gray-200;
+    border-radius: $border-radius-sm;
+    font-size: 1rem !important;
+    color: $color-gray-800 !important;
+    @include smooth-transition;
     font-family: inherit;
 
     &::placeholder {
-      color: black;
+      color: $color-gray-400;
+    }
+
+    &:hover {
+      border-color: $color-gray;
     }
 
     &:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      background: rgba(255, 255, 255, 0.9);
+      @include focus-state;
     }
   }
 
   &__togglePassword {
     position: absolute;
-    right: 1rem;
+    right: $space-lg;
     background: none;
     border: none;
-    color: #9ca3af;
+    color: $color-gray-400;
     cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 6px;
-    transition: color 0.2s ease;
+    padding: $space-xs;
+    border-radius: $border-radius-sm;
+    @include smooth-transition;
 
     &:hover {
-      color: #6b7280;
+      color: $color-gray-600;
     }
 
     &:focus {
-      outline: 2px solid #3b82f6;
+      outline: 2px solid $color-primary;
       outline-offset: 2px;
     }
   }
 
-  // Clean options row
+  // Options section
   &__options {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: $space-sm;
+
+    @media (max-width: $mobile) {
+      flex-direction: column;
+      gap: $space-md;
+      align-items: flex-start;
+    }
   }
 
   &__rememberMe {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: $space-sm;
     font-size: 0.875rem;
-    color: #6b7280;
+    color: $color-gray-500;
     cursor: pointer;
+    font-weight: 500;
 
     input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #3b82f6;
+      width: $space-lg;
+      height: $space-lg;
+      accent-color: $color-primary;
       cursor: pointer;
+      border-radius: 0.25rem;
+
+      &:focus {
+        outline: 2px solid $color-primary;
+        outline-offset: 2px;
+      }
     }
   }
 
   // Error styling
   &__error {
-    background: rgba(254, 242, 242, 0.8);
-    color: #dc2626;
-    border: 1px solid rgba(252, 165, 165, 0.5);
-    padding: 0.75rem 1rem;
-    border-radius: 10px;
+    background: $color-red-50;
+    color: $color-red-600;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-left: 4px solid $color-red-500;
+    padding: $space-md;
+    border-radius: $border-radius-sm;
     font-size: 0.875rem;
+    font-weight: 500;
     text-align: center;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  // Modern button
+  // Button styling matching register
   &__submitButton {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    color: white;
+    background: linear-gradient(135deg, $color-primary, $color-accent);
+    color: $color-white;
     border: none;
-    padding: 0.875rem 1.5rem;
-    border-radius: 12px;
+    padding: $space-lg $space-xl;
+    border-radius: $border-radius-sm;
     font-size: 1rem;
     font-weight: 600;
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     cursor: pointer;
-    transition: all 0.2s ease;
+    @include smooth-transition;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: $space-sm;
     min-height: 48px;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: $shadow-light;
+    position: relative;
+    overflow: hidden;
 
     &:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+      @include hover-lift;
     }
 
     &:active:not(:disabled) {
@@ -278,13 +394,32 @@
       cursor: not-allowed;
       transform: none;
     }
+
+    // Shine effect like register
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.7s ease;
+    }
+
+    &:hover::after {
+      transform: translateX(100%);
+    }
+
+    @media (max-width: $mobile) {
+      padding: 0.875rem $space-lg;
+      font-size: 0.875rem;
+    }
   }
 
   &__spinner {
     width: 18px;
     height: 18px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid white;
+    border-top: 2px solid $color-white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 
@@ -295,11 +430,11 @@
     }
   }
 
-  // Clean divider
+  // Divider styling matching register
   &__divider {
     position: relative;
     text-align: center;
-    margin: 1.5rem 0;
+    margin: $space-xl 0;
 
     &::before {
       content: "";
@@ -308,152 +443,84 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: #e5e7eb;
+      background: $color-gray-200;
     }
 
     span {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 0 1rem;
-      color: #9ca3af;
-      font-size: 0.85rem;
+      background: $color-white;
+      padding: 0 $space-lg;
+      color: $color-gray-500;
+      font-size: 0.75rem;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
   }
 
   // OAuth section
   &__oauth {
-  display: flex;
-  flex: 1;  // Allow this container to stretch fully
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
   }
 
   &__oauth > div {
-  width: 100%;  // Ensures the button takes full width
-  display: block;
-}
+    width: 100%;
+    display: block;
+  }
 
   // Footer
   &__footer {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: $space-xl;
+    padding-top: $space-lg;
+    border-top: 1px solid $color-gray-200;
 
     p {
       font-size: 0.875rem;
-      color: #6b7280;
+      color: $color-gray-500;
       margin: 0;
     }
   }
 
-  // Clean links
+  // Links styling matching register
   &__link {
-    color: #3b82f6;
+    color: $color-primary;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+    font-weight: 600;
+    @include smooth-transition;
+    position: relative;
+    display: inline-block;
 
     &:hover {
-      color: #1d4ed8;
-      text-decoration: underline;
+      color: $color-accent;
+    }
+
+    // Animated underline like register
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $color-accent;
+      @include smooth-transition;
+    }
+
+    &:hover::after {
+      width: 100%;
     }
   }
 
-  // Responsive design
-  @media (max-width: 480px) {
-    padding: 1rem 0.75rem;
-
-    &__card {
-      padding: 2rem 1.5rem;
-      border-radius: 20px;
+  // Animations
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
     }
-
-    &__title {
-      font-size: 1.75rem;
-    }
-
-    &__logoIcon {
-      width: 56px;
-      height: 56px;
-    }
-
-    &__input {
-      padding: 0.75rem 0.875rem 0.75rem 2.5rem;
-    }
-
-    &__inputIcon {
-      left: 0.875rem;
-    }
-
-    &__togglePassword {
-      right: 0.875rem;
-    }
-
-    &__options {
-      flex-direction: column;
-      gap: 0.75rem;
-      align-items: flex-start;
-    }
-  }
-
-  // Dark mode support
-  @media (prefers-color-scheme: dark) {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-
-    &__card {
-      background: rgba(30, 41, 59, 0.85);
-      border-color: rgba(71, 85, 105, 0.3);
-    }
-
-    &__title {
-      color: #f1f5f9;
-    }
-
-    &__subtitle {
-      color: #94a3b8;
-    }
-
-    &__label {
-      color: #e2e8f0;
-    }
-
-    &__input {
-      background: rgba(51, 65, 85, 0.5);
-      border-color: #475569;
-      color: #f1f5f9;
-
-      &:focus {
-        background: rgba(71, 85, 105, 0.6);
-        border-color: #3b82f6;
-      }
-
-      &::placeholder {
-        color: #64748b;
-      }
-    }
-
-    &__rememberMe {
-      color: #94a3b8;
-    }
-
-    &__divider {
-      &::before {
-        background: #475569;
-      }
-
-      span {
-        background: rgba(30, 41, 59, 0.9);
-        color: #64748b;
-      }
-    }
-
-    &__footer p {
-      color: #94a3b8;
-    }
-
-    &__error {
-      background: rgba(69, 10, 10, 0.8);
-      border-color: rgba(153, 27, 27, 0.5);
-      color: #fca5a5;
+    50% {
+      opacity: 0.5;
     }
   }
 }

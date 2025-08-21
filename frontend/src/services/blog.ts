@@ -10,20 +10,33 @@ export interface BlogPost {
 export type ProductDetails = {
   productName: string;
   productType: string;
+  targetAudience: string;
+  keySellingPoints: string;
+  seoKeywords: string;
+  toneOfVoice: "Chuyên nghiệp & Kỹ thuật" | "Thân thiện & Thuyết phục" | "Sang trọng & Cao cấp";
+  useCases?: string;
+  technicalHighlights?: string;
+  callToAction?: string;
 };
 
 export type TopicDetails = {
-  topic: string;
-  content: string;
+  articleTitle: string;
+  targetAudience: string;
+  mainPoints: string;
+  seoKeywords: string;
+  toneOfVoice: "Hướng dẫn & Giáo dục" | "Phân tích & Chuyên gia" | "Tin tức & Cập nhật";
+  angle?: string;
+  callToAction?: string;
 };
 
 export type BlogRequest = {
   blogType: "product" | "topic";
   productDetails?: ProductDetails;
   topicDetails?: TopicDetails;
+  title?: string;
+  slug?: string;
   content?: string; // final content when publishing
 };
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const blog = {
