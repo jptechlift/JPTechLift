@@ -4,6 +4,7 @@ using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Backend.Controllers;
 
@@ -27,11 +28,12 @@ public class BlogController : ControllerBase
         var title = request.BlogType == "product"
             ? request.ProductDetails?.ProductName
             : request.TopicDetails?.Topic;
-        if (title == null)
+        if (string.IsNullOrWhiteSpace(title))
             return BadRequest();
 
-        var generated = await _ai.GenerateContentAsync(title);
-        return Ok(new { generatedContent = generated });
+        var content = await _ai.GenerateContentAsync(title);
+        var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
+        return Ok(new { title, slug, content });
     }
 
     [HttpPost]

@@ -40,7 +40,6 @@ export type BlogRequest = {
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const blog = {
-  
   async list(): Promise<BlogPost[]> {
     const res = await fetch(`${API_URL}/blogs`);
     if (!res.ok) throw new Error("Failed to load blogs");
@@ -49,7 +48,7 @@ export const blog = {
 
   generatePreview(data: BlogRequest) {
     const token = localStorage.getItem("token");
-    return axios.post("http://localhost:5000/api/blog/generate-preview", data, {
+    return axios.post(`${API_URL}/api/blog/generate-preview`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -58,7 +57,7 @@ export const blog = {
 
   create(data: BlogRequest) {
     const token = localStorage.getItem("token");
-    return axios.post("http://localhost:5000/api/blog", data, {
+    return axios.post(`${API_URL}/api/blog`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -67,7 +66,7 @@ export const blog = {
 
   recent() {
     const token = localStorage.getItem("token");
-    return axios.get("http://localhost:5000/api/blog/recent", {
+    return axios.get(`${API_URL}/api/blog/recent`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

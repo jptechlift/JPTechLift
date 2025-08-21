@@ -4,3 +4,6 @@ backend/obj/
 frontend/node_modules/
 backend.Tests/bin/
 backend.Tests/obj/
+
+# Ignore environment files
+.env

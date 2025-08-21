@@ -39,6 +39,7 @@ builder.Services.AddSingleton<NpgsqlDataSource>(sp =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddHttpClient<AiBlogService>();
 builder.Services.AddScoped<AiBlogService>();
 
 // JWT authentication
