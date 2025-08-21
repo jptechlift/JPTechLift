@@ -1,4 +1,5 @@
 import axios from "axios";
+import { auth } from "./auth";
 
 export interface BlogPost {
   id?: string;
@@ -41,17 +42,13 @@ export type BlogRequest = {
 const rawApiUrl = import.meta.env.VITE_API_URL;
 const API_URL = (() => {
   if (!rawApiUrl) {
-    console.warn(
-      "VITE_API_URL is missing. Falling back to http://localhost:5000"
-    );
+    console.warn("VITE_API_URL is missing. Falling back to http://localhost:5000");
     return "http://localhost:5000";
   }
   try {
     return new URL(rawApiUrl).origin;
   } catch {
-    console.warn(
-      `VITE_API_URL "${rawApiUrl}" is malformed. Falling back to http://localhost:5000`
-    );
+    console.warn(`VITE_API_URL "${rawApiUrl}" is malformed. Falling back to http://localhost:5000`);
     return "http://localhost:5000";
   }
 })();
@@ -64,29 +61,29 @@ export const blog = {
   },
 
   generatePreview(data: BlogRequest) {
-    const token = localStorage.getItem("token");
+    const headers: Record<string, string> = {};
+    const token = auth.getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
     return axios.post(`${API_URL}/api/blog/generate-preview`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
   },
 
   create(data: BlogRequest) {
-    const token = localStorage.getItem("token");
+    const headers: Record<string, string> = {};
+    const token = auth.getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
     return axios.post(`${API_URL}/api/blog`, data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
   },
 
   recent() {
-    const token = localStorage.getItem("token");
+    const headers: Record<string, string> = {};
+    const token = auth.getToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
     return axios.get(`${API_URL}/api/blog/recent`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
   },
 };

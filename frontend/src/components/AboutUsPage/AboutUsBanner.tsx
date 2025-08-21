@@ -1,28 +1,25 @@
-// AboutUsBanner.jsx
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import styles from "../../styles/pages/about-us-page/about-us-banner.module.scss";
 import cityImg from "../../assets/images/city.jpg";
 
 export default function AboutUsBanner() {
+  const [showFlipbook, setShowFlipbook] = useState(false); // State điều khiển hiển thị flipbook
+
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
+  const handleButtonClick = () => {
+    setShowFlipbook(!showFlipbook); // Chuyển đổi trạng thái hiển thị flipbook
+  };
+
   return (
     <section className={styles.aboutBanner}>
       <div className={styles.aboutBanner__hero}>
-        <img
-          src={cityImg}
-          className={styles.aboutBanner__heroImage}
-          alt="City View"
-        />
-        <div
-          className={styles.aboutBanner__heroText}
-          data-aos="fade"
-          data-aos-duration="1200"
-        >
+        <img src={cityImg} className={styles.aboutBanner__heroImage} alt="City View" />
+        <div className={styles.aboutBanner__heroText} data-aos="fade" data-aos-duration="1200">
           Mỗi thang máy JPTechLift là
           <br />
           sự kết hợp giữa kỹ thuật hiện đại, tiết kiệm năng lượng
@@ -32,37 +29,24 @@ export default function AboutUsBanner() {
       </div>
 
       <div className={styles.aboutBanner__content}>
-        <div
-          className={styles.aboutBanner__card}
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
+        <div className={styles.aboutBanner__card} data-aos="fade-up" data-aos-delay="100">
           <h2 className={styles.aboutBanner__cardTitle}>Tầm Nhìn</h2>
           <div className={styles.aboutBanner__cardDivider}></div>
           <p className={styles.aboutBanner__cardText}>
-            Chúng tôi trao cho mọi người quyền tự do kết nối và phát triển ở một
-            thế giới cao hơn, nhanh hơn và thông minh hơn.
+            Chúng tôi trao cho mọi người quyền tự do kết nối và phát triển ở một thế giới cao hơn, nhanh hơn và thông
+            minh hơn.
           </p>
         </div>
 
-        <div
-          className={styles.aboutBanner__card}
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
+        <div className={styles.aboutBanner__card} data-aos="fade-up" data-aos-delay="200">
           <h2 className={styles.aboutBanner__cardTitle}>Sứ mệnh</h2>
           <div className={styles.aboutBanner__cardDivider}></div>
           <p className={styles.aboutBanner__cardText}>
-            Trở thành một công ty đẳng cấp thế giới. Lấy khách hàng làm trung
-            tâm và hướng tới dịch vụ.
+            Trở thành một công ty đẳng cấp thế giới. Lấy khách hàng làm trung tâm và hướng tới dịch vụ.
           </p>
         </div>
 
-        <div
-          className={styles.aboutBanner__card}
-          data-aos="fade-up"
-          data-aos-delay="300"
-        >
+        <div className={styles.aboutBanner__card} data-aos="fade-up" data-aos-delay="300">
           <h2 className={styles.aboutBanner__cardTitle}>Giá Trị</h2>
           <div className={styles.aboutBanner__cardDivider}></div>
           <p className={styles.aboutBanner__cardText}>
@@ -77,10 +61,28 @@ export default function AboutUsBanner() {
         </div>
 
         <div className={styles.aboutBanner__buttonWrapper}>
-          <button className={styles.aboutBanner__button}>
+          <button className={styles.aboutBanner__button} onClick={handleButtonClick}>
             ĐỒNG HÀNH CÙNG JPTECHLIFT
           </button>
         </div>
+
+        {/* Hiển thị flipbook khi nhấn nút */}
+        {showFlipbook && (
+          <div className={styles.flipbookWrapper}>
+            <iframe
+              allowFullScreen
+              allow="clipboard-write"
+              scrolling="no"
+              className="fp-iframe"
+              src="https://online.fliphtml5.com/JPTechLift/zhwa/"
+              style={{
+                border: "1px solid lightgray",
+                width: "100%",
+                height: "400px",
+              }}
+            ></iframe>
+          </div>
+        )}
       </div>
     </section>
   );

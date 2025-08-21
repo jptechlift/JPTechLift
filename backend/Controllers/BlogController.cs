@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Controllers;
 
@@ -15,26 +16,53 @@ public class BlogController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly AiBlogService _ai;
+    private readonly ILogger<BlogController> _logger;
 
-    public BlogController(ApplicationDbContext context, AiBlogService ai)
+    public BlogController(ApplicationDbContext context, AiBlogService ai, ILogger<BlogController> logger)
     {
         _context = context;
         _ai = ai;
+        _logger = logger;
     }
 
     [HttpPost("generate-preview")]
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-        var title = request.BlogType == "product"
-            ? request.ProductDetails?.ProductName
-             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic;
-        if (string.IsNullOrWhiteSpace(title))
-            return BadRequest(new { error = "Title is required" });
+             // --- VERIFICATION LOGGING ---
+        _logger.LogInformation("[1/3] Backend: Endpoint 'generate-preview' received a request.");
 
-        var content = await _ai.GenerateContentAsync(title);
-        var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
-        return Ok(new { title, slug, content });
+        try
+        {
+            // --- VERIFICATION LOGGING ---
+            var payloadJson = System.Text.Json.JsonSerializer.Serialize(request);
+            _logger.LogInformation("[2/3] Backend: Deserialized payload: {Payload}", payloadJson);
+
+            // --- FIX THE BUG HERE ---
+            var title = request.BlogType == "product"
+                ? request.ProductDetails?.ProductName
+                : request.TopicDetails?.ArticleTitle;
+
+            if (string.IsNullOrWhiteSpace(title))
+            {
+                _logger.LogWarning("Validation failed: Title is missing from the request.");
+                return BadRequest(new { message = "Title or ArticleTitle is required." });
+            }
+
+            // --- VERIFICATION LOGGING ---
+            _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", title);
+
+            var content = await _ai.GenerateContentAsync(title);
+            var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
+
+            _logger.LogInformation("Successfully generated content. Returning OK response.");
+            return Ok(new { title, slug, generatedContent = content });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred in GeneratePreview endpoint.");
+            return StatusCode(500, new { message = "An internal server error occurred." });
+        }
     }
 
     [HttpPost]

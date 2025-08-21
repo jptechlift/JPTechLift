@@ -114,7 +114,7 @@
 
 // Element: aboutBanner__button
 .aboutBanner__button {
-  color: var(--color-primary);
+  background-color: var(--color-primary);
   color: #fff;
   font-size: 1rem;
   font-weight: 500;
@@ -124,12 +124,14 @@
   letter-spacing: 1px;
   box-shadow: 0 2px 10px rgba(24, 49, 83, 0.13);
   transition: background 0.18s, box-shadow 0.23s;
+  transition: transform 0.5s;
 
   // Modifier: aboutBanner__button--hover (or use :hover)
   &:hover {
     background: #cba052;
     color: #fff;
     box-shadow: 0 4px 15px rgba(24, 49, 83, 0.2);
+    transform: translateY(-2px);
   }
 }
 

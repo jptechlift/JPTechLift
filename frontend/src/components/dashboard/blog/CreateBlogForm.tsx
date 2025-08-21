@@ -24,10 +24,18 @@ const productDetailsSchema = z.object({
 });
 
 const topicDetailsSchema = z.object({
-  articleTitle: z.string().min(10, "Tiêu đề cần ít nhất 10 ký tự"),
-  targetAudience: z.string().min(10, "Mô tả đối tượng độc giả (ít nhất 10 ký tự)"),
-  mainPoints: z.string().min(20, "Vui lòng phác thảo các ý chính (mỗi ý một dòng)"),
-  seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
+articleTitle: z
+    .string()
+    .min(10, "Tiêu đề bài viết cần ít nhất 10 ký tự"),
+  targetAudience: z
+    .string()
+    .min(10, "Mô tả đối tượng độc giả (ít nhất 10 ký tự)"),
+  mainPoints: z
+    .string()
+    .min(20, "Vui lòng phác thảo các ý chính (ít nhất 20 ký tự)"),
+  seoKeywords: z
+    .string()
+    .min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
   toneOfVoice: z.enum([
     "Hướng dẫn & Giáo dục",
     "Phân tích & Chuyên gia",
@@ -72,13 +80,57 @@ export default function CreateBlogForm() {
   const [finalContent, setFinalContent] = useState("");
 
   const onGenerate = async (data: FormValues) => {
+    // --- VERIFICATION LOGGING ---
+    console.log(
+      "%c[1/4] Frontend: Event handler 'onGenerate' triggered.",
+      "color: blue; font-weight: bold;"
+    );
+
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
-    const res = await blog.generatePreview(data as BlogRequest);
-    setFinalTitle(res.data.title);
-    setFinalSlug(res.data.slug);
-    setFinalContent(res.data.content);
+
+    // --- VERIFICATION LOGGING ---
+    console.log(
+      "%c[2/4] Frontend: Form data prepared for API call:",
+      "color: blue; font-weight: bold;",
+      data
+    );
+
+    try {
+      console.log("Attempting to call API: /api/blog/generate-preview...");
+      const res = await blog.generatePreview(data as BlogRequest);
+
+      // --- VERIFICATION LOGGING ---
+      console.log(
+        "%c[4/4] Frontend: API call successful! Response received:",
+        "color: green; font-weight: bold;",
+        res.data
+      );
+
+      setFinalTitle(res.data.title);
+      setFinalSlug(res.data.slug);
+      setFinalContent(res.data.generatedContent);
+    } catch (error: unknown) {
+      // --- VERIFICATION LOGGING (for debugging if the fix fails) ---
+      console.error(
+        "%c[!!!] Frontend: API call failed!",
+        "color: red; font-weight: bold;",
+        error
+      );
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        (error as { response?: { status: number; data: unknown } }).response
+      ) {
+        const err = error as { response: { status: number; data: unknown } };
+        console.error("Error details:", {
+          status: err.response.status,
+          data: err.response.data,
+        });
+      }
+    }
   };
 
   const onPublish = async (data: FormValues) => {
