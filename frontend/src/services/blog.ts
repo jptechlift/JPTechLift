@@ -37,7 +37,24 @@ export type BlogRequest = {
   slug?: string;
   content?: string; // final content when publishing
 };
-const API_URL = import.meta.env.VITE_API_URL;
+
+const rawApiUrl = import.meta.env.VITE_API_URL;
+const API_URL = (() => {
+  if (!rawApiUrl) {
+    console.warn(
+      "VITE_API_URL is missing. Falling back to http://localhost:5000"
+    );
+    return "http://localhost:5000";
+  }
+  try {
+    return new URL(rawApiUrl).origin;
+  } catch {
+    console.warn(
+      `VITE_API_URL "${rawApiUrl}" is malformed. Falling back to http://localhost:5000`
+    );
+    return "http://localhost:5000";
+  }
+})();
 
 export const blog = {
   async list(): Promise<BlogPost[]> {

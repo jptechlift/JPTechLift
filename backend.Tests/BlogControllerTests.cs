@@ -35,7 +35,7 @@ public class BlogControllerTests
         var result = await controller.GeneratePreview(new BlogRequest
         {
             BlogType = "topic",
-            TopicDetails = new TopicDetails { Topic = "Hello" }
+              TopicDetails = new TopicDetails { ArticleTitle = "Hello" }
         }) as OkObjectResult;
         Assert.NotNull(result);
     }
@@ -47,7 +47,7 @@ public class BlogControllerTests
         var request = new BlogRequest
         {
             BlogType = "topic",
-            TopicDetails = new TopicDetails { Topic = "T", Content = "C" },
+            TopicDetails = new TopicDetails { ArticleTitle = "T", Content = "C" },
             Content = "C"
         };
         var result = await controller.Publish(request) as OkObjectResult;

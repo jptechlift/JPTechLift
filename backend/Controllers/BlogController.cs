@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
 
 namespace Backend.Controllers;
 
@@ -27,9 +28,9 @@ public class BlogController : ControllerBase
     {
         var title = request.BlogType == "product"
             ? request.ProductDetails?.ProductName
-            : request.TopicDetails?.Topic;
+             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic;
         if (string.IsNullOrWhiteSpace(title))
-            return BadRequest();
+            return BadRequest(new { error = "Title is required" });
 
         var content = await _ai.GenerateContentAsync(title);
         var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
@@ -41,9 +42,13 @@ public class BlogController : ControllerBase
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
         var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var title = request.BlogType == "product"
+            ? request.ProductDetails!.ProductName
+            : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? string.Empty;
+
         var blog = new Blog
         {
-            Title = request.BlogType == "product" ? request.ProductDetails!.ProductName : request.TopicDetails!.Topic,
+            Title = title,
             Username = username,
             Content = request.Content,
             IsPublished = true,
@@ -76,8 +81,8 @@ public class BlogController : ControllerBase
                 _context.TopicBlogs.Add(new TopicBlog
                 {
                     BlogId = blog.Id,
-                    Topic = request.TopicDetails.Topic,
-                    Content = request.TopicDetails.Content,
+                     Topic = title,
+                    Content = request.Content ?? string.Empty,
                 });
             }
 
@@ -132,6 +137,8 @@ public class ProductDetails
 
 public class TopicDetails
 {
-    public string Topic { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
+     [JsonPropertyName("articleTitle")]
+    public string? ArticleTitle { get; set; }
+
+    public string? Topic { get; set; } = string.Empty;
 }
