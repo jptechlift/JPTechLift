@@ -23,6 +23,7 @@ import AccessoriesPage from "./pages/Services/AccessoriesPage";
 import AestheticModalPage from "./pages/Products/AestheticModal";
 import LoginPage from "./pages/Auth/LoginPage";
 import CreateBlogPage from "./pages/CreateBlogPage";
+import BlogTemplate from "./components/BLOGTEMPLATE/BlogTemplate";
 
 const App = () => {
   const RedirectHandler = () => {
@@ -73,6 +74,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/blog/:slug" element={<BlogTemplate />} /> 
       </Routes>
     </BrowserRouter>
   );

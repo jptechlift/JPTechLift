@@ -7,6 +7,9 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ... các services khác
+builder.Services.AddHttpClient();
+
 // ====================================================================
 // BƯỚC 1: SỬA LỖI BẰNG CÁCH GÁN CỨNG CHUỖI KẾT NỐI
 // Chúng ta sẽ bỏ qua việc đọc file .env và biến môi trường để đảm bảo
