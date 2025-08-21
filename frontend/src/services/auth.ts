@@ -35,7 +35,7 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
     ...(options.headers as Record<string, string>),
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
-try {
+  try {
     const res = await fetch(`${API_URL}${path}`, { ...options, headers });
     const data = (await res.json().catch(() => ({}))) as T & { message?: string };
     if (!res.ok) {
@@ -48,7 +48,7 @@ try {
 }
 
 async function login(p: LoginPayload): Promise<LoginResult> {
-const data = await apiRequest<LoginResult>("/login", {
+  const data = await apiRequest<LoginResult>("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(p),
   });
@@ -56,7 +56,7 @@ const data = await apiRequest<LoginResult>("/login", {
 }
 
 async function loginWithGoogle(credential: string): Promise<LoginResult> {
-  const data = await apiRequest<LoginResult>("/login/google", {
+  const data = await apiRequest<LoginResult>("/api/auth/login/google", {
     method: "POST",
     body: JSON.stringify({ idToken: credential }),
   });
@@ -64,7 +64,7 @@ async function loginWithGoogle(credential: string): Promise<LoginResult> {
 }
 
 async function register(p: RegisterPayload): Promise<number> {
-const data = await apiRequest<{ id: number }>("/register", {
+  const data = await apiRequest<{ id: number }>("/api/auth/register", {
     method: "POST",
     body: JSON.stringify(p),
   });
