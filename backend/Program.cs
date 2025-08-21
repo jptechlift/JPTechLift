@@ -62,6 +62,13 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+// Ensure database tables are created at startup to avoid runtime errors
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.EnsureCreated();
+}
+
 app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();

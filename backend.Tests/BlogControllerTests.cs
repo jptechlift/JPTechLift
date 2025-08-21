@@ -18,8 +18,10 @@ public class BlogControllerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         ctx = new ApplicationDbContext(options);
-        var ai = new AiBlogService();
-        var controller = new BlogController(ctx, ai);
+        var config = new ConfigurationBuilder().AddInMemoryCollection(
+        new Dictionary<string, string> { { "GEMINI_API_KEY", "test" } }).Build();
+        var ai = new AiBlogService(new HttpClient(), config, NullLogger<AiBlogService>.Instance);
+        var controller = new BlogController(ctx, ai, NullLogger<BlogController>.Instance);
         var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "user1") }, "test"));
         controller.ControllerContext = new ControllerContext
         {
@@ -47,8 +49,8 @@ public class BlogControllerTests
         var request = new BlogRequest
         {
             BlogType = "topic",
-            TopicDetails = new TopicDetails { ArticleTitle = "T", Content = "C" },
-            Content = "C"
+            TopicDetails = new TopicDetails { ArticleTitle = "T" },
+             Content = "C"
         };
         var result = await controller.Publish(request) as OkObjectResult;
         Assert.Equal(1, ctx.Blogs.Count());

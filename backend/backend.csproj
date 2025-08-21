@@ -7,14 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.20" />
+    <!-- Gói xác thực được nâng cấp lên phiên bản 8.x để khớp với .NET 8 -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+
+    <!-- Các gói của bên thứ ba, giữ nguyên phiên bản mới nhất là tốt -->
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
-    <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Dapper" Version="2.1.35" />
-     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="DotNetEnv" Version="3.0.0" /> <!-- Gói để đọc file .env -->
+
+    <!-- 
+      Đồng bộ hóa tất cả các gói EF Core và Npgsql về phiên bản 8.x.
+      Lưu ý: Không cần tham chiếu trực tiếp đến "Npgsql" nữa, 
+      vì "Npgsql.EntityFrameworkCore.PostgreSQL" sẽ tự động bao gồm nó.
+    -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+
   </ItemGroup>
 
 </Project>
