@@ -18,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.PropertyNameCaseInsensitive = true;
-    options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
+    options.SerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.SnakeCaseLower;
 });
 
 builder.Services.AddCors(options =>
@@ -107,7 +108,7 @@ app.MapPost("/register", async (RegisterRequest request, NpgsqlDataSource dataSo
 
     var hash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-     const string sql = @"INSERT INTO users (username, password_hash, email, phonenumber, role, isactive, avatar_url, cover_url) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
+     const string sql = @"INSERT INTO users (username, password_hash, email, phone_number, role, is_active, avatar_url, cover_url) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
 
     var id = await conn.ExecuteScalarAsync<int>(sql, new
     {
@@ -181,7 +182,7 @@ app.MapPut("/profile", [Authorize] async (ProfileUpdateRequest request, ClaimsPr
 {
     var userId = int.Parse(user.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
     using var conn = dataSource.OpenConnection();
-     const string sql = "UPDATE users SET email = COALESCE(@Email, email), phonenumber = COALESCE(@PhoneNumber, phonenumber), avatar_url = COALESCE(@AvatarUrl, avatar_url), cover_url = COALESCE(@CoverUrl, cover_url) WHERE id = @Id";
+     const string sql = "UPDATE users SET email = COALESCE(@Email, email), phone_number = COALESCE(@PhoneNumber, phonenumber), avatar_url = COALESCE(@AvatarUrl, avatar_url), cover_url = COALESCE(@CoverUrl, cover_url) WHERE id = @Id";
     await conn.ExecuteAsync(sql, new { request.Email, request.PhoneNumber, request.AvatarUrl, request.CoverUrl, Id = userId });
     return Results.Ok();
 });

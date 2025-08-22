@@ -44,13 +44,13 @@ namespace Backend.Controllers
         private async Task<User?> ValidateUserAsync(string username, string password)
         {
             await using var conn = await _dataSource.OpenConnectionAsync();
-            await using var command = new NpgsqlCommand("SELECT id, username, passwordhash FROM users WHERE username = @username LIMIT 1", conn);
+            await using var command = new NpgsqlCommand("SELECT id, username, password_hash FROM users WHERE username = @username LIMIT 1", conn);
             command.Parameters.AddWithValue("username", username);
 
             await using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                var storedHash = reader.GetString(reader.GetOrdinal("passwordhash"));
+                var storedHash = reader.GetString(reader.GetOrdinal("password_hash"));
                 if (BCrypt.Net.BCrypt.Verify(password, storedHash))
                 {
                     return new User

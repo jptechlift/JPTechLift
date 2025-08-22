@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Backend.Dtos;
+using System.Linq;
 
 namespace Backend.Controllers;
 
@@ -138,7 +140,7 @@ public class BlogController : ControllerBase
             throw;
         }
 
-          return Ok(new { blog.Id });
+         return Ok(blog.ToDto());
     }
 
     [HttpGet("recent")]
@@ -150,9 +152,8 @@ public class BlogController : ControllerBase
             .Where(b => b.Username == username)
             .OrderByDescending(b => b.UpdatedDate)
             .Take(5)
-             .Select(b => new { b.Id, b.Title })
             .ToListAsync();
-        return Ok(recentBlogs);
+        return Ok(recentBlogs.Select(b => b.ToDto()));
     }
 }
 

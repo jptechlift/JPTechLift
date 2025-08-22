@@ -1,6 +1,7 @@
 using Backend.Controllers;
 using Backend.Models;
 using Backend.Services;
+using Backend.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,17 +64,19 @@ public class BlogControllerTests
         {
             BlogType = "topic",
             TopicDetails = new TopicDetails { ArticleTitle = "T" },
-             Content = "C"
+            Content = "C"
         };
         var result = await controller.Publish(request) as OkObjectResult;
         Assert.Equal(1, ctx.Blogs.Count());
+        var dto = Assert.IsType<BlogDto>(result!.Value);
+        Assert.Equal("T", dto.Title);
     }
 
     [Fact]
     public async Task Recent_ReturnsBlogs()
     {
         var controller = CreateController(out var ctx);
-        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", UpdatedDate = DateTime.UtcNow });
+        ctx.Blogs.Add(new Blog { Title = "A", Username = "user1", UpdatedDate = DateTime.UtcNow });
         ctx.SaveChanges();
         var result = await controller.Recent() as OkObjectResult;
         Assert.NotNull(result);
