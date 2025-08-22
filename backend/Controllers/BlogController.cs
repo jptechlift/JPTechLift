@@ -50,11 +50,10 @@ public class BlogController : ControllerBase
             // --- VERIFICATION LOGGING ---
               _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
 
-              var (title, content) = await _ai.GenerateContentAsync(request);
-              var slug = SlugHelper.GenerateSlug(title);
+              var (title, content) = await _ai.GenerateContentAsync(request);        
 
             _logger.LogInformation("Successfully generated content. Returning OK response.");
-            return Ok(new { title, slug, generatedContent = content });
+             return Ok(new { title, generatedContent = content });
         }
         catch (Exception ex)
         {
@@ -81,14 +80,11 @@ public class BlogController : ControllerBase
             ? request.ProductDetails!.ProductName
             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? string.Empty;
 
-        var slug = SlugHelper.GenerateSlug(title);
         var blog = new Blog
         {
             Title = title,
-            Slug = slug,
             Username = username,
             User = user,
-            Content = request.Content,
             IsPublished = true,
             CreatedDate = DateTime.UtcNow,
             UpdatedDate = DateTime.UtcNow,
@@ -142,7 +138,7 @@ public class BlogController : ControllerBase
             throw;
         }
 
-         return Ok(new { blog.Id, blog.Slug });
+          return Ok(new { blog.Id });
     }
 
     [HttpGet("recent")]
@@ -154,7 +150,7 @@ public class BlogController : ControllerBase
             .Where(b => b.Username == username)
             .OrderByDescending(b => b.UpdatedDate)
             .Take(5)
-            .Select(b => new { b.Id, b.Title, b.Slug })
+             .Select(b => new { b.Id, b.Title })
             .ToListAsync();
         return Ok(recentBlogs);
     }

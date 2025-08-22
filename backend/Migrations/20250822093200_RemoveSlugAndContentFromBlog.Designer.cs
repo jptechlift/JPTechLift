@@ -3,6 +3,7 @@ using System;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250822093200_RemoveSlugAndContentFromBlog")]
+    partial class RemoveSlugAndContentFromBlog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,11 +41,6 @@ namespace backend.Migrations
                     b.Property<bool>("IsPublished")
                         .HasColumnType("boolean")
                         .HasColumnName("is_published");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("slug");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -103,7 +101,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("size");
 
-                 b.Property<string>("Volume")
+                    b.Property<string>("Volume")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("volume");
@@ -125,7 +123,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
-                        b.Property<string>("Keywords")
+                    b.Property<string>("Keywords")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("keywords");
@@ -143,7 +141,7 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
-                     b.Property<int>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("id");
@@ -186,7 +184,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                  b.Property<string>("Username")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("username");
