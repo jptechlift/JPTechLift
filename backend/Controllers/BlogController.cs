@@ -38,21 +38,20 @@ public class BlogController : ControllerBase
             var payloadJson = System.Text.Json.JsonSerializer.Serialize(request);
             _logger.LogInformation("[2/3] Backend: Deserialized payload: {Payload}", payloadJson);
 
-            // --- FIX THE BUG HERE ---
-            var title = request.BlogType == "product"
+          var baseTitle = request.BlogType == "product"
                 ? request.ProductDetails?.ProductName
                 : request.TopicDetails?.ArticleTitle;
 
-            if (string.IsNullOrWhiteSpace(title))
+            if (string.IsNullOrWhiteSpace(baseTitle))
             {
                 _logger.LogWarning("Validation failed: Title is missing from the request.");
                 return BadRequest(new { message = "Title or ArticleTitle is required." });
             }
 
             // --- VERIFICATION LOGGING ---
-            _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", title);
+              _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
 
-            var content = await _ai.GenerateContentAsync(title);
+              var (title, content) = await _ai.GenerateContentAsync(request);
             var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
 
             _logger.LogInformation("Successfully generated content. Returning OK response.");
@@ -84,7 +83,9 @@ public class BlogController : ControllerBase
             UpdatedDate = DateTime.UtcNow,
         };
 
-        await using var tx = await _context.Database.BeginTransactionAsync();
+         await using var tx = _context.Database.ProviderName?.Contains("InMemory") == true
+            ? null
+            : await _context.Database.BeginTransactionAsync();
         try
         {
             _context.Blogs.Add(blog);
@@ -115,11 +116,17 @@ public class BlogController : ControllerBase
             }
 
             await _context.SaveChangesAsync();
-            await tx.CommitAsync();
+             if (tx != null)
+            {
+                await tx.CommitAsync();
+            }
         }
         catch
         {
-            await tx.RollbackAsync();
+            if (tx != null)
+            {
+                await tx.RollbackAsync();
+            }
             throw;
         }
 
@@ -160,13 +167,20 @@ public class ProductDetails
     public string Size { get; set; } = string.Empty;
     public string Volumn { get; set; } = string.Empty;
     public string Feature { get; set; } = string.Empty;
-    public string Keyword { get; set; } = string.Empty;
+    public string Keyword { get; set; } = string.Empty;    
+    public string TargetAudience { get; set; } = string.Empty;
+    public string KeySellingPoints { get; set; } = string.Empty;
+    public string SeoKeywords { get; set; } = string.Empty;
+    public string ToneOfVoice { get; set; } = string.Empty;
 }
 
 public class TopicDetails
 {
-     [JsonPropertyName("articleTitle")]
+    [JsonPropertyName("articleTitle")]
     public string? ArticleTitle { get; set; }
-
     public string? Topic { get; set; } = string.Empty;
+    public string TargetAudience { get; set; } = string.Empty;
+    public string MainPoints { get; set; } = string.Empty;
+    public string SeoKeywords { get; set; } = string.Empty;
+    public string ToneOfVoice { get; set; } = string.Empty;
 }

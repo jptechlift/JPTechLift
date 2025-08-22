@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Linq;
 using Xunit;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace backend.Tests;
 

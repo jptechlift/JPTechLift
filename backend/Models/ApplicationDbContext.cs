@@ -17,6 +17,11 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<Blog>().ToTable("blogs");
+        modelBuilder.Entity<ProductBlog>().ToTable("productblogs");
+        modelBuilder.Entity<TopicBlog>().ToTable("topicblogs");
+
         modelBuilder.Entity<User>()
             .HasKey(u => u.Username);
 

@@ -1,13 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>9f1747ff-1eb0-47ef-ac3a-79237435932b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Gói xác thực được nâng cấp lên phiên bản 8.x để khớp với .NET 8 -->
+    <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
 
     <!-- Các gói của bên thứ ba, giữ nguyên phiên bản mới nhất là tốt -->

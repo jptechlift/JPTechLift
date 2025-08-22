@@ -37,7 +37,7 @@ builder.Services.AddSingleton<NpgsqlDataSource>(sp =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")) .UseSnakeCaseNamingConvention());
 
 builder.Services.AddHttpClient<AiBlogService>();
 builder.Services.AddScoped<AiBlogService>();
