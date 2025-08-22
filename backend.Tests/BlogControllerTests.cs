@@ -20,6 +20,17 @@ public class BlogControllerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         ctx = new ApplicationDbContext(options);
+
+         ctx.Users.Add(new User
+        {
+            Username = "user1",
+            PasswordHash = "hash",
+            Email = "user1@example.com",
+            Role = "user",
+            IsActive = true
+        });
+        ctx.SaveChanges();
+        
         var config = new ConfigurationBuilder().AddInMemoryCollection(
         new Dictionary<string, string> { { "GEMINI_API_KEY", "test" } }).Build();
         var ai = new AiBlogService(new HttpClient(), config, NullLogger<AiBlogService>.Instance);
@@ -62,7 +73,7 @@ public class BlogControllerTests
     public async Task Recent_ReturnsBlogs()
     {
         var controller = CreateController(out var ctx);
-        ctx.Blogs.Add(new Blog { Title = "A", Username = "user1", UpdatedDate = DateTime.UtcNow });
+        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", UpdatedDate = DateTime.UtcNow });
         ctx.SaveChanges();
         var result = await controller.Recent() as OkObjectResult;
         Assert.NotNull(result);

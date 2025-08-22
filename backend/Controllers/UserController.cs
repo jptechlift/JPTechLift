@@ -30,7 +30,7 @@ namespace Backend.Controllers
             }
 
             await using var conn = await _dataSource.OpenConnectionAsync();
-            await using var cmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar FROM users WHERE id = @id", conn);
+            await using var cmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar_url FROM users WHERE id = @id", conn);
             cmd.Parameters.AddWithValue("id", int.Parse(idValue));
             await using var reader = await cmd.ExecuteReaderAsync();
             if (!await reader.ReadAsync())
@@ -43,7 +43,7 @@ namespace Backend.Controllers
                 name = reader.GetString(reader.GetOrdinal("username")),
                 phone = reader.IsDBNull(reader.GetOrdinal("phonenumber")) ? null : reader.GetString(reader.GetOrdinal("phonenumber")),
                 email = reader.GetString(reader.GetOrdinal("email")),
-                avatar = reader.IsDBNull(reader.GetOrdinal("avatar")) ? null : reader.GetString(reader.GetOrdinal("avatar"))
+                avatar = reader.IsDBNull(reader.GetOrdinal("avatar_url")) ? null : reader.GetString(reader.GetOrdinal("avatar_url"))
             };
             return Ok(result);
         }
@@ -72,7 +72,7 @@ namespace Backend.Controllers
                                         username = COALESCE(@Name, username),
                                         phonenumber = COALESCE(@Phone, phonenumber),
                                         email = COALESCE(@Email, email),
-                                        avatar = COALESCE(@Avatar, avatar)
+                                        avatar_url = COALESCE(@Avatar, avatar_url)
                                         WHERE id = @Id", conn);
             cmd.Parameters.AddWithValue("Name", (object?)payload.Name ?? DBNull.Value);
             cmd.Parameters.AddWithValue("Phone", (object?)payload.Phone ?? DBNull.Value);
@@ -80,8 +80,8 @@ namespace Backend.Controllers
             cmd.Parameters.AddWithValue("Avatar", (object?)payload.Avatar ?? DBNull.Value);
             cmd.Parameters.AddWithValue("Id", int.Parse(idValue));
             await cmd.ExecuteNonQueryAsync();
-            
-            var selectCmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar FROM users WHERE id = @Id", conn);
+
+            var selectCmd = new NpgsqlCommand("SELECT username, phonenumber, email, avatar_url FROM users WHERE id = @Id", conn);
             selectCmd.Parameters.AddWithValue("Id", int.Parse(idValue));
             using var reader = selectCmd.ExecuteReader();
             if (!reader.Read())
@@ -94,7 +94,7 @@ namespace Backend.Controllers
                 name = reader.GetString(reader.GetOrdinal("username")),
                 phone = reader.IsDBNull(reader.GetOrdinal("phonenumber")) ? null : reader.GetString(reader.GetOrdinal("phonenumber")),
                 email = reader.GetString(reader.GetOrdinal("email")),
-                avatar = reader.IsDBNull(reader.GetOrdinal("avatar")) ? null : reader.GetString(reader.GetOrdinal("avatar"))
+                avatar = reader.IsDBNull(reader.GetOrdinal("avatar_url")) ? null : reader.GetString(reader.GetOrdinal("avatar_url"))
             };
             return Ok(result);
         }

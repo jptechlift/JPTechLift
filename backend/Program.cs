@@ -107,7 +107,7 @@ app.MapPost("/register", async (RegisterRequest request, NpgsqlDataSource dataSo
 
     var hash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-     const string sql = @"INSERT INTO users (username, passwordhash, email, phonenumber, role, isactive, avatar, coverurl) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
+     const string sql = @"INSERT INTO users (username, passwordhash, email, phonenumber, role, isactive, avatar_url, cover_url) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
 
     var id = await conn.ExecuteScalarAsync<int>(sql, new
     {
@@ -169,7 +169,7 @@ app.MapPost("/login/google", async (GoogleLoginRequest request, NpgsqlDataSource
     {
         username = payload.Email.Split('@')[0];
         userId = await conn.ExecuteScalarAsync<int>(
-         @"INSERT INTO users (username, email, avatar, coverurl) VALUES (@Username, @Email, @AvatarUrl, @CoverUrl) RETURNING id",
+          @"INSERT INTO users (username, email, avatar_url, cover_url) VALUES (@Username, @Email, @AvatarUrl, @CoverUrl) RETURNING id",
             new { Username = username, Email = payload.Email, AvatarUrl = payload.Picture, CoverUrl = (string?)null });
     }
 
@@ -181,7 +181,7 @@ app.MapPut("/profile", [Authorize] async (ProfileUpdateRequest request, ClaimsPr
 {
     var userId = int.Parse(user.FindFirstValue(JwtRegisteredClaimNames.Sub)!);
     using var conn = dataSource.OpenConnection();
-    const string sql = "UPDATE users SET email = COALESCE(@Email, email), phonenumber = COALESCE(@PhoneNumber, phonenumber), avatar = COALESCE(@AvatarUrl, avatar), coverurl = COALESCE(@CoverUrl, coverurl) WHERE id = @Id";
+     const string sql = "UPDATE users SET email = COALESCE(@Email, email), phonenumber = COALESCE(@PhoneNumber, phonenumber), avatar_url = COALESCE(@AvatarUrl, avatar_url), cover_url = COALESCE(@CoverUrl, cover_url) WHERE id = @Id";
     await conn.ExecuteAsync(sql, new { request.Email, request.PhoneNumber, request.AvatarUrl, request.CoverUrl, Id = userId });
     return Results.Ok();
 });

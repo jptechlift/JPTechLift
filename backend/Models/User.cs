@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Backend.Models
 {
     public class User
@@ -10,7 +12,9 @@ namespace Backend.Models
         public DateTime CreatedDate { get; set; }
         public string Role { get; set; } = "user";
         public bool IsActive { get; set; } = true;
+        [Column("avatar_url")]
         public string? AvatarUrl { get; set; }
+        [Column("cover_url")]
         public string? CoverUrl { get; set; }        
         public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
     }
