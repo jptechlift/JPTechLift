@@ -6,6 +6,7 @@ import ProductBlogForm from "../blog/ProductBlogForm";
 import TopicBlogForm from "./TopicBlogForm";
 import RecentPosts from "./RecentPosts";
 import { blog, BlogRequest } from "../../../services/blog";
+import { ChevronDown, Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 } from "lucide-react";
 
 const productDetailsSchema = z.object({
   productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
@@ -24,7 +25,7 @@ const productDetailsSchema = z.object({
 });
 
 const topicDetailsSchema = z.object({
-articleTitle: z
+  articleTitle: z
     .string()
     .min(10, "Tiêu đề bài viết cần ít nhất 10 ký tự"),
   targetAudience: z
@@ -78,57 +79,32 @@ export default function CreateBlogForm() {
   const [finalTitle, setFinalTitle] = useState("");
   const [finalSlug, setFinalSlug] = useState("");
   const [finalContent, setFinalContent] = useState("");
+  const [activeTab, setActiveTab] = useState<'form' | 'preview' | 'recent'>('form');
 
   const onGenerate = async (data: FormValues) => {
-    // --- VERIFICATION LOGGING ---
-    console.log(
-      "%c[1/4] Frontend: Event handler 'onGenerate' triggered.",
-      "color: blue; font-weight: bold;"
-    );
-
+    console.log("%c[1/4] Frontend: Event handler 'onGenerate' triggered.", "color: blue; font-weight: bold;");
+    
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
+    setActiveTab('preview');
 
-    // --- VERIFICATION LOGGING ---
-    console.log(
-      "%c[2/4] Frontend: Form data prepared for API call:",
-      "color: blue; font-weight: bold;",
-      data
-    );
+    console.log("%c[2/4] Frontend: Form data prepared for API call:", "color: blue; font-weight: bold;", data);
 
     try {
       console.log("Attempting to call API: /api/blog/generate-preview...");
       const res = await blog.generatePreview(data as BlogRequest);
 
-      // --- VERIFICATION LOGGING ---
-      console.log(
-        "%c[4/4] Frontend: API call successful! Response received:",
-        "color: green; font-weight: bold;",
-        res.data
-      );
+      console.log("%c[4/4] Frontend: API call successful! Response received:", "color: green; font-weight: bold;", res.data);
 
       setFinalTitle(res.data.title);
       setFinalSlug(res.data.slug);
       setFinalContent(res.data.generatedContent);
     } catch (error: unknown) {
-      // --- VERIFICATION LOGGING (for debugging if the fix fails) ---
-      console.error(
-        "%c[!!!] Frontend: API call failed!",
-        "color: red; font-weight: bold;",
-        error
-      );
-      if (
-        error &&
-        typeof error === "object" &&
-        "response" in error &&
-        (error as { response?: { status: number; data: unknown } }).response
-      ) {
+      console.error("%c[!!!] Frontend: API call failed!", "color: red; font-weight: bold;", error);
+      if (error && typeof error === "object" && "response" in error && (error as { response?: { status: number; data: unknown } }).response) {
         const err = error as { response: { status: number; data: unknown } };
-        console.error("Error details:", {
-          status: err.response.status,
-          data: err.response.data,
-        });
+        console.error("Error details:", { status: err.response.status, data: err.response.data });
       }
     }
   };
@@ -143,209 +119,287 @@ export default function CreateBlogForm() {
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
+    setActiveTab('recent');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
-            Tạo Blog với AI
-          </h1>
-          <p className="text-gray-600 text-lg">Sáng tạo nội dung chất lượng cao với sức mạnh trí tuệ nhân tạo</p>
+    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
+      {/* Compact Header */}
+      <div className="flex-shrink-0 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Tạo Blog với AI
+                </h1>
+                <p className="text-sm text-gray-500">Sáng tạo nội dung chất lượng cao</p>
+              </div>
+            </div>
+            
+            {/* Tab Navigation */}
+            <div className="flex items-center bg-gray-100 rounded-2xl p-1">
+              <button
+                onClick={() => setActiveTab('form')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                  activeTab === 'form'
+                    ? 'bg-white text-blue-600 shadow-lg font-medium'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <Edit3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Form</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('preview')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                  activeTab === 'preview'
+                    ? 'bg-white text-purple-600 shadow-lg font-medium'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <Eye className="w-4 h-4" />
+                <span className="hidden sm:inline">Preview</span>
+                {finalContent && <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />}
+              </button>
+              <button
+                onClick={() => setActiveTab('recent')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                  activeTab === 'recent'
+                    ? 'bg-white text-orange-600 shadow-lg font-medium'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                <FileText className="w-4 h-4" />
+                <span className="hidden sm:inline">Gần đây</span>
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div className="flex gap-8">
-          {/* Form Section - Enhanced UI */}
-          <div className="w-3/5">
-            <form
-              onSubmit={handleSubmit(onGenerate)}
-              className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 space-y-8"
-            >
-              {/* Blog Type Selection - Enhanced */}
-              <div className="space-y-4">
-                <label className="block text-lg font-semibold text-gray-800 mb-4">
-                  🎯 Loại Blog
-                </label>
-                <div className="relative">
-                  <select
-                    {...register("blogType")}
-                    className="w-full p-4 pr-10 rounded-2xl border-2 border-gray-200 bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-800 font-medium appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSubmitting}
-                  >
-                    <option value="product">📦 Sản phẩm - Giới thiệu & Review</option>
-                    <option value="topic">📝 Chủ đề - Bài viết chuyên môn</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
+      {/* Main Content Area */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Form Section */}
+        <div className={`transition-all duration-500 ${activeTab === 'form' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+          <div className="h-full overflow-y-auto p-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+                {/* Blog Type Selection - Compact */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-100">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <span className="text-white text-sm">🎯</span>
+                      </div>
+                      <label className="text-lg font-semibold text-gray-800">Loại Blog</label>
+                    </div>
+                    <div className="flex-1 relative max-w-sm">
+                      <select
+                        {...register("blogType")}
+                        className="w-full p-3 pr-10 rounded-xl border-2 border-gray-200 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 appearance-none cursor-pointer"
+                        disabled={isSubmitting}
+                      >
+                        <option value="product">📦 Sản phẩm</option>
+                        <option value="topic">📝 Chủ đề</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dynamic Form Content - Scrollable */}
+                <div className="max-h-96 overflow-y-auto p-6">
+                  <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-2xl p-4 border border-blue-100/50">
+                    {blogType === "product" ? (
+                      <ProductBlogForm register={register} errors={errors} disabled={isSubmitting} />
+                    ) : (
+                      <TopicBlogForm register={register} errors={errors} disabled={isSubmitting} />
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Bar - Fixed at bottom */}
+                <div className="bg-gray-50 border-t border-gray-100 p-6">
+                  <div className="flex gap-4">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-6 py-4 rounded-2xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center justify-center gap-3">
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>AI đang tạo...</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center gap-3">
+                          <Sparkles className="w-5 h-5" />
+                          <span>Tạo với AI</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    </button>
+                    
+                    {finalContent && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('preview')}
+                        className="px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 font-medium rounded-2xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 flex items-center gap-2"
+                      >
+                        <Eye className="w-5 h-5" />
+                        <span className="hidden sm:inline">Xem kết quả</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              {/* Dynamic Form Content - Enhanced Container */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-                {blogType === "product" ? (
-                  <ProductBlogForm register={register} errors={errors} disabled={isSubmitting} />
-                ) : (
-                  <TopicBlogForm register={register} errors={errors} disabled={isSubmitting} />
-                )}
-              </div>
-
-              {/* Generate Button - Enhanced */}
-              <div className="pt-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-8 py-5 rounded-2xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden"
-                >
-                  {isSubmitting ? (
-                    <div className="flex items-center justify-center gap-3">
-                      <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span className="text-lg">🤖 AI đang sáng tạo...</span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="text-xl">✨</span>
-                      <span className="text-lg">Tạo bản nháp với AI</span>
+        {/* Preview Section */}
+        <div className={`transition-all duration-500 ${activeTab === 'preview' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+          <div className="h-full overflow-y-auto p-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden h-full">
+                {/* Preview Header */}
+                <div className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Eye className="w-6 h-6 text-white" />
+                    <h3 className="text-white font-bold text-lg">Xem trước kết quả</h3>
+                  </div>
+                  <button
+                    onClick={() => setActiveTab('form')}
+                    className="text-white/80 hover:text-white transition-colors px-3 py-1 rounded-lg hover:bg-white/10"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                {/* Preview Content */}
+                <div className="p-6 h-full overflow-y-auto">
+                  {isSubmitting && (
+                    <div className="flex flex-col items-center justify-center h-80 text-center">
+                      <div className="relative mb-6">
+                        <div className="w-12 h-12 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <div className="w-8 h-8 border-3 border-purple-200 border-t-purple-600 rounded-full animate-spin absolute top-2 left-2" style={{animationDirection: 'reverse'}}></div>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-blue-600 font-bold">🧠 AI đang sáng tạo...</p>
+                        <div className="flex items-center justify-center gap-1 mt-4">
+                          {[0, 1, 2].map((i) => (
+                            <div 
+                              key={i}
+                              className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" 
+                              style={{animationDelay: `${i * 0.1}s`}}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   )}
                   
-                  {/* Animated background effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Preview Section - Enhanced UI */}
-          <div className="w-2/5 space-y-6">
-            {/* Preview Card - Enhanced */}
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-              {/* Preview Header */}
-              <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
-                <h3 className="text-white font-bold text-xl flex items-center gap-3">
-                  <span className="text-2xl">👀</span>
-                  <span>Xem trước kết quả</span>
-                </h3>
-              </div>
-              
-              {/* Preview Content */}
-              <div className="p-6 min-h-96">
-                {isSubmitting && (
-                  <div className="flex flex-col items-center justify-center h-80 text-center">
-                    <div className="relative mb-6">
-                      <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                      <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin absolute top-2 left-2 animate-reverse"></div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-blue-600 font-bold text-lg">🧠 AI đang sáng tạo...</p>
-                      <p className="text-gray-500">Đang phân tích và tạo nội dung</p>
-                      <div className="flex items-center justify-center gap-1 mt-4">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  {!isSubmitting && finalContent && (
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                            <FileText className="w-4 h-4" />
+                            Tiêu đề
+                          </label>
+                          <input
+                            value={finalTitle}
+                            onChange={(e) => setFinalTitle(e.target.value)}
+                            className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                            <Globe className="w-4 h-4" />
+                            URL
+                          </label>
+                          <input
+                            value={finalSlug}
+                            onChange={(e) => setFinalSlug(e.target.value)}
+                            className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 font-mono text-sm"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                          <Edit3 className="w-4 h-4" />
+                          Nội dung
+                        </label>
+                        <textarea
+                          value={finalContent}
+                          onChange={(e) => setFinalContent(e.target.value)}
+                          className="w-full h-64 p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
+                        />
+                      </div>
+                      
+                      <div className="flex gap-3 pt-4 border-t border-gray-100">
+                        <button
+                          onClick={handleSubmit(onPublish)}
+                          className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <Rocket className="w-5 h-5" />
+                            <span>Xuất bản</span>
+                          </div>
+                        </button>
+                        <button
+                          onClick={handleSubmit(onGenerate)}
+                          className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-xl transform hover:scale-[1.02] transition-all duration-300"
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <RotateCcw className="w-5 h-5" />
+                            <span>Thử lại</span>
+                          </div>
+                        </button>
                       </div>
                     </div>
-                  </div>
-                )}
-                
-                {!isSubmitting && finalContent && (
-                  <div className="space-y-5">
-                    {/* Title Input */}
-                    <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                        📝 Tiêu đề bài viết
-                      </label>
-                      <input
-                        value={finalTitle}
-                        onChange={(e) => setFinalTitle(e.target.value)}
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 font-medium"
-                        placeholder="Nhập tiêu đề bài viết..."
-                      />
-                    </div>
-                    
-                    {/* Slug Input */}
-                    <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                        🔗 Đường dẫn URL
-                      </label>
-                      <input
-                        value={finalSlug}
-                        onChange={(e) => setFinalSlug(e.target.value)}
-                        className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 font-mono text-sm"
-                        placeholder="duong-dan-bai-viet"
-                      />
-                    </div>
-                    
-                    {/* Content Textarea */}
-                    <div className="space-y-2">
-                      <label className="block text-sm font-semibold text-gray-600 uppercase tracking-wide">
-                        📄 Nội dung bài viết
-                      </label>
-                      <textarea
-                        value={finalContent}
-                        onChange={(e) => setFinalContent(e.target.value)}
-                        className="w-full h-48 p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
-                        placeholder="Nội dung sẽ được tạo tự động..."
-                      />
-                    </div>
-                    
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 pt-4">
-                      <button
-                        onClick={handleSubmit(onPublish)}
-                        className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-4 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                        type="button"
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-lg">🚀</span>
-                          <span>Xuất bản</span>
-                        </div>
-                      </button>
-                      <button
-                        onClick={handleSubmit(onGenerate)}
-                        className="flex-1 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 font-bold px-6 py-4 rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                        type="button"
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-lg">🔄</span>
-                          <span>Thử lại</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                )}
-                
-                {!isSubmitting && !finalContent && (
-                  <div className="flex flex-col items-center justify-center h-80 text-center">
-                    <div className="text-8xl mb-6 opacity-20">🎨</div>
-                    <div className="space-y-3">
-                      <h4 className="text-xl font-semibold text-gray-600">Sẵn sàng tạo nội dung</h4>
-                      <p className="text-gray-500">Điền thông tin và nhấn "Tạo bản nháp" để bắt đầu</p>
-                      <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-400">
-                        <span>⚡</span>
-                        <span>Được hỗ trợ bởi AI</span>
-                        <span>⚡</span>
+                  )}
+                  
+                  {!isSubmitting && !finalContent && (
+                    <div className="flex flex-col items-center justify-center h-80 text-center">
+                      <div className="text-6xl mb-4 opacity-20">🎨</div>
+                      <div className="space-y-3">
+                        <h4 className="text-xl font-semibold text-gray-600">Chưa có nội dung</h4>
+                        <p className="text-gray-500">Hãy tạo nội dung từ form để xem trước</p>
+                        <button
+                          onClick={() => setActiveTab('form')}
+                          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                        >
+                          Quay lại Form
+                        </button>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Recent Posts - Enhanced */}
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-400 to-pink-400 p-4">
-                <h3 className="text-white font-bold flex items-center gap-2">
-                  <span>📚</span>
-                  <span>Bài viết gần đây</span>
-                </h3>
-              </div>
-              <div className="p-4">
-                <RecentPosts />
+        {/* Recent Posts Section */}
+        <div className={`transition-all duration-500 ${activeTab === 'recent' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+          <div className="h-full overflow-y-auto p-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+                <div className="bg-gradient-to-r from-orange-400 to-pink-400 p-4">
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-white" />
+                    <h3 className="text-white font-bold text-lg">Bài viết gần đây</h3>
+                  </div>
+                </div>
+                <div className="p-6 h-full overflow-y-auto">
+                  <RecentPosts />
+                </div>
               </div>
             </div>
           </div>
