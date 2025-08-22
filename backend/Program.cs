@@ -107,7 +107,7 @@ app.MapPost("/register", async (RegisterRequest request, NpgsqlDataSource dataSo
 
     var hash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-     const string sql = @"INSERT INTO users (username, passwordhash, email, phonenumber, role, isactive, avatar_url, cover_url) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
+     const string sql = @"INSERT INTO users (username, password_hash, email, phonenumber, role, isactive, avatar_url, cover_url) VALUES (@Username, @Hash, @Email, @PhoneNumber, COALESCE(@Role, 'user'), COALESCE(@IsActive, true), @AvatarUrl, @CoverUrl) RETURNING id;";
 
     var id = await conn.ExecuteScalarAsync<int>(sql, new
     {
@@ -129,7 +129,7 @@ app.MapPost("/login", async (LoginRequest request, NpgsqlDataSource dataSource) 
 {
     using var conn = dataSource.OpenConnection();
     var user = await conn.QuerySingleOrDefaultAsync<(int Id, string PasswordHash)>(
-         "SELECT id, passwordhash FROM users WHERE username = @Username",
+         "SELECT id, password_hash FROM users WHERE username = @Username",
         new { request.Username });
 
     if (user == default || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
