@@ -187,7 +187,7 @@ export default function CreateBlogForm() {
         <div className={`transition-all duration-500 ${activeTab === 'form' ? 'w-full' : 'w-0 overflow-hidden'}`}>
           <div className="h-full overflow-y-auto p-6">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+              <form onSubmit={handleSubmit(onGenerate)} className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
                 {/* Blog Type Selection - Compact */}
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-100">
                   <div className="flex items-center gap-4">
@@ -256,7 +256,7 @@ export default function CreateBlogForm() {
                     )}
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

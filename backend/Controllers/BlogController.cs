@@ -4,7 +4,6 @@ using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 
@@ -52,7 +51,7 @@ public class BlogController : ControllerBase
               _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
 
               var (title, content) = await _ai.GenerateContentAsync(request);
-            var slug = Regex.Replace(title.ToLowerInvariant(), "[^a-z0-9]+", "-").Trim('-');
+              var slug = SlugHelper.GenerateSlug(title);
 
             _logger.LogInformation("Successfully generated content. Returning OK response.");
             return Ok(new { title, slug, generatedContent = content });
@@ -69,21 +68,33 @@ public class BlogController : ControllerBase
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
         var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        
+        var user = await _context.Users
+            .SingleOrDefaultAsync(u => u.Username == username);
+        if (user == null)
+        {
+            _logger.LogWarning("Publish attempted with unknown user {Username}", username);
+            return NotFound(new { message = "User not found." });
+        }
+
         var title = request.BlogType == "product"
             ? request.ProductDetails!.ProductName
             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? string.Empty;
 
+        var slug = SlugHelper.GenerateSlug(title);
         var blog = new Blog
         {
             Title = title,
+            Slug = slug,
             Username = username,
+            User = user,
             Content = request.Content,
             IsPublished = true,
             CreatedDate = DateTime.UtcNow,
             UpdatedDate = DateTime.UtcNow,
         };
 
-         await using var tx = _context.Database.ProviderName?.Contains("InMemory") == true
+        await using var tx = _context.Database.ProviderName?.Contains("InMemory") == true
             ? null
             : await _context.Database.BeginTransactionAsync();
         try
@@ -110,13 +121,13 @@ public class BlogController : ControllerBase
                 _context.TopicBlogs.Add(new TopicBlog
                 {
                     BlogId = blog.Id,
-                     Topic = title,
+                    Topic = title,
                     Content = request.Content ?? string.Empty,
                 });
             }
 
             await _context.SaveChangesAsync();
-             if (tx != null)
+            if (tx != null)
             {
                 await tx.CommitAsync();
             }
@@ -130,7 +141,7 @@ public class BlogController : ControllerBase
             throw;
         }
 
-        return Ok(new { blog.Id });
+         return Ok(new { blog.Id, blog.Slug });
     }
 
     [HttpGet("recent")]
@@ -142,7 +153,7 @@ public class BlogController : ControllerBase
             .Where(b => b.Username == username)
             .OrderByDescending(b => b.UpdatedDate)
             .Take(5)
-            .Select(b => new { b.Id, b.Title })
+            .Select(b => new { b.Id, b.Title, b.Slug })
             .ToListAsync();
         return Ok(recentBlogs);
     }
