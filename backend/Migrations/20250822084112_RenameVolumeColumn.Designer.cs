@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250822052747_AddSlugToBlog")]
-    partial class AddSlugToBlog
+    [Migration("20250822084112_RenameVolumeColumn")]
+    partial class RenameVolumeColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,7 +113,7 @@ namespace backend.Migrations
                     b.Property<string>("Volume")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("volumn");
+                        .HasColumnName("volume");
 
                     b.HasKey("BlogId")
                         .HasName("pk_productblogs");

@@ -23,12 +23,16 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<TopicBlog>().ToTable("topicblogs");
 
         modelBuilder.Entity<User>()
-            .HasKey(u => u.Username);
+              .HasKey(u => u.Id);
+
+        modelBuilder.Entity<User>()
+            .HasAlternateKey(u => u.Username);
 
         modelBuilder.Entity<Blog>()
             .HasOne(b => b.User)
             .WithMany(u => u.Blogs)
-            .HasForeignKey(b => b.Username);
+            .HasForeignKey(b => b.Username)
+            .HasPrincipalKey(u => u.Username);
 
         modelBuilder.Entity<Blog>()
             .HasOne(b => b.ProductBlog)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250822052747_AddSlugToBlog")]
-    partial class AddSlugToBlog
+    [Migration("20250822084004_AddKeywordsToTopicBlog")]
+    partial class AddKeywordsToTopicBlog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,7 +110,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("size");
 
-                    b.Property<string>("Volume")
+                    b.Property<string>("Volumn")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("volumn");
@@ -131,6 +131,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("content");
+
+                    b.Property<string>("Keywords")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("keywords");
 
                     b.Property<string>("Topic")
                         .IsRequired()

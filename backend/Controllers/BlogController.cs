@@ -111,7 +111,7 @@ public class BlogController : ControllerBase
                     ProductType = request.ProductDetails.ProductType,
                     Description = request.ProductDetails.Description ?? string.Empty,
                     Size = request.ProductDetails.Size ?? string.Empty,
-                    Volumn = request.ProductDetails.Volumn ?? string.Empty,
+                    Volume = request.ProductDetails.Volume ?? string.Empty,
                     Feature = request.ProductDetails.Feature ?? string.Empty,
                     Keyword = request.ProductDetails.Keyword ?? string.Empty,
                 });
@@ -123,6 +123,7 @@ public class BlogController : ControllerBase
                     BlogId = blog.Id,
                     Topic = title,
                     Content = request.Content ?? string.Empty,
+                    Keywords = request.TopicDetails.SeoKeywords ?? string.Empty,
                 });
             }
 
@@ -176,7 +177,7 @@ public class ProductDetails
     public string ProductType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Size { get; set; } = string.Empty;
-    public string Volumn { get; set; } = string.Empty;
+     public string Volume { get; set; } = string.Empty;
     public string Feature { get; set; } = string.Empty;
     public string Keyword { get; set; } = string.Empty;    
     public string TargetAudience { get; set; } = string.Empty;

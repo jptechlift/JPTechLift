@@ -10,5 +10,7 @@ public class TopicBlog
     public string Topic { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
 
+        public string Keywords { get; set; } = string.Empty;
     public virtual Blog Blog { get; set; } = null!;
+
 }

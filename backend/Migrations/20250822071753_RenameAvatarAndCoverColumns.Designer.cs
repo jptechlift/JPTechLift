@@ -110,7 +110,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("size");
 
-                    b.Property<string>("Volumn")
+                    b.Property<string>("Volume")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("volumn");

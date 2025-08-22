@@ -11,7 +11,7 @@ public class ProductBlog
     public string ProductType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Size { get; set; } = string.Empty;
-    public string Volumn { get; set; } = string.Empty;
+    public string Volume { get; set; } = string.Empty;
     public string Feature { get; set; } = string.Empty;
     public string Keyword { get; set; } = string.Empty;
 

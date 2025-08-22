@@ -107,10 +107,10 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("size");
 
-                    b.Property<string>("Volumn")
+                 b.Property<string>("Volume")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("volumn");
+                        .HasColumnName("volume");
 
                     b.HasKey("BlogId")
                         .HasName("pk_productblogs");
@@ -129,6 +129,11 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
+                        b.Property<string>("Keywords")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("keywords");
+
                     b.Property<string>("Topic")
                         .IsRequired()
                         .HasColumnType("text")
@@ -142,9 +147,12 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
-                    b.Property<string>("Username")
-                        .HasColumnType("text")
-                        .HasColumnName("username");
+                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("text")
@@ -163,10 +171,6 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("email");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
@@ -177,6 +181,7 @@ namespace backend.Migrations
                         .HasColumnName("password_hash");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("phone_number");
 
@@ -185,8 +190,16 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("role");
 
-                    b.HasKey("Username")
+                  b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id")
                         .HasName("pk_users");
+
+                    b.HasAlternateKey("Username")
+                        .HasName("ak_users_username");
 
                     b.ToTable("users", (string)null);
                 });
@@ -196,6 +209,7 @@ namespace backend.Migrations
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Blogs")
                         .HasForeignKey("Username")
+                        .HasPrincipalKey("Username")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_blogs_users_username");
