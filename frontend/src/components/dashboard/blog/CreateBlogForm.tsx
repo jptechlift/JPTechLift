@@ -14,34 +14,18 @@ const productDetailsSchema = z.object({
   targetAudience: z.string().min(10, "Mô tả đối tượng khách hàng (ít nhất 10 ký tự)"),
   keySellingPoints: z.string().min(10, "Nêu bật ít nhất một lợi ích chính (mỗi ý một dòng)"),
   seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
-  toneOfVoice: z.enum([
-    "Chuyên nghiệp & Kỹ thuật",
-    "Thân thiện & Thuyết phục",
-    "Sang trọng & Cao cấp",
-  ]),
+  toneOfVoice: z.enum(["Chuyên nghiệp & Kỹ thuật", "Thân thiện & Thuyết phục", "Sang trọng & Cao cấp"]),
   useCases: z.string().optional(),
   technicalHighlights: z.string().optional(),
   callToAction: z.string().optional(),
 });
 
 const topicDetailsSchema = z.object({
-  articleTitle: z
-    .string()
-    .min(10, "Tiêu đề bài viết cần ít nhất 10 ký tự"),
-  targetAudience: z
-    .string()
-    .min(10, "Mô tả đối tượng độc giả (ít nhất 10 ký tự)"),
-  mainPoints: z
-    .string()
-    .min(20, "Vui lòng phác thảo các ý chính (ít nhất 20 ký tự)"),
-  seoKeywords: z
-    .string()
-    .min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
-  toneOfVoice: z.enum([
-    "Hướng dẫn & Giáo dục",
-    "Phân tích & Chuyên gia",
-    "Tin tức & Cập nhật",
-  ]),
+  articleTitle: z.string().min(10, "Tiêu đề bài viết cần ít nhất 10 ký tự"),
+  targetAudience: z.string().min(10, "Mô tả đối tượng độc giả (ít nhất 10 ký tự)"),
+  mainPoints: z.string().min(20, "Vui lòng phác thảo các ý chính (ít nhất 20 ký tự)"),
+  seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
+  toneOfVoice: z.enum(["Hướng dẫn & Giáo dục", "Phân tích & Chuyên gia", "Tin tức & Cập nhật"]),
   angle: z.string().optional(),
   callToAction: z.string().optional(),
 });
@@ -53,9 +37,7 @@ const schema = z
     topicDetails: topicDetailsSchema.optional(),
   })
   .refine(
-    (data) =>
-      (data.blogType === "product" && data.productDetails) ||
-      (data.blogType === "topic" && data.topicDetails),
+    (data) => (data.blogType === "product" && data.productDetails) || (data.blogType === "topic" && data.topicDetails),
     {
       message: "Details are required",
       path: ["productDetails"],
@@ -79,15 +61,17 @@ export default function CreateBlogForm() {
   const [finalTitle, setFinalTitle] = useState("");
   const [finalSlug, setFinalSlug] = useState("");
   const [finalContent, setFinalContent] = useState("");
-  const [activeTab, setActiveTab] = useState<'form' | 'preview' | 'recent'>('form');
+  const [activeTab, setActiveTab] = useState<"form" | "preview" | "recent">("form");
+  const [previewUrl, setPreviewUrl] = useState("");
 
   const onGenerate = async (data: FormValues) => {
     console.log("%c[1/4] Frontend: Event handler 'onGenerate' triggered.", "color: blue; font-weight: bold;");
-    
+
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
-    setActiveTab('preview');
+    setPreviewUrl("");
+    setActiveTab("preview");
 
     console.log("%c[2/4] Frontend: Form data prepared for API call:", "color: blue; font-weight: bold;", data);
 
@@ -95,14 +79,24 @@ export default function CreateBlogForm() {
       console.log("Attempting to call API: /api/blog/generate-preview...");
       const res = await blog.generatePreview(data as BlogRequest);
 
-      console.log("%c[4/4] Frontend: API call successful! Response received:", "color: green; font-weight: bold;", res.data);
+      console.log(
+        "%c[4/4] Frontend: API call successful! Response received:",
+        "color: green; font-weight: bold;",
+        res.data
+      );
 
       setFinalTitle(res.data.title);
       setFinalSlug(res.data.slug);
       setFinalContent(res.data.generatedContent);
+       setPreviewUrl(res.data.previewUrl);
     } catch (error: unknown) {
       console.error("%c[!!!] Frontend: API call failed!", "color: red; font-weight: bold;", error);
-      if (error && typeof error === "object" && "response" in error && (error as { response?: { status: number; data: unknown } }).response) {
+      if (
+        error &&
+        typeof error === "object" &&
+        "response" in error &&
+        (error as { response?: { status: number; data: unknown } }).response
+      ) {
         const err = error as { response: { status: number; data: unknown } };
         console.error("Error details:", { status: err.response.status, data: err.response.data });
       }
@@ -119,7 +113,8 @@ export default function CreateBlogForm() {
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
-    setActiveTab('recent');
+    setPreviewUrl("");
+    setActiveTab("recent");
   };
 
   return (
@@ -139,26 +134,26 @@ export default function CreateBlogForm() {
                 <p className="text-sm text-gray-500">Sáng tạo nội dung chất lượng cao</p>
               </div>
             </div>
-            
+
             {/* Tab Navigation */}
             <div className="flex items-center bg-gray-100 rounded-2xl p-1">
               <button
-                onClick={() => setActiveTab('form')}
+                onClick={() => setActiveTab("form")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === 'form'
-                    ? 'bg-white text-blue-600 shadow-lg font-medium'
-                    : 'text-gray-600 hover:text-gray-800'
+                  activeTab === "form"
+                    ? "bg-white text-blue-600 shadow-lg font-medium"
+                    : "text-gray-600 hover:text-gray-800"
                 }`}
               >
                 <Edit3 className="w-4 h-4" />
                 <span className="hidden sm:inline">Form</span>
               </button>
               <button
-                onClick={() => setActiveTab('preview')}
+                onClick={() => setActiveTab("preview")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === 'preview'
-                    ? 'bg-white text-purple-600 shadow-lg font-medium'
-                    : 'text-gray-600 hover:text-gray-800'
+                  activeTab === "preview"
+                    ? "bg-white text-purple-600 shadow-lg font-medium"
+                    : "text-gray-600 hover:text-gray-800"
                 }`}
               >
                 <Eye className="w-4 h-4" />
@@ -166,11 +161,11 @@ export default function CreateBlogForm() {
                 {finalContent && <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />}
               </button>
               <button
-                onClick={() => setActiveTab('recent')}
+                onClick={() => setActiveTab("recent")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === 'recent'
-                    ? 'bg-white text-orange-600 shadow-lg font-medium'
-                    : 'text-gray-600 hover:text-gray-800'
+                  activeTab === "recent"
+                    ? "bg-white text-orange-600 shadow-lg font-medium"
+                    : "text-gray-600 hover:text-gray-800"
                 }`}
               >
                 <FileText className="w-4 h-4" />
@@ -184,10 +179,13 @@ export default function CreateBlogForm() {
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
         {/* Form Section */}
-        <div className={`transition-all duration-500 ${activeTab === 'form' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+        <div className={`transition-all duration-500 ${activeTab === "form" ? "w-full" : "w-0 overflow-hidden"}`}>
           <div className="h-full overflow-y-auto p-6">
             <div className="max-w-4xl mx-auto">
-              <form onSubmit={handleSubmit(onGenerate)} className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
+              <form
+                onSubmit={handleSubmit(onGenerate)}
+                className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden"
+              >
                 {/* Blog Type Selection - Compact */}
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-100">
                   <div className="flex items-center gap-4">
@@ -243,11 +241,11 @@ export default function CreateBlogForm() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     </button>
-                    
+
                     {finalContent && (
                       <button
                         type="button"
-                        onClick={() => setActiveTab('preview')}
+                        onClick={() => setActiveTab("preview")}
                         className="px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 font-medium rounded-2xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 flex items-center gap-2"
                       >
                         <Eye className="w-5 h-5" />
@@ -262,7 +260,7 @@ export default function CreateBlogForm() {
         </div>
 
         {/* Preview Section */}
-        <div className={`transition-all duration-500 ${activeTab === 'preview' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+        <div className={`transition-all duration-500 ${activeTab === "preview" ? "w-full" : "w-0 overflow-hidden"}`}>
           <div className="h-full overflow-y-auto p-6">
             <div className="max-w-4xl mx-auto">
               <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden h-full">
@@ -273,36 +271,39 @@ export default function CreateBlogForm() {
                     <h3 className="text-white font-bold text-lg">Xem trước kết quả</h3>
                   </div>
                   <button
-                    onClick={() => setActiveTab('form')}
+                    onClick={() => setActiveTab("form")}
                     className="text-white/80 hover:text-white transition-colors px-3 py-1 rounded-lg hover:bg-white/10"
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
                 </div>
-                
+
                 {/* Preview Content */}
                 <div className="p-6 h-full overflow-y-auto">
                   {isSubmitting && (
                     <div className="flex flex-col items-center justify-center h-80 text-center">
                       <div className="relative mb-6">
                         <div className="w-12 h-12 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                        <div className="w-8 h-8 border-3 border-purple-200 border-t-purple-600 rounded-full animate-spin absolute top-2 left-2" style={{animationDirection: 'reverse'}}></div>
+                        <div
+                          className="w-8 h-8 border-3 border-purple-200 border-t-purple-600 rounded-full animate-spin absolute top-2 left-2"
+                          style={{ animationDirection: "reverse" }}
+                        ></div>
                       </div>
                       <div className="space-y-2">
                         <p className="text-blue-600 font-bold">🧠 AI đang sáng tạo...</p>
                         <div className="flex items-center justify-center gap-1 mt-4">
                           {[0, 1, 2].map((i) => (
-                            <div 
+                            <div
                               key={i}
-                              className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" 
-                              style={{animationDelay: `${i * 0.1}s`}}
+                              className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
+                              style={{ animationDelay: `${i * 0.1}s` }}
                             />
                           ))}
                         </div>
                       </div>
                     </div>
                   )}
-                  
+
                   {!isSubmitting && finalContent && (
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -327,9 +328,19 @@ export default function CreateBlogForm() {
                             onChange={(e) => setFinalSlug(e.target.value)}
                             className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 font-mono text-sm"
                           />
+                           {previewUrl && (
+                            <a
+                              href={previewUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm text-blue-600 underline mt-1 inline-block"
+                            >
+                              {previewUrl}
+                            </a>
+                          )}
                         </div>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
                           <Edit3 className="w-4 h-4" />
@@ -341,7 +352,7 @@ export default function CreateBlogForm() {
                           className="w-full h-64 p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
                         />
                       </div>
-                      
+
                       <div className="flex gap-3 pt-4 border-t border-gray-100">
                         <button
                           onClick={handleSubmit(onPublish)}
@@ -364,7 +375,7 @@ export default function CreateBlogForm() {
                       </div>
                     </div>
                   )}
-                  
+
                   {!isSubmitting && !finalContent && (
                     <div className="flex flex-col items-center justify-center h-80 text-center">
                       <div className="text-6xl mb-4 opacity-20">🎨</div>
@@ -372,7 +383,7 @@ export default function CreateBlogForm() {
                         <h4 className="text-xl font-semibold text-gray-600">Chưa có nội dung</h4>
                         <p className="text-gray-500">Hãy tạo nội dung từ form để xem trước</p>
                         <button
-                          onClick={() => setActiveTab('form')}
+                          onClick={() => setActiveTab("form")}
                           className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                         >
                           Quay lại Form
@@ -387,7 +398,7 @@ export default function CreateBlogForm() {
         </div>
 
         {/* Recent Posts Section */}
-        <div className={`transition-all duration-500 ${activeTab === 'recent' ? 'w-full' : 'w-0 overflow-hidden'}`}>
+        <div className={`transition-all duration-500 ${activeTab === "recent" ? "w-full" : "w-0 overflow-hidden"}`}>
           <div className="h-full overflow-y-auto p-6">
             <div className="max-w-4xl mx-auto">
               <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">

@@ -10,16 +10,16 @@ import { auth } from "./auth";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const toUserProfile = (data: {
-  name?: string;
-  phone?: string;
+   username?: string;
+  phoneNumber?: string;
   email?: string;
-  avatar?: string;
+  avatarUrl?: string;
   coverUrl?: string;
 }): UserProfile => ({
-  username: data.name ?? "",
-  phoneNumber: data.phone ?? "",
+  username: data.username ?? "",
+  phoneNumber: data.phoneNumber ?? "",
   email: data.email ?? "",
-  avatar: data.avatar ?? "",
+  avatar: data.avatarUrl ?? "",
   coverUrl: data.coverUrl ?? "",
 });
 
@@ -28,7 +28,7 @@ const fromUserProfile = (profile: UserProfile) => ({
   phone: profile.phoneNumber,
   email: profile.email,
   avatar: profile.avatar,
-  coverUrl: profile.coverUrl,
+   cover: profile.coverUrl,
 });
 
 export const user = {

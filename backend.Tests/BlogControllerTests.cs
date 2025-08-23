@@ -70,13 +70,14 @@ public class BlogControllerTests
         Assert.Equal(1, ctx.Blogs.Count());
         var dto = Assert.IsType<BlogDto>(result!.Value);
         Assert.Equal("T", dto.Title);
+        Assert.False(string.IsNullOrEmpty(dto.Slug));
     }
 
     [Fact]
     public async Task Recent_ReturnsBlogs()
     {
         var controller = CreateController(out var ctx);
-        ctx.Blogs.Add(new Blog { Title = "A", Username = "user1", UpdatedDate = DateTime.UtcNow });
+        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", UpdatedDate = DateTime.UtcNow });
         ctx.SaveChanges();
         var result = await controller.Recent() as OkObjectResult;
         Assert.NotNull(result);

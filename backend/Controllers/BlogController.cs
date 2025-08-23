@@ -8,6 +8,9 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Backend.Dtos;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Text;
 
 namespace Backend.Controllers;
 
@@ -30,7 +33,7 @@ public class BlogController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-             // --- VERIFICATION LOGGING ---
+        // --- VERIFICATION LOGGING ---
         _logger.LogInformation("[1/3] Backend: Endpoint 'generate-preview' received a request.");
 
         try
@@ -39,9 +42,9 @@ public class BlogController : ControllerBase
             var payloadJson = System.Text.Json.JsonSerializer.Serialize(request);
             _logger.LogInformation("[2/3] Backend: Deserialized payload: {Payload}", payloadJson);
 
-          var baseTitle = request.BlogType == "product"
-                ? request.ProductDetails?.ProductName
-                : request.TopicDetails?.ArticleTitle;
+            var baseTitle = request.BlogType == "product"
+                  ? request.ProductDetails?.ProductName
+                  : request.TopicDetails?.ArticleTitle;
 
             if (string.IsNullOrWhiteSpace(baseTitle))
             {
@@ -50,12 +53,13 @@ public class BlogController : ControllerBase
             }
 
             // --- VERIFICATION LOGGING ---
-              _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
+            _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
 
-              var (title, content) = await _ai.GenerateContentAsync(request);        
+            var (title, content) = await _ai.GenerateContentAsync(request);
+            var slug = ToFriendlyUrl(title);
 
             _logger.LogInformation("Successfully generated content. Returning OK response.");
-             return Ok(new { title, generatedContent = content });
+            return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}" });
         }
         catch (Exception ex)
         {
@@ -69,7 +73,7 @@ public class BlogController : ControllerBase
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
         var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
-        
+
         var user = await _context.Users
             .SingleOrDefaultAsync(u => u.Username == username);
         if (user == null)
@@ -82,9 +86,14 @@ public class BlogController : ControllerBase
             ? request.ProductDetails!.ProductName
             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? string.Empty;
 
+        var slug = string.IsNullOrWhiteSpace(request.Slug)
+            ? ToFriendlyUrl(title)
+            : request.Slug!;
+
         var blog = new Blog
         {
             Title = title,
+            Slug = slug,
             Username = username,
             User = user,
             IsPublished = true,
@@ -140,7 +149,7 @@ public class BlogController : ControllerBase
             throw;
         }
 
-         return Ok(blog.ToDto());
+        return Ok(blog.ToDto());
     }
 
     [HttpGet("recent")]
@@ -155,6 +164,25 @@ public class BlogController : ControllerBase
             .ToListAsync();
         return Ok(recentBlogs.Select(b => b.ToDto()));
     }
+
+    private static string ToFriendlyUrl(string title)
+    {
+        var normalized = title.ToLowerInvariant().Normalize(NormalizationForm.FormD);
+        var sb = new StringBuilder();
+        foreach (var c in normalized)
+        {
+            var uc = CharUnicodeInfo.GetUnicodeCategory(c);
+            if (uc != UnicodeCategory.NonSpacingMark)
+            {
+                sb.Append(c);
+            }
+        }
+        var result = sb.ToString().Normalize(NormalizationForm.FormC);
+        result = Regex.Replace(result, @"[^a-z0-9\s-]", "");
+        result = Regex.Replace(result, @"\s+", " ").Trim();
+        result = Regex.Replace(result, @"\s", "-");
+        return result;
+    }
 }
 
 public class BlogRequest
@@ -165,6 +193,9 @@ public class BlogRequest
     public TopicDetails? TopicDetails { get; set; }
         = null;
     public string? Content { get; set; }
+        = null;
+
+    public string? Slug { get; set; }
         = null;
 }
 

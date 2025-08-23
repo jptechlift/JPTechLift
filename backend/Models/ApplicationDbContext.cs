@@ -29,6 +29,9 @@ public class ApplicationDbContext : DbContext
             .HasAlternateKey(u => u.Username);
 
         modelBuilder.Entity<Blog>()
+            .HasAlternateKey(b => b.Slug);
+
+        modelBuilder.Entity<Blog>()
             .HasOne(b => b.User)
             .WithMany(u => u.Blogs)
             .HasForeignKey(b => b.Username)
