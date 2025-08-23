@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import styles from '../../styles/pages/blog-page/blog-page.module.scss';
@@ -59,7 +60,8 @@ export default function BlogPage() {
 
       <div className={styles.grid}>
         {shownBlogs.map((blogItem, idx) => (
-          <div
+          <Link
+            to={`/blogs/${blogItem.slug}`}
             key={blogItem.id}
             className={styles.card}
             data-aos="zoom-in-up"
@@ -74,7 +76,7 @@ export default function BlogPage() {
             )}
             <h3>{blogItem.title}</h3>
             <p>{blogItem.content}</p>
-          </div>
+        </Link>
         ))}
       </div>
 

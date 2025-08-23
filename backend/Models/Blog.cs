@@ -17,6 +17,7 @@ public class Blog
     public DateTime UpdatedDate { get; set; }
         = DateTime.UtcNow;
     public bool IsPublished { get; set; } = false;
+     public int ViewCount { get; set; } = 0;
     public string Username { get; set; } = string.Empty;
     public virtual User User { get; set; } = null!;
 

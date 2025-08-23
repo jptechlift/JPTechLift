@@ -162,104 +162,35 @@ public class BlogController : ControllerBase
         return Ok(blog.ToDto());
     }
 
- [HttpPut("{id}")]
-    [Authorize]
-    public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
+[HttpGet("{slug}")]
+    public async Task<IActionResult> GetBySlug(string slug)
     {
-        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
         var blog = await _context.Blogs
+            .Include(b => b.User)
             .Include(b => b.ProductBlog)
             .Include(b => b.TopicBlog)
-            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
-
+            .SingleOrDefaultAsync(b => b.Slug == slug && b.IsPublished);
         if (blog == null)
         {
-            return NotFound(new { message = "Blog not found." });
+            return NotFound();
         }
-
-        var title = request.BlogType == "product"
-            ? request.ProductDetails!.ProductName
-            : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? blog.Title;
-
-        blog.Title = title;
-        if (!string.IsNullOrWhiteSpace(request.Slug))
-        {
-            blog.Slug = request.Slug!;
-        }
-        blog.UpdatedDate = DateTime.UtcNow;
-
-        if (request.BlogType == "topic" && request.TopicDetails != null)
-        {
-            if (blog.TopicBlog == null)
-            {
-                blog.TopicBlog = new TopicBlog { BlogId = blog.Id };
-                _context.TopicBlogs.Add(blog.TopicBlog);
-            }
-
-            blog.TopicBlog.Topic = title;
-            blog.TopicBlog.Content = request.Content ?? string.Empty;
-            blog.TopicBlog.TargetAudience = request.TopicDetails.TargetAudience ?? string.Empty;
-            blog.TopicBlog.KeySellingPoints = request.TopicDetails.KeySellingPoints ?? string.Empty;
-            blog.TopicBlog.SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty;
-
-            if (blog.ProductBlog != null)
-            {
-                _context.ProductBlogs.Remove(blog.ProductBlog);
-            }
-        }
-        else if (request.BlogType == "product" && request.ProductDetails != null)
-        {
-            if (blog.ProductBlog == null)
-            {
-                blog.ProductBlog = new ProductBlog { BlogId = blog.Id };
-                _context.ProductBlogs.Add(blog.ProductBlog);
-            }
-
-            blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
-            blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
-            blog.ProductBlog.Description = request.ProductDetails.Description ?? string.Empty;
-            blog.ProductBlog.Size = request.ProductDetails.Size ?? string.Empty;
-            blog.ProductBlog.Volume = request.ProductDetails.Volume ?? string.Empty;
-            blog.ProductBlog.Feature = request.ProductDetails.Feature ?? string.Empty;
-            blog.ProductBlog.Keyword = request.ProductDetails.Keyword ?? string.Empty;
-
-            if (blog.TopicBlog != null)
-            {
-                _context.TopicBlogs.Remove(blog.TopicBlog);
-            }
-        }
-
+blog.ViewCount++;
         await _context.SaveChangesAsync();
         return Ok(blog.ToDto());
     }
 
-    [HttpDelete("{id}")]
-    [Authorize]
-    public async Task<IActionResult> Delete(int id)
+    [HttpGet("/api/blogs")]
+    public async Task<IActionResult> ListPublished()
     {
-        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
-        var blog = await _context.Blogs
+        var blogs = await _context.Blogs
+            .Where(b => b.IsPublished)
+            .OrderByDescending(b => b.CreatedDate)
+            .Include(b => b.User)
             .Include(b => b.ProductBlog)
             .Include(b => b.TopicBlog)
-            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
+            .ToListAsync();
+        return Ok(blogs.Select(b => b.ToDto()));
 
-        if (blog == null)
-        {
-            return NotFound(new { message = "Blog not found." });
-        }
-
-        if (blog.ProductBlog != null)
-        {
-            _context.ProductBlogs.Remove(blog.ProductBlog);
-        }
-        if (blog.TopicBlog != null)
-        {
-            _context.TopicBlogs.Remove(blog.TopicBlog);
-        }
-
-        _context.Blogs.Remove(blog);
-        await _context.SaveChangesAsync();
-        return NoContent();
     }
 
     [HttpGet("recent")]
@@ -326,7 +257,7 @@ public class BlogController : ControllerBase
             }
             blog.TopicBlog.Topic = title;
             blog.TopicBlog.Content = request.Content ?? string.Empty;
-            blog.TopicBlog.Keywords = request.TopicDetails.SeoKeywords ?? string.Empty;
+            blog.TopicBlog.SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty;
 
             if (blog.ProductBlog != null)
             {

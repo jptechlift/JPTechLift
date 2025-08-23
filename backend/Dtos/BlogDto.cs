@@ -10,6 +10,9 @@ public class BlogDto
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
     public bool IsPublished { get; set; }
+    public string Author { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public int ViewCount { get; set; }
     public ProductBlogDto? ProductBlog { get; set; }
 }
 
@@ -36,6 +39,9 @@ public static class BlogMappings
         CreatedDate = blog.CreatedDate,
         UpdatedDate = blog.UpdatedDate,
         IsPublished = blog.IsPublished,
+        Author = blog.Username,
+        Content = blog.TopicBlog?.Content ?? blog.ProductBlog?.Description ?? string.Empty,
+        ViewCount = blog.ViewCount,
         ProductBlog = blog.ProductBlog == null ? null : new ProductBlogDto
         {
             ProductName = blog.ProductBlog.ProductName,

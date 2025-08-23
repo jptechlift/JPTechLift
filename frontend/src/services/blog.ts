@@ -6,6 +6,9 @@ export interface BlogPost {
   title: string;
   content: string;
   slug: string;
+  author: string;
+  createdDate: string;
+  viewCount: number;
   imageUrl?: string;
 }
 
@@ -56,11 +59,17 @@ const API_URL = (() => {
 
 export const blog = {
   async list(): Promise<BlogPost[]> {
-    const res = await fetch(`${API_URL}/blogs`);
+     const res = await fetch(`${API_URL}/api/blogs`);
     if (!res.ok) throw new Error("Failed to load blogs");
     return res.json();
   },
 
+  async get(slug: string): Promise<BlogPost> {
+    const res = await fetch(`${API_URL}/api/blog/${slug}`);
+    if (!res.ok) throw new Error("Failed to load blog");
+    return res.json();
+  },
+  
   generatePreview(data: BlogRequest) {
     const headers: Record<string, string> = {};
     const token = auth.getToken();

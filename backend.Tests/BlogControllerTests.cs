@@ -22,7 +22,7 @@ public class BlogControllerTests
             .Options;
         ctx = new ApplicationDbContext(options);
 
-         ctx.Users.Add(new User
+        ctx.Users.Add(new User
         {
             Username = "user1",
             PasswordHash = "hash",
@@ -31,7 +31,7 @@ public class BlogControllerTests
             IsActive = true
         });
         ctx.SaveChanges();
-        
+
         var config = new ConfigurationBuilder().AddInMemoryCollection(
         new Dictionary<string, string> { { "GEMINI_API_KEY", "test" } }).Build();
         var ai = new AiBlogService(new HttpClient(), config, NullLogger<AiBlogService>.Instance);
@@ -51,7 +51,7 @@ public class BlogControllerTests
         var result = await controller.GeneratePreview(new BlogRequest
         {
             BlogType = "topic",
-              TopicDetails = new TopicDetails { ArticleTitle = "Hello" }
+            TopicDetails = new TopicDetails { ArticleTitle = "Hello" }
         }) as OkObjectResult;
         Assert.NotNull(result);
     }
@@ -73,7 +73,7 @@ public class BlogControllerTests
         Assert.False(string.IsNullOrEmpty(dto.Slug));
     }
 
-[Fact]
+    [Fact]
     public async Task Publish_GeneratesUniqueSlug()
     {
         var controller = CreateController(out var ctx);
@@ -100,5 +100,37 @@ public class BlogControllerTests
         ctx.SaveChanges();
         var result = await controller.Recent() as OkObjectResult;
         Assert.NotNull(result);
+    }
+    
+    [Fact]
+    public async Task GetBySlug_IncrementsViewCount()
+    {
+        var controller = CreateController(out var ctx);
+        ctx.Blogs.Add(new Blog
+        {
+            Title = "A",
+            Slug = "a",
+            Username = "user1",
+            IsPublished = true,
+            TopicBlog = new TopicBlog { Content = "C" }
+        });
+        ctx.SaveChanges();
+        var result = await controller.GetBySlug("a") as OkObjectResult;
+        var dto = Assert.IsType<BlogDto>(result!.Value);
+        Assert.Equal(1, dto.ViewCount);
+        Assert.Equal(1, ctx.Blogs.Single().ViewCount);
+    }
+
+    [Fact]
+    public async Task ListPublished_ReturnsOnlyPublished()
+    {
+        var controller = CreateController(out var ctx);
+        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", IsPublished = true });
+        ctx.Blogs.Add(new Blog { Title = "B", Slug = "b", Username = "user1", IsPublished = false });
+        ctx.SaveChanges();
+        var result = await controller.ListPublished() as OkObjectResult;
+        var list = Assert.IsAssignableFrom<IEnumerable<BlogDto>>(result!.Value);
+        Assert.Single(list);
+        Assert.Equal("a", list.First().Slug);
     }
 }

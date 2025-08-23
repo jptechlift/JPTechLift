@@ -12,6 +12,7 @@ import ServiceTemplatePage from "./pages/Services/ServiceTemplatePage";
 import NewsPage from "./pages/News/NewsPage";
 import AboutUsPage from "./pages/AboutUsPage";
 import BlogPage from "./pages/BlogPage";
+import BlogDetailPage from "./pages/BlogDetailPage";
 import ContactJPTechLiftFormPage from "./pages/ContactPage";
 import TuVan from "./pages/Services/AdvisePage";
 import HuongDan from "./pages/Services/InstructionPage";
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/gioi-thieu" element={<AboutUsPage />} />
           {/* Trang về chúng tôi */}
           <Route path="/blog-thang-may" element={<BlogPage />} /> {/* Trang blog */}
+           <Route path="/blogs/:slug" element={<BlogDetailPage />} />
           <Route path="/lien-he" element={<ContactJPTechLiftFormPage />} /> {/* Trang liên hệ */}
           <Route path="/dich-vu-thang-may" element={<ServiceTemplatePage />} />
           {/* Trang thẩm mĩ */}
