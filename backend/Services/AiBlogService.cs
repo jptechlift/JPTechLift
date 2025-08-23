@@ -153,7 +153,7 @@ catch (JsonException jsonEx)
             promptBuilder.AppendLine("- Loại bài viết: Phân tích chủ đề");
             promptBuilder.AppendLine($"- Tiêu đề mong muốn: \"{t.ArticleTitle}\"");
             promptBuilder.AppendLine($"- Đối tượng độc giả: {t.TargetAudience}");
-            promptBuilder.AppendLine($"- Các ý chính cần triển khai: {t.MainPoints}");
+            promptBuilder.AppendLine($"- Các ý chính cần triển khai: {t.KeySellingPoints}");
             promptBuilder.AppendLine($"- Từ khóa SEO: {t.SeoKeywords}");
             promptBuilder.AppendLine($"- Văn phong: {t.ToneOfVoice}");
         }

@@ -13,7 +13,8 @@ public class ProductBlog
     public string Size { get; set; } = string.Empty;
     public string Volume { get; set; } = string.Empty;
     public string Feature { get; set; } = string.Empty;
-    public string Keyword { get; set; } = string.Empty;
-
+     public string TargetAudience { get; set; } = string.Empty;
+    public string KeySellingPoints { get; set; } = string.Empty;
+    public string SeoKeywords { get; set; } = string.Empty;
     public virtual Blog Blog { get; set; } = null!;
 }

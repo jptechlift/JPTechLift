@@ -9,8 +9,9 @@ public class TopicBlog
     public int BlogId { get; set; }
     public string Topic { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
-
-        public string Keywords { get; set; } = string.Empty;
+    public string TargetAudience { get; set; } = string.Empty;
+    public string KeySellingPoints { get; set; } = string.Empty;
+    public string SeoKeywords { get; set; } = string.Empty;
     public virtual Blog Blog { get; set; } = null!;
 
 }

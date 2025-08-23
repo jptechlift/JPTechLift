@@ -3,6 +3,7 @@ using System;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250823061601_AddProductBlogFields")]
+    partial class AddProductBlogFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,8 +64,10 @@ namespace backend.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_blogs");
+
                     b.HasAlternateKey("Slug")
                         .HasName("ak_blogs_slug");
+
                     b.HasIndex("Username")
                         .HasDatabaseName("ix_blogs_username");
 
@@ -85,7 +90,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("feature");
 
-                     b.Property<string>("KeySellingPoints")
+                    b.Property<string>("KeySellingPoints")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("key_selling_points");
@@ -137,20 +142,10 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
-                    b.Property<string>("KeySellingPoints")
+                    b.Property<string>("Keywords")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("key_selling_points");
-
-                    b.Property<string>("SeoKeywords")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("seo_keywords");
-
-                    b.Property<string>("TargetAudience")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("target_audience");
+                        .HasColumnName("keywords");
 
                     b.Property<string>("Topic")
                         .IsRequired()

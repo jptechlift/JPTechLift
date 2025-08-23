@@ -126,7 +126,9 @@ public class BlogController : ControllerBase
                     Size = request.ProductDetails.Size ?? string.Empty,
                     Volume = request.ProductDetails.Volume ?? string.Empty,
                     Feature = request.ProductDetails.Feature ?? string.Empty,
-                    Keyword = request.ProductDetails.Keyword ?? string.Empty,
+                    TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty,
+                    KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty,
+                    SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty,
                 });
             }
             else if (request.BlogType == "topic" && request.TopicDetails != null)
@@ -136,7 +138,9 @@ public class BlogController : ControllerBase
                     BlogId = blog.Id,
                     Topic = title,
                     Content = request.Content ?? string.Empty,
-                    Keywords = request.TopicDetails.SeoKeywords ?? string.Empty,
+                    TargetAudience = request.TopicDetails.TargetAudience ?? string.Empty,
+                    KeySellingPoints = request.TopicDetails.KeySellingPoints ?? string.Empty,
+                    SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty,
                 });
             }
 
@@ -158,6 +162,106 @@ public class BlogController : ControllerBase
         return Ok(blog.ToDto());
     }
 
+ [HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var blog = await _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
+
+        if (blog == null)
+        {
+            return NotFound(new { message = "Blog not found." });
+        }
+
+        var title = request.BlogType == "product"
+            ? request.ProductDetails!.ProductName
+            : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? blog.Title;
+
+        blog.Title = title;
+        if (!string.IsNullOrWhiteSpace(request.Slug))
+        {
+            blog.Slug = request.Slug!;
+        }
+        blog.UpdatedDate = DateTime.UtcNow;
+
+        if (request.BlogType == "topic" && request.TopicDetails != null)
+        {
+            if (blog.TopicBlog == null)
+            {
+                blog.TopicBlog = new TopicBlog { BlogId = blog.Id };
+                _context.TopicBlogs.Add(blog.TopicBlog);
+            }
+
+            blog.TopicBlog.Topic = title;
+            blog.TopicBlog.Content = request.Content ?? string.Empty;
+            blog.TopicBlog.TargetAudience = request.TopicDetails.TargetAudience ?? string.Empty;
+            blog.TopicBlog.KeySellingPoints = request.TopicDetails.KeySellingPoints ?? string.Empty;
+            blog.TopicBlog.SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty;
+
+            if (blog.ProductBlog != null)
+            {
+                _context.ProductBlogs.Remove(blog.ProductBlog);
+            }
+        }
+        else if (request.BlogType == "product" && request.ProductDetails != null)
+        {
+            if (blog.ProductBlog == null)
+            {
+                blog.ProductBlog = new ProductBlog { BlogId = blog.Id };
+                _context.ProductBlogs.Add(blog.ProductBlog);
+            }
+
+            blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
+            blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
+            blog.ProductBlog.Description = request.ProductDetails.Description ?? string.Empty;
+            blog.ProductBlog.Size = request.ProductDetails.Size ?? string.Empty;
+            blog.ProductBlog.Volume = request.ProductDetails.Volume ?? string.Empty;
+            blog.ProductBlog.Feature = request.ProductDetails.Feature ?? string.Empty;
+            blog.ProductBlog.Keyword = request.ProductDetails.Keyword ?? string.Empty;
+
+            if (blog.TopicBlog != null)
+            {
+                _context.TopicBlogs.Remove(blog.TopicBlog);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok(blog.ToDto());
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var blog = await _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
+
+        if (blog == null)
+        {
+            return NotFound(new { message = "Blog not found." });
+        }
+
+        if (blog.ProductBlog != null)
+        {
+            _context.ProductBlogs.Remove(blog.ProductBlog);
+        }
+        if (blog.TopicBlog != null)
+        {
+            _context.TopicBlogs.Remove(blog.TopicBlog);
+        }
+
+        _context.Blogs.Remove(blog);
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
+
     [HttpGet("recent")]
     [Authorize]
     public async Task<IActionResult> Recent()
@@ -169,6 +273,88 @@ public class BlogController : ControllerBase
             .Take(5)
             .ToListAsync();
         return Ok(recentBlogs.Select(b => b.ToDto()));
+    }
+    
+[HttpPut("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var blog = await _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
+        if (blog == null)
+        {
+            return NotFound(new { message = "Blog not found." });
+        }
+
+        var title = request.BlogType == "product"
+            ? request.ProductDetails!.ProductName
+            : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? blog.Title;
+        blog.Title = title;
+        blog.Slug = string.IsNullOrWhiteSpace(request.Slug) ? ToFriendlyUrl(title) : request.Slug!;
+        blog.UpdatedDate = DateTime.UtcNow;
+
+        if (request.BlogType == "product" && request.ProductDetails != null)
+        {
+            if (blog.ProductBlog == null)
+            {
+                blog.ProductBlog = new ProductBlog { BlogId = blog.Id };
+            }
+
+            blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
+            blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
+            blog.ProductBlog.Description = request.ProductDetails.Description ?? string.Empty;
+            blog.ProductBlog.Size = request.ProductDetails.Size ?? string.Empty;
+            blog.ProductBlog.Volume = request.ProductDetails.Volume ?? string.Empty;
+            blog.ProductBlog.Feature = request.ProductDetails.Feature ?? string.Empty;
+            blog.ProductBlog.TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty;
+            blog.ProductBlog.KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty;
+            blog.ProductBlog.SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty;
+
+            if (blog.TopicBlog != null)
+            {
+                _context.TopicBlogs.Remove(blog.TopicBlog);
+            }
+        }
+        else if (request.BlogType == "topic" && request.TopicDetails != null)
+        {
+            if (blog.TopicBlog == null)
+            {
+                blog.TopicBlog = new TopicBlog { BlogId = blog.Id };
+            }
+            blog.TopicBlog.Topic = title;
+            blog.TopicBlog.Content = request.Content ?? string.Empty;
+            blog.TopicBlog.Keywords = request.TopicDetails.SeoKeywords ?? string.Empty;
+
+            if (blog.ProductBlog != null)
+            {
+                _context.ProductBlogs.Remove(blog.ProductBlog);
+            }
+        }
+
+        await _context.SaveChangesAsync();
+        return Ok(blog.ToDto());
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        var blog = await _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .SingleOrDefaultAsync(b => b.Id == id && b.Username == username);
+        if (blog == null)
+        {
+            return NotFound(new { message = "Blog not found." });
+        }
+
+        _context.Blogs.Remove(blog);
+        await _context.SaveChangesAsync();
+        return NoContent();
     }
 
     private static string ToFriendlyUrl(string title)
@@ -211,14 +397,13 @@ public class ProductDetails
     public string ProductType { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Size { get; set; } = string.Empty;
-     public string Volume { get; set; } = string.Empty;
+    public string Volume { get; set; } = string.Empty;
     public string Feature { get; set; } = string.Empty;
-    public string Keyword { get; set; } = string.Empty;    
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
     public string ToneOfVoice { get; set; } = string.Empty;
-}
+    }
 
 public class TopicDetails
 {
@@ -226,7 +411,7 @@ public class TopicDetails
     public string? ArticleTitle { get; set; }
     public string? Topic { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
-    public string MainPoints { get; set; } = string.Empty;
+    public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
     public string ToneOfVoice { get; set; } = string.Empty;
 }
