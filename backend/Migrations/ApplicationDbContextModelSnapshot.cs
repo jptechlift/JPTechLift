@@ -60,7 +60,8 @@ namespace backend.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_blogs");
-
+                    b.HasAlternateKey("Slug")
+                        .HasName("ak_blogs_slug");
                     b.HasIndex("Username")
                         .HasDatabaseName("ix_blogs_username");
 

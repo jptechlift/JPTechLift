@@ -73,6 +73,25 @@ public class BlogControllerTests
         Assert.False(string.IsNullOrEmpty(dto.Slug));
     }
 
+[Fact]
+    public async Task Publish_GeneratesUniqueSlug()
+    {
+        var controller = CreateController(out var ctx);
+        var request = new BlogRequest
+        {
+            BlogType = "topic",
+            TopicDetails = new TopicDetails { ArticleTitle = "Hello World" },
+            Content = "C"
+        };
+
+        await controller.Publish(request);
+        await controller.Publish(request);
+
+        var slugs = ctx.Blogs.Select(b => b.Slug).ToList();
+        Assert.Contains("hello-world", slugs);
+        Assert.Contains("hello-world-1", slugs);
+    }
+
     [Fact]
     public async Task Recent_ReturnsBlogs()
     {

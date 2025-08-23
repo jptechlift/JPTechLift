@@ -8,6 +8,9 @@ public class Blog
     [Key]
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
+    
+    [Required]
+    [MaxLength(200)]
     public string Slug { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; }
         = DateTime.UtcNow;

@@ -86,9 +86,15 @@ public class BlogController : ControllerBase
             ? request.ProductDetails!.ProductName
             : request.TopicDetails?.ArticleTitle ?? request.TopicDetails?.Topic ?? string.Empty;
 
-        var slug = string.IsNullOrWhiteSpace(request.Slug)
+        var baseSlug = string.IsNullOrWhiteSpace(request.Slug)
             ? ToFriendlyUrl(title)
             : request.Slug!;
+        var slug = baseSlug;
+        var suffix = 1;
+        while (await _context.Blogs.AnyAsync(b => b.Slug == slug))
+        {
+            slug = $"{baseSlug}-{suffix++}";
+        }
 
         var blog = new Blog
         {
