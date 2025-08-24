@@ -91,7 +91,7 @@ string GenerateJwt(int userId, string username)
     return new JwtSecurityTokenHandler().WriteToken(token);
 }
 
-app.MapPost("/register", async (RegisterRequest request, NpgsqlDataSource dataSource) =>
+app.MapPost("/api/auth/register", async (RegisterRequest request, NpgsqlDataSource dataSource) =>
 {
     using var conn = dataSource.OpenConnection();
 
