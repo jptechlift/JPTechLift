@@ -15,6 +15,7 @@ export interface BlogPost {
 export type ProductDetails = {
   productName: string;
   productType: string;
+  description?: string;
   targetAudience: string;
   keySellingPoints: string;
   seoKeywords: string;
@@ -59,15 +60,13 @@ const API_URL = (() => {
 
 export const blog = {
   async list(): Promise<BlogPost[]> {
-     const res = await fetch(`${API_URL}/api/blogs`);
-    if (!res.ok) throw new Error("Failed to load blogs");
-    return res.json();
+    const res = await axios.get(`${API_URL}/api/blogs`);
+    return res.data;
   },
 
   async get(slug: string): Promise<BlogPost> {
-    const res = await fetch(`${API_URL}/api/blog/${slug}`);
-    if (!res.ok) throw new Error("Failed to load blog");
-    return res.json();
+    const res = await axios.get(`${API_URL}/api/blog/${slug}`);
+    return res.data;
   },
   
   generatePreview(data: BlogRequest) {

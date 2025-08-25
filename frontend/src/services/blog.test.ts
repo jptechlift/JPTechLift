@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import axios from "axios";
-import { blog, BlogRequest } from "./blog";
+import { blog, BlogRequest, BlogPost } from "./blog";
 
 vi.mock("axios", () => ({
   default: {
@@ -30,10 +30,13 @@ describe("blog service", () => {
   };
 
   const mockedPost = axios.post as unknown as Mock;
+  const mockedGet = axios.get as unknown as Mock;
 
   beforeEach(() => {
     mockedPost.mockReset();
     mockedPost.mockResolvedValue({ data: {} });
+    mockedGet.mockReset();
+    mockedGet.mockResolvedValue({ data: [] });
   });
 
   it("sends description in generatePreview", async () => {
@@ -56,5 +59,39 @@ describe("blog service", () => {
       }),
       expect.any(Object)
     );
+  });
+
+  it("returns list of blogs", async () => {
+    const posts: BlogPost[] = [
+      {
+        id: "1",
+        title: "T",
+        content: "C",
+        slug: "s",
+        author: "a",
+        createdDate: "2024-01-01",
+        viewCount: 0,
+      },
+    ];
+    mockedGet.mockResolvedValueOnce({ data: posts });
+    const res = await blog.list();
+    expect(mockedGet).toHaveBeenCalledWith(expect.stringContaining("/api/blogs"));
+    expect(res).toEqual(posts);
+  });
+
+  it("returns a blog post", async () => {
+    const post: BlogPost = {
+      id: "1",
+      title: "T",
+      content: "C",
+      slug: "s",
+      author: "a",
+      createdDate: "2024-01-01",
+      viewCount: 0,
+    };
+    mockedGet.mockResolvedValueOnce({ data: post });
+    const res = await blog.get("s");
+    expect(mockedGet).toHaveBeenCalledWith(expect.stringContaining("/api/blog/s"));
+    expect(res).toEqual(post);
   });
 });

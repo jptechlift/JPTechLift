@@ -2,16 +2,27 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { blog, BlogPost } from "../services/blog";
+import NotFound from "./NotFound";
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPost | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (slug) {
-      blog.get(slug).then(setPost).catch(() => {});
+      blog
+        .get(slug)
+        .then(setPost)
+        .catch(() => {
+          setError(true);
+        });
     }
   }, [slug]);
+
+  if (error) {
+    return <NotFound />;
+  }
 
   if (!post) {
     return <div>Loading...</div>;
