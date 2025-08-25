@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,6 +7,7 @@ import TopicBlogForm from "./TopicBlogForm";
 import RecentPosts from "./RecentPosts";
 import { blog, BlogRequest } from "../../../services/blog";
 import { ChevronDown, Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const productDetailsSchema = z.object({
   productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
@@ -58,14 +58,15 @@ export default function CreateBlogForm() {
     resolver: zodResolver(schema),
     defaultValues: { blogType: "product" },
   });
-  
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const blogType = watch("blogType");
   const [finalTitle, setFinalTitle] = useState("");
   const [finalSlug, setFinalSlug] = useState("");
   const [finalContent, setFinalContent] = useState("");
   const [activeTab, setActiveTab] = useState<"form" | "preview" | "recent">("form");
   const [previewUrl, setPreviewUrl] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   const onGenerate = async (data: FormValues) => {
     console.log("%c[1/4] Frontend: Event handler 'onGenerate' triggered.", "color: blue; font-weight: bold;");
@@ -107,17 +108,18 @@ const navigate = useNavigate();
   };
 
   const onPublish = async (data: FormValues) => {
-    await blog.create({
-      ...(data as BlogRequest),
-      title: finalTitle,
-      slug: finalSlug,
-      content: finalContent,
-    });
-    setFinalTitle("");
-    setFinalSlug("");
-    setFinalContent("");
-    setPreviewUrl("");
-    setActiveTab("recent");
+   setIsPublishing(true);
+    try {
+      await blog.create({
+        ...(data as BlogRequest),
+        title: finalTitle,
+        slug: finalSlug,
+        content: finalContent,
+      });
+      navigate(`/blogs/${finalSlug}`);
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   return (
@@ -336,7 +338,9 @@ const navigate = useNavigate();
                               href={previewUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm text-blue-600 underline mt-1 inline-block"
+                              className={`text-sm text-blue-600 underline mt-1 inline-block ${
+                                isPublishing ? "pointer-events-none opacity-50" : ""
+                              }`}
                             >
                               {previewUrl}
                             </a>
@@ -412,7 +416,7 @@ const navigate = useNavigate();
                   </div>
                 </div>
                 <div className="p-6 h-full overflow-y-auto">
-                  <RecentPosts />
+                <RecentPosts refreshKey={refreshKey} />
                 </div>
               </div>
             </div>
