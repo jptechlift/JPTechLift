@@ -1,12 +1,18 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { blog } from "../../../services/blog";
 
 interface RecentPost {
   id: number;
   title: string;
+  slug: string;
 }
 
-export default function RecentPosts() {
+interface RecentPostsProps {
+  refreshKey: number;
+}
+
+export default function RecentPosts({ refreshKey }: RecentPostsProps) {
   const [posts, setPosts] = useState<RecentPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -14,12 +20,19 @@ export default function RecentPosts() {
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-    
+
     blog
       .recent()
       .then((res) => {
         if (mounted) {
-          setPosts(res.data);
+          const posts: RecentPost[] = res.data.map(
+            (p: { id: number; title: string; slug: string }) => ({
+              id: p.id,
+              title: p.title,
+              slug: p.slug,
+            })
+          );
+          setPosts(posts);
           setError(false);
         }
       })
@@ -38,7 +51,7 @@ export default function RecentPosts() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="border border-slate-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -79,7 +92,7 @@ export default function RecentPosts() {
           <div className="text-center py-6">
             <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
               </svg>
             </div>
             <p className="text-sm text-slate-600 font-medium">Không thể tải bài viết</p>
@@ -104,9 +117,10 @@ export default function RecentPosts() {
         ) : (
           <div className="space-y-1">
             {posts.map((post, index) => (
-              <div
+              <Link
+                to={`/blogs/${post.slug}`}
                 key={post.id}
-                className="group p-3 rounded-lg hover:bg-slate-50 transition-all duration-200 cursor-pointer border border-transparent hover:border-slate-200"
+                className="group block p-3 rounded-lg hover:bg-slate-50 transition-all duration-200 cursor-pointer border border-transparent hover:border-slate-200"
               >
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
@@ -124,7 +138,7 @@ export default function RecentPosts() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
