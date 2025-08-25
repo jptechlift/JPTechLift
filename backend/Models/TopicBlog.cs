@@ -11,6 +11,7 @@ public class TopicBlog
     public string Content { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
+     [Column("seo_keywords")]
     public string SeoKeywords { get; set; } = string.Empty;
     public virtual Blog Blog { get; set; } = null!;
 

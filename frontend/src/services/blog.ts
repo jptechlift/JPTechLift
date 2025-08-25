@@ -60,13 +60,13 @@ const API_URL = (() => {
 
 export const blog = {
   async list(): Promise<BlogPost[]> {
-    const res = await axios.get(`${API_URL}/api/blogs`);
-    return res.data;
+    const { data } = await axios.get<BlogPost[]>(`${API_URL}/api/blogs`);
+    return data;
   },
 
   async get(slug: string): Promise<BlogPost> {
-    const res = await axios.get(`${API_URL}/api/blog/${slug}`);
-    return res.data;
+    const { data } = await axios.get<BlogPost>(`${API_URL}/api/blog/${slug}`);
+    return data;
   },
   
   generatePreview(data: BlogRequest) {
