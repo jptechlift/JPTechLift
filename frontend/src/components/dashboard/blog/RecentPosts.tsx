@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { blog } from "../../../services/blog";
 
 interface RecentPost {
@@ -16,6 +16,7 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
   const [posts, setPosts] = useState<RecentPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -117,9 +118,9 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
         ) : (
           <div className="space-y-1">
             {posts.map((post, index) => (
-              <Link
-                to={`/blogs/${post.slug}`}
+               <div
                 key={post.id}
+                onClick={() => navigate(`/blogs/${post.slug}`)}
                 className="group block p-3 rounded-lg hover:bg-slate-50 transition-all duration-200 cursor-pointer border border-transparent hover:border-slate-200"
               >
                 <div className="flex items-start gap-3">
@@ -138,7 +139,7 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
