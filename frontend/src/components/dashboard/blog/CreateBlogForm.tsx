@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,6 +12,7 @@ import { ChevronDown, Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 }
 const productDetailsSchema = z.object({
   productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
   productType: z.string().min(1, "Vui lòng chọn loại sản phẩm"),
+  description: z.string().optional(),
   targetAudience: z.string().min(10, "Mô tả đối tượng khách hàng (ít nhất 10 ký tự)"),
   keySellingPoints: z.string().min(10, "Nêu bật ít nhất một lợi ích chính (mỗi ý một dòng)"),
   seoKeywords: z.string().min(1, "Vui lòng nhập từ khóa SEO (cách nhau bởi dấu phẩy)"),
@@ -56,7 +58,8 @@ export default function CreateBlogForm() {
     resolver: zodResolver(schema),
     defaultValues: { blogType: "product" },
   });
-
+  
+const navigate = useNavigate();
   const blogType = watch("blogType");
   const [finalTitle, setFinalTitle] = useState("");
   const [finalSlug, setFinalSlug] = useState("");

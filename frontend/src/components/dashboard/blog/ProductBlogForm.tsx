@@ -102,6 +102,48 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
         )}
       </div>
 
+ {/* Description */}
+      <div className="space-y-2">
+        <label className="flex items-center text-sm font-medium text-gray-700">
+          <svg
+            className="w-4 h-4 mr-2 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 8h10M7 12h10M7 16h10M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+          Mô tả sản phẩm
+        </label>
+        <textarea
+          {...register("productDetails.description")}
+          className={`w-full p-3 border-2 rounded-lg transition-all duration-200 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 placeholder-gray-400 resize-none ${
+            errors.productDetails?.description
+              ? 'border-red-300 focus:border-red-500 focus:ring-red-100'
+              : 'border-gray-200 hover:border-gray-300'
+          } ${disabled ? 'bg-gray-50 cursor-not-allowed opacity-60' : 'bg-white'}`}
+          rows={3}
+          placeholder="Mô tả ngắn về sản phẩm"
+          disabled={disabled}
+        />
+        {errors.productDetails?.description && (
+          <div className="flex items-center space-x-2 text-red-600 text-sm">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span>{errors.productDetails.description.message as string}</span>
+          </div>
+        )}
+      </div>
       {/* TargetAudience */}
       <div className="space-y-2">
         <label className="flex items-center text-sm font-medium text-gray-700">
