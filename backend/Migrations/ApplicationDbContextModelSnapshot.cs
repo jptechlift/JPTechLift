@@ -86,6 +86,11 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+                        
                     b.Property<string>("Feature")
                         .IsRequired()
                         .HasColumnType("text")
