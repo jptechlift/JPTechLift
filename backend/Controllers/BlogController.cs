@@ -122,7 +122,8 @@ public class BlogController : ControllerBase
                     BlogId = blog.Id,
                     ProductName = request.ProductDetails.ProductName,
                     ProductType = request.ProductDetails.ProductType,
-                    Description = request.ProductDetails.Description ?? string.Empty,
+                    Description = request.Content ?? string.Empty,
+                    Content = request.Content ?? string.Empty,
                     Size = request.ProductDetails.Size ?? string.Empty,
                     Volume = request.ProductDetails.Volume ?? string.Empty,
                     Feature = request.ProductDetails.Feature ?? string.Empty,
@@ -237,6 +238,7 @@ blog.ViewCount++;
             blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
             blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
             blog.ProductBlog.Description = request.ProductDetails.Description ?? string.Empty;
+            blog.ProductBlog.Content = request.Content ?? string.Empty;
             blog.ProductBlog.Size = request.ProductDetails.Size ?? string.Empty;
             blog.ProductBlog.Volume = request.ProductDetails.Volume ?? string.Empty;
             blog.ProductBlog.Feature = request.ProductDetails.Feature ?? string.Empty;

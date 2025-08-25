@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DOMPurify from "dompurify"
 import ReactMarkdown from "react-markdown";
 import { blog, BlogPost } from "../services/blog";
 import NotFound from "./NotFound";
@@ -34,7 +35,7 @@ const BlogDetailPage = () => {
       <p>
         {post.author} - {new Date(post.createdDate).toLocaleDateString()} - {post.viewCount} lượt xem
       </p>
-      <ReactMarkdown>{post.content}</ReactMarkdown>
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
     </div>
   );
 };

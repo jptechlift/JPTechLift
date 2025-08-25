@@ -22,6 +22,7 @@
     "aos": "^2.3.4",
     "axios": "^1.11.0",
     "clsx": "^2.1.1",
+    "dompurify": "^3.2.6",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.23.0",
     "lucide-react": "^0.525.0",
