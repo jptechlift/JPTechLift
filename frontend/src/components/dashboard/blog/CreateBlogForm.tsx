@@ -7,7 +7,6 @@ import TopicBlogForm from "./TopicBlogForm";
 import RecentPosts from "./RecentPosts";
 import { blog, BlogRequest } from "../../../services/blog";
 import { ChevronDown, Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const productDetailsSchema = z.object({
   productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
@@ -58,7 +57,6 @@ export default function CreateBlogForm() {
     resolver: zodResolver(schema),
     defaultValues: { blogType: "product" },
   });
-  const navigate = useNavigate();
   const blogType = watch("blogType");
   const [finalTitle, setFinalTitle] = useState("");
   const [finalSlug, setFinalSlug] = useState("");
@@ -116,7 +114,8 @@ export default function CreateBlogForm() {
         slug: finalSlug,
         content: finalContent,
       });
-      navigate(`/blogs/${finalSlug}`);
+     setRefreshKey((k) => k + 1);
+      setActiveTab("recent");
     } finally {
       setIsPublishing(false);
     }
@@ -363,11 +362,21 @@ export default function CreateBlogForm() {
                       <div className="flex gap-3 pt-4 border-t border-gray-100">
                         <button
                           onClick={handleSubmit(onPublish)}
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                          disabled={isPublishing}
+                          className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <div className="flex items-center justify-center gap-2">
-                            <Rocket className="w-5 h-5" />
-                            <span>Xuất bản</span>
+                           {isPublishing ? (
+                              <>
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Đang xuất bản...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Rocket className="w-5 h-5" />
+                                <span>Xuất bản</span>
+                              </>
+                            )}
                           </div>
                         </button>
                         <button
