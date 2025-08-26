@@ -31,6 +31,15 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("author");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_date");
@@ -111,7 +120,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("target_audience");
 
-                      b.HasKey("BlogId")
+                    b.HasKey("BlogId")
                         .HasName("pk_product_blogs");
 
                     b.ToTable("product_blogs", (string)null);
@@ -148,7 +157,7 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("topic");
 
-                   b.HasKey("BlogId")
+                    b.HasKey("BlogId")
                         .HasName("pk_topic_blogs");
 
                     b.ToTable("topic_blogs", (string)null);

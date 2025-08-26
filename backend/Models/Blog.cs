@@ -33,6 +33,11 @@ public class Blog
 
     public virtual User User { get; set; } = null!;
 
+    public string Author { get; set; } = string.Empty;
+
+    public string Content { get; set; } = string.Empty;
+
+
     public virtual ProductBlog? ProductBlog { get; set; }
         = null;
 

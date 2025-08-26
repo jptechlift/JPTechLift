@@ -124,7 +124,7 @@ public class BlogController : ControllerBase
                     BlogId = blog.Id,
                     ProductName = request.ProductDetails.ProductName,
                     ProductType = request.ProductDetails.ProductType,                    
-                    Detail = request.Content ?? string.Empty,
+                    Detail = request.ProductDetails.Detail,
                     TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty,
                     KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty,
                     SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty,
@@ -236,7 +236,7 @@ blog.ViewCount++;
 
             blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
             blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
-            blog.ProductBlog.Detail = request.Content ?? string.Empty;
+            blog.ProductBlog.Detail = request.ProductDetails.Detail;
             blog.ProductBlog.TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty;
             blog.ProductBlog.KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty;
             blog.ProductBlog.SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty;
@@ -323,7 +323,8 @@ public class BlogRequest
 public class ProductDetails
 {
     public string ProductName { get; set; } = string.Empty;
-    public string ProductType { get; set; } = string.Empty;  
+    public string ProductType { get; set; } = string.Empty;
+    public string Detail { get; set; } = string.Empty; 
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;

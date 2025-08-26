@@ -138,7 +138,7 @@ private static string StripCodeFences(string text)
         }
         return clean;
     }
-    
+
     private string BuildPrompt(BlogRequest request)
     {
         var promptBuilder = new System.Text.StringBuilder();
@@ -151,6 +151,7 @@ private static string StripCodeFences(string text)
             promptBuilder.AppendLine("- Loại bài viết: Giới thiệu sản phẩm");
             promptBuilder.AppendLine($"- Tên sản phẩm: \"{p.ProductName}\"");
             promptBuilder.AppendLine($"- Loại sản phẩm: {p.ProductType}");
+            promptBuilder.AppendLine($"- Chi tiết sản phẩm: {p.Detail}");
             promptBuilder.AppendLine($"- Đối tượng khách hàng: {p.TargetAudience}");
             promptBuilder.AppendLine($"- Lợi ích chính: {p.KeySellingPoints}");
             promptBuilder.AppendLine($"- Từ khóa SEO: {p.SeoKeywords}");

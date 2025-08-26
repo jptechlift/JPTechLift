@@ -42,7 +42,10 @@ describe("blog service", () => {
     await blog.generatePreview(request);
     expect(mockedPost).toHaveBeenCalledWith(
       expect.any(String),
-      expect.objectContaining({ productDetails: expect.objectContaining({ productName: "Test" }) }),
+        expect.objectContaining({
+        product_details: expect.objectContaining({ product_name: "Test" }),
+        blog_type: "product",
+      }),
       expect.any(Object)
     );
   });
@@ -51,7 +54,10 @@ describe("blog service", () => {
     await blog.create(request);
     expect(mockedPost).toHaveBeenCalledWith(
       expect.any(String),
-      expect.objectContaining({ productDetails: expect.objectContaining({ productName: "Test" }) }),
+ expect.objectContaining({
+        product_details: expect.objectContaining({ product_name: "Test" }),
+        blog_type: "product",
+      }),
 
       expect.any(Object)
     );

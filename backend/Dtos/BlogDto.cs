@@ -36,8 +36,8 @@ public static class BlogMappings
         CreatedDate = blog.CreatedDate,
         UpdatedDate = blog.UpdatedDate,
         IsPublished = blog.IsPublished,
-        Author = blog.Username,
-        Content = blog.TopicBlog?.Content ?? blog.ProductBlog?.Detail ?? string.Empty,
+        Author = blog.Author,
+        Content = blog.Content,
         ViewCount = blog.ViewCount,
         ProductBlog = blog.ProductBlog == null ? null : new ProductBlogDto
         {

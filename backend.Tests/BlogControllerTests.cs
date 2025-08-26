@@ -71,6 +71,8 @@ public class BlogControllerTests
         var dto = Assert.IsType<BlogDto>(result!.Value);
         Assert.Equal("T", dto.Title);
         Assert.False(string.IsNullOrEmpty(dto.Slug));
+        Assert.Equal("user1", dto.Author);
+        Assert.Equal("C", dto.Content);
     }
 
     [Fact]
@@ -96,7 +98,7 @@ public class BlogControllerTests
     public async Task Recent_ReturnsBlogs()
     {
         var controller = CreateController(out var ctx);
-        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", UpdatedDate = DateTime.UtcNow });
+         ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", Author = "user1", Content = "C", UpdatedDate = DateTime.UtcNow });
         ctx.SaveChanges();
         var result = await controller.Recent() as OkObjectResult;
         Assert.NotNull(result);
@@ -111,6 +113,8 @@ public class BlogControllerTests
             Title = "A",
             Slug = "a",
             Username = "user1",
+            Author = "user1",
+            Content = "C",
             IsPublished = true,
             TopicBlog = new TopicBlog { Content = "C" }
         });
@@ -118,6 +122,8 @@ public class BlogControllerTests
         var result = await controller.GetBySlug("a") as OkObjectResult;
         var dto = Assert.IsType<BlogDto>(result!.Value);
         Assert.Equal(1, dto.ViewCount);
+        Assert.Equal("user1", dto.Author);
+        Assert.Equal("C", dto.Content);
         Assert.Equal(1, ctx.Blogs.Single().ViewCount);
     }
 
@@ -125,8 +131,8 @@ public class BlogControllerTests
     public async Task ListPublished_ReturnsOnlyPublished()
     {
         var controller = CreateController(out var ctx);
-        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", IsPublished = true });
-        ctx.Blogs.Add(new Blog { Title = "B", Slug = "b", Username = "user1", IsPublished = false });
+        ctx.Blogs.Add(new Blog { Title = "A", Slug = "a", Username = "user1", Author = "user1", Content = "C1", IsPublished = true });
+        ctx.Blogs.Add(new Blog { Title = "B", Slug = "b", Username = "user1", Author = "user1", Content = "C2", IsPublished = false });
         ctx.SaveChanges();
         var result = await controller.ListPublished() as OkObjectResult;
         var list = Assert.IsAssignableFrom<IEnumerable<BlogDto>>(result!.Value);

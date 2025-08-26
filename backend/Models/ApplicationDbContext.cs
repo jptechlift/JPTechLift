@@ -34,6 +34,9 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<User>().HasKey(u => u.Id);
         modelBuilder.Entity<User>().HasAlternateKey(u => u.Username);
+        modelBuilder.Entity<Blog>().Property(b => b.Author).HasColumnName("author");
+        modelBuilder.Entity<Blog>().Property(b => b.Content).HasColumnName("content");
+
 
         modelBuilder.Entity<Blog>().HasAlternateKey(b => b.Slug);
         modelBuilder.Entity<Blog>()
