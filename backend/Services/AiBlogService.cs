@@ -37,6 +37,11 @@ public class Candidate
 }
 // -----------------------------------------------------------
 
+/// <summary>
+/// Service responsible for communicating with the Gemini API to
+/// generate blog content. The service hides HTTP details and ensures
+/// returned data matches the expected schema.
+/// </summary>
 public class AiBlogService
 {
     private readonly HttpClient _httpClient;
@@ -95,32 +100,22 @@ public class AiBlogService
 
             _logger.LogInformation("Successfully received and parsed content from Gemini API.");
 
-var cleanJsonText = generatedText.Trim();
-if (cleanJsonText.StartsWith("```json"))
-{
-    cleanJsonText = cleanJsonText.Substring(7).Trim(); // Xóa "```json" và khoảng trắng
-}
-if (cleanJsonText.EndsWith("```"))
-{
-    cleanJsonText = cleanJsonText.Substring(0, cleanJsonText.Length - 3).Trim(); // Xóa "```" và khoảng trắng
-}
-        try
-{
-    // Parse chuỗi đã được dọn dẹp
-    var jsonDoc = JsonDocument.Parse(cleanJsonText);
-    var title = jsonDoc.RootElement.GetProperty("title").GetString() ?? "Tiêu đề mặc định (lỗi parsing)";
-    var body = jsonDoc.RootElement.GetProperty("body").GetString() ?? "Nội dung mặc định (lỗi parsing).";
-
-    return (title, body);
-}
-catch (JsonException jsonEx)
-{
-    // Log lỗi cùng với nội dung thô để dễ dàng debug
-    _logger.LogError(jsonEx, "Failed to parse JSON response from Gemini. Raw text was: {GeneratedText}", generatedText);
-    
-    // Ném lại lỗi để khối catch bên ngoài có thể xử lý và trả về placeholder
-    throw; 
-}
+ try
+            {
+                var cleanJsonText = StripCodeFences(generatedText);
+                var jsonDoc = JsonDocument.Parse(cleanJsonText);
+                var title = jsonDoc.RootElement.GetProperty("title").GetString() ?? "Tiêu đề mặc định (lỗi parsing)";
+                var body = jsonDoc.RootElement.GetProperty("body").GetString() ?? "Nội dung mặc định (lỗi parsing).";
+                return (title, body);
+            }
+            catch (JsonException jsonEx)
+            {
+                // Log raw text to aid debugging before rethrowing.
+                _logger.LogError(jsonEx,
+                    "Failed to parse JSON response from Gemini. Raw text was: {GeneratedText}",
+                    generatedText);
+                throw;
+            }
         }
         catch (Exception ex)
         {
@@ -130,6 +125,20 @@ catch (JsonException jsonEx)
         }
     }
 
+private static string StripCodeFences(string text)
+    {
+        var clean = text.Trim();
+        if (clean.StartsWith("```json"))
+        {
+            clean = clean.Substring(7).Trim();
+        }
+        if (clean.EndsWith("```"))
+        {
+            clean = clean.Substring(0, clean.Length - 3).Trim();
+        }
+        return clean;
+    }
+    
     private string BuildPrompt(BlogRequest request)
     {
         var promptBuilder = new System.Text.StringBuilder();
