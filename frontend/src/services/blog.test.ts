@@ -62,6 +62,17 @@ describe("blog service", () => {
   });
 
   it("returns list of blogs", async () => {
+     const postsApi = [
+      {
+        id: "1",
+        title: "T",
+        content: "C",
+        slug: "s",
+        author: "a",
+        created_date: "2024-01-01",
+        view_count: 0,
+      },
+    ];
     const posts: BlogPost[] = [
       {
         id: "1",
@@ -73,13 +84,22 @@ describe("blog service", () => {
         viewCount: 0,
       },
     ];
-    mockedGet.mockResolvedValueOnce({ data: posts });
+    mockedGet.mockResolvedValueOnce({ data: postsApi });
     const res = await blog.list();
     expect(mockedGet).toHaveBeenCalledWith(expect.stringContaining("/api/blogs"));
     expect(res).toEqual(posts);
   });
 
   it("returns a blog post", async () => {
+      const postApi = {
+      id: "1",
+      title: "T",
+      content: "C",
+      slug: "s",
+      author: "a",
+      created_date: "2024-01-01",
+      view_count: 0,
+    };
     const post: BlogPost = {
       id: "1",
       title: "T",
@@ -89,7 +109,7 @@ describe("blog service", () => {
       createdDate: "2024-01-01",
       viewCount: 0,
     };
-    mockedGet.mockResolvedValueOnce({ data: post });
+    mockedGet.mockResolvedValueOnce({ data: postApi });
     const res = await blog.get("s");
     expect(mockedGet).toHaveBeenCalledWith(expect.stringContaining("/api/blog/s"));
     expect(res).toEqual(post);

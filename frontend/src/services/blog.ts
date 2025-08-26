@@ -13,6 +13,30 @@ export interface BlogPost {
   tags?: string[];
 }
 
+interface BlogPostApi {
+  id?: string;
+  title: string;
+  content: string;
+  slug: string;
+  author: string;
+  created_date: string;
+  view_count: number;
+  image_url?: string;
+  tags?: string[];
+}
+
+const mapFromApi = (data: BlogPostApi): BlogPost => ({
+  id: data.id,
+  title: data.title,
+  content: data.content,
+  slug: data.slug,
+  author: data.author,
+  createdDate: data.created_date,
+  viewCount: data.view_count,
+  imageUrl: data.image_url,
+  tags: data.tags,
+});
+
 export type ProductDetails = {
   productName: string;
   productType: string;
@@ -61,13 +85,13 @@ const API_URL = (() => {
 
 export const blog = {
   async list(): Promise<BlogPost[]> {
-    const { data } = await axios.get<BlogPost[]>(`${API_URL}/api/blogs`);
-    return data;
+    const { data } = await axios.get<BlogPostApi[]>(`${API_URL}/api/blogs`);
+    return data.map(mapFromApi);
   },
 
   async get(slug: string): Promise<BlogPost> {
-    const { data } = await axios.get<BlogPost>(`${API_URL}/api/blog/${slug}`);
-    return data;
+    const { data } = await axios.get<BlogPostApi>(`${API_URL}/api/blog/${slug}`);
+    return mapFromApi(data);
   },
   
   generatePreview(data: BlogRequest) {
@@ -88,12 +112,13 @@ export const blog = {
     });
   },
 
-  recent() {
+   async recent(): Promise<BlogPost[]> {
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.get(`${API_URL}/api/blog/recent`, {
+    const { data } = await axios.get<BlogPostApi[]>(`${API_URL}/api/blog/recent`, {
       headers,
     });
+    return data.map(mapFromApi);
   },
 };
