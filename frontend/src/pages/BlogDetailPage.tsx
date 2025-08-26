@@ -5,6 +5,8 @@ import { User, Calendar, Clock, Eye, Facebook, Twitter, Linkedin, Share2 } from 
 import { blog, BlogPost } from "../services/blog";
 import NotFound from "./NotFound";
 import styles from "../styles/pages/blog-detail/blog-detail.module.scss";
+import NavBar from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
@@ -38,6 +40,8 @@ const BlogDetailPage = () => {
   }
 
   return (
+    <div>
+      <NavBar/>
     <article className={styles["post-detail"]}>
       <section className={styles["post-detail__hero"]}>
         {post.imageUrl && (
@@ -115,6 +119,8 @@ const BlogDetailPage = () => {
         </div>
       </div>
     </article>
+    <Footer/>
+    </div>
   );
 };
 
