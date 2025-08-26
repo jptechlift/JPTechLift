@@ -10,6 +10,7 @@ export interface BlogPost {
   createdDate: string;
   viewCount: number;
   imageUrl?: string;
+  tags?: string[];
 }
 
 export type ProductDetails = {
