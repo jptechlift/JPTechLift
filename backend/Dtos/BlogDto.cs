@@ -1,4 +1,5 @@
 using Backend.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Dtos;
 
@@ -10,6 +11,7 @@ public class BlogDto
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }
     public bool IsPublished { get; set; }
+    [Required]
     public string Author { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public int ViewCount { get; set; }

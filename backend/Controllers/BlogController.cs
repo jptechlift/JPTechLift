@@ -86,13 +86,15 @@ public class BlogController : ControllerBase
             slug = $"{baseSlug}-{suffix++}";
         }
 
+        var author = string.IsNullOrWhiteSpace(request.Author) ? username : request.Author;
+
         var blog = new Blog
         {
             Title = title,
-                       Slug = slug,
+            Slug = slug,
             Username = username,
             User = user,
-            Author = request.Author ?? username,
+            Author = author,
             Content = request.Content ?? string.Empty,
             IsPublished = true,
             CreatedDate = DateTime.UtcNow,
@@ -128,7 +130,7 @@ public class BlogController : ControllerBase
                     Topic = title,
                     Content = request.Content ?? string.Empty,
                     TargetAudience = request.TopicDetails.TargetAudience ?? string.Empty,
-                    KeySellingPoints = request.TopicDetails.KeySellingPoints ?? string.Empty,
+                    MainPoints = request.TopicDetails.MainPoints ?? string.Empty,
                     SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty,
                 });
             }
@@ -215,7 +217,8 @@ blog.ViewCount++;
         blog.Title = title;
         blog.Slug = string.IsNullOrWhiteSpace(request.Slug) ? ToFriendlyUrl(title) : request.Slug!;
         blog.UpdatedDate = DateTime.UtcNow;
-        blog.Author = request.Author ?? blog.Author;
+        var author = string.IsNullOrWhiteSpace(request.Author) ? (string.IsNullOrWhiteSpace(blog.Author) ? username : blog.Author) : request.Author;
+        blog.Author = author;
         blog.Content = request.Content ?? blog.Content;
         if (request.BlogType == "product" && request.ProductDetails != null)
         {
@@ -244,6 +247,8 @@ blog.ViewCount++;
             }
             blog.TopicBlog.Topic = title;
             blog.TopicBlog.Content = request.Content ?? string.Empty;
+            blog.TopicBlog.TargetAudience = request.TopicDetails.TargetAudience ?? string.Empty;
+            blog.TopicBlog.MainPoints = request.TopicDetails.MainPoints ?? string.Empty;
             blog.TopicBlog.SeoKeywords = request.TopicDetails.SeoKeywords ?? string.Empty;
 
             if (blog.ProductBlog != null)
@@ -324,11 +329,12 @@ public class ProductDetails
 
 public class TopicDetails
 {
-    [JsonPropertyName("articleTitle")]
+    [JsonPropertyName("article_title")]
     public string? ArticleTitle { get; set; }
     public string? Topic { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
-    public string KeySellingPoints { get; set; } = string.Empty;
+    [JsonPropertyName("main_points")]
+    public string MainPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
     public string ToneOfVoice { get; set; } = string.Empty;
 }

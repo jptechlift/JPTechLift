@@ -137,10 +137,10 @@ namespace backend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
-                    b.Property<string>("KeySellingPoints")
+                    b.Property<string>("MainPoints")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("key_selling_points");
+                        .HasColumnName("main_points");
 
                     b.Property<string>("SeoKeywords")
                         .IsRequired()
