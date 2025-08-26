@@ -21,6 +21,7 @@ describe("blog service", () => {
     productDetails: {
       productName: "Test",
       productType: "type",
+      detail: "",
       targetAudience: "audience",
       keySellingPoints: "points",
       seoKeywords: "keywords",

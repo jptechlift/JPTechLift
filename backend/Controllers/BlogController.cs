@@ -33,18 +33,11 @@ public class BlogController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-        // --- VERIFICATION LOGGING ---
-        _logger.LogInformation("[1/3] Backend: Endpoint 'generate-preview' received a request.");
-
         try
         {
-            // --- VERIFICATION LOGGING ---
-            var payloadJson = System.Text.Json.JsonSerializer.Serialize(request);
-            _logger.LogInformation("[2/3] Backend: Deserialized payload: {Payload}", payloadJson);
-
             var baseTitle = request.BlogType == "product"
-                  ? request.ProductDetails?.ProductName
-                  : request.TopicDetails?.ArticleTitle;
+                ? request.ProductDetails?.ProductName
+                : request.TopicDetails?.ArticleTitle;
 
             if (string.IsNullOrWhiteSpace(baseTitle))
             {
@@ -52,13 +45,10 @@ public class BlogController : ControllerBase
                 return BadRequest(new { message = "Title or ArticleTitle is required." });
             }
 
-            // --- VERIFICATION LOGGING ---
-            _logger.LogInformation("[3/3] Backend: Calling AI service with extracted title: '{Title}'", baseTitle);
-
             var (title, content) = await _ai.GenerateContentAsync(request);
             var slug = ToFriendlyUrl(title);
 
-            _logger.LogInformation("Successfully generated content. Returning OK response.");
+            _logger.LogInformation("Generated preview for {Title}", baseTitle);
             return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}" });
         }
         catch (Exception ex)
@@ -99,7 +89,7 @@ public class BlogController : ControllerBase
         var blog = new Blog
         {
             Title = title,
-            Slug = slug,
+                       Slug = slug,
             Username = username,
             User = user,
             Author = request.Author ?? username,
@@ -262,6 +252,7 @@ blog.ViewCount++;
             }
         }
 
+
         await _context.SaveChangesAsync();
         return Ok(blog.ToDto());
     }
@@ -298,7 +289,7 @@ blog.ViewCount++;
             }
         }
         var result = sb.ToString().Normalize(NormalizationForm.FormC);
-        result = Regex.Replace(result, @"[^a-z0-9\s-]", "");
+          result = Regex.Replace(result, @"[^a-z0-9\s-]", "");
         result = Regex.Replace(result, @"\s+", " ").Trim();
         result = Regex.Replace(result, @"\s", "-");
         return result;
@@ -324,7 +315,7 @@ public class ProductDetails
 {
     public string ProductName { get; set; } = string.Empty;
     public string ProductType { get; set; } = string.Empty;
-    public string Detail { get; set; } = string.Empty; 
+    public string Detail { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;

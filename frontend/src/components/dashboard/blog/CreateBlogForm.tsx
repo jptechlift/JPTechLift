@@ -66,30 +66,51 @@ export default function CreateBlogForm() {
   const [isPublishing, setIsPublishing] = useState(false);
 
   const onGenerate = async (data: FormValues) => {
-    console.log("%c[1/4] Frontend: Event handler 'onGenerate' triggered.", "color: blue; font-weight: bold;");
-
     setFinalTitle("");
     setFinalSlug("");
     setFinalContent("");
     setPreviewUrl("");
     setActiveTab("preview");
 
-    console.log("%c[2/4] Frontend: Form data prepared for API call:", "color: blue; font-weight: bold;", data);
-
     try {
-      console.log("Attempting to call API: /api/blog/generate-preview...");
-      const res = await blog.generatePreview(data as BlogRequest);
+      const payload = {
+        blogType: data.blogType,
+        productDetails:
+          data.blogType === "product" && data.productDetails
+            ? {
+                productName: data.productDetails.productName,
+                productType: data.productDetails.productType,
+                detail: [
+                  data.productDetails.useCases,
+                  data.productDetails.technicalHighlights,
+                  data.productDetails.callToAction,
+                ]
+                  .filter(Boolean)
+                  .join("\n"),
+                targetAudience: data.productDetails.targetAudience,
+                keySellingPoints: data.productDetails.keySellingPoints,
+                seoKeywords: data.productDetails.seoKeywords,
+                toneOfVoice: data.productDetails.toneOfVoice,
+              }
+            : undefined,
+        topicDetails:
+          data.blogType === "topic" && data.topicDetails
+            ? {
+                articleTitle: data.topicDetails.articleTitle,
+                targetAudience: data.topicDetails.targetAudience,
+                mainPoints: data.topicDetails.mainPoints,
+                seoKeywords: data.topicDetails.seoKeywords,
+                toneOfVoice: data.topicDetails.toneOfVoice,
+              }
+            : undefined,
+      } as BlogRequest;
 
-      console.log(
-        "%c[4/4] Frontend: API call successful! Response received:",
-        "color: green; font-weight: bold;",
-        res.data
-      );
+      const res = await blog.generatePreview(payload);
 
       setFinalTitle(res.data.title);
       setFinalSlug(res.data.slug);
       setFinalContent(res.data.generatedContent);
-       setPreviewUrl(res.data.previewUrl);
+      setPreviewUrl(res.data.previewUrl);
     } catch (error: unknown) {
       console.error("%c[!!!] Frontend: API call failed!", "color: red; font-weight: bold;", error);
       if (
@@ -105,14 +126,44 @@ export default function CreateBlogForm() {
   };
 
   const onPublish = async (data: FormValues) => {
-   setIsPublishing(true);
+    setIsPublishing(true);
     try {
-      await blog.create({
-        ...(data as BlogRequest),
+      const payload = {
+        blogType: data.blogType,
+        productDetails:
+          data.blogType === "product" && data.productDetails
+            ? {
+                productName: data.productDetails.productName,
+                productType: data.productDetails.productType,
+                detail: [
+                  data.productDetails.useCases,
+                  data.productDetails.technicalHighlights,
+                  data.productDetails.callToAction,
+                ]
+                  .filter(Boolean)
+                  .join("\n"),
+                targetAudience: data.productDetails.targetAudience,
+                keySellingPoints: data.productDetails.keySellingPoints,
+                seoKeywords: data.productDetails.seoKeywords,
+                toneOfVoice: data.productDetails.toneOfVoice,
+              }
+            : undefined,
+        topicDetails:
+          data.blogType === "topic" && data.topicDetails
+            ? {
+                articleTitle: data.topicDetails.articleTitle,
+                targetAudience: data.topicDetails.targetAudience,
+                mainPoints: data.topicDetails.mainPoints,
+                seoKeywords: data.topicDetails.seoKeywords,
+                toneOfVoice: data.topicDetails.toneOfVoice,
+              }
+            : undefined,
         title: finalTitle,
         slug: finalSlug,
         content: finalContent,
-      });
+      } as BlogRequest;
+
+      await blog.create(payload);
       setRefreshKey((k) => k + 1);
       setActiveTab("recent");
     } finally {
