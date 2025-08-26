@@ -94,6 +94,21 @@ public class BlogControllerTests
         Assert.Contains("hello-world-1", slugs);
     }
 
+[Fact]
+    public async Task Publish_InvalidBlogType_ReturnsBadRequest()
+    {
+        var controller = CreateController(out var ctx);
+        var request = new BlogRequest
+        {
+            BlogType = "productblogs",
+            TopicDetails = new TopicDetails { ArticleTitle = "T" },
+            Content = "C"
+        };
+        var result = await controller.Publish(request);
+        var badRequest = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(0, ctx.Blogs.Count());
+    }
+
     [Fact]
     public async Task Recent_ReturnsBlogs()
     {

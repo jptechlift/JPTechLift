@@ -62,6 +62,12 @@ public class BlogController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
+          if (request.BlogType != "product" && request.BlogType != "topic")
+        {
+            _logger.LogWarning("Invalid blog type: {BlogType}", request.BlogType);
+            return BadRequest(new { message = "BlogType must be 'product' or 'topic'." });
+        }
+
         var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
 
         var user = await _context.Users
@@ -201,6 +207,12 @@ blog.ViewCount++;
     [Authorize]
     public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
     {
+          if (request.BlogType != "product" && request.BlogType != "topic")
+        {
+            _logger.LogWarning("Invalid blog type: {BlogType}", request.BlogType);
+            return BadRequest(new { message = "BlogType must be 'product' or 'topic'." });
+        }
+
         var username = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
         var blog = await _context.Blogs
             .Include(b => b.ProductBlog)
