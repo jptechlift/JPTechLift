@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AOS from 'aos';
+import DOMPurify from 'dompurify';
 import 'aos/dist/aos.css';
 import styles from '../../styles/pages/blog-page/blog-page.module.scss';
 import { blog, BlogPost } from '../../services/blog';
@@ -20,6 +21,11 @@ export default function BlogPage() {
   }, []);
 
   const shownBlogs = blogs.slice((page - 1) * BLOGS_PER_PAGE, page * BLOGS_PER_PAGE);
+
+  const getSnippet = (html: string) => {
+    const text = DOMPurify.sanitize(html, { ALLOWED_TAGS: [] });
+    return text.length > 150 ? `${text.slice(0, 150)}...` : text;
+  };
 
   return (
     <div className={styles.blogWrap}>
@@ -75,7 +81,7 @@ export default function BlogPage() {
               />
             )}
             <h3>{blogItem.title}</h3>
-            <p>{blogItem.content}</p>
+            <p>{getSnippet(blogItem.content)}</p>
         </Link>
         ))}
       </div>

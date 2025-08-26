@@ -63,11 +63,11 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Ensure database tables are created at startup to avoid runtime errors
+// Apply any pending migrations at startup so the schema is kept up to date
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate();
 }
 
 app.UseRouting();
@@ -126,7 +126,7 @@ app.MapPost("/api/auth/register", async (RegisterRequest request, NpgsqlDataSour
 });
 
 
-app.MapPost("/login", async (LoginRequest request, NpgsqlDataSource dataSource) =>
+app.MapPost("/api/auth/login", async (LoginRequest request, NpgsqlDataSource dataSource) =>
 {
     using var conn = dataSource.OpenConnection();
     var user = await conn.QuerySingleOrDefaultAsync<(int Id, string PasswordHash)>(
@@ -142,7 +142,7 @@ app.MapPost("/login", async (LoginRequest request, NpgsqlDataSource dataSource) 
     return Results.Ok(new { token });
 });
 
-app.MapPost("/login/google", async (GoogleLoginRequest request, NpgsqlDataSource dataSource) =>
+app.MapPost("api/auth/login/google", async (GoogleLoginRequest request, NpgsqlDataSource dataSource) =>
 {
  GoogleJsonWebSignature.Payload payload;
     try

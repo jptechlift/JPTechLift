@@ -114,7 +114,7 @@ export default function CreateBlogForm() {
         slug: finalSlug,
         content: finalContent,
       });
-     setRefreshKey((k) => k + 1);
+      setRefreshKey((k) => k + 1);
       setActiveTab("recent");
     } finally {
       setIsPublishing(false);

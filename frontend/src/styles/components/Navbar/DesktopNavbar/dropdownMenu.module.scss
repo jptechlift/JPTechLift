@@ -21,7 +21,6 @@
   border-radius: 0 0 1px 1px;
   box-shadow: var(--shadow-medium);
   z-index: var(--z-dropdown);
-  overflow: hidden;
   animation: fadeIn var(--transition-fast);
 
   .column {
@@ -81,13 +80,3 @@
   }
 }
 
-/* ===================================
-   📱 RESPONSIVE HANDLING
-   =================================== */
-@media (max-width: 1280px) {
-  .dropdown {
-    left: 20px;
-    right: 20px;
-    max-width: calc(100% - 40px);
-  }
-}
