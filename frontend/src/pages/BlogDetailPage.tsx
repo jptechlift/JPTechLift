@@ -17,7 +17,10 @@ const BlogDetailPage = () => {
     if (slug) {
       blog
         .get(slug)
-        .then(setPost)
+         .then((data) => {
+          console.log("blog.get response", data);
+          setPost(data);
+        })
         .catch(() => {
           setError(true);
         });

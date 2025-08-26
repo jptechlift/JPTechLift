@@ -24,16 +24,14 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
 
     blog
       .recent()
-      .then((res) => {
+     .then((posts) => {
         if (mounted) {
-          const posts: RecentPost[] = res.data.map(
-            (p: { id: number; title: string; slug: string }) => ({
-              id: p.id,
-              title: p.title,
-              slug: p.slug,
-            })
-          );
-          setPosts(posts);
+          const mappedPosts: RecentPost[] = posts.map((p) => ({
+            id: Number(p.id),
+            title: p.title,
+            slug: p.slug,
+          }));
+          setPosts(mappedPosts);
           setError(false);
         }
       })
