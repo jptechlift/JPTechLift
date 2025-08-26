@@ -13,7 +13,7 @@ PascalCase của C# và snake_case của PostgreSQL.
 Bảng	Khóa chính	Các cột quan trọng	Quan hệ
 users	username (varchar)	id (serial), password_hash, email, role, is_active, avatar_url, cover_url	—
 blogs	id (serial)	title, slug, content, view_count, is_published, created_date, updated_date	username → users.username
-product_blogs	blog_id	product_name, product_type, description, content, feature, target_audience, key_selling_points, seo_keywords	blog_id → blogs.id
+product_blogs	blog_id	product_name, product_type, content, feature, target_audience, key_selling_points, seo_keywords	blog_id → blogs.id
 topic_blogs	blog_id	topic, content, target_audience, key_selling_points, seo_keywords blog_id → blogs.id
 
 > Mọi đoạn code liên quan đến database cần tuân thủ các quy tắc trên.

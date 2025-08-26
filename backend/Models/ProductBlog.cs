@@ -14,11 +14,8 @@ public class ProductBlog
 
     public string ProductName { get; set; } = string.Empty;
     public string ProductType { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
-    public string Size { get; set; } = string.Empty;
-    public string Volume { get; set; } = string.Empty;
-    public string Feature { get; set; } = string.Empty;
+    /// <summary>Detailed content for the product blog.</summary>
+    public string Detail { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;

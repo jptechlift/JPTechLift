@@ -102,6 +102,8 @@ public class BlogController : ControllerBase
             Slug = slug,
             Username = username,
             User = user,
+            Author = request.Author ?? username,
+            Content = request.Content ?? string.Empty,
             IsPublished = true,
             CreatedDate = DateTime.UtcNow,
             UpdatedDate = DateTime.UtcNow,
@@ -121,12 +123,8 @@ public class BlogController : ControllerBase
                 {
                     BlogId = blog.Id,
                     ProductName = request.ProductDetails.ProductName,
-                    ProductType = request.ProductDetails.ProductType,
-                    Description = request.Content ?? string.Empty,
-                    Content = request.Content ?? string.Empty,
-                    Size = request.ProductDetails.Size ?? string.Empty,
-                    Volume = request.ProductDetails.Volume ?? string.Empty,
-                    Feature = request.ProductDetails.Feature ?? string.Empty,
+                    ProductType = request.ProductDetails.ProductType,                    
+                    Detail = request.Content ?? string.Empty,
                     TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty,
                     KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty,
                     SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty,
@@ -227,7 +225,8 @@ blog.ViewCount++;
         blog.Title = title;
         blog.Slug = string.IsNullOrWhiteSpace(request.Slug) ? ToFriendlyUrl(title) : request.Slug!;
         blog.UpdatedDate = DateTime.UtcNow;
-
+        blog.Author = request.Author ?? blog.Author;
+        blog.Content = request.Content ?? blog.Content;
         if (request.BlogType == "product" && request.ProductDetails != null)
         {
             if (blog.ProductBlog == null)
@@ -237,11 +236,7 @@ blog.ViewCount++;
 
             blog.ProductBlog.ProductName = request.ProductDetails.ProductName;
             blog.ProductBlog.ProductType = request.ProductDetails.ProductType;
-            blog.ProductBlog.Description = request.ProductDetails.Description ?? string.Empty;
-            blog.ProductBlog.Content = request.Content ?? string.Empty;
-            blog.ProductBlog.Size = request.ProductDetails.Size ?? string.Empty;
-            blog.ProductBlog.Volume = request.ProductDetails.Volume ?? string.Empty;
-            blog.ProductBlog.Feature = request.ProductDetails.Feature ?? string.Empty;
+            blog.ProductBlog.Detail = request.Content ?? string.Empty;
             blog.ProductBlog.TargetAudience = request.ProductDetails.TargetAudience ?? string.Empty;
             blog.ProductBlog.KeySellingPoints = request.ProductDetails.KeySellingPoints ?? string.Empty;
             blog.ProductBlog.SeoKeywords = request.ProductDetails.SeoKeywords ?? string.Empty;
@@ -318,8 +313,9 @@ public class BlogRequest
     public TopicDetails? TopicDetails { get; set; }
         = null;
     public string? Content { get; set; }
+        = null;   
+    public string? Author { get; set; }
         = null;
-
     public string? Slug { get; set; }
         = null;
 }
@@ -327,16 +323,12 @@ public class BlogRequest
 public class ProductDetails
 {
     public string ProductName { get; set; } = string.Empty;
-    public string ProductType { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Size { get; set; } = string.Empty;
-    public string Volume { get; set; } = string.Empty;
-    public string Feature { get; set; } = string.Empty;
+    public string ProductType { get; set; } = string.Empty;  
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
     public string ToneOfVoice { get; set; } = string.Empty;
-    }
+}
 
 public class TopicDetails
 {

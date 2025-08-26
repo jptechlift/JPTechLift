@@ -20,11 +20,7 @@ public class ProductBlogDto
 {
     public string ProductName { get; set; } = string.Empty;
     public string ProductType { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
-    public string Size { get; set; } = string.Empty;
-    public string Volume { get; set; } = string.Empty;
-    public string Feature { get; set; } = string.Empty;
+    public string Detail { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
@@ -41,17 +37,13 @@ public static class BlogMappings
         UpdatedDate = blog.UpdatedDate,
         IsPublished = blog.IsPublished,
         Author = blog.Username,
-        Content = blog.TopicBlog?.Content ?? blog.ProductBlog?.Content ?? blog.ProductBlog?.Description ?? string.Empty,
+        Content = blog.TopicBlog?.Content ?? blog.ProductBlog?.Detail ?? string.Empty,
         ViewCount = blog.ViewCount,
         ProductBlog = blog.ProductBlog == null ? null : new ProductBlogDto
         {
             ProductName = blog.ProductBlog.ProductName,
             ProductType = blog.ProductBlog.ProductType,
-            Description = blog.ProductBlog.Description,
-            Content = blog.ProductBlog.Content,
-            Size = blog.ProductBlog.Size,
-            Volume = blog.ProductBlog.Volume,
-            Feature = blog.ProductBlog.Feature,
+            Detail = blog.ProductBlog.Detail,
             TargetAudience = blog.ProductBlog.TargetAudience,
             KeySellingPoints = blog.ProductBlog.KeySellingPoints,
             SeoKeywords = blog.ProductBlog.SeoKeywords,

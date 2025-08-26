@@ -21,7 +21,6 @@ describe("blog service", () => {
     productDetails: {
       productName: "Test",
       productType: "type",
-      description: "desc",
       targetAudience: "audience",
       keySellingPoints: "points",
       seoKeywords: "keywords",
@@ -39,24 +38,21 @@ describe("blog service", () => {
     mockedGet.mockResolvedValue({ data: [] });
   });
 
-  it("sends description in generatePreview", async () => {
+  it("sends product details in generatePreview", async () => {
     await blog.generatePreview(request);
     expect(mockedPost).toHaveBeenCalledWith(
       expect.any(String),
-      expect.objectContaining({
-        productDetails: expect.objectContaining({ description: "desc" }),
-      }),
+      expect.objectContaining({ productDetails: expect.objectContaining({ productName: "Test" }) }),
       expect.any(Object)
     );
   });
 
-  it("sends description in create", async () => {
+  it("sends product details in create", async () => {
     await blog.create(request);
     expect(mockedPost).toHaveBeenCalledWith(
       expect.any(String),
-      expect.objectContaining({
-        productDetails: expect.objectContaining({ description: "desc" }),
-      }),
+      expect.objectContaining({ productDetails: expect.objectContaining({ productName: "Test" }) }),
+
       expect.any(Object)
     );
   });

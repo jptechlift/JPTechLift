@@ -40,7 +40,6 @@ const mapFromApi = (data: BlogPostApi): BlogPost => ({
 export type ProductDetails = {
   productName: string;
   productType: string;
-  description?: string;
   targetAudience: string;
   keySellingPoints: string;
   seoKeywords: string;
