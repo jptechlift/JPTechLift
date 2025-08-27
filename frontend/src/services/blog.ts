@@ -1,21 +1,6 @@
 import axios from "axios";
 import { auth } from "./auth";
 
-const toSnakeCase = (obj: unknown): unknown => {
-  if (Array.isArray(obj)) {
-    return obj.map((item) => toSnakeCase(item));
-  }
-  if (obj && typeof obj === "object") {
-    return Object.fromEntries(
-      Object.entries(obj as Record<string, unknown>).map(([key, value]) => [
-        key.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`),
-        toSnakeCase(value),
-      ])
-    );
-  }
-  return obj;
-};
-
 export interface BlogPost {
   id?: string;
   title: string;
@@ -109,11 +94,11 @@ export const blog = {
     return mapFromApi(data);
   },
   
-  generatePreview(data: BlogRequest) {
+   generatePreview(data: BlogRequest) {
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.post(`${API_URL}/api/blog/generate-preview`,toSnakeCase(data), {
+    return axios.post(`${API_URL}/api/blog/generate-preview`, data, {
       headers,
     });
   },
@@ -122,7 +107,7 @@ export const blog = {
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.post(`${API_URL}/api/blog`, toSnakeCase(data), {
+    return axios.post(`${API_URL}/api/blog`, data, {
       headers,
     });
   },
