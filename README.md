@@ -19,6 +19,12 @@ cd Backend
 # dotnet run (requires .NET 8 SDK)
 ```
 
+Before running, copy `appsettings.Development.json.example` to
+`appsettings.Development.json` and update the connection string and JWT
+secret to match your environment. `.env` files are also loaded at startup
+via `DotNetEnv` if you prefer environment variables.
+
+
 ## Frontend
 
 The React app lives under `frontend/src` with the following structure:

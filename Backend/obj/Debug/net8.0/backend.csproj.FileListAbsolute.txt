@@ -151,12 +151,8 @@ D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\backen
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\backend.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\backend.pdb
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Dapper.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\DotNetEnv.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\EFCore.NamingConventions.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Google.Apis.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Google.Apis.Auth.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Google.Apis.Core.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Humanizer.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
@@ -176,7 +172,6 @@ D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Micros
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Mono.TextTemplating.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Npgsql.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\Sprache.dll
@@ -187,7 +182,6 @@ D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\System
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\System.Composition.Runtime.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\System.Composition.TypedParts.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\System.Management.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -240,7 +234,6 @@ D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\ru\Mic
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\obj\Debug\net8.0\backend.csproj.AssemblyReference.cache
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\obj\Debug\net8.0\backend.GeneratedMSBuildEditorConfig.editorconfig
 D:\Coding_learning\JPTechLift_Project\JPTechLift\backend\obj\Debug\net8.0\backend.AssemblyInfoInputs.cache

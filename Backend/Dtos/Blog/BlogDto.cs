@@ -1,4 +1,5 @@
 using Backend.Models;
+using Models = Backend.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Dtos.Blog;
@@ -40,7 +41,7 @@ public class TopicBlogDto
 
 public static class BlogMappings
 {
-    public static BlogDto ToDto(this Blog blog) => new BlogDto
+    public static BlogDto ToDto(this Models.Blog blog) => new BlogDto
     {
         Id = blog.Id,
         Title = blog.Title,
@@ -58,15 +59,15 @@ public static class BlogMappings
             Detail = blog.ProductBlog.Detail,
             TargetAudience = blog.ProductBlog.TargetAudience,
             KeySellingPoints = blog.ProductBlog.KeySellingPoints,
-            SeoKeywords = blog.ProductBlog.SeoKeywords,
-            },
+            SeoKeywords = blog.ProductBlog.SeoKeywords
+        },
         TopicBlog = blog.TopicBlog == null ? null : new TopicBlogDto
         {
             Topic = blog.TopicBlog.Topic,
             Content = blog.TopicBlog.Content,
             TargetAudience = blog.TopicBlog.TargetAudience,
             MainPoints = blog.TopicBlog.MainPoints,
-            SeoKeywords = blog.TopicBlog.SeoKeywords,
+            SeoKeywords = blog.TopicBlog.SeoKeywords
         }
     };
 }
