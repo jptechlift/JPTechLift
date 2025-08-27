@@ -343,12 +343,15 @@ public class ProductDetails
 
 public class TopicDetails
 {
-    [JsonPropertyName("article_title")]
+    [JsonPropertyName("articleTitle")]
     public string? ArticleTitle { get; set; }
     public string? Topic { get; set; } = string.Empty;
+    [JsonPropertyName("targetAudience")]
     public string TargetAudience { get; set; } = string.Empty;
-    [JsonPropertyName("main_points")]
+    [JsonPropertyName("mainPoints")]
     public string MainPoints { get; set; } = string.Empty;
+    [JsonPropertyName("seoKeywords")]
     public string SeoKeywords { get; set; } = string.Empty;
+    [JsonPropertyName("toneOfVoice")]
     public string ToneOfVoice { get; set; } = string.Empty;
 }
