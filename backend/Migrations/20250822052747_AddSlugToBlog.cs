@@ -57,7 +57,7 @@ namespace backend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
+           migrationBuilder.CreateTable(
                 name: "productblogs",
                 columns: table => new
                 {
@@ -82,7 +82,7 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "topicblogs",
+                name: "topic_blogs",
                 columns: table => new
                 {
                     blog_id = table.Column<int>(type: "integer", nullable: false),
@@ -91,9 +91,9 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_topicblogs", x => x.blog_id);
+                    table.PrimaryKey("pk_topic_blogs", x => x.blog_id);
                     table.ForeignKey(
-                        name: "fk_topicblogs_blogs_blog_id",
+                        name: "fk_topic_blogs_blogs_blog_id",
                         column: x => x.blog_id,
                         principalTable: "blogs",
                         principalColumn: "id",
@@ -113,7 +113,7 @@ namespace backend.Migrations
                 name: "productblogs");
 
             migrationBuilder.DropTable(
-                name: "topicblogs");
+                name: "topic_blogs");
 
             migrationBuilder.DropTable(
                 name: "blogs");

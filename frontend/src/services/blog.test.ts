@@ -40,6 +40,7 @@ describe("blog service", () => {
   });
 
   it("sends product details in generatePreview", async () => {
+    
     await blog.generatePreview(request);
     expect(mockedPost).toHaveBeenCalledWith(
       expect.any(String),
@@ -65,7 +66,7 @@ describe("blog service", () => {
   });
 
   it("returns list of blogs", async () => {
-     const postsApi = [
+    const postsApi = [
       {
         id: "1",
         title: "T",
@@ -85,6 +86,10 @@ describe("blog service", () => {
         author: "a",
         createdDate: "2024-01-01",
         viewCount: 0,
+        topic: undefined,
+        targetAudience: undefined,
+        mainPoints: undefined,
+        seoKeywords: undefined,
       },
     ];
     mockedGet.mockResolvedValueOnce({ data: postsApi });
@@ -94,7 +99,7 @@ describe("blog service", () => {
   });
 
   it("returns a blog post", async () => {
-      const postApi = {
+    const postApi = {
       id: "1",
       title: "T",
       content: "C",
@@ -111,6 +116,10 @@ describe("blog service", () => {
       author: "a",
       createdDate: "2024-01-01",
       viewCount: 0,
+      topic: undefined,
+      targetAudience: undefined,
+      mainPoints: undefined,
+      seoKeywords: undefined,
     };
     mockedGet.mockResolvedValueOnce({ data: postApi });
     const res = await blog.get("s");

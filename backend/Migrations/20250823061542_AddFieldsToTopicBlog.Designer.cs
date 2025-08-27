@@ -153,9 +153,9 @@ namespace backend.Migrations
                         .HasColumnName("topic");
 
                     b.HasKey("BlogId")
-                        .HasName("pk_topicblogs");
+                        .HasName("pk_topic_blogs");
 
-                    b.ToTable("topicblogs", (string)null);
+                    b.ToTable("topic_blogs", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -249,7 +249,7 @@ namespace backend.Migrations
                         .HasForeignKey("Backend.Models.TopicBlog", "BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_topicblogs_blogs_blog_id");
+                        .HasConstraintName("fk_topic_blogs_blogs_blog_id");
 
                     b.Navigation("Blog");
                 });

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250826155054_MainPointsAndRequireAuthor")]
-    partial class MainPointsAndRequireAuthor
+    [Migration("20250901000000_RenameTopicBlogs")]
+    partial class RenameTopicBlogs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -11,6 +11,10 @@ export interface BlogPost {
   viewCount: number;
   imageUrl?: string;
   tags?: string[];
+  topic?: string;
+  targetAudience?: string;
+  mainPoints?: string;
+  seoKeywords?: string;
 }
 
 interface BlogPostApi {
@@ -23,6 +27,13 @@ interface BlogPostApi {
   view_count: number;
   image_url?: string;
   tags?: string[];
+  topic_blog?: {
+    topic: string;
+    content: string;
+    target_audience: string;
+    main_points: string;
+    seo_keywords: string;
+  };
 }
 
 const mapFromApi = (data: BlogPostApi): BlogPost => ({
@@ -35,6 +46,10 @@ const mapFromApi = (data: BlogPostApi): BlogPost => ({
   viewCount: data.view_count,
   imageUrl: data.image_url,
   tags: data.tags,
+  topic: data.topic_blog?.topic,
+  targetAudience: data.topic_blog?.target_audience,
+  mainPoints: data.topic_blog?.main_points,
+  seoKeywords: data.topic_blog?.seo_keywords,
 });
 
 export type ProductDetails = {
@@ -59,6 +74,7 @@ export type TopicDetails = {
   angle?: string;
   callToAction?: string;
 };
+
 
 export type BlogRequest = {
   blogType: "product" | "topic";

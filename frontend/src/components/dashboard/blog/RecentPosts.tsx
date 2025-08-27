@@ -6,6 +6,7 @@ interface RecentPost {
   id: number;
   title: string;
   slug: string;
+  topic?: string;
 }
 
 interface RecentPostsProps {
@@ -30,6 +31,7 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
             id: Number(p.id),
             title: p.title,
             slug: p.slug,
+            topic: p.topic,
           }));
           setPosts(mappedPosts);
           setError(false);
@@ -129,6 +131,9 @@ export default function RecentPosts({ refreshKey }: RecentPostsProps) {
                     <p className="text-sm text-slate-700 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2 leading-relaxed">
                       {post.title}
                     </p>
+                     {post.topic && (
+                      <p className="text-xs text-slate-500 mt-1">{post.topic}</p>
+                    )}
                     <div className="flex items-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                       <span className="text-xs text-slate-500">#{index + 1}</span>
                       <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -12,7 +12,7 @@ namespace backend.Migrations
         {
             migrationBuilder.AddColumn<string>(
                 name: "keywords",
-                table: "topicblogs",
+                table: "topic_blogs",
                 type: "text",
                 nullable: false,
                 defaultValue: "");
@@ -23,7 +23,7 @@ namespace backend.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "keywords",
-                table: "topicblogs");
+                table: "topic_blogs");
         }
     }
 }

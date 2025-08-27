@@ -198,6 +198,8 @@ blog.ViewCount++;
         var recentBlogs = await _context.Blogs
             .Where(b => b.Username == username)
             .OrderByDescending(b => b.UpdatedDate)
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
             .Take(5)
             .ToListAsync();
         return Ok(recentBlogs.Select(b => b.ToDto()));

@@ -16,6 +16,7 @@ public class BlogDto
     public string Content { get; set; } = string.Empty;
     public int ViewCount { get; set; }
     public ProductBlogDto? ProductBlog { get; set; }
+    public TopicBlogDto? TopicBlog { get; set; }
 }
 
 public class ProductBlogDto
@@ -25,6 +26,15 @@ public class ProductBlogDto
     public string Detail { get; set; } = string.Empty;
     public string TargetAudience { get; set; } = string.Empty;
     public string KeySellingPoints { get; set; } = string.Empty;
+    public string SeoKeywords { get; set; } = string.Empty;
+}
+
+public class TopicBlogDto
+{
+    public string Topic { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public string TargetAudience { get; set; } = string.Empty;
+    public string MainPoints { get; set; } = string.Empty;
     public string SeoKeywords { get; set; } = string.Empty;
 }
 
@@ -49,6 +59,14 @@ public static class BlogMappings
             TargetAudience = blog.ProductBlog.TargetAudience,
             KeySellingPoints = blog.ProductBlog.KeySellingPoints,
             SeoKeywords = blog.ProductBlog.SeoKeywords,
+            },
+        TopicBlog = blog.TopicBlog == null ? null : new TopicBlogDto
+        {
+            Topic = blog.TopicBlog.Topic,
+            Content = blog.TopicBlog.Content,
+            TargetAudience = blog.TopicBlog.TargetAudience,
+            MainPoints = blog.TopicBlog.MainPoints,
+            SeoKeywords = blog.TopicBlog.SeoKeywords,
         }
     };
 }

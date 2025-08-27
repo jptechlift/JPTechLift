@@ -81,8 +81,11 @@ export default function BlogPage() {
               />
             )}
             <h3>{blogItem.title}</h3>
+            {blogItem.topic && (
+              <p><strong>Chủ đề:</strong> {blogItem.topic}</p>
+            )}
             <p>{getSnippet(blogItem.content)}</p>
-        </Link>
+          </Link>
         ))}
       </div>
 

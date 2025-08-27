@@ -12,19 +12,19 @@ namespace backend.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "keywords",
-                table: "topicblogs",
+                table: "topic_blogs",
                 newName: "seo_keywords");
 
             migrationBuilder.AddColumn<string>(
                 name: "target_audience",
-                table: "topicblogs",
+                table: "topic_blogs",
                 type: "text",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "key_selling_points",
-                table: "topicblogs",
+                table: "topic_blogs",
                 type: "text",
                 nullable: false,
                 defaultValue: "");
@@ -44,15 +44,15 @@ namespace backend.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "target_audience",
-                table: "topicblogs");
+                table: "topic_blogs");
 
             migrationBuilder.DropColumn(
                 name: "key_selling_points",
-                table: "topicblogs");
+                table: "topic_blogs");
 
             migrationBuilder.RenameColumn(
                 name: "seo_keywords",
-                table: "topicblogs",
+                table: "topic_blogs",
                 newName: "keywords");
 
             migrationBuilder.AlterColumn<string>(
