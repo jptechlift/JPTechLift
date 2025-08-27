@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-import Layout from "./layouts/layout";
+import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import StandardPage from "./pages/StandardPage";
 import PrinciplePage from "./pages/PrinciplePage";
