@@ -35,15 +35,7 @@ public class UserController : ControllerBase
         if (user == null)
             return NotFound();
 
-        return Ok(new UserDto
-        {
-            Id = user.Id,
-            Username = user.Username,
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            AvatarUrl = user.AvatarUrl,
-            CoverUrl = user.CoverUrl
-        });
+          return Ok(user.ToDto());
     }
 
     /// <summary>

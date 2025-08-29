@@ -59,7 +59,7 @@ public class BlogService
         var blog = await _blogRepository.GetBySlugAsync(slug);
         return blog?.ToDto();
     }
-    
+
     /// <summary>
     /// Creates a new blog owned by the specified user.
     /// </summary>
@@ -116,7 +116,7 @@ public class BlogService
     public async Task<Blog?> UpdateAsync(int id, BlogRequest request, string username)
     {
         var blog = await _blogRepository.GetByIdAsync(id);
-        if (blog == null || blog.Username != username)
+        if (blog == null)
         {
             return null;
         }
@@ -126,5 +126,12 @@ public class BlogService
 
         await _blogRepository.UpdateAsync(blog);
         return blog;
+    }
+    /// <summary>
+    /// Deletes a blog post.
+    /// </summary>
+    public async Task DeleteAsync(int id)
+    {
+        await _blogRepository.DeleteAsync(id);
     }
 }

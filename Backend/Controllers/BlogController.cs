@@ -69,7 +69,7 @@ public class BlogController : ControllerBase
     /// Publishes a new blog post.
     /// </summary>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
         var username = User.Identity?.Name ?? string.Empty;
@@ -82,7 +82,7 @@ public class BlogController : ControllerBase
     /// Updates an existing blog post.
     /// </summary>
     [HttpPut("{id}")]
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
     {
         var username = User.Identity?.Name ?? string.Empty;
@@ -91,5 +91,14 @@ public class BlogController : ControllerBase
             return NotFound();
         return Ok(blog);
     }
+     /// <summary>
+    /// Deletes a blog post.
+    /// </summary>
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "admin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _blogService.DeleteAsync(id);
+        return NoContent();
+    }
 }
-

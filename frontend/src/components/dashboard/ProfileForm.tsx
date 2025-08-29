@@ -9,6 +9,7 @@ export default function ProfileForm() {
     email: "",
     avatar: "",
     coverUrl: "",
+    role: "",
   });
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");

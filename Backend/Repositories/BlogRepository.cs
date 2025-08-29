@@ -35,6 +35,20 @@ public class BlogRepository
     }
 
     /// <summary>
+    /// Deletes a blog entry.
+    /// </summary>
+    public async Task DeleteAsync(int id)
+    {
+        var blog = await _context.Blogs.FindAsync(id);
+        if (blog != null)
+        {
+            _context.Blogs.Remove(blog);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+
+    /// <summary>
     /// Persists modifications to an existing blog.
     /// </summary>
     public async Task UpdateAsync(Blog blog)

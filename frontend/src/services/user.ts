@@ -4,6 +4,7 @@ export interface UserProfile {
   email: string;
   avatar: string;
   coverUrl: string;
+  role: string;
 }
 import { auth } from "./auth";
 
@@ -15,12 +16,14 @@ const toUserProfile = (data: {
   email?: string;
   avatarUrl?: string;
   coverUrl?: string;
+  role?: string;
 }): UserProfile => ({
   username: data.username ?? "",
   phoneNumber: data.phoneNumber ?? "",
   email: data.email ?? "",
   avatar: data.avatarUrl ?? "",
   coverUrl: data.coverUrl ?? "",
+   role: data.role ?? "",
 });
 
 const fromUserProfile = (profile: UserProfile) => ({
