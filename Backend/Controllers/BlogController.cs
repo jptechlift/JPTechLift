@@ -41,7 +41,8 @@ public class BlogController : ControllerBase
     {
         var username = User.Identity?.Name ?? string.Empty;
         var blog = await _blogService.PublishAsync(request, username);
-        return CreatedAtAction(nameof(Publish), new { id = blog.Id }, blog);
+         var blogDto = blog.ToDto();
+        return CreatedAtAction(nameof(Publish), new { id = blogDto.Id }, blogDto);
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 export interface UserProfile {
-  username: string;
+ username: string;
   phoneNumber: string;
   email: string;
   avatar: string;
@@ -24,17 +24,16 @@ const toUserProfile = (data: {
 });
 
 const fromUserProfile = (profile: UserProfile) => ({
-  name: profile.username,
-  phone: profile.phoneNumber,
   email: profile.email,
-  avatar: profile.avatar,
-   cover: profile.coverUrl,
+  phoneNumber: profile.phoneNumber,
+  avatarUrl: profile.avatar,
+  coverUrl: profile.coverUrl,
 });
 
 export const user = {
   async get(): Promise<UserProfile> {
     const token = auth.getToken();
-    const res = await fetch(`${API_URL}/api/user`, {
+    const res = await fetch(`${API_URL}/api/user/profile`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
     if (!res.ok) throw new Error("Failed to load profile");
@@ -43,7 +42,7 @@ export const user = {
   },
   async update(profile: UserProfile): Promise<UserProfile> {
     const token = auth.getToken();
-    const res = await fetch(`${API_URL}/api/user`, {
+    const res = await fetch(`${API_URL}/api/user/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

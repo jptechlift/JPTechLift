@@ -66,7 +66,8 @@ public class UserController : ControllerBase
         user.CoverUrl = request.CoverUrl ?? user.CoverUrl;
 
         await _users.UpdateAsync(user);
-        return NoContent();
+        var updatedDto = user.ToDto();
+        return Ok(updatedDto);
     }
 }
 
