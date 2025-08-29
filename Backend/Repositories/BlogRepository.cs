@@ -42,4 +42,17 @@ public class BlogRepository
         _context.Blogs.Update(blog);
         await _context.SaveChangesAsync();
     }
+    
+    /// <summary>
+    /// Retrieves the most recently created blogs ordered by descending
+    /// <see cref="Blog.CreatedDate"/>.
+    /// </summary>
+    /// <param name="count">Maximum number of blogs to return.</param>
+    public Task<List<Blog>> GetRecentAsync(int count) =>
+        _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .OrderByDescending(b => b.CreatedDate)
+            .Take(count)
+            .ToListAsync();
 }

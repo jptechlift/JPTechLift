@@ -21,6 +21,17 @@ public class BlogController : ControllerBase
         _blogService = blogService;
     }
 
+ /// <summary>
+    /// Retrieves a list of the most recent blog posts.
+    /// </summary>
+    /// <param name="count">Optional maximum number of posts to return.</param>
+    [HttpGet("recent")]
+    public async Task<IActionResult> GetRecent([FromQuery] int? count)
+    {
+        var blogs = await _blogService.GetRecentAsync(count ?? 5);
+        return Ok(blogs);
+    }
+    
     /// <summary>
     /// Generates a preview using AI based on the provided request.
     /// </summary>

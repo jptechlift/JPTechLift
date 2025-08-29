@@ -2,6 +2,7 @@ using Backend.Dtos.Blog;
 using Backend.Helpers;
 using Backend.Models;
 using Backend.Repositories;
+using System.Linq;
 
 namespace Backend.Services;
 
@@ -29,6 +30,16 @@ public class BlogService
         var (title, content) = await _aiBlogService.GenerateContentAsync(request);
         var slug = SlugHelper.GenerateSlug(title);
         return (title, slug, content);
+    }
+
+    /// <summary>
+    /// Retrieves the most recent published blogs.
+    /// </summary>
+    /// <param name="count">Maximum number of blogs to fetch.</param>
+    public async Task<IEnumerable<BlogDto>> GetRecentAsync(int count)
+    {
+        var blogs = await _blogRepository.GetRecentAsync(count);
+        return blogs.Select(b => b.ToDto());
     }
 
     /// <summary>
