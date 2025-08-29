@@ -10,6 +10,7 @@ public class UserDto
     public string PhoneNumber { get; set; } = string.Empty;
     public string? AvatarUrl { get; set; }
     public string? CoverUrl { get; set; }
+    public string Role { get; set; } = string.Empty;
 }
 
 public static class UserMappings
@@ -21,6 +22,7 @@ public static class UserMappings
         Email = user.Email,
         PhoneNumber = user.PhoneNumber,
         AvatarUrl = user.AvatarUrl,
-        CoverUrl = user.CoverUrl
+        CoverUrl = user.CoverUrl,
+        Role = user.Role
     };
 }

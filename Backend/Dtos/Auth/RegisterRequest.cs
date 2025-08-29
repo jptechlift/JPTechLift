@@ -8,7 +8,5 @@ namespace Backend.Dtos.Auth
          public string PhoneNumber { get; set; } = string.Empty;
         public string? AvatarUrl { get; set; }
         public string? CoverUrl { get; set; }
-        public string? Role { get; set; }
-        public bool? IsActive { get; set; }
     }
 }

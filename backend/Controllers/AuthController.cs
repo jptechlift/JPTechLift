@@ -45,7 +45,9 @@ public class AuthController : ControllerBase
             PhoneNumber = request.PhoneNumber,
             AvatarUrl = request.AvatarUrl,
             CoverUrl = request.CoverUrl,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Role = "user",
+            IsActive = true
         };
         await _users.AddAsync(user);
         return CreatedAtAction(nameof(Register), new { id = user.Id });
@@ -76,7 +78,8 @@ public class AuthController : ControllerBase
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
             }),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState } from "react"; //A core React Hook that allows functional components to hold and manage state. When the state is updated, React automatically re-renders the component's UI.
 import styles from "../styles/pages/auth/registerPage.module.scss";
 import { useNavigate } from "react-router-dom";
-import { auth, RegisterPayload } from "../services/auth";
+// 'auth': An object containing functions to interact with the authentication API.
+// 'RegisterPayload': A TypeScript type that defines the data structure for the registration request.
+import { auth, RegisterPayload } from "../services/auth"; 
 
 export default function RegisterPage() {
+// 'form': State object to store user input from the registration form.
+// 'setForm': Function to update the 'form' state.
+// '<RegisterPayload>': Provides a specific type for the state, ensuring type safety.
   const [form, setForm] = useState<RegisterPayload>({
     username: "",
     password: "",
@@ -13,16 +18,22 @@ export default function RegisterPage() {
     role: "",
     isActive: true,
   });
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
+// 'e': The event object, which contains details about the change event.
+// Updates the form state based on the input's 'name' attribute.
+// Using an updater function `(f) => ({...})` ensures we always have the latest state, preventing race conditions.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
   };
 
+  // Declared as an async function to handle the API call for registration.
   const handleSubmit = async (e: React.FormEvent) => {
+   // Prevents the default browser behavior of reloading the page on form submission.
     e.preventDefault();
     setError("");
     setLoading(true);

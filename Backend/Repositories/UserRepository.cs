@@ -44,4 +44,43 @@ public class UserRepository
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
+    
+    /// <summary>
+    /// Retrieves a user by id.
+    /// </summary>
+    public Task<User?> GetByIdAsync(int id) =>
+        _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+    /// <summary>
+    /// Returns all users.
+    /// </summary>
+    public Task<List<User>> GetAllAsync() =>
+        _context.Users.ToListAsync();
+
+    /// <summary>
+    /// Deletes a user by id.
+    /// </summary>
+    public async Task DeleteAsync(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user != null)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    /// <summary>
+    /// Updates a user's role and active status.
+    /// </summary>
+    public async Task UpdateRoleAndStatusAsync(int id, string role, bool isActive)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user != null)
+        {
+            user.Role = role;
+            user.IsActive = isActive;
+            await _context.SaveChangesAsync();
+        }
+    }
 }
