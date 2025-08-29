@@ -44,6 +44,18 @@ public class BlogRepository
     }
     
     /// <summary>
+    /// Retrieves all published blogs ordered by descending
+    /// <see cref="Blog.CreatedDate"/>.
+    /// </summary>
+    public Task<List<Blog>> GetAllAsync() =>
+        _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .Where(b => b.IsPublished)
+            .OrderByDescending(b => b.CreatedDate)
+            .ToListAsync();
+
+    /// <summary>
     /// Retrieves the most recently created blogs ordered by descending
     /// <see cref="Blog.CreatedDate"/>.
     /// </summary>
@@ -55,4 +67,22 @@ public class BlogRepository
             .OrderByDescending(b => b.CreatedDate)
             .Take(count)
             .ToListAsync();
+             /// <summary>
+    /// Retrieves a blog by its slug, incrementing the view count when found.
+    /// </summary>
+    public async Task<Blog?> GetBySlugAsync(string slug)
+    {
+        var blog = await _context.Blogs
+            .Include(b => b.ProductBlog)
+            .Include(b => b.TopicBlog)
+            .SingleOrDefaultAsync(b => b.Slug == slug && b.IsPublished);
+
+        if (blog != null)
+        {
+            blog.ViewCount++;
+            await _context.SaveChangesAsync();
+        }
+
+        return blog;
+    }
 }

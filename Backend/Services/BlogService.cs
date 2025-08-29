@@ -42,6 +42,24 @@ public class BlogService
         return blogs.Select(b => b.ToDto());
     }
 
+ /// <summary>
+    /// Retrieves all published blogs.
+    /// </summary>
+    public async Task<IEnumerable<BlogDto>> GetAllAsync()
+    {
+        var blogs = await _blogRepository.GetAllAsync();
+        return blogs.Select(b => b.ToDto());
+    }
+
+    /// <summary>
+    /// Retrieves a published blog by its slug.
+    /// </summary>
+    public async Task<BlogDto?> GetBySlugAsync(string slug)
+    {
+        var blog = await _blogRepository.GetBySlugAsync(slug);
+        return blog?.ToDto();
+    }
+    
     /// <summary>
     /// Creates a new blog owned by the specified user.
     /// </summary>

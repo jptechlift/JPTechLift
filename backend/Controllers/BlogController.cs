@@ -21,6 +21,28 @@ public class BlogController : ControllerBase
         _blogService = blogService;
     }
 
+/// <summary>
+    /// Retrieves all published blogs.
+    /// </summary>
+    [HttpGet("/api/blogs")]
+    public async Task<IActionResult> GetAll()
+    {
+        var blogs = await _blogService.GetAllAsync();
+        return Ok(blogs);
+    }
+
+    /// <summary>
+    /// Retrieves a blog post by its slug.
+    /// </summary>
+    [HttpGet("{slug}")]
+    public async Task<IActionResult> GetBySlug(string slug)
+    {
+        var blog = await _blogService.GetBySlugAsync(slug);
+        if (blog == null)
+            return NotFound();
+        return Ok(blog);
+    }
+
  /// <summary>
     /// Retrieves a list of the most recent blog posts.
     /// </summary>
@@ -31,7 +53,7 @@ public class BlogController : ControllerBase
         var blogs = await _blogService.GetRecentAsync(count ?? 5);
         return Ok(blogs);
     }
-    
+
     /// <summary>
     /// Generates a preview using AI based on the provided request.
     /// </summary>
