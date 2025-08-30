@@ -23,16 +23,16 @@ interface BlogPostApi {
   content: string;
   slug: string;
   author: string;
-  created_date: string;
-  view_count: number;
-  image_url?: string;
+  createdDate: string;
+  viewCount: number;
+  imageUrl?: string;
   tags?: string[];
-  topic_blog?: {
+  topicBlog?: {
     topic: string;
     content: string;
-    target_audience: string;
-    main_points: string;
-    seo_keywords: string;
+    targetAudience: string;
+    mainPoints: string;
+    seoKeywords: string;
   };
 }
 
@@ -42,14 +42,14 @@ const mapFromApi = (data: BlogPostApi): BlogPost => ({
   content: data.content,
   slug: data.slug,
   author: data.author,
-  createdDate: data.created_date,
-  viewCount: data.view_count,
-  imageUrl: data.image_url,
+  createdDate: data.createdDate,
+  viewCount: data.viewCount,
+  imageUrl: data.imageUrl,
   tags: data.tags,
-  topic: data.topic_blog?.topic,
-  targetAudience: data.topic_blog?.target_audience,
-  mainPoints: data.topic_blog?.main_points,
-  seoKeywords: data.topic_blog?.seo_keywords,
+  topic: data.topicBlog?.topic,
+  targetAudience: data.topicBlog?.targetAudience,
+  mainPoints: data.topicBlog?.mainPoints,
+  seoKeywords: data.topicBlog?.seoKeywords,
 });
 
 export type ProductDetails = {
@@ -74,6 +74,7 @@ export type TopicDetails = {
   angle?: string;
   callToAction?: string;
 };
+
 
 
 export type BlogRequest = {

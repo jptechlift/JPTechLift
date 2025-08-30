@@ -48,7 +48,7 @@ describe("blog service", () => {
         productDetails: expect.objectContaining({ productName: "Test" }),
         blogType: "product",
       }),
-      expect.any(Object)
+       expect.any(Object)
     );
   });
 
@@ -73,8 +73,8 @@ describe("blog service", () => {
         content: "C",
         slug: "s",
         author: "a",
-        created_date: "2024-01-01",
-        view_count: 0,
+        createdDate: "2024-01-01",
+        viewCount: 0,
       },
     ];
     const posts: BlogPost[] = [
@@ -105,8 +105,8 @@ describe("blog service", () => {
       content: "C",
       slug: "s",
       author: "a",
-      created_date: "2024-01-01",
-      view_count: 0,
+      createdDate: "2024-01-01",
+      viewCount: 0,
     };
     const post: BlogPost = {
       id: "1",
