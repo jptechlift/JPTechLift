@@ -1,7 +1,7 @@
 // src/pages/BlogDetailPage.tsx
 
 import React, { useEffect, useState, useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { User, Calendar, Clock, Eye, Facebook, Twitter, Linkedin, Share2 } from "lucide-react";
 import { blog, BlogPost } from "../services/blog";

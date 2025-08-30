@@ -158,7 +158,6 @@ export default function CreateBlogForm() {
                 toneOfVoice: data.topicDetails.toneOfVoice,
               }
             : undefined,
-        title: finalTitle,
         slug: finalSlug,
         content: finalContent,
       } as BlogRequest;

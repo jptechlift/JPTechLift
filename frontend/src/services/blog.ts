@@ -81,9 +81,9 @@ export type BlogRequest = {
   blogType: "product" | "topic";
   productDetails?: ProductDetails;
   topicDetails?: TopicDetails;
-  title?: string;
-  slug?: string;
   content?: string; // final content when publishing
+  author?: string;
+  slug?: string;
 };
 
 const rawApiUrl = import.meta.env.VITE_API_URL;
