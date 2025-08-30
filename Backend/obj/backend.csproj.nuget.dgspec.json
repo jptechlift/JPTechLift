@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding_learning\\JPTechLift_Project\\JPTechLift\\Backend\\backend.csproj": {}
+    "C:\\Users\\Admin\\Downloads\\JPTechLift\\backend\\backend.csproj": {}
   },
   "projects": {
-    "D:\\Coding_learning\\JPTechLift_Project\\JPTechLift\\Backend\\backend.csproj": {
+    "C:\\Users\\Admin\\Downloads\\JPTechLift\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Coding_learning\\JPTechLift_Project\\JPTechLift\\Backend\\backend.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\Downloads\\JPTechLift\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "D:\\Coding_learning\\JPTechLift_Project\\JPTechLift\\Backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\danhn\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding_learning\\JPTechLift_Project\\JPTechLift\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\Downloads\\JPTechLift\\backend\\backend.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\Downloads\\JPTechLift\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\danhn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

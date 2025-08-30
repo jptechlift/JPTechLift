@@ -1,6 +1,6 @@
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Database=your_db;Username=your_user;Password=your_password"
+ "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=jptechlift;Username=postgres;Password=jptechlift"
   },
   "Jwt": {
     "Secret": "YOUR_SUPER_SECRET_KEY_MUST_BE_LONG_ENOUGH"

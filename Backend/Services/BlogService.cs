@@ -2,7 +2,10 @@ using Backend.Dtos.Blog;
 using Backend.Helpers;
 using Backend.Models;
 using Backend.Repositories;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace Backend.Services;
 
@@ -33,53 +36,28 @@ public class BlogService
     }
 
     /// <summary>
-    /// Retrieves the most recent published blogs.
-    /// </summary>
-    /// <param name="count">Maximum number of blogs to fetch.</param>
-    public async Task<IEnumerable<BlogDto>> GetRecentAsync(int count)
-    {
-        var blogs = await _blogRepository.GetRecentAsync(count);
-        return blogs.Select(b => b.ToDto());
-    }
-
- /// <summary>
-    /// Retrieves all published blogs.
-    /// </summary>
-    public async Task<IEnumerable<BlogDto>> GetAllAsync()
-    {
-        var blogs = await _blogRepository.GetAllAsync();
-        return blogs.Select(b => b.ToDto());
-    }
-
-    /// <summary>
-    /// Retrieves a published blog by its slug.
-    /// </summary>
-    public async Task<BlogDto?> GetBySlugAsync(string slug)
-    {
-        var blog = await _blogRepository.GetBySlugAsync(slug);
-        return blog?.ToDto();
-    }
-
-    /// <summary>
-    /// Creates a new blog owned by the specified user.
+    /// Creates a new blog owned by the specified user using AI-generated content.
     /// </summary>
     public async Task<Blog> PublishAsync(BlogRequest request, string username)
     {
         var user = await _userRepository.GetByUsernameAsync(username)
-            ?? throw new InvalidOperationException("User not found");
+            ?? throw new InvalidOperationException($"User '{username}' not found");
 
-        var slug = request.Slug ?? SlugHelper.GenerateSlug(request.ProductDetails?.ProductName ?? request.TopicDetails?.ArticleTitle ?? string.Empty);
+        var (aiTitle, aiContent) = await _aiBlogService.GenerateContentAsync(request);
+        var slug = SlugHelper.GenerateSlug(aiTitle);
+        // Cần implement EnsureUniqueSlugAsync trong BlogRepository nếu muốn đảm bảo slug không bao giờ trùng
+        // slug = await _blogRepository.EnsureUniqueSlugAsync(slug); 
 
         var blog = new Blog
         {
-            Title = request.ProductDetails?.ProductName ?? request.TopicDetails?.ArticleTitle ?? string.Empty,
+            Title = aiTitle,
             Slug = slug,
-            Author = request.Author ?? username,
+            Content = aiContent,
+            Author = username,
             Username = user.Username,
-            Content = request.Content ?? string.Empty,
+            IsPublished = true,
             CreatedDate = DateTime.UtcNow,
-            UpdatedDate = DateTime.UtcNow,
-            IsPublished = true
+            UpdatedDate = DateTime.UtcNow
         };
 
         if (request.BlogType == "product" && request.ProductDetails != null)
@@ -98,8 +76,7 @@ public class BlogService
         {
             blog.TopicBlog = new TopicBlog
             {
-                Topic = request.TopicDetails.Topic ?? string.Empty,
-                Content = request.Content ?? string.Empty,
+                Topic = request.TopicDetails.ArticleTitle ?? string.Empty,
                 TargetAudience = request.TopicDetails.TargetAudience,
                 MainPoints = request.TopicDetails.MainPoints,
                 SeoKeywords = request.TopicDetails.SeoKeywords
@@ -109,29 +86,75 @@ public class BlogService
         await _blogRepository.AddAsync(blog);
         return blog;
     }
+    
+    // =======================================================
+    // HOÀN THIỆN CÁC PHƯƠNG THỨC CÒN THIẾU TẠI ĐÂY
+    // =======================================================
 
     /// <summary>
-    /// Updates an existing blog if owned by the specified user.
+    /// Retrieves all published blogs.
+    /// </summary>
+    public async Task<IEnumerable<BlogDto>> GetAllAsync()
+    {
+        var blogs = await _blogRepository.GetAllAsync();
+        // Chuyển đổi từ List<Blog> sang List<BlogDto>
+        return blogs.Select(b => b.ToDto());
+    }
+
+    /// <summary>
+    /// Retrieves a published blog by its slug and increments view count.
+    /// </summary>
+    public async Task<BlogDto?> GetBySlugAsync(string slug)
+    {
+        var blog = await _blogRepository.GetBySlugAsync(slug);
+        if (blog != null)
+        {
+            // Tăng lượt xem và cập nhật
+            blog.ViewCount++; 
+            await _blogRepository.UpdateAsync(blog);
+            return blog.ToDto();
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Retrieves the most recent published blogs.
+    /// </summary>
+    public async Task<IEnumerable<BlogDto>> GetRecentAsync(int count)
+    {
+        var blogs = await _blogRepository.GetRecentAsync(count);
+        return blogs.Select(b => b.ToDto());
+    }
+
+    /// <summary>
+    /// Updates an existing blog.
     /// </summary>
     public async Task<Blog?> UpdateAsync(int id, BlogRequest request, string username)
     {
         var blog = await _blogRepository.GetByIdAsync(id);
         if (blog == null)
         {
-            return null;
+            return null; // Không tìm thấy blog để cập nhật
         }
 
+        // Chỉ cho phép chủ sở hữu hoặc admin cập nhật (ví dụ)
+        // if (blog.Username != username && !user.IsInRole("admin")) return null;
+
+        // Cập nhật các trường cần thiết từ request
+        // Ví dụ, chỉ cho cập nhật nội dung
         blog.Content = request.Content ?? blog.Content;
         blog.UpdatedDate = DateTime.UtcNow;
 
         await _blogRepository.UpdateAsync(blog);
         return blog;
     }
+
     /// <summary>
     /// Deletes a blog post.
     /// </summary>
     public async Task DeleteAsync(int id)
     {
+        // Chỉ cần gọi phương thức tương ứng của repository
         await _blogRepository.DeleteAsync(id);
     }
 }

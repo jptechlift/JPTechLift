@@ -1,104 +1,83 @@
+// SỬA LỖI: Không có thư mục Data, ApplicationDbContext nằm trong Models
+using Backend.Models; 
 using Backend.Dtos.Blog;
-using Backend.Models;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
-namespace Backend.Controllers;
-
-/// <summary>
-/// Exposes CRUD operations for blogs.
-/// </summary>
-[ApiController]
-[Route("api/[controller]")]
-public class BlogController : ControllerBase
+namespace Backend.Controllers
 {
-    private readonly BlogService _blogService;
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BlogController : ControllerBase
+    {
+        private readonly BlogService _blogService;
 
-    public BlogController(BlogService blogService)
-    {
-        _blogService = blogService;
-    }
+        // Constructor này giờ đã khớp với Program.cs
+        public BlogController(BlogService blogService)
+        {
+            _blogService = blogService;
+        }
 
-/// <summary>
-    /// Retrieves all published blogs.
-    /// </summary>
-    [HttpGet("/api/blogs")]
-    public async Task<IActionResult> GetAll()
-    {
-        var blogs = await _blogService.GetAllAsync();
-        return Ok(blogs);
-    }
+        [HttpGet("/api/blogs")]
+        public async Task<IActionResult> GetAll()
+        {
+            var blogs = await _blogService.GetAllAsync();
+            return Ok(blogs);
+        }
 
-    /// <summary>
-    /// Retrieves a blog post by its slug.
-    /// </summary>
-    [HttpGet("{slug}")]
-    public async Task<IActionResult> GetBySlug(string slug)
-    {
-        var blog = await _blogService.GetBySlugAsync(slug);
-        if (blog == null)
-            return NotFound();
-        return Ok(blog);
-    }
+        [HttpGet("{slug}")]
+        public async Task<IActionResult> GetBySlug(string slug)
+        {
+            var blog = await _blogService.GetBySlugAsync(slug);
+            if (blog == null)
+                return NotFound();
+            return Ok(blog);
+        }
 
- /// <summary>
-    /// Retrieves a list of the most recent blog posts.
-    /// </summary>
-    /// <param name="count">Optional maximum number of posts to return.</param>
-    [HttpGet("recent")]
-    public async Task<IActionResult> GetRecent([FromQuery] int? count)
-    {
-        var blogs = await _blogService.GetRecentAsync(count ?? 5);
-        return Ok(blogs);
-    }
+        [HttpGet("recent")]
+        public async Task<IActionResult> GetRecent([FromQuery] int? count)
+        {
+            var blogs = await _blogService.GetRecentAsync(count ?? 5);
+            return Ok(blogs);
+        }
 
-    /// <summary>
-    /// Generates a preview using AI based on the provided request.
-    /// </summary>
-    [HttpPost("generate-preview")]
-    [Authorize]
-    public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
-    {
-        var (title, slug, content) = await _blogService.GeneratePreviewAsync(request);
-        return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}" });
-    }
+        [HttpPost("generate-preview")]
+        [Authorize]
+        public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
+        {
+            var (title, slug, content) = await _blogService.GeneratePreviewAsync(request);
+            return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}" });
+        }
 
-    /// <summary>
-    /// Publishes a new blog post.
-    /// </summary>
-    [HttpPost]
-    [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Publish([FromBody] BlogRequest request)
-    {
-        var username = User.Identity?.Name ?? string.Empty;
-        var blog = await _blogService.PublishAsync(request, username);
-         var blogDto = blog.ToDto();
-        return CreatedAtAction(nameof(Publish), new { id = blogDto.Id }, blogDto);
-    }
+        [HttpPost("publish")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Publish([FromBody] BlogRequest request)
+        {
+            var username = User.Identity?.Name ?? string.Empty;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
 
-    /// <summary>
-    /// Updates an existing blog post.
-    /// </summary>
-    [HttpPut("{id}")]
-    [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
-    {
-        var username = User.Identity?.Name ?? string.Empty;
-        var blog = await _blogService.UpdateAsync(id, request, username);
-        if (blog == null)
-            return NotFound();
-        return Ok(blog);
-    }
-     /// <summary>
-    /// Deletes a blog post.
-    /// </summary>
-    [HttpDelete("{id}")]
-    [Authorize(Roles = "admin")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        await _blogService.DeleteAsync(id);
-        return NoContent();
+            var blog = await _blogService.PublishAsync(request, username);
+            return CreatedAtAction(nameof(GetBySlug), new { slug = blog.Slug }, blog.ToDto());
+        }
+        
+        [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
+        {
+            var username = User.Identity?.Name ?? string.Empty;
+            var blog = await _blogService.UpdateAsync(id, request, username);
+            if (blog == null)
+                return NotFound();
+            return Ok(blog.ToDto());
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _blogService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }
