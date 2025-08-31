@@ -2,11 +2,13 @@ using Backend.Models;
 using Backend.Repositories;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using System.Text;
 using System.Security.Claims;
+using System.Threading.RateLimiting;
 using DotNetEnv;
 
 Env.Load();
@@ -31,6 +33,22 @@ builder.Services.AddScoped<AiBlogService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<BlogRepository>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("login", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
+});
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -56,13 +74,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+     db.Database.Migrate();
     
     var users = scope.ServiceProvider.GetRequiredService<UserRepository>();
     var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
@@ -87,10 +104,11 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseRouting();
+app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.MapControllers();
 
-app.Run("http://0.0.0.0:5000");
-
+app.Run();

@@ -25,5 +25,13 @@ public class User
     public string? CoverUrl { get; set; }
         = null;
 
+    public bool EmailVerified { get; set; } = false;
+    public string? EmailVerificationToken { get; set; }
+        = null;
+
+    public bool MfaEnabled { get; set; } = false;
+    public string? MfaSecret { get; set; }
+        = null;
+
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 }

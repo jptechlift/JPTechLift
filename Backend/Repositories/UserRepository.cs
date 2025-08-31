@@ -27,6 +27,9 @@ public class UserRepository
     public Task<User?> GetByEmailAsync(string email) =>
         _context.Users.SingleOrDefaultAsync(u => u.Email == email);
 
+    public Task<User?> GetByVerificationTokenAsync(string token) =>
+        _context.Users.SingleOrDefaultAsync(u => u.EmailVerificationToken == token);
+        
     /// <summary>
     /// Persists a new user to the database.
     /// </summary>
