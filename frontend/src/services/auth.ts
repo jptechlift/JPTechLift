@@ -34,10 +34,17 @@ async function fetchCsrfToken(): Promise<string> {
   const res = await fetch(`${API_URL}/api/auth/csrf-token`, {
     credentials: "include",
   });
-  const data = await res.json();
-  const token = data.token ?? "";
-  if (token) localStorage.setItem(CSRF_TOKEN_KEY, token);
-  return token;
+   if (!res.ok) {
+    throw new Error("Failed to fetch CSRF token");
+  }
+  try {
+    const data = await res.json();
+    const token = data.token ?? "";
+    if (token) localStorage.setItem(CSRF_TOKEN_KEY, token);
+    return token;
+  } catch {
+    throw new Error("Invalid JSON in CSRF token response");
+  }
 }
 
 /**

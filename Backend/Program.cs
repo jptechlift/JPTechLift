@@ -79,9 +79,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
-// 7. Cấu hình Antiforgery và Controllers
+// 7. Cấu hình Antiforgery và MVC
 builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
-builder.Services.AddControllers(options =>
+builder.Services.AddControllersWithViews(options =>
 {
     // Tự động bảo vệ các endpoint khỏi tấn công CSRF
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
