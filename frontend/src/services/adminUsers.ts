@@ -38,21 +38,21 @@ function authHeaders() {
 
 export const adminUsers = {
   async list(): Promise<AdminUser[]> {
-    const res = await fetch(`${API_URL}/api/admin/users`, {
+    const res = await fetch(`${API_URL}/api/users`, {
       headers: authHeaders(),
     });
     if (!res.ok) throw new Error("Failed to load users");
     return res.json();
   },
   async get(id: number): Promise<AdminUser> {
-    const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    const res = await fetch(`${API_URL}/api/users/${id}`, {
       headers: authHeaders(),
     });
     if (!res.ok) throw new Error("Failed to load user");
     return res.json();
   },
   async create(payload: AdminUserCreate): Promise<AdminUser> {
-    const res = await fetch(`${API_URL}/api/admin/users`, {
+    const res = await fetch(`${API_URL}/api/users`, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(payload),
@@ -61,7 +61,7 @@ export const adminUsers = {
     return res.json();
   },
   async update(id: number, payload: AdminUserUpdate): Promise<void> {
-    const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    const res = await fetch(`${API_URL}/api/users/${id}`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify(payload),
@@ -69,7 +69,7 @@ export const adminUsers = {
     if (!res.ok) throw new Error("Failed to update user");
   },
   async remove(id: number): Promise<void> {
-    const res = await fetch(`${API_URL}/api/admin/users/${id}`, {
+    const res = await fetch(`${API_URL}/api/users/${id}`, {
       method: "DELETE",
       headers: authHeaders(),
     });

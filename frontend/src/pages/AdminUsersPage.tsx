@@ -19,8 +19,22 @@ export default function AdminUsersPage() {
     role: "user",
     isActive: true,
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const load = () => adminUsers.list().then(setUsers);
+  const load = async () => {
+    setLoading(true);
+    try {
+      const data = await adminUsers.list();
+      setUsers(data);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     load();
   }, []);
@@ -36,37 +50,66 @@ export default function AdminUsersPage() {
   const startCreate = () => {
     setEditing(null);
     setForm({ username: "", email: "", password: "", role: "user", isActive: true });
+    setShowModal(true);
   };
 
   const startEdit = async (id: number) => {
     const u = await adminUsers.get(id);
     setEditing(u);
     setForm({ username: u.username, email: u.email, role: u.role, isActive: u.isActive });
+    setShowModal(true);
   };
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (editing) {
-      await adminUsers.update(editing.id, {
-        role: form.role,
-        isActive: form.isActive,
-      });
-    } else {
-      await adminUsers.create(form as AdminUserCreate);
+    try {
+      if (editing) {
+        await adminUsers.update(editing.id, {
+          username: form.username,
+          email: form.email,
+          role: form.role,
+          isActive: form.isActive,
+        });
+        setMessage("Cập nhật người dùng thành công!");
+      } else {
+        await adminUsers.create(form as AdminUserCreate);
+        setMessage("Tạo người dùng thành công!");
+      }
+      await load();
+      setShowModal(false);
+      setEditing(null);
+    } catch {
+      setError("Đã xảy ra lỗi");
     }
-    await load();
-    startCreate();
   };
 
   const remove = async (id: number) => {
-    if (!confirm("Delete user?")) return;
-    await adminUsers.remove(id);
-    await load();
+    const user = users.find((u) => u.id === id);
+    if (!user) return;
+    if (
+      !confirm(
+        `Bạn có chắc chắn muốn xóa người dùng ${user.username}? Hành động này không thể hoàn tác.`
+      )
+    )
+      return;
+    try {
+      await adminUsers.remove(id);
+      setMessage("Xóa người dùng thành công!");
+      await load();
+    } catch {
+      setError("Đã xảy ra lỗi, không thể xóa người dùng.");
+    }
   };
 
   return (
     <div className="p-8">
       <h1 className="text-2xl mb-4">User Management</h1>
+      {message && (
+        <div className="bg-green-100 text-green-700 p-2 mb-4">{message}</div>
+      )}
+      {error && (
+        <div className="bg-red-100 text-red-700 p-2 mb-4">{error}</div>
+      )}
       <div className="mb-4 flex gap-2">
         <input
           value={search}
@@ -81,7 +124,10 @@ export default function AdminUsersPage() {
           Add User
         </button>
       </div>
-      <table className="w-full border mb-4">
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <table className="w-full border mb-4">
         <thead>
           <tr className="bg-gray-100">
             <th className="p-2 text-left">Username</th>
@@ -117,7 +163,8 @@ export default function AdminUsersPage() {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      )}
       <div className="flex justify-center mb-8 gap-2">
         {Array.from({ length: totalPages }, (_, i) => (
           <button
@@ -129,68 +176,72 @@ export default function AdminUsersPage() {
           </button>
         ))}
       </div>
-      <form onSubmit={submit} className="max-w-md space-y-3">
-        <h2 className="text-xl">
-          {editing ? `Edit ${editing.username}` : "Add User"}
-        </h2>
-        <input
-          className="border p-2 w-full"
-          placeholder="Username"
-          value={form.username || ""}
-          onChange={(e) => setForm({ ...form, username: e.target.value })}
-          required
-        />
-        <input
-          className="border p-2 w-full"
-          placeholder="Email"
-          value={form.email || ""}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-        />
-        {!editing && (
-          <input
-            type="password"
-            className="border p-2 w-full"
-            placeholder="Password"
-            value={form.password || ""}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-          />
-        )}
-        <select
-          className="border p-2 w-full"
-          value={form.role}
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-        >
-          <option value="user">user</option>
-          <option value="admin">admin</option>
-        </select>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={form.isActive ?? false}
-            onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
-          />
-          Active
-        </label>
-        <div className="space-x-2">
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2"
-          >
-            Save
-          </button>
-          {editing && (
-            <button
-              type="button"
-              onClick={startCreate}
-              className="px-4 py-2 border"
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <form onSubmit={submit} className="bg-white p-4 rounded space-y-3 w-full max-w-sm">
+            <h2 className="text-xl">
+              {editing ? `Edit ${editing.username}` : "Add User"}
+            </h2>
+            <input
+              className="border p-2 w-full"
+              placeholder="Username"
+              value={form.username || ""}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              required
+            />
+            <input
+              className="border p-2 w-full"
+              placeholder="Email"
+              value={form.email || ""}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
+            {!editing && (
+              <input
+                type="password"
+                className="border p-2 w-full"
+                placeholder="Password"
+                value={form.password || ""}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+              />
+            )}
+            <select
+              className="border p-2 w-full"
+              value={form.role}
+              onChange={(e) => setForm({ ...form, role: e.target.value })}
             >
-              Cancel
-            </button>
-          )}
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={form.isActive ?? false}
+                onChange={(e) =>
+                  setForm({ ...form, isActive: e.target.checked })
+                }
+              />
+              Active
+            </label>
+            <div className="space-x-2">
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 border"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
+      )}
     </div>
   );
 }

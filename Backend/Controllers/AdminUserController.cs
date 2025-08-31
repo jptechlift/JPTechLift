@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace Backend.Controllers;
 
@@ -13,12 +15,12 @@ namespace Backend.Controllers;
 /// </summary>
 [Authorize(Roles = "admin")]
 [ApiController]
-[Route("api/admin/users")]
-public class AdminUserController : ControllerBase
+[Route("api/users")]
+public class AdminUsersController : ControllerBase
 {
     private readonly UserRepository _users;
 
-    public AdminUserController(UserRepository users)
+    public AdminUsersController(UserRepository users)
     {
         _users = users;
     }
@@ -40,11 +42,22 @@ public class AdminUserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] AdminUserUpdateRequest request)
+    public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] AdminUserUpdateRequest request)
     {
         var user = await _users.GetByIdAsync(id);
         if (user == null)
             return NotFound();
+
+        var currentIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (int.TryParse(currentIdString, out var currentId) && currentId == id && request.Role != null)
+        {
+            return BadRequest(new { message = "Admin cannot modify their own role." });
+        }
+
+        if (request.Email != null && !new EmailAddressAttribute().IsValid(request.Email))
+        {
+            return BadRequest(new { message = "Invalid email." });
+        }
 
         user.Username = request.Username ?? user.Username;
         user.Email = request.Email ?? user.Email;
@@ -55,24 +68,40 @@ public class AdminUserController : ControllerBase
         if (request.IsActive.HasValue) user.IsActive = request.IsActive.Value;
 
         await _users.UpdateAsync(user);
-        return NoContent();
+        return Ok(user.ToDto());
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
+              var currentIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (int.TryParse(currentIdString, out var currentId) && currentId == id)
+        {
+            return BadRequest(new { message = "Admin cannot delete themselves." });
+        }
+
         await _users.DeleteAsync(id);
-        return NoContent();
+        return Ok(new { message = "User deleted." });
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] RegisterRequest request)
+    public async Task<ActionResult<UserDto>> CreateUser([FromBody] AdminUserCreateRequest request)
     {
+        if (!new EmailAddressAttribute().IsValid(request.Email))
+        {
+            return BadRequest(new { message = "Invalid email." });
+        }
+        if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
+        {
+            return BadRequest(new { message = "Password too weak." });
+        }
+
         var existing = await _users.GetByEmailAsync(request.Email);
         if (existing != null)
         {
             return Conflict(new { message = "Email already registered" });
         }
+
         var user = new User
         {
             Username = request.Username,
@@ -81,9 +110,10 @@ public class AdminUserController : ControllerBase
             AvatarUrl = request.AvatarUrl,
             CoverUrl = request.CoverUrl,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = "user",
-            IsActive = true
+            Role = request.Role,
+            IsActive = request.IsActive
         };
+
         await _users.AddAsync(user);
         return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user.ToDto());
     }
