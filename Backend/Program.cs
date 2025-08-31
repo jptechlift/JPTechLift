@@ -2,6 +2,7 @@ using Backend.Models;
 using Backend.Repositories;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,30 +12,43 @@ using System.Security.Claims;
 using System.Threading.RateLimiting;
 using DotNetEnv;
 
+// Tải các biến môi trường từ file .env
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+// === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
+// 1. Thêm các dịch vụ nền tảng
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddMemoryCache();
+
+// 2. Cấu hình CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
-        policy.WithOrigins("http://localhost:5173")
+    {
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod());
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
+// 3. Cấu hình Database Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
            .UseSnakeCaseNamingConvention());
 
+// 4. Đăng ký các Services và Repositories của ứng dụng
 builder.Services.AddHttpClient<AiBlogService>();
 builder.Services.AddScoped<AiBlogService>();
 builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<BlogRepository>();
 builder.Services.AddScoped<EmailService>();
-builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+
+// 5. Cấu hình Rate Limiter
 builder.Services.AddRateLimiter(options =>
 {
     options.AddPolicy("login", httpContext =>
@@ -48,8 +62,8 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0
             }));
 });
-builder.Services.AddMemoryCache();
 
+// 6. Cấu hình Authentication và Authorization TRƯỚC Controllers
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -63,23 +77,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             RoleClaimType = ClaimTypes.Role
         };
     });
-
 builder.Services.AddAuthorization();
 
-builder.Services.AddControllers().AddJsonOptions(options =>
+// 7. Cấu hình Antiforgery và Controllers
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+builder.Services.AddControllers(options =>
 {
+    // Tự động bảo vệ các endpoint khỏi tấn công CSRF
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+})
+.AddJsonOptions(options =>
+{
+    // Cấu hình cách JSON được serialize
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-   options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+
+// === XÂY DỰNG ỨNG DỤNG ===
 var app = builder.Build();
 
+// === LOGIC KHỞI TẠO ===
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-     db.Database.Migrate();
+    db.Database.Migrate();
     
     var users = scope.ServiceProvider.GetRequiredService<UserRepository>();
     var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
@@ -96,19 +120,25 @@ using (var scope = app.Services.CreateScope())
                 Email = adminEmail,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
                 Role = "admin",
-                IsActive = true
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow
             };
             await users.AddAsync(adminUser);
         }
     }
 }
 
+// === CẤU HÌNH HTTP REQUEST PIPELINE ===
 app.UseRouting();
-app.UseHttpsRedirection();
+
 app.UseCors("AllowFrontend");
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseRateLimiter();
+
 app.MapControllers();
 
 app.Run();
