@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { dashboardMenu } from "../../constants/dashboardMenu";
 import { UserProfile, user } from "../../services/user";
 import clsx from "clsx";
@@ -24,6 +25,9 @@ export default function Sidebar({
   const [profile, setProfile] = useState<UserProfile | undefined>(profileProp);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isAdminUsersPath = pathname === "/admin/users";
 
   useEffect(() => {
     if (!profileProp) {
@@ -33,9 +37,8 @@ export default function Sidebar({
 
   const widthClass = isCollapsed ? "w-20" : "w-80";
   const isAdmin = profile?.role === "admin";
-  const menuItems = dashboardMenu.filter(
-    (item) => item.id !== "blog" || isAdmin
-  );
+  const adminOnly = ["blog", "admin-users"];
+  const menuItems = dashboardMenu.filter((item) => !adminOnly.includes(item.id) || isAdmin);
 
   return (
     <>
@@ -127,7 +130,8 @@ export default function Sidebar({
         <nav className="p-6 space-y-2">
           {menuItems.map((item, index) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive =
+            item.id === "admin-users" ? isAdminUsersPath : !isAdminUsersPath && activeTab === item.id;
             const isHovered = hoveredItem === item.id;
             
             return (
@@ -140,7 +144,11 @@ export default function Sidebar({
               >
                 <button
                   onClick={() => {
-                    setActiveTab(item.id);
+                     if (item.id === "admin-users") {
+                      navigate("/admin/users");
+                    } else {
+                      setActiveTab(item.id);
+                    }
                     if (window.innerWidth < 768) onMobileToggle();
                   }}
                   className={clsx(

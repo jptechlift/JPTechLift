@@ -1,4 +1,4 @@
-import { Home, User, FileText, Settings, type LucideIcon } from "lucide-react";
+import { Home, User, FileText, Settings, Users, type LucideIcon } from "lucide-react";
 
 export interface DashboardMenuItem {
   id: string;
@@ -11,4 +11,5 @@ export const dashboardMenu: DashboardMenuItem[] = [
   { id: "profile", label: "Profile", icon: User },
   { id: "blog", label: "Blog Posts", icon: FileText },
   { id: "settings", label: "Settings", icon: Settings },
+  { id: "admin-users", label: "User Management", icon: Users },
 ];
