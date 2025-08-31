@@ -26,8 +26,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivateRoute from "./routes/PrivateRoute";
-import AdminUsersPage from "./pages/AdminUsersPage";
-import AdminRoute from "./routes/AdminRoute";
+
 
 const App = () => {
   const RedirectHandler = () => {
@@ -85,14 +84,6 @@ const App = () => {
             <PrivateRoute>
               <DashboardPage />
             </PrivateRoute>
-          }
-        />
-         <Route
-          path="/admin/users"
-          element={
-            <AdminRoute>
-              <AdminUsersPage />
-            </AdminRoute>
           }
         />
       </Routes>

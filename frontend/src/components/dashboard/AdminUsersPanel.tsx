@@ -3,7 +3,7 @@ import {
   adminUsers,
   AdminUser,
   AdminUserCreate,
-} from "../services/adminUsers";
+} from "../../services/adminUsers";
 
 const PAGE_SIZE = 10;
 
