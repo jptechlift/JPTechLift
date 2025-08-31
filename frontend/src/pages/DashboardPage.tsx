@@ -19,12 +19,18 @@ export default function DashboardPage() {
       .catch(() => undefined);
   }, []);
 
+   useEffect(() => {
+    if (profile && profile.role !== "admin" && activeTab === "blog") {
+      setActiveTab("dashboard");
+    }
+  }, [profile, activeTab]);
+
   const renderContent = () => {
     switch (activeTab) {
       case "profile":
         return <ProfileForm />;
       case "blog":
-        return <CreateBlogForm />;
+       return profile?.role === "admin" ? <CreateBlogForm /> : <DashboardOverview />;
       case "settings":
         return <SettingsPanel />;
       case "dashboard":

@@ -11,7 +11,6 @@ namespace Backend.Controllers;
 /// Exposes CRUD operations for blogs.
 /// </summary>
 [ApiController]
-[Route("api/[controller]")]
 public class BlogController : ControllerBase
 {
     private readonly BlogService _blogService;
@@ -34,7 +33,7 @@ public class BlogController : ControllerBase
     /// <summary>
     /// Retrieves a blog post by its slug.
     /// </summary>
-    [HttpGet("{slug}")]
+    [HttpGet("/api/blog/{slug}")]
     public async Task<IActionResult> GetBySlug(string slug)
     {
         var blog = await _blogService.GetBySlugAsync(slug);
@@ -47,7 +46,7 @@ public class BlogController : ControllerBase
     /// Retrieves a list of the most recent blog posts.
     /// </summary>
     /// <param name="count">Optional maximum number of posts to return.</param>
-    [HttpGet("recent")]
+    [HttpGet("/api/blog/recent")]
     public async Task<IActionResult> GetRecent([FromQuery] int? count)
     {
         var blogs = await _blogService.GetRecentAsync(count ?? 5);
@@ -57,7 +56,7 @@ public class BlogController : ControllerBase
     /// <summary>
     /// Generates a preview using AI based on the provided request.
     /// </summary>
-    [HttpPost("generate-preview")]
+    [HttpPost("/api/blog/generate-preview")]
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
@@ -68,7 +67,7 @@ public class BlogController : ControllerBase
     /// <summary>
     /// Publishes a new blog post.
     /// </summary>
-    [HttpPost]
+    [HttpPost("/api/blog/publish")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
@@ -81,7 +80,7 @@ public class BlogController : ControllerBase
     /// <summary>
     /// Updates an existing blog post.
     /// </summary>
-    [HttpPut("{id}")]
+    [HttpPut("/api/blog/{id}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
     {
@@ -94,7 +93,7 @@ public class BlogController : ControllerBase
      /// <summary>
     /// Deletes a blog post.
     /// </summary>
-    [HttpDelete("{id}")]
+    [HttpDelete("/api/blog/{id}")]
     [Authorize(Roles = "admin")]
     public async Task<IActionResult> Delete(int id)
     {

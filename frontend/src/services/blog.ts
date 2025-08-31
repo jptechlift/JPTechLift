@@ -124,7 +124,7 @@ export const blog = {
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.post(`${API_URL}/api/blog`, data, {
+    return axios.post(`${API_URL}/api/blog/publish`, data, {
       headers,
     });
   },

@@ -55,8 +55,8 @@ describe("blog service", () => {
   it("sends product details in create", async () => {
     await blog.create(request);
     expect(mockedPost).toHaveBeenCalledWith(
-      expect.any(String),
- expect.objectContaining({
+       expect.stringContaining("/api/blog/publish"),
+      expect.objectContaining({
         productDetails: expect.objectContaining({ productName: "Test" }),
         blogType: "product",
       }),

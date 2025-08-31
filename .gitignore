@@ -1,6 +1,6 @@
 node_modules/
-backend/bin/
-backend/obj/
+Backend/bin/
+Backend/obj/
 frontend/node_modules/
 backend.Tests/bin/
 backend.Tests/obj/

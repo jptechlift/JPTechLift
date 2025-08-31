@@ -32,6 +32,10 @@ export default function Sidebar({
   }, [profileProp]);
 
   const widthClass = isCollapsed ? "w-20" : "w-80";
+  const isAdmin = profile?.role === "admin";
+  const menuItems = dashboardMenu.filter(
+    (item) => item.id !== "blog" || isAdmin
+  );
 
   return (
     <>
@@ -121,7 +125,7 @@ export default function Sidebar({
 
         {/* Enhanced navigation */}
         <nav className="p-6 space-y-2">
-          {dashboardMenu.map((item, index) => {
+          {menuItems.map((item, index) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             const isHovered = hoveredItem === item.id;
