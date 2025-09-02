@@ -42,7 +42,6 @@ public class AuthController : ControllerBase
     /// Registers a new user.
     /// </summary>
     [HttpPost("register")]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         var existing = await _users.GetByEmailAsync(request.Email);
@@ -73,7 +72,6 @@ public class AuthController : ControllerBase
     /// Validates credentials and returns a JWT token on success.
     /// </summary>
     [HttpPost("login")]
-    [ValidateAntiForgeryToken]
     [EnableRateLimiting("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
@@ -127,7 +125,8 @@ public class AuthController : ControllerBase
     public IActionResult GetCsrfToken()
     {
         var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
-        return Ok(new { token = tokens.RequestToken });
+        HttpContext.Response.Headers.Append("X-CSRF-TOKEN-FROM-SERVER", tokens.RequestToken!);
+        return NoContent();
     }
 
     [HttpPost("verify-email")]

@@ -31,7 +31,8 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowCredentials()
+              .WithExposedHeaders("X-CSRF-TOKEN-FROM-SERVER");
     });
 });
 
@@ -80,11 +81,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // 7. Cấu hình Antiforgery và MVC
-builder.Services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
+builder.Services.AddAntiforgery(options => 
+{
+    options.HeaderName = "X-CSRF-TOKEN";  
+    options.Cookie.Name = "XSRF-TOKEN";
+    options.Cookie.HttpOnly = false;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
 builder.Services.AddControllersWithViews(options =>
 {
     // Tự động bảo vệ các endpoint khỏi tấn công CSRF
-    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+   // options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 })
 .AddJsonOptions(options =>
 {

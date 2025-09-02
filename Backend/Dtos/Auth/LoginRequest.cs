@@ -1,17 +1,22 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.Dtos.Auth
 {
     public class LoginRequest
     {
-        [Required]
-        public string Username { get; set; } = string.Empty;
+    [Required]
+    [JsonPropertyName("username")] 
+    public string Username { get; set; } = string.Empty;
 
-        [Required]
-        public string Password { get; set; } = string.Empty;
+    [Required]
+    [JsonPropertyName("password")] 
+    public string Password { get; set; } = string.Empty;
 
-        public string? MfaCode { get; set; }
+    [JsonPropertyName("mfaCode")] 
+    public string? MfaCode { get; set; }
 
-        public string? CaptchaToken { get; set; }
+    [JsonPropertyName("captchaToken")] 
+    public string? CaptchaToken { get; set; }
     }
 }
