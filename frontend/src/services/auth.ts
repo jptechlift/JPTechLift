@@ -2,6 +2,7 @@
 export interface LoginPayload {
   username: string;
   password: string;
+  captchaToken?: string | null; 
 }
 
 export interface LoginResult {
@@ -119,6 +120,14 @@ async function register(p: RegisterPayload): Promise<number> {
   });
   return data.id;
 }
+
+async function verifyEmail(token: string): Promise<void> {
+
+  //apirequest will handle error.
+  await apiRequest(`/api/auth/verify-email?token=${token}`, {
+    method: 'POST',
+  })
+}
 // Save token in localStorage when login
 function saveToken(t: string) {
   localStorage.setItem(TOKEN_KEY, t);
@@ -138,4 +147,5 @@ export const auth = {
   logout: clearToken,
   getToken,
   fetchCsrfToken,
+  verifyEmail,
 };

@@ -1,3 +1,20 @@
+# =================================================
+#  IDE / Editor / OS Files
+# =================================================
+.vscode/*
+!.vscode/extensions.json
+.idea
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.DS_Store
+Thumbs.db
+
+# =================================================
+#  Node.js / Frontend
+# =================================================
 # Logs
 logs
 *.log
@@ -7,19 +24,40 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# Dependency directories
+node_modules/
+frontend/node_modules/
+
+# Build output
 dist
 dist-ssr
+.svelte-kit/
+build/
+
+# Other
 public/sitemap.xml
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# =================================================
+#  .NET / Backend
+# =================================================
+# Build results
+[Bb]in/
+[Oo]bj/
+backend.Tests/[Bb]in/
+backend.Tests/[Oo]bj/
+
+# Rider files
+.idea/
+*.sln.iml
+
+# =================================================
+#  Environment Variables (QUAN TRỌNG NHẤT)
+# =================================================
+# Ignore all .env files
+**/.env
+**/.env.*
+.env
+.env.*
+!.env.example
+!.env.ci

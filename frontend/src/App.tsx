@@ -26,6 +26,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import PrivateRoute from "./routes/PrivateRoute";
+import EmailVerificationPage from "./pages/EmailVerificationPage";
 
 
 const App = () => {
@@ -86,6 +87,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route path="/verify-email" element={<EmailVerificationPage/>}/>
       </Routes>
     </BrowserRouter>
   );

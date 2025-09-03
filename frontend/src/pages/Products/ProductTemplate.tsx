@@ -57,7 +57,7 @@ export default function ProductTemplatePage() {
         <link rel="canonical" href={canonical} />
       </Helmet>
       <Helmet>
-        {/* ✅ Schema.org Breadcrumb cho SEO */}
+        {/* Schema.org Breadcrumb cho SEO */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -88,7 +88,7 @@ export default function ProductTemplatePage() {
 
       <NavBar />
 
-      {/* ✅ HTML breadcrumb bị ẩn khỏi người dùng nhưng vẫn giúp Google hiểu */}
+      {/*  HTML breadcrumb bị ẩn khỏi người dùng nhưng vẫn giúp Google hiểu */}
       <nav aria-label="breadcrumb" className="hidden">
         <ol>
           <li>

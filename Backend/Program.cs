@@ -48,6 +48,7 @@ builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<BlogRepository>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<CaptchaService>();
 
 // 5. Cấu hình Rate Limiter
 builder.Services.AddRateLimiter(options =>

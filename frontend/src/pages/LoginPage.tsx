@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff, Lock, User, ArrowRight } from "lucide-react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import ReCAPTCHA from "react-google-recaptcha";
 import styles from "../styles/pages/auth/loginPage.module.scss";
 import { auth } from "../services/auth";
 
@@ -12,6 +13,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,12 +22,20 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
+    if (loginAttempts >= 3 && !captchaToken) {
+      setError("Please verify you're not a robot");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { token } = await auth.login({ username: email, password });
+      const { token } = await auth.login({ username: email, password, captchaToken });
       auth.saveToken(token);
+      setLoginAttempts(0);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
+      setLoginAttempts(preAttempts => preAttempts + 1);
     } finally {
       setLoading(false);
     }
@@ -40,6 +51,11 @@ export default function LoginPage() {
       setError(err instanceof Error ? err.message : "Login failed");
     }
   };
+
+  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+    if (!recaptchaSiteKey) {
+      console.error("VITE_RECAPTCHA_SITE_KEY is not set in .env file");
+    }
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -61,7 +77,9 @@ export default function LoginPage() {
                 </div>
               </div>
               <h1 className={styles.loginPage__title}>Welcome Back</h1>
-              <p className={styles.loginPage__subtitle}>Sign in to continue to your account</p>
+              <p className={styles.loginPage__subtitle}>
+                Sign in to continue to your account
+              </p>
             </div>
 
             {/* Form */}
@@ -114,7 +132,11 @@ export default function LoginPage() {
               {/* Remember Me & Forgot Password */}
               <div className={styles.loginPage__options}>
                 <label className={styles.loginPage__rememberMe}>
-                  <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
                   <span>Remember me</span>
                 </label>
                 <a href="#" className={styles.loginPage__link}>
@@ -122,11 +144,26 @@ export default function LoginPage() {
                 </a>
               </div>
 
+               {/*CAPTCHA*/}
+              {loginAttempts >= 3 && recaptchaSiteKey && (
+                <div className={styles.loginPage__field}>
+                  <ReCAPTCHA
+                    sitekey={recaptchaSiteKey}
+                    onChange={(token) => setCaptchaToken(token)}
+                    onExpired={() => setCaptchaToken(null)} // Xử lý khi token hết hạn
+                  />
+                </div>
+              )}
+
               {/* Error Message */}
               {error && <div className={styles.loginPage__error}>{error}</div>}
 
               {/* Submit Button */}
-              <button type="submit" className={styles.loginPage__submitButton} disabled={loading}>
+              <button
+                type="submit"
+                className={styles.loginPage__submitButton}
+                disabled={loading}
+              >
                 {loading ? (
                   <>
                     <div className={styles.loginPage__spinner}></div>

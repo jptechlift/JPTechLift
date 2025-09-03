@@ -28,14 +28,16 @@ public class AuthController : ControllerBase
     private readonly EmailService _email;
     private readonly IMemoryCache _cache;
     private readonly IAntiforgery _antiforgery;
+    private readonly CaptchaService _captchaService;
 
-    public AuthController(UserRepository users, IConfiguration config, EmailService email, IMemoryCache cache, IAntiforgery antiforgery)
+    public AuthController(UserRepository users, IConfiguration config, EmailService email, IMemoryCache cache, IAntiforgery antiforgery, CaptchaService captchaService)
     {
         _users = users;
         _jwtSecret = config["Jwt:Secret"] ?? throw new InvalidOperationException("JWT secret not configured");
         _email = email;
         _cache = cache;
         _antiforgery = antiforgery;
+        _captchaService = captchaService;
     }
 
     /// <summary>
@@ -90,9 +92,12 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Email not verified" });
         }
 
-        if (attempts >= 3 && request.CaptchaToken != "captcha")
+        if (attempts >= 3)
         {
-            return BadRequest(new { message = "Captcha required" });
+            var isCaptchaValid = await _captchaService.IsCaptchaValid(request.CaptchaToken);
+            if(!isCaptchaValid) {
+            return BadRequest(new { message = "Invalid CAPTCHA. Please try again." });
+            }
         }
 
         if (user.MfaEnabled)
@@ -130,7 +135,6 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("verify-email")]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> VerifyEmail([FromQuery] string token)
     {
         var user = await _users.GetByVerificationTokenAsync(token);
