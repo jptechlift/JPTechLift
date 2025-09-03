@@ -89,7 +89,7 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
 async function login(p: LoginPayload): Promise<LoginResult> {
   // Bước 1: Lấy CSRF token TRƯỚC TIÊN.
   // Hàm này đã lưu token vào localStorage.
-  //await fetchCsrfToken();
+  await fetchCsrfToken();
 
   // Bước 2: THỰC HIỆN YÊU CẦU LOGIN.
   // Hàm apiRequest sẽ tự động đọc token từ localStorage và thêm vào header.

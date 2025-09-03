@@ -87,6 +87,11 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid credentials" });
         }
 
+        if (!user.IsActive)
+        {
+            return Unauthorized(new { message = "Account inactive" });
+        }
+
         if (!user.EmailVerified)
         {
             return Unauthorized(new { message = "Email not verified" });

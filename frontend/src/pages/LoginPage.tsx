@@ -7,7 +7,7 @@ import styles from "../styles/pages/auth/loginPage.module.scss";
 import { auth } from "../services/auth";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function LoginPage() {
     }
 
     try {
-      const { token } = await auth.login({ username: email, password, captchaToken });
+      const { token } = await auth.login({ username, password, captchaToken });
       auth.saveToken(token);
       setLoginAttempts(0);
       navigate("/dashboard");
@@ -84,10 +84,10 @@ export default function LoginPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className={styles.loginPage__form}>
-              {/* Email Input */}
+              {/* Username Input */}
               <div className={styles.loginPage__field}>
-                <label htmlFor="email" className={styles.loginPage__label}>
-                  Email
+                <label htmlFor="username" className={styles.loginPage__label}>
+                  Username
                 </label>
                 <div className={styles.loginPage__inputWrapper}>
                   <User className={styles.loginPage__inputIcon} size={18} />
@@ -95,9 +95,9 @@ export default function LoginPage() {
                     id="username"
                     type="text"
                     className={styles.loginPage__input}
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </div>
