@@ -1,12 +1,12 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
 using Backend.Dtos.Auth;
 using Backend.Models;
 using Backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace Backend.Controllers;
 
@@ -42,14 +42,21 @@ public class AdminUsersController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] AdminUserUpdateRequest request)
+    public async Task<ActionResult<UserDto>> UpdateUser(
+        int id,
+        [FromBody] AdminUserUpdateRequest request
+    )
     {
         var user = await _users.GetByIdAsync(id);
         if (user == null)
             return NotFound();
 
         var currentIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (int.TryParse(currentIdString, out var currentId) && currentId == id && request.Role != null)
+        if (
+            int.TryParse(currentIdString, out var currentId)
+            && currentId == id
+            && request.Role != null
+        )
         {
             return BadRequest(new { message = "Admin cannot modify their own role." });
         }
@@ -64,8 +71,10 @@ public class AdminUsersController : ControllerBase
         user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
         user.AvatarUrl = request.AvatarUrl ?? user.AvatarUrl;
         user.CoverUrl = request.CoverUrl ?? user.CoverUrl;
-        if (request.Role != null) user.Role = request.Role;
-        if (request.IsActive.HasValue) user.IsActive = request.IsActive.Value;
+        if (request.Role != null)
+            user.Role = request.Role;
+        if (request.IsActive.HasValue)
+            user.IsActive = request.IsActive.Value;
 
         await _users.UpdateAsync(user);
         return Ok(user.ToDto());
@@ -74,7 +83,7 @@ public class AdminUsersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(int id)
     {
-              var currentIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var currentIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (int.TryParse(currentIdString, out var currentId) && currentId == id)
         {
             return BadRequest(new { message = "Admin cannot delete themselves." });
@@ -111,7 +120,7 @@ public class AdminUsersController : ControllerBase
             CoverUrl = request.CoverUrl,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = request.Role,
-            IsActive = request.IsActive
+            IsActive = request.IsActive,
         };
 
         await _users.AddAsync(user);

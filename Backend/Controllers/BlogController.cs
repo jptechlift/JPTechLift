@@ -1,9 +1,9 @@
+using System.Security.Claims;
 using Backend.Dtos.Blog;
 using Backend.Models;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Backend.Controllers;
 
@@ -20,7 +20,7 @@ public class BlogController : ControllerBase
         _blogService = blogService;
     }
 
-/// <summary>
+    /// <summary>
     /// Retrieves all published blogs.
     /// </summary>
     [HttpGet("/api/blogs")]
@@ -42,7 +42,7 @@ public class BlogController : ControllerBase
         return Ok(blog);
     }
 
- /// <summary>
+    /// <summary>
     /// Retrieves a list of the most recent blog posts.
     /// </summary>
     /// <param name="count">Optional maximum number of posts to return.</param>
@@ -61,7 +61,15 @@ public class BlogController : ControllerBase
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
         var (title, slug, content) = await _blogService.GeneratePreviewAsync(request);
-        return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}" });
+        return Ok(
+            new
+            {
+                title,
+                slug,
+                generatedContent = content,
+                previewUrl = $"/blogs/{slug}",
+            }
+        );
     }
 
     /// <summary>
@@ -73,7 +81,7 @@ public class BlogController : ControllerBase
     {
         var username = User.Identity?.Name ?? string.Empty;
         var blog = await _blogService.PublishAsync(request, username);
-         var blogDto = blog.ToDto();
+        var blogDto = blog.ToDto();
         return CreatedAtAction(nameof(Publish), new { id = blogDto.Id }, blogDto);
     }
 
@@ -90,7 +98,8 @@ public class BlogController : ControllerBase
             return NotFound();
         return Ok(blog);
     }
-     /// <summary>
+
+    /// <summary>
     /// Deletes a blog post.
     /// </summary>
     [HttpDelete("/api/blog/{id}")]

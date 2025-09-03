@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using Backend.Dtos.Auth;
 using Backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace Backend.Controllers;
 
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         if (user == null)
             return NotFound();
 
-          return Ok(user.ToDto());
+        return Ok(user.ToDto());
     }
 
     /// <summary>
@@ -62,4 +62,3 @@ public class UserController : ControllerBase
         return Ok(updatedDto);
     }
 }
-

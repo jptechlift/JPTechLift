@@ -3,12 +3,12 @@ import styles from "../styles/pages/auth/registerPage.module.scss";
 import { useNavigate } from "react-router-dom";
 // 'auth': An object containing functions to interact with the authentication API.
 // 'RegisterPayload': A TypeScript type that defines the data structure for the registration request.
-import { auth, RegisterPayload } from "../services/auth"; 
+import { auth, RegisterPayload } from "../services/auth";
 
 export default function RegisterPage() {
-// 'form': State object to store user input from the registration form.
-// 'setForm': Function to update the 'form' state.
-// '<RegisterPayload>': Provides a specific type for the state, ensuring type safety.
+  // 'form': State object to store user input from the registration form.
+  // 'setForm': Function to update the 'form' state.
+  // '<RegisterPayload>': Provides a specific type for the state, ensuring type safety.
   const [form, setForm] = useState<RegisterPayload>({
     username: "",
     password: "",
@@ -21,11 +21,12 @@ export default function RegisterPage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState("");
   const navigate = useNavigate();
 
-// 'e': The event object, which contains details about the change event.
-// Updates the form state based on the input's 'name' attribute.
-// Using an updater function `(f) => ({...})` ensures we always have the latest state, preventing race conditions.
+  // 'e': The event object, which contains details about the change event.
+  // Updates the form state based on the input's 'name' attribute.
+  // Using an updater function `(f) => ({...})` ensures we always have the latest state, preventing race conditions.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
@@ -33,14 +34,15 @@ export default function RegisterPage() {
 
   // Declared as an async function to handle the API call for registration.
   const handleSubmit = async (e: React.FormEvent) => {
-   // Prevents the default browser behavior of reloading the page on form submission.
+    // Prevents the default browser behavior of reloading the page on form submission.
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      const id = await auth.register(form);
-      alert(`Registered with ID ${id}`);
-      navigate("/login");
+      await auth.register(form);
+      setNotice(
+        "Registration successful. Check your email for a verification link."
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
@@ -52,20 +54,21 @@ export default function RegisterPage() {
     <div className={styles.register}>
       <div className={styles.register__container}>
         <div className={styles.register__accent}></div>
-        
+
         <div className={styles.register__header}>
           <h1 className={styles.register__title}>Create Account</h1>
           <div className={styles.register__underline}></div>
+          <p className={styles.register__info}>
+            A verification email will be sent. You must verify before logging
+            in.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.register__form}>
           {/* Essential Fields */}
           <div className={styles.register__section}>
             <div className={styles.register__field}>
-              <label 
-                htmlFor="username" 
-                className={styles.register__label}
-              >
+              <label htmlFor="username" className={styles.register__label}>
                 Username
               </label>
               <input
@@ -81,10 +84,7 @@ export default function RegisterPage() {
             </div>
 
             <div className={styles.register__field}>
-              <label 
-                htmlFor="email" 
-                className={styles.register__label}
-              >
+              <label htmlFor="email" className={styles.register__label}>
                 Email Address
               </label>
               <input
@@ -100,10 +100,7 @@ export default function RegisterPage() {
             </div>
 
             <div className={styles.register__field}>
-              <label 
-                htmlFor="password" 
-                className={styles.register__label}
-              >
+              <label htmlFor="password" className={styles.register__label}>
                 Password
               </label>
               <input
@@ -116,6 +113,10 @@ export default function RegisterPage() {
                 placeholder="Create a strong password"
                 required
               />
+              <small className={styles.register__hint}>
+                At least 8 characters including upper, lower, digit, and
+                special.
+              </small>
             </div>
           </div>
 
@@ -131,8 +132,8 @@ export default function RegisterPage() {
           <div className={styles.register__optional}>
             <div className={styles.register__row}>
               <div className={styles.register__field_compact}>
-                <label 
-                  htmlFor="phoneNumber" 
+                <label
+                  htmlFor="phoneNumber"
                   className={styles.register__label_compact}
                 >
                   Phone
@@ -149,8 +150,8 @@ export default function RegisterPage() {
               </div>
 
               <div className={styles.register__field_compact}>
-                <label 
-                  htmlFor="role" 
+                <label
+                  htmlFor="role"
                   className={styles.register__label_compact}
                 >
                   Role
@@ -185,22 +186,18 @@ export default function RegisterPage() {
           </div>
 
           {/* Error Message */}
-          {error && (
-            <div className={styles.register__error}>
-              {error}
-            </div>
-          )}
+          {error && <div className={styles.register__error}>{error}</div>}
 
           {/* Submit Button */}
-          <button 
-            type="submit" 
-            className={`${styles.register__button} ${loading ? styles.register__button_loading : ''}`}
+          <button
+            type="submit"
+            className={`${styles.register__button} ${
+              loading ? styles.register__button_loading : ""
+            }`}
             disabled={loading}
           >
-            <span className={styles.register__button_text}>
-              Create Account
-            </span>
-            
+            <span className={styles.register__button_text}>Create Account</span>
+
             {loading && (
               <div className={styles.register__button_spinner}>
                 <div className={styles.register__spinner}></div>
@@ -210,13 +207,21 @@ export default function RegisterPage() {
             <div className={styles.register__button_shine}></div>
           </button>
         </form>
-
+        {notice && (
+          <div className={styles.register__notice}>
+            {notice}
+            <button
+              type="button"
+              onClick={() => auth.resendVerification(form.email)}
+              className={styles.register__resend}
+            >
+              Resend
+            </button>
+          </div>
+        )}
         {/* Footer */}
         <div className={styles.register__footer}>
-          <a 
-            href="/login" 
-            className={styles.register__link}
-          >
+          <a href="/login" className={styles.register__link}>
             Already have an account? Sign in
             <span className={styles.register__link_underline}></span>
           </a>

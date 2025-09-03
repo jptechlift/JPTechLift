@@ -1,8 +1,8 @@
 
 export interface LoginPayload {
-  username: string;
+  email: string;
   password: string;
-  captchaToken?: string | null; 
+  captchaToken?: string | null;
 }
 
 export interface LoginResult {
@@ -38,66 +38,63 @@ function getCookie(name: string): string | null {
 }
 
 async function fetchCsrfToken(): Promise<void> {
-    const res = await fetch(`${API_URL}/api/auth/csrf-token`, {
-        credentials: "include",
-    });
-     if (!res.ok) {
-        console.error("Failed to fetch CSRF token, status:", res.status);
-        return; // Dừng lại nếu thất bại
-    }
-
-    // ĐỌC TOKEN TỪ HEADER, KHÔNG PHẢI TỪ COOKIE
-    const csrfToken = res.headers.get("X-CSRF-TOKEN-FROM-SERVER");
-
-    console.log("[DEBUG] CSRF Token received from server header:", csrfToken);
-
-    if (csrfToken) {
-        // Chúng ta vẫn có thể dùng hàm getCookie/setCookie để lưu nó tạm thời
-        // hoặc dùng một biến toàn cục. Ở đây ta sẽ dùng một hàm set đơn giản.
-        // NOTE: Đây là hàm setCookie đơn giản, không phải getCookie
-        document.cookie = `XSRF-TOKEN=${csrfToken};path=/;samesite=lax`;
-    }
+  const res = await fetch(`${API_URL}/api/auth/csrf-token`, {
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch CSRF token");
+  }
+  const csrfToken = res.headers.get("X-CSRF-TOKEN-FROM-SERVER");
+  if (import.meta.env.MODE === "development") {
+    console.debug("CSRF token header received");
+  }
+  if (csrfToken) {
+    document.cookie = `XSRF-TOKEN=${csrfToken};path=/;samesite=lax`;
+  }
 }
 
 async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   const jwtToken = getToken();
   const csrfToken = getCookie("XSRF-TOKEN");
-  console.log("[DEBUG] Value of XSRF-TOKEN cookie read for request:", csrfToken);
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
   };
-  
+
   if (jwtToken) headers["Authorization"] = `Bearer ${jwtToken}`;
   if (csrfToken) headers["X-CSRF-TOKEN"] = csrfToken;
-  
+
   const res = await fetch(`${API_URL}${path}`, { ...options, headers, credentials: "include" });
-  
+
   if (!res.ok) {
-    const errorText = await res.text();
-    console.error(`[DEBUG] Error response body from ${path}:`, errorText);
-    throw new Error(`Request to ${path} failed with status ${res.status}`);
+    const text = await res.text();
+    try {
+      const json = text ? JSON.parse(text) : {};
+      throw new Error(json.message || `Request to ${path} failed with status ${res.status}`);
+    } catch {
+      throw new Error(`Request to ${path} failed with status ${res.status}`);
+    }
   }
-  
-  // Tránh lỗi nếu body trống
-  const text = await res.text();
-  return text ? JSON.parse(text) : ({} as T);
+
+  const body = await res.text();
+  return body ? JSON.parse(body) : ({} as T);
 }
 
 // Login
 async function login(p: LoginPayload): Promise<LoginResult> {
-  // Bước 1: Lấy CSRF token TRƯỚC TIÊN.
-  // Hàm này đã lưu token vào localStorage.
   await fetchCsrfToken();
 
-  // Bước 2: THỰC HIỆN YÊU CẦU LOGIN.
-  // Hàm apiRequest sẽ tự động đọc token từ localStorage và thêm vào header.
+  const csrfToken = getCookie("XSRF-TOKEN");
+  if (!csrfToken) {
+    throw new Error("Missing CSRF token");
+  }
+
   const data = await apiRequest<LoginResult>("/api/auth/login", {
     method: "POST",
     body: JSON.stringify(p),
   });
-  
+
   return { token: data.token };
 }
 
@@ -128,6 +125,14 @@ async function verifyEmail(token: string): Promise<void> {
     method: 'POST',
   })
 }
+
+async function resendVerification(email: string): Promise<void> {
+  await fetchCsrfToken();
+  await apiRequest("/api/auth/resend-verification", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
 // Save token in localStorage when login
 function saveToken(t: string) {
   localStorage.setItem(TOKEN_KEY, t);
@@ -148,4 +153,5 @@ export const auth = {
   getToken,
   fetchCsrfToken,
   verifyEmail,
+  resendVerification,
 };
