@@ -38,9 +38,6 @@ async function fetchCsrfToken(): Promise<void> {
   if (import.meta.env.MODE === "development") {
     console.debug("CSRF token header received");
   }
-  if (csrfToken) {
-    document.cookie = `XSRF-TOKEN=${csrfToken};path=/;samesite=lax`;
-  }
 }
 
 async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {

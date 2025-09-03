@@ -23,13 +23,12 @@ describe("auth service", () => {
     expect(document.cookie).toBe("");
   });
 
-  it("sends X-CSRF-TOKEN header on login using cookie", async () => {
-    document.cookie = "XSRF-TOKEN=abc;path=/";
+    it("sends X-CSRF-TOKEN header on login using stored token", async () => {
     const fetchMock = vi
       .spyOn(globalThis, "fetch")
       .mockResolvedValueOnce({
         ok: true,
-        headers: new Headers(),
+        headers: new Headers({ "X-CSRF-TOKEN-FROM-SERVER": "abc" }),
         text: () => Promise.resolve(""),
       } as unknown as Response)
       .mockResolvedValueOnce({

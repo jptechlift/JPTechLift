@@ -26,7 +26,7 @@ export default function DashboardPage() {
       profile.role !== "admin" &&
       (activeTab === "blog" || activeTab === "admin-users")
     ) {
-      setActiveTab("dashboard");
+       setActiveTab("dashboard");
     }
   }, [profile, activeTab]);
 
@@ -51,7 +51,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="flex h-screen w-full bg-gray-light">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -60,7 +60,10 @@ export default function DashboardPage() {
         onMobileToggle={() => setSidebarOpen(!isSidebarOpen)}
       />
       <div className="flex flex-col flex-1">
-        <TopBar onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
+        <TopBar
+          onToggleSidebar={() => setSidebarOpen(!isSidebarOpen)}
+          profile={profile}
+        />
         <main className="flex-1 overflow-y-auto p-8">{renderContent()}</main>
       </div>
     </div>
