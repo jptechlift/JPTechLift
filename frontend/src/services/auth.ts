@@ -1,4 +1,3 @@
-
 export interface LoginPayload {
   email: string;
   password: string;
@@ -21,20 +20,10 @@ export interface RegisterPayload {
 
 const API_URL = import.meta.env.VITE_API_URL ?? "https://localhost:5001";
 const TOKEN_KEY = "auth_token";
+let csrfRequestToken: string | null = null;
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
-}
-
-function getCookie(name: string): string | null {
-  const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
-  for(let i=0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  }
-  return null;
 }
 
 async function fetchCsrfToken(): Promise<void> {
@@ -45,6 +34,7 @@ async function fetchCsrfToken(): Promise<void> {
     throw new Error("Failed to fetch CSRF token");
   }
   const csrfToken = res.headers.get("X-CSRF-TOKEN-FROM-SERVER");
+  csrfRequestToken = csrfToken;
   if (import.meta.env.MODE === "development") {
     console.debug("CSRF token header received");
   }
@@ -55,7 +45,6 @@ async function fetchCsrfToken(): Promise<void> {
 
 async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   const jwtToken = getToken();
-  const csrfToken = getCookie("XSRF-TOKEN");
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -63,7 +52,7 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
   };
 
   if (jwtToken) headers["Authorization"] = `Bearer ${jwtToken}`;
-  if (csrfToken) headers["X-CSRF-TOKEN"] = csrfToken;
+  if (csrfRequestToken) headers["X-CSRF-TOKEN"] = csrfRequestToken;
 
   const res = await fetch(`${API_URL}${path}`, { ...options, headers, credentials: "include" });
 
@@ -84,9 +73,7 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
 // Login
 async function login(p: LoginPayload): Promise<LoginResult> {
   await fetchCsrfToken();
-
-  const csrfToken = getCookie("XSRF-TOKEN");
-  if (!csrfToken) {
+  if (!csrfRequestToken) {
     throw new Error("Missing CSRF token");
   }
 
