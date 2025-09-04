@@ -23,6 +23,7 @@ const TOKEN_KEY = "auth_token";
 let csrfRequestToken: string | null = null;
 let csrfRequestHeaderName: string | null = null;
 
+
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
@@ -76,9 +77,7 @@ async function login(p: LoginPayload): Promise<LoginResult> {
   if (!csrfRequestToken) {
     throw new Error("Missing CSRF token");
   }
-
   const data = await apiRequest<LoginResult>("/api/auth/login", {
-
     method: "POST",
     body: JSON.stringify(p),
   });

@@ -15,6 +15,7 @@ describe("auth service", () => {
   it("does not modify cookie when fetching CSRF token", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
+      headers: new Headers(),
       json: () =>
         Promise.resolve({
           headerName: "RequestVerificationToken",
@@ -31,6 +32,7 @@ describe("auth service", () => {
       .spyOn(globalThis, "fetch")
       .mockResolvedValueOnce({
         ok: true,
+        headers: new Headers({ "set-cookie": "XSRF-TOKEN=xyz" }),
         json: () =>
           Promise.resolve({
             headerName: "RequestVerificationToken",
@@ -51,6 +53,7 @@ describe("auth service", () => {
       expect.objectContaining({
         headers: expect.objectContaining({
           RequestVerificationToken: "abc",
+          Cookie: "XSRF-TOKEN=xyz",
         }),
         credentials: "include",
       })

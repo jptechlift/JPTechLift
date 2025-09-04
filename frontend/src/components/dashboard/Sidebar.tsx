@@ -46,12 +46,14 @@ export default function Sidebar({
       <aside
         id="sidebar"
         className={clsx(
-          "absolute inset-y-0 left-0 z-50 w-64 transform bg-primary text-white transition-transform duration-300 ease-in-out md:relative md:translate-x-0",
+          "absolute inset-y-0 left-0 z-30 w-64 transform bg-primary text-white/90 transition-transform duration-300 ease-in-out md:relative md:translate-x-0 -translate-x-full shadow-lg",
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         )}
       >
-        <div className="flex h-16 items-center justify-center border-b border-white/10">
-          <h1 className="ml-3 text-xl font-bold">JPTechLift</h1>
+        <div className="flex h-20 items-center justify-center border-b border-white/10 px-6">
+          <h1 className="text-xl font-bold tracking-wider">
+            JPTech<span className="text-accent">Lift</span>
+          </h1>
         </div>
 
         <nav className="mt-8 px-4">
@@ -67,14 +69,14 @@ export default function Sidebar({
                       if (window.innerWidth < 768) onMobileToggle();
                     }}
                     className={clsx(
-                      "sidebar-link flex w-full items-center rounded-md px-4 py-2",
+                      "sidebar-link flex w-full items-center rounded-lg px-4 py-3 transition-colors duration-150",
                       isActive
-                        ? "bg-accent text-white"
-                        : "text-white/80 hover:bg-white/10"
+                        ? "bg-accent text-white shadow-[0_0_15px_rgba(214,67,68,0.5)]"
+                        : "text-white/90 hover:bg-white/10"
                     )}
                   >
                     <Icon className="h-6 w-6" />
-                    <span className="ml-3">{item.label}</span>
+                    <span className="ml-4 font-medium">{item.label}</span>
                   </button>
                 </li>
               );
@@ -85,4 +87,3 @@ export default function Sidebar({
     </>
   );
 }
-

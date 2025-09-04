@@ -3,8 +3,9 @@ import react from "@vitejs/plugin-react";
 import fs from "fs";
 import path from "path";
 import { productSlugMap } from "./src/constants/productSlugMap";
+import basicSsl from '@vitejs/plugin-basic-ssl'; 
 
-// 🧭 Tạo sitemap.xml khi build xong
+//  Tạo sitemap.xml khi build xong
 function generateSitemap() {
   const hostname = process.env.VITE_SITE_URL || "https://thangmaysaigonjptechlift.com";
 
@@ -33,7 +34,7 @@ function generateSitemap() {
   const outPath = path.resolve("dist", "sitemap.xml");
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, xml);
-  console.log("✅ sitemap.xml generated");
+  console.log("sitemap.xml generated");
 }
 
 // 📦 Hook vào sau khi build xong
@@ -47,6 +48,11 @@ function sitemapPlugin() {
 export default defineConfig({
   plugins: [
     react(),
-    sitemapPlugin(), // ✅ Chỉ giữ lại plugin tạo sitemap
+    sitemapPlugin(), // Chỉ giữ lại plugin tạo sitemap
+    basicSsl(),
   ],
+  server: {
+    // Cấu hình server để chạy trên HTTPS
+    https: true,
+  }
 });
