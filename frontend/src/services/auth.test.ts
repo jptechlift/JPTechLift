@@ -15,21 +15,27 @@ describe("auth service", () => {
   it("does not modify cookie when fetching CSRF token", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue({
       ok: true,
-      headers: new Headers({ "X-CSRF-TOKEN-FROM-SERVER": "dummy" }),
-      text: () => Promise.resolve(""),
+      json: () =>
+        Promise.resolve({
+          headerName: "RequestVerificationToken",
+          requestToken: "dummy",
+        }),
     } as unknown as Response);
 
     await auth.fetchCsrfToken();
     expect(document.cookie).toBe("");
   });
 
-    it("sends X-CSRF-TOKEN header on login using stored token", async () => {
+  it("sends antiforgery header on login using stored token", async () => {
     const fetchMock = vi
       .spyOn(globalThis, "fetch")
       .mockResolvedValueOnce({
         ok: true,
-        headers: new Headers({ "X-CSRF-TOKEN-FROM-SERVER": "abc" }),
-        text: () => Promise.resolve(""),
+        json: () =>
+          Promise.resolve({
+            headerName: "RequestVerificationToken",
+            requestToken: "abc",
+          }),
       } as unknown as Response)
       .mockResolvedValueOnce({
         ok: true,
@@ -43,7 +49,10 @@ describe("auth service", () => {
       2,
       expect.stringContaining("/api/auth/login"),
       expect.objectContaining({
-        headers: expect.objectContaining({ "X-CSRF-TOKEN": "abc" }),
+        headers: expect.objectContaining({
+          RequestVerificationToken: "abc",
+        }),
+        credentials: "include",
       })
     );
   });

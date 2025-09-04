@@ -114,6 +114,10 @@ public class AuthController : ControllerBase
 
         if (attempts >= 3)
         {
+            if (string.IsNullOrEmpty(request.CaptchaToken))
+            {
+                return BadRequest(new { message = "CAPTCHA token required" });
+            }
             var isCaptchaValid = await _captchaService.IsCaptchaValid(request.CaptchaToken);
             if (!isCaptchaValid)
             {
@@ -155,6 +159,11 @@ public class AuthController : ControllerBase
     public IActionResult GetCsrfToken()
     {
         var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+        Response.Cookies.Append(
+            "XSRF-TOKEN",
+            tokens.RequestToken!,
+            new CookieOptions { SameSite = SameSiteMode.Strict, Secure = true }
+        );
         HttpContext.Response.Headers.Append("X-CSRF-TOKEN-FROM-SERVER", tokens.RequestToken!);
         return NoContent();
     }

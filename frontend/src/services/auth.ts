@@ -21,22 +21,24 @@ export interface RegisterPayload {
 const API_URL = import.meta.env.VITE_API_URL ?? "https://localhost:5001";
 const TOKEN_KEY = "auth_token";
 let csrfRequestToken: string | null = null;
+let csrfRequestHeaderName: string | null = null;
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
 
 async function fetchCsrfToken(): Promise<void> {
-  const res = await fetch(`${API_URL}/api/auth/csrf-token`, {
+  const res = await fetch(`${API_URL}/api/antiforgery/token`, {
     credentials: "include",
   });
   if (!res.ok) {
-    throw new Error("Failed to fetch CSRF token");
+    throw new Error("Failed to fetch antiforgery token");
   }
-  const csrfToken = res.headers.get("X-CSRF-TOKEN-FROM-SERVER");
-  csrfRequestToken = csrfToken;
+  const data = (await res.json()) as { headerName: string; requestToken: string };
+  csrfRequestHeaderName = data.headerName;
+  csrfRequestToken = data.requestToken;
   if (import.meta.env.MODE === "development") {
-    console.debug("CSRF token header received");
+    console.debug("Antiforgery token received");
   }
 }
 
@@ -49,7 +51,8 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
   };
 
   if (jwtToken) headers["Authorization"] = `Bearer ${jwtToken}`;
-  if (csrfRequestToken) headers["X-CSRF-TOKEN"] = csrfRequestToken;
+  if (csrfRequestToken && csrfRequestHeaderName)
+    headers[csrfRequestHeaderName] = csrfRequestToken;
 
   const res = await fetch(`${API_URL}${path}`, { ...options, headers, credentials: "include" });
 
@@ -75,6 +78,7 @@ async function login(p: LoginPayload): Promise<LoginResult> {
   }
 
   const data = await apiRequest<LoginResult>("/api/auth/login", {
+
     method: "POST",
     body: JSON.stringify(p),
   });
