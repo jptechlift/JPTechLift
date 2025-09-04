@@ -6,7 +6,8 @@ import ProductBlogForm from "../blog/ProductBlogForm";
 import TopicBlogForm from "./TopicBlogForm";
 import RecentPosts from "./RecentPosts";
 import { blog, BlogRequest } from "../../../services/blog";
-import { ChevronDown, Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 } from "lucide-react";
+import { Sparkles, Eye, Rocket, RotateCcw, FileText, Globe, Edit3 } from "lucide-react";
+
 
 const productDetailsSchema = z.object({
   productName: z.string().min(1, "Tên sản phẩm là bắt buộc"),
@@ -171,315 +172,269 @@ export default function CreateBlogForm() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden">
-      {/* Compact Header */}
-      <div className="flex-shrink-0 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  Tạo Blog với AI
-                </h1>
-                <p className="text-sm text-gray-500">Sáng tạo nội dung chất lượng cao</p>
-              </div>
-            </div>
-
-            {/* Tab Navigation */}
-            <div className="flex items-center bg-gray-100 rounded-2xl p-1">
-              <button
-                onClick={() => setActiveTab("form")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === "form"
-                    ? "bg-white text-blue-600 shadow-lg font-medium"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
-              >
-                <Edit3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Form</span>
-              </button>
-              <button
-                onClick={() => setActiveTab("preview")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === "preview"
-                    ? "bg-white text-purple-600 shadow-lg font-medium"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
-              >
-                <Eye className="w-4 h-4" />
-                <span className="hidden sm:inline">Preview</span>
-                {finalContent && <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />}
-              </button>
-              <button
-                onClick={() => setActiveTab("recent")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                  activeTab === "recent"
-                    ? "bg-white text-orange-600 shadow-lg font-medium"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
-              >
-                <FileText className="w-4 h-4" />
-                <span className="hidden sm:inline">Gần đây</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    <div className="max-w-full mx-auto">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">Blog Creation Interface</h1>
+        <p className="mt-1 text-[var(--color-text-secondary)]">Create and manage your blog content efficiently.</p>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Form Section */}
-        <div className={`transition-all duration-500 ${activeTab === "form" ? "w-full" : "w-0 overflow-hidden"}`}>
-          <div className="h-full overflow-y-auto p-6">
-            <div className="max-w-4xl mx-auto">
-              <form
-                onSubmit={handleSubmit(onGenerate)}
-                className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden"
-              >
-                {/* Blog Type Selection - Compact */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-100">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                        <span className="text-white text-sm">🎯</span>
-                      </div>
-                      <label className="text-lg font-semibold text-gray-800">Loại Blog</label>
-                    </div>
-                    <div className="flex-1 relative max-w-sm">
-                      <select
-                        {...register("blogType")}
-                        className="w-full p-3 pr-10 rounded-xl border-2 border-gray-200 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 appearance-none cursor-pointer"
-                        disabled={isSubmitting}
-                      >
-                        <option value="product">📦 Sản phẩm</option>
-                        <option value="topic">📝 Chủ đề</option>
-                      </select>
-                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                    </div>
-                  </div>
-                </div>
+      <div className="border-b border-gray-200">
+        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+          <button
+            type="button"
+            onClick={() => setActiveTab("form")}
+            className={`blog-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+              activeTab === "form" ? "active border-b-2 font-semibold" : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            Form
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("preview")}
+            className={`blog-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+              activeTab === "preview" ? "active border-b-2 font-semibold" : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            Preview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("recent")}
+            className={`blog-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+              activeTab === "recent" ? "active border-b-2 font-semibold" : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            Recent Posts
+          </button>
+        </nav>
+      </div>
 
-                {/* Dynamic Form Content - Scrollable */}
-                <div className="max-h-96 overflow-y-auto p-6">
-                  <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-2xl p-4 border border-blue-100/50">
-                    {blogType === "product" ? (
-                      <ProductBlogForm register={register} errors={errors} disabled={isSubmitting} />
-                    ) : (
-                      <TopicBlogForm register={register} errors={errors} disabled={isSubmitting} />
-                    )}
-                  </div>
-                </div>
-
-                {/* Action Bar - Fixed at bottom */}
-                <div className="bg-gray-50 border-t border-gray-100 p-6">
-                  <div className="flex gap-4">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="flex-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-6 py-4 rounded-2xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
+      <div className="mt-8">
+        {activeTab === "form" && (
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <form onSubmit={handleSubmit(onGenerate)} className="space-y-8">
+              <div>
+                <label className="text-base font-medium text-[var(--color-text-primary)]" htmlFor="blogType">
+                  Form Type
+                </label>
+                <p className="text-sm text-[var(--color-text-secondary)]">Select the type of content you want to create.</p>
+                <fieldset className="mt-4">
+                  <legend className="sr-only">Form type</legend>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label
+                      className={`relative bg-white border rounded-lg p-4 flex flex-col cursor-pointer focus:outline-none ${
+                        blogType === "product" ? "ring-2 ring-[var(--color-primary)] shadow-md" : "border-gray-300"
+                      }`}
                     >
-                      {isSubmitting ? (
-                        <div className="flex items-center justify-center gap-3">
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                          <span>AI đang tạo...</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-center gap-3">
-                          <Sparkles className="w-5 h-5" />
-                          <span>Tạo với AI</span>
-                        </div>
+                      <input type="radio" value="product" {...register("blogType")} className="sr-only" />
+                      <div className="flex-1 flex flex-col items-center text-center">
+                        <FileText
+                          className={`text-4xl mb-2 ${
+                            blogType === "product" ? "text-[var(--color-primary)]" : "text-gray-400"
+                          }`}
+                        />
+                        <span className="block text-sm font-medium text-[var(--color-text-primary)]">Product</span>
+                        <span className="block text-xs text-[var(--color-text-secondary)] mt-1">
+                          Generate post from product details.
+                        </span>
+                      </div>
+                      {blogType === "product" && (
+                        <span className="absolute top-4 right-4 text-[var(--color-primary)]">
+                          <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    </button>
+                    </label>
+                    <label
+                      className={`relative bg-white border rounded-lg p-4 flex flex-col cursor-pointer focus:outline-none ${
+                        blogType === "topic" ? "ring-2 ring-[var(--color-primary)] shadow-md" : "border-gray-300"
+                      }`}
+                    >
+                      <input type="radio" value="topic" {...register("blogType")} className="sr-only" />
+                      <div className="flex-1 flex flex-col items-center text-center">
+                        <Edit3
+                          className={`text-4xl mb-2 ${
+                            blogType === "topic" ? "text-[var(--color-primary)]" : "text-gray-400"
+                          }`}
+                        />
+                        <span className="block text-sm font-medium text-[var(--color-text-primary)]">Topic</span>
+                        <span className="block text-xs text-[var(--color-text-secondary)] mt-1">
+                          Create post from a topic.
+                        </span>
+                      </div>
+                      {blogType === "topic" && (
+                        <span className="absolute top-4 right-4 text-[var(--color-primary)]">
+                          <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                              fillRule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
+                      )}
+                    </label>
+                  </div>
+                </fieldset>
+              </div>
 
-                    {finalContent && (
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab("preview")}
-                        className="px-6 py-4 bg-white border-2 border-gray-200 text-gray-700 font-medium rounded-2xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-300 flex items-center gap-2"
+              <div className="space-y-8">
+                {blogType === "product" ? (
+                  <ProductBlogForm register={register} errors={errors} disabled={isSubmitting} />
+                ) : (
+                  <TopicBlogForm register={register} errors={errors} disabled={isSubmitting} />
+                )}
+              </div>
+
+              <div className="mt-8 flex justify-end space-x-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-[var(--color-primary)] to-blue-900 px-6 py-3 text-base font-medium text-white shadow-md transition-all duration-300 ease-in-out hover:shadow-lg hover:from-blue-900 hover:to-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] disabled:opacity-50"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      AI đang tạo...
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <Sparkles className="mr-2" />
+                      Generate with AI
+                    </span>
+                  )}
+                </button>
+                {finalContent && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("preview")}
+                    className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-[var(--color-accent)] to-red-500 px-6 py-3 text-base font-medium text-white shadow-md transition-all duration-300 ease-in-out hover:shadow-lg hover:from-red-500 hover:to-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)]"
+                  >
+                    <Eye className="mr-2" />
+                    Preview Result
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+
+        {activeTab === "preview" && (
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            {isSubmitting && (
+              <div className="text-center py-16">
+                <div className="flex justify-center items-center mb-4">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-primary)]"></div>
+                </div>
+                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">AI is generating content...</h3>
+                <p className="text-[var(--color-text-secondary)] mt-2">Please wait a moment, your content is being created.</p>
+              </div>
+            )}
+
+            {!isSubmitting && finalContent && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                      <FileText className="w-4 h-4" />
+                      Tiêu đề
+                    </label>
+                    <input
+                      value={finalTitle}
+                      onChange={(e) => setFinalTitle(e.target.value)}
+                      className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
+                      <Globe className="w-4 h-4" />
+                      URL
+                    </label>
+                    <input
+                      value={finalSlug}
+                      onChange={(e) => setFinalSlug(e.target.value)}
+                      className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all duration-300 font-mono text-sm"
+                    />
+                    {previewUrl && (
+                      <a
+                        href={previewUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`text-sm text-[var(--color-primary)] underline mt-1 inline-block ${
+                          isPublishing ? "pointer-events-none opacity-50" : ""
+                        }`}
                       >
-                        <Eye className="w-5 h-5" />
-                        <span className="hidden sm:inline">Xem kết quả</span>
-                      </button>
+                        {previewUrl}
+                      </a>
                     )}
                   </div>
                 </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        {/* Preview Section */}
-        <div className={`transition-all duration-500 ${activeTab === "preview" ? "w-full" : "w-0 overflow-hidden"}`}>
-          <div className="h-full overflow-y-auto p-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden h-full">
-                {/* Preview Header */}
-                <div className="bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Eye className="w-6 h-6 text-white" />
-                    <h3 className="text-white font-bold text-lg">Xem trước kết quả</h3>
-                  </div>
-                  <button
-                    onClick={() => setActiveTab("form")}
-                    className="text-white/80 hover:text-white transition-colors px-3 py-1 rounded-lg hover:bg-white/10"
-                  >
+                <div>
+                  <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
                     <Edit3 className="w-4 h-4" />
+                    Nội dung
+                  </label>
+                  <textarea
+                    value={finalContent}
+                    onChange={(e) => setFinalContent(e.target.value)}
+                    className="w-full h-64 p-4 border-2 border-gray-200 rounded-xl focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all duration-300 resize-none"
+                  />
+                </div>
+                <div className="flex gap-3 pt-4 border-t border-gray-100">
+                  <button
+                    onClick={handleSubmit(onPublish)}
+                    disabled={isPublishing}
+                    className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      {isPublishing ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          <span>Đang xuất bản...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Rocket className="w-5 h-5" />
+                          <span>Xuất bản</span>
+                        </>
+                      )}
+                    </div>
+                  </button>
+                  <button
+                    onClick={handleSubmit(onGenerate)}
+                    className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-xl transform hover:scale-[1.02] transition-all duration-300"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <RotateCcw className="w-5 h-5" />
+                      <span>Thử lại</span>
+                    </div>
                   </button>
                 </div>
-
-                {/* Preview Content */}
-                <div className="p-6 h-full overflow-y-auto">
-                  {isSubmitting && (
-                    <div className="flex flex-col items-center justify-center h-80 text-center">
-                      <div className="relative mb-6">
-                        <div className="w-12 h-12 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                        <div
-                          className="w-8 h-8 border-3 border-purple-200 border-t-purple-600 rounded-full animate-spin absolute top-2 left-2"
-                          style={{ animationDirection: "reverse" }}
-                        ></div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-blue-600 font-bold">🧠 AI đang sáng tạo...</p>
-                        <div className="flex items-center justify-center gap-1 mt-4">
-                          {[0, 1, 2].map((i) => (
-                            <div
-                              key={i}
-                              className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"
-                              style={{ animationDelay: `${i * 0.1}s` }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {!isSubmitting && finalContent && (
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
-                            <FileText className="w-4 h-4" />
-                            Tiêu đề
-                          </label>
-                          <input
-                            value={finalTitle}
-                            onChange={(e) => setFinalTitle(e.target.value)}
-                            className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
-                            <Globe className="w-4 h-4" />
-                            URL
-                          </label>
-                          <input
-                            value={finalSlug}
-                            onChange={(e) => setFinalSlug(e.target.value)}
-                            className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 font-mono text-sm"
-                          />
-                           {previewUrl && (
-                            <a
-                              href={previewUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={`text-sm text-blue-600 underline mt-1 inline-block ${
-                                isPublishing ? "pointer-events-none opacity-50" : ""
-                              }`}
-                            >
-                              {previewUrl}
-                            </a>
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-600 mb-2 flex items-center gap-2">
-                          <Edit3 className="w-4 h-4" />
-                          Nội dung
-                        </label>
-                        <textarea
-                          value={finalContent}
-                          onChange={(e) => setFinalContent(e.target.value)}
-                          className="w-full h-64 p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 resize-none"
-                        />
-                      </div>
-
-                      <div className="flex gap-3 pt-4 border-t border-gray-100">
-                        <button
-                          onClick={handleSubmit(onPublish)}
-                          disabled={isPublishing}
-                          className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold px-6 py-3 rounded-xl hover:from-emerald-600 hover:to-green-700 transform hover:scale-[1.02] transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <div className="flex items-center justify-center gap-2">
-                           {isPublishing ? (
-                              <>
-                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                <span>Đang xuất bản...</span>
-                              </>
-                            ) : (
-                              <>
-                                <Rocket className="w-5 h-5" />
-                                <span>Xuất bản</span>
-                              </>
-                            )}
-                          </div>
-                        </button>
-                        <button
-                          onClick={handleSubmit(onGenerate)}
-                          className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-6 py-3 rounded-xl transform hover:scale-[1.02] transition-all duration-300"
-                        >
-                          <div className="flex items-center justify-center gap-2">
-                            <RotateCcw className="w-5 h-5" />
-                            <span>Thử lại</span>
-                          </div>
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {!isSubmitting && !finalContent && (
-                    <div className="flex flex-col items-center justify-center h-80 text-center">
-                      <div className="text-6xl mb-4 opacity-20">🎨</div>
-                      <div className="space-y-3">
-                        <h4 className="text-xl font-semibold text-gray-600">Chưa có nội dung</h4>
-                        <p className="text-gray-500">Hãy tạo nội dung từ form để xem trước</p>
-                        <button
-                          onClick={() => setActiveTab("form")}
-                          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                        >
-                          Quay lại Form
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
               </div>
-            </div>
-          </div>
-        </div>
+            )}
 
-        {/* Recent Posts Section */}
-        <div className={`transition-all duration-500 ${activeTab === "recent" ? "w-full" : "w-0 overflow-hidden"}`}>
-          <div className="h-full overflow-y-auto p-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 overflow-hidden">
-                <div className="bg-gradient-to-r from-orange-400 to-pink-400 p-4">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-6 h-6 text-white" />
-                    <h3 className="text-white font-bold text-lg">Bài viết gần đây</h3>
-                  </div>
-                </div>
-                <div className="p-6 h-full overflow-y-auto">
-                <RecentPosts refreshKey={refreshKey} />
-                </div>
+            {!isSubmitting && !finalContent && (
+              <div className="text-center py-16">
+                <span className="material-icons-outlined text-5xl text-gray-400 block mb-4">inbox</span>
+                <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">No Content</h4>
+                <p className="text-[var(--color-text-secondary)] mt-1">No blog posts have been generated.</p>
               </div>
-            </div>
+            )}
           </div>
-        </div>
+        )}
+
+        {activeTab === "recent" && (
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-6">Recently Generated Posts</h3>
+            <RecentPosts refreshKey={refreshKey} />
+          </div>
+        )}
       </div>
     </div>
   );
