@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 // Tải các biến môi trường từ file .env
@@ -140,6 +141,15 @@ var app = builder.Build();
 // === LOGIC KHỞI TẠO ===
 using (var scope = app.Services.CreateScope())
 {
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        logger.LogError(
+            "Connection string 'DefaultConnection' is missing or empty. Migration aborted."
+        );
+        return;
+    }
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
 
@@ -168,11 +178,13 @@ using (var scope = app.Services.CreateScope())
 
 // === CẤU HÌNH HTTP REQUEST PIPELINE ===
 app.UseRouting();
-app.Use(async (context, next) =>
-{
-    context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
-    await next();
-});
+app.Use(
+    async (context, next) =>
+    {
+        context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
+        await next();
+    }
+);
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 
