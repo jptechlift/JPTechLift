@@ -20,18 +20,17 @@ public class User
     public string Role { get; set; } = "user";
     public bool IsActive { get; set; } = true;
 
-    public string? AvatarUrl { get; set; }
-        = null;
-    public string? CoverUrl { get; set; }
-        = null;
+    public string? AvatarUrl { get; set; } = null;
+    public string? CoverUrl { get; set; } = null;
 
     public bool EmailVerified { get; set; } = false;
-    public string? EmailVerificationToken { get; set; }
-        = null;
+    public string? EmailVerificationToken { get; set; } = null;
 
     public bool MfaEnabled { get; set; } = false;
-    public string? MfaSecret { get; set; }
-        = null;
+    public string? MfaSecret { get; set; } = null;
+
+    public string? AuthProvider { get; set; } = null;
+    public string? ProviderSubject { get; set; } = null;
 
     public virtual ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 }

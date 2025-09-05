@@ -87,7 +87,10 @@ async function login(p: LoginPayload): Promise<LoginResult> {
 
 // Login with Google
 async function loginWithGoogle(credential: string): Promise<LoginResult> {
-  //await fetchCsrfToken();
+  await fetchCsrfToken();
+  if (!csrfRequestToken) {
+    throw new Error("Missing CSRF token");
+  }
   const data = await apiRequest<LoginResult>("/api/auth/login/google", {
     method: "POST",
     body: JSON.stringify({ idToken: credential }),

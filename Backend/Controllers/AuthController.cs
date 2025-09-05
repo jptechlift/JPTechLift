@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
     private readonly IMemoryCache _cache;
     private readonly IAntiforgery _antiforgery;
     private readonly CaptchaService _captchaService;
-    private readonly string _googleClientId;
+     private readonly GoogleAuthService _googleAuth;
 
     public AuthController(
         UserRepository users,
@@ -39,7 +39,8 @@ public class AuthController : ControllerBase
         EmailService email,
         IMemoryCache cache,
         IAntiforgery antiforgery,
-        CaptchaService captchaService
+        CaptchaService captchaService,
+        GoogleAuthService googleAuth
     )
     {
         _users = users;
@@ -50,11 +51,7 @@ public class AuthController : ControllerBase
         _cache = cache;
         _antiforgery = antiforgery;
         _captchaService = captchaService;
-        _googleClientId = config["Google:ClientId"];
-        if (string.IsNullOrEmpty(_googleClientId))
-        {
-            throw new InvalidOperationException("Google client ID not configured");
-        }
+         _googleAuth = googleAuth;
     }
 
     /// <summary>
@@ -176,38 +173,48 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login/google")]
-    [IgnoreAntiforgeryToken]
+     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
     {
-        GoogleJsonWebSignature.Payload payload;
+        GoogleUserInfo info;
         try
         {
-            payload = await GoogleJsonWebSignature.ValidateAsync(
-                request.IdToken,
-                new GoogleJsonWebSignature.ValidationSettings
-                {
-                    Audience = new[] { _googleClientId },
-                }
-            );
+            info = await _googleAuth.ValidateAsync(request.IdToken);
         }
         catch (InvalidJwtException)
         {
             return Unauthorized(new { message = "Invalid Google token" });
         }
 
-        var user = await _users.GetByEmailAsync(payload.Email);
+        var user = await _users.GetByProviderAsync("google", info.Subject);
         if (user == null)
         {
-            user = new User
+            user = await _users.GetByEmailAsync(info.Email);
+            if (user == null)
             {
-                Username = payload.Name ?? payload.Email,
-                Email = payload.Email,
-                AvatarUrl = payload.Picture,
-                Role = "user",
-                IsActive = true,
-                EmailVerified = payload.EmailVerified,
-            };
-            await _users.AddAsync(user);
+                user = new User
+                {
+                    Username = info.Name,
+                    Email = info.Email,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()),
+                    Role = "user",
+                    IsActive = true,
+                    EmailVerified = true,
+                    AuthProvider = "google",
+                    ProviderSubject = info.Subject,
+                };
+                await _users.AddAsync(user);
+            }
+            else
+            {
+                user.AuthProvider ??= "google";
+                user.ProviderSubject ??= info.Subject;
+                if (!user.EmailVerified)
+                {
+                    user.EmailVerified = true;
+                }
+                await _users.UpdateAsync(user);
+            }
         }
 
         var token = GenerateJwtToken(user);

@@ -57,6 +57,7 @@ builder.Services.AddScoped<BlogRepository>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddHttpClient<CaptchaService>();
 builder.Services.AddScoped<CaptchaService>();
+builder.Services.AddScoped<GoogleAuthService>();
 
 // 5. Cấu hình Rate Limiter
 builder.Services.AddRateLimiter(options =>
@@ -167,7 +168,11 @@ using (var scope = app.Services.CreateScope())
 
 // === CẤU HÌNH HTTP REQUEST PIPELINE ===
 app.UseRouting();
-
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
+    await next();
+})
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 

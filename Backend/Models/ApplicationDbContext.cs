@@ -10,9 +10,7 @@ namespace Backend.Models;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Blog> Blogs => Set<Blog>();
@@ -34,23 +32,29 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<User>().HasKey(u => u.Id);
         modelBuilder.Entity<User>().HasAlternateKey(u => u.Username);
+        modelBuilder
+            .Entity<User>()
+            .HasIndex(u => new { u.AuthProvider, u.ProviderSubject })
+            .IsUnique();
         modelBuilder.Entity<Blog>().Property(b => b.Author).HasColumnName("author");
         modelBuilder.Entity<Blog>().Property(b => b.Content).HasColumnName("content");
 
-
         modelBuilder.Entity<Blog>().HasAlternateKey(b => b.Slug);
-        modelBuilder.Entity<Blog>()
+        modelBuilder
+            .Entity<Blog>()
             .HasOne(b => b.User)
             .WithMany(u => u.Blogs)
             .HasForeignKey(b => b.Username)
             .HasPrincipalKey(u => u.Username);
 
-        modelBuilder.Entity<Blog>()
+        modelBuilder
+            .Entity<Blog>()
             .HasOne(b => b.ProductBlog)
             .WithOne(pb => pb.Blog)
             .HasForeignKey<ProductBlog>(pb => pb.BlogId);
 
-        modelBuilder.Entity<Blog>()
+        modelBuilder
+            .Entity<Blog>()
             .HasOne(b => b.TopicBlog)
             .WithOne(tb => tb.Blog)
             .HasForeignKey<TopicBlog>(tb => tb.BlogId);

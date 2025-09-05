@@ -37,7 +37,7 @@ function generateSitemap() {
   console.log("sitemap.xml generated");
 }
 
-// 📦 Hook vào sau khi build xong
+// Hook vào sau khi build xong
 function sitemapPlugin() {
   return {
     name: "sitemap-plugin",

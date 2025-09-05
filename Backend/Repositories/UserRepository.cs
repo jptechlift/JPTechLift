@@ -27,9 +27,14 @@ public class UserRepository
     public Task<User?> GetByEmailAsync(string email) =>
         _context.Users.SingleOrDefaultAsync(u => u.Email == email);
 
+    public Task<User?> GetByProviderAsync(string provider, string subject) =>
+        _context.Users.SingleOrDefaultAsync(u =>
+            u.AuthProvider == provider && u.ProviderSubject == subject
+        );
+
     public Task<User?> GetByVerificationTokenAsync(string token) =>
         _context.Users.SingleOrDefaultAsync(u => u.EmailVerificationToken == token);
-        
+
     /// <summary>
     /// Persists a new user to the database.
     /// </summary>
@@ -47,18 +52,16 @@ public class UserRepository
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
-    
+
     /// <summary>
     /// Retrieves a user by id.
     /// </summary>
-    public Task<User?> GetByIdAsync(int id) =>
-        _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+    public Task<User?> GetByIdAsync(int id) => _context.Users.SingleOrDefaultAsync(u => u.Id == id);
 
     /// <summary>
     /// Returns all users.
     /// </summary>
-    public Task<List<User>> GetAllAsync() =>
-        _context.Users.ToListAsync();
+    public Task<List<User>> GetAllAsync() => _context.Users.ToListAsync();
 
     /// <summary>
     /// Deletes a user by id.
