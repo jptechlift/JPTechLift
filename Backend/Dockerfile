@@ -1,20 +1,21 @@
-# Stage 1: Build ứng dụng
+# Stage 1: Build application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Sao chép file project và restore các package
-COPY ["backend.csproj", "."]
-RUN dotnet restore "./backend.csproj"
+# Restore dependencies
+COPY ["backend.csproj", "./"]
+RUN dotnet restore "backend.csproj"
 
-# Sao chép toàn bộ code và build
+# Build and publish
 COPY . .
-WORKDIR "/src/."
 RUN dotnet publish "backend.csproj" -c Release -o /app/publish
 
-# Stage 2: Chạy ứng dụng
+# Stage 2: Run application
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 
-# Dòng này chính là "Start Command" của bạn, được định nghĩa bên trong Dockerfile
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
+
 ENTRYPOINT ["dotnet", "backend.dll"]
