@@ -19,6 +19,10 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionStringForLogging = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine("--- DIAGNOSTIC LOG ---");
+Console.WriteLine($"[DEBUG] Connection String read from IConfiguration: '{connectionStringForLogging}'");
+Console.WriteLine("--- END DIAGNOSTIC LOG ---");
 // === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
 // 1. Thêm các dịch vụ nền tảng
