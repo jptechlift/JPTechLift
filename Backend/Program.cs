@@ -14,14 +14,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
+
+var builder = WebApplication.CreateBuilder(args);
+
 // Tải các biến môi trường từ file .env
 if (builder.Environment.IsDevelopment())
 {
     DotNetEnv.Env.Load();
 }
-
-var builder = WebApplication.CreateBuilder(args);
-
 // === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
 // 1. Thêm các dịch vụ nền tảng
