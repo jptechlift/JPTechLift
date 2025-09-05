@@ -82,6 +82,9 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
               </div>
 
               <div className="lg:col-span-2">
+                 <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+              Đối tượng độc giả
+              </h3>
                 <label
                   htmlFor="target_audience"
                   className="flex items-center text-sm font-medium text-gray-700 mb-2"
@@ -141,7 +144,7 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
                     ? "border-gray-200 bg-gray-50 cursor-not-allowed opacity-60"
                     : "border-gray-200 bg-white hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                 }`}
-                placeholder="• Tính năng an toàn và tiết kiệm năng lượng&#10;• So sánh giá thành với các loại thang máy khác&#10;• Quy trình lắp đặt và bảo trì&#10;• Xu hướng thiết kế hiện đại"
+                placeholder="- Tính năng an toàn và tiết kiệm năng lượng&#10;0- So sánh giá thành với các loại thang máy khác&#10;- Quy trình lắp đặt và bảo trì&#10;- Xu hướng thiết kế hiện đại"
                 disabled={disabled}
               />
               {errors.topicDetails?.mainPoints && (

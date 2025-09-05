@@ -8,6 +8,7 @@ using Backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Backend.Controllers;
 
 /// <summary>
@@ -76,6 +77,10 @@ public class AdminUsersController : ControllerBase
         if (request.IsActive.HasValue)
             user.IsActive = request.IsActive.Value;
 
+        if (user.CreatedDate.Kind == DateTimeKind.Unspecified)
+        {
+            user.CreatedDate = DateTime.SpecifyKind(user.CreatedDate, DateTimeKind.Utc);
+        }
         await _users.UpdateAsync(user);
         return Ok(user.ToDto());
     }

@@ -205,7 +205,7 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                       ? "border-gray-200 bg-gray-50 cursor-not-allowed opacity-60"
                       : "border-gray-200 bg-white hover:border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                   }`}
-                  placeholder="• Thiết kế sang trọng với khả năng tùy biến cao&#10;• Vận hành siêu êm ái, không tiếng ồn&#10;• Tiết kiệm 40% điện năng so với thang máy thường&#10;• Bảo hành 5 năm toàn diện, hỗ trợ 24/7"
+                  placeholder="- Thiết kế sang trọng với khả năng tùy biến cao&#10;- Vận hành siêu êm ái, không tiếng ồn&#10;- Tiết kiệm 40% điện năng so với thang máy thường&#10;- Bảo hành 5 năm toàn diện, hỗ trợ 24/7"
                   disabled={disabled}
                 />
                 {errors.productDetails?.keySellingPoints && (

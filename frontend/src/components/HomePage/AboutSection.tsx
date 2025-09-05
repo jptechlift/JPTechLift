@@ -143,7 +143,7 @@ export default function AboutSection() {
               <CountUp
                 key={`count1-${animateKey}`}
                 start={0.0}
-                end={200.0}
+                end={240.0}
                 duration={2.5}
                 decimals={1}
                 decimal="."

@@ -90,8 +90,8 @@ export default function AdminUsersPage() {
       await load();
       setShowModal(false);
       setEditing(null);
-    } catch {
-      setError("Đã xảy ra lỗi");
+    }  catch (err) {
+      setError((err as Error).message);
     }
   };
 
@@ -108,8 +108,8 @@ export default function AdminUsersPage() {
       await adminUsers.remove(id);
       setMessage("Xóa người dùng thành công!");
       await load();
-    } catch {
-      setError("Đã xảy ra lỗi, không thể xóa người dùng.");
+    } catch (err) {
+      setError((err as Error).message);
     }
   };
 

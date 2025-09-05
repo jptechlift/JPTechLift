@@ -6,6 +6,7 @@ using Backend.Dtos.Auth;
 using Backend.Models;
 using Backend.Repositories;
 using Backend.Services;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,7 @@ public class AuthController : ControllerBase
     private readonly IMemoryCache _cache;
     private readonly IAntiforgery _antiforgery;
     private readonly CaptchaService _captchaService;
+    private readonly string _googleClientId;
 
     public AuthController(
         UserRepository users,
@@ -48,6 +50,11 @@ public class AuthController : ControllerBase
         _cache = cache;
         _antiforgery = antiforgery;
         _captchaService = captchaService;
+        _googleClientId = config["Google:ClientId"];
+        if (string.IsNullOrEmpty(_googleClientId))
+        {
+            throw new InvalidOperationException("Google client ID not configured");
+        }
     }
 
     /// <summary>
@@ -162,10 +169,60 @@ public class AuthController : ControllerBase
         Response.Cookies.Append(
             "XSRF-TOKEN",
             tokens.RequestToken!,
-            new CookieOptions { SameSite = SameSiteMode.Strict, Secure = true }
+            new CookieOptions { SameSite = SameSiteMode.None, Secure = true }
         );
         HttpContext.Response.Headers.Append("X-CSRF-TOKEN-FROM-SERVER", tokens.RequestToken!);
         return NoContent();
+    }
+
+    [HttpPost("login/google")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
+    {
+        GoogleJsonWebSignature.Payload payload;
+        try
+        {
+            payload = await GoogleJsonWebSignature.ValidateAsync(
+                request.IdToken,
+                new GoogleJsonWebSignature.ValidationSettings
+                {
+                    Audience = new[] { _googleClientId },
+                }
+            );
+        }
+        catch (InvalidJwtException)
+        {
+            return Unauthorized(new { message = "Invalid Google token" });
+        }
+
+        var user = await _users.GetByEmailAsync(payload.Email);
+        if (user == null)
+        {
+            user = new User
+            {
+                Username = payload.Name ?? payload.Email,
+                Email = payload.Email,
+                AvatarUrl = payload.Picture,
+                Role = "user",
+                IsActive = true,
+                EmailVerified = payload.EmailVerified,
+            };
+            await _users.AddAsync(user);
+        }
+
+        var token = GenerateJwtToken(user);
+        Response.Cookies.Append(
+            "session",
+            token,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(15),
+            }
+        );
+        return Ok(new { token });
     }
 
     [HttpPost("verify-email")]

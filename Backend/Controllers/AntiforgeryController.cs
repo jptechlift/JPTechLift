@@ -19,6 +19,8 @@ public class AntiforgeryController : ControllerBase
     public IActionResult GetToken()
     {
         var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
-        return new JsonResult(new { headerName = tokens.HeaderName, requestToken = tokens.RequestToken });
+        return new JsonResult(
+            new { headerName = tokens.HeaderName, requestToken = tokens.RequestToken }
+        );
     }
 }

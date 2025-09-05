@@ -75,7 +75,7 @@ builder.Services.AddRateLimiter(options =>
                 }
             )
     );
-     options.OnRejected = (context, _) =>
+    options.OnRejected = (context, _) =>
     {
         context.HttpContext.Response.Headers["Retry-After"] = "60";
         return ValueTask.CompletedTask;
@@ -107,7 +107,8 @@ builder.Services.AddAntiforgery(options =>
     options.HeaderName = "X-CSRF-TOKEN";
     options.Cookie.Name = "XSRF-TOKEN";
     options.Cookie.HttpOnly = false;
-    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 builder
     .Services.AddControllersWithViews(options =>
