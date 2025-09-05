@@ -18,7 +18,8 @@ export interface RegisterPayload {
   isActive?: boolean;
 }
 
-const API_URL = import.meta.env.VITE_API_URL ?? "https://localhost:5001";
+const API_URL = import.meta.env.VITE_API_URL;
+
 const TOKEN_KEY = "auth_token";
 let csrfRequestToken: string | null = null;
 let csrfRequestHeaderName: string | null = null;

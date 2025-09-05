@@ -15,14 +15,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 // Tải các biến môi trường từ file .env
-Env.Load();
+if (builder.Environment.IsDevelopment())
+{
+    DotNetEnv.Env.Load();
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionStringForLogging = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine("--- DIAGNOSTIC LOG ---");
-Console.WriteLine($"[DEBUG] Connection String read from IConfiguration: '{connectionStringForLogging}'");
-Console.WriteLine("--- END DIAGNOSTIC LOG ---");
 // === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
 // 1. Thêm các dịch vụ nền tảng
@@ -37,7 +36,14 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173", "https://localhost:5173")
+                .WithOrigins(
+                    "http://localhost:5173", 
+                    "https://localhost:5173",
+                    // THÊM CÁC DOMAIN PRODUCTION VÀO ĐÂY
+                    "https://thangmaysaigonjptechlift.com", // Domain chính
+                    "https://www.thangmaysaigonjptechlift.com", // Domain www
+                    "https://jptechlift.vercel.app" // Domain mặc định của Vercel
+                 ) 
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
