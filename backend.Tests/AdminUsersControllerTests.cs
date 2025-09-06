@@ -31,7 +31,7 @@ public class AdminUsersControllerTests
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
-            .Options;
+                        .Options;
         var context = new ApplicationDbContext(options);
         var repo = new UserRepository(context);
 
@@ -56,7 +56,7 @@ public class AdminUsersControllerTests
             Username = "admin",
             Email = "admin@example.com",
             PasswordHash = "hash",
-            Role = "admin",
+            Role = Roles.Admin,
             IsActive = true,
             EmailVerified = true,
         };
@@ -65,7 +65,7 @@ public class AdminUsersControllerTests
             Username = "user",
             Email = "user@example.com",
             PasswordHash = "hash",
-            Role = "user",
+            Role = Roles.User,
             IsActive = true,
             EmailVerified = true,
         };
@@ -77,7 +77,7 @@ public class AdminUsersControllerTests
                 new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()),
-                    new Claim(ClaimTypes.Role, "admin"),
+                    new Claim(ClaimTypes.Role, Roles.Admin),
                 },
                 "test"
             )
@@ -105,7 +105,7 @@ public class AdminUsersControllerTests
             Username = "admin",
             Email = "admin@example.com",
             PasswordHash = "hash",
-            Role = "admin",
+            Role = Roles.Admin,
             IsActive = true,
             EmailVerified = true,
         };
@@ -114,7 +114,7 @@ public class AdminUsersControllerTests
             Username = "user",
             Email = "user@example.com",
             PasswordHash = "hash",
-            Role = "user",
+            Role = Roles.User,
             IsActive = true,
             EmailVerified = true,
         };
@@ -126,7 +126,7 @@ public class AdminUsersControllerTests
                 new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()),
-                    new Claim(ClaimTypes.Role, "admin"),
+                    new Claim(ClaimTypes.Role, Roles.Admin),
                 },
                 "test"
             )

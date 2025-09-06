@@ -7,3 +7,7 @@ backend.Tests/obj/
 
 # Ignore environment files
 .env
+
+# Ignore DataProtection keys
+Backend/keys/*
+!Backend/keys/.gitkeep

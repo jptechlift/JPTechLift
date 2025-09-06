@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { dashboardMenu } from "../../constants/dashboardMenu";
+import { ROLES } from "../../constants/roles";
 import { UserProfile, user } from "../../services/user";
 import { useEffect, useState } from "react";
 
@@ -28,11 +29,13 @@ export default function Sidebar({
     }
   }, [profileProp]);
 
-  const isAdmin = profile?.role === "admin";
-  const adminOnly = ["blog", "admin-users"];
-  const menuItems = dashboardMenu.filter(
-    (item) => !adminOnly.includes(item.id) || isAdmin
-  );
+  const isAdmin = profile?.role === ROLES.ADMIN;
+  const isAuthor = profile?.role === ROLES.AUTHOR;
+  const menuItems = dashboardMenu.filter((item) => {
+    if (item.id === "admin-users") return isAdmin;
+    if (item.id === "blog") return isAdmin || isAuthor;
+    return true;
+  });
 
   return (
     <>

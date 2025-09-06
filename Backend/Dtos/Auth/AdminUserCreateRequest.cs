@@ -1,3 +1,5 @@
+using Backend.Constants;
+
 namespace Backend.Dtos.Auth;
 
 public class AdminUserCreateRequest
@@ -8,6 +10,6 @@ public class AdminUserCreateRequest
     public string? PhoneNumber { get; set; } = string.Empty;
     public string? AvatarUrl { get; set; } = null;
     public string? CoverUrl { get; set; } = null;
-    public string Role { get; set; } = "user";
+    public string Role { get; set; } = Roles.User;
     public bool IsActive { get; set; } = true;
 }

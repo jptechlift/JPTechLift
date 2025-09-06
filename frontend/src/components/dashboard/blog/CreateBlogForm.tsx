@@ -14,7 +14,6 @@ import {
   FileText,
   Globe,
   Edit3,
-  ExternalLink,
 } from "lucide-react";
 
 const productDetailsSchema = z.object({

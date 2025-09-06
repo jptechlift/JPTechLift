@@ -1,6 +1,7 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { user, UserProfile } from "../../services/user";
-import { Save, Phone, Mail, User, CheckCircle, AlertCircle } from "lucide-react";
+import { ROLES } from "../../constants/roles";
+import { Save, Phone, Mail, User } from "lucide-react";
 
 export default function ProfileForm() {
   const [profile, setProfile] = useState<UserProfile>({
@@ -9,7 +10,7 @@ export default function ProfileForm() {
     email: "",
     avatar: "",
     coverUrl: "",
-    role: "",
+    role: ROLES.USER,
   });
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");

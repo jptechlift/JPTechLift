@@ -1,3 +1,4 @@
+import { Role } from "../constants/roles";
 import { auth } from "./auth";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -7,7 +8,7 @@ export interface AdminUser {
   username: string;
   email: string;
   phoneNumber: string;
-  role: string;
+  role: Role;
   isActive: boolean;
 }
 
@@ -16,7 +17,7 @@ export interface AdminUserCreate {
   email: string;
   password: string;
   phoneNumber?: string;
-  role?: string;
+  role?: Role;
   isActive?: boolean;
 }
 
@@ -24,7 +25,7 @@ export interface AdminUserUpdate {
   username?: string;
   email?: string;
   phoneNumber?: string;
-  role?: string;
+  role?: Role;
   isActive?: boolean;
 }
 

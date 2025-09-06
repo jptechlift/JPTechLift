@@ -3,6 +3,7 @@ import styles from "../styles/pages/auth/registerPage.module.scss";
 // 'auth': An object containing functions to interact with the authentication API.
 // 'RegisterPayload': A TypeScript type that defines the data structure for the registration request.
 import { auth, RegisterPayload } from "../services/auth";
+import { ROLES } from "../constants/roles";
 
 export default function RegisterPage() {
   // 'form': State object to store user input from the registration form.
@@ -14,7 +15,7 @@ export default function RegisterPage() {
     email: "",
     phoneNumber: "",
     avatar: "",
-    role: "",
+    role: ROLES.USER,
     isActive: true,
   });
 
@@ -35,6 +36,10 @@ export default function RegisterPage() {
     // Prevents the default browser behavior of reloading the page on form submission.
     e.preventDefault();
     setError("");
+    if (!Object.values(ROLES).includes(form.role!)) {
+      setError("Invalid role");
+      return;
+    }
     setLoading(true);
     try {
       await auth.register(form);
@@ -154,15 +159,16 @@ export default function RegisterPage() {
                 >
                   Role
                 </label>
-                <input
+  <select
                   id="role"
                   name="role"
-                  type="text"
                   className={styles.register__input_compact}
-                  value={form.role || ""}
+                  value={form.role || ROLES.USER}
                   onChange={handleChange}
-                  placeholder="Your role"
-                />
+                >
+                  <option value={ROLES.USER}>User</option>
+                  <option value={ROLES.AUTHOR}>Author</option>
+                </select>
               </div>
             </div>
           </div>

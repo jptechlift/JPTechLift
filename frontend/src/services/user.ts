@@ -1,10 +1,11 @@
+import { Role, ROLES } from "../constants/roles";
 export interface UserProfile {
  username: string;
   phoneNumber: string;
   email: string;
   avatar: string;
   coverUrl: string;
-  role: string;
+  role: Role;
 }
 import { auth } from "./auth";
 
@@ -16,14 +17,14 @@ const toUserProfile = (data: {
   email?: string;
   avatarUrl?: string;
   coverUrl?: string;
-  role?: string;
+  role?: Role;
 }): UserProfile => ({
   username: data.username ?? "",
   phoneNumber: data.phoneNumber ?? "",
   email: data.email ?? "",
   avatar: data.avatarUrl ?? "",
   coverUrl: data.coverUrl ?? "",
-   role: data.role ?? "",
+   role: data.role ?? ROLES.USER,
 });
 
 const fromUserProfile = (profile: UserProfile) => ({

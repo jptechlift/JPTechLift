@@ -1,3 +1,5 @@
+import type { Role } from "../constants/roles";
+
 export interface LoginPayload {
   email: string;
   password: string;
@@ -14,7 +16,7 @@ export interface RegisterPayload {
   email: string;
   phoneNumber?: string;
   avatar?: string;
-  role?: string;
+  role?: Role;
   isActive?: boolean;
 }
 
@@ -23,7 +25,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = "auth_token";
 let csrfRequestToken: string | null = null;
 let csrfRequestHeaderName: string | null = null;
-
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
@@ -36,7 +37,10 @@ async function fetchCsrfToken(): Promise<void> {
   if (!res.ok) {
     throw new Error("Failed to fetch antiforgery token");
   }
-  const data = (await res.json()) as { headerName: string; requestToken: string };
+  const data = (await res.json()) as {
+    headerName: string;
+    requestToken: string;
+  };
   csrfRequestHeaderName = data.headerName;
   csrfRequestToken = data.requestToken;
   if (import.meta.env.MODE === "development") {
@@ -44,7 +48,10 @@ async function fetchCsrfToken(): Promise<void> {
   }
 }
 
-async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function apiRequest<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
   const jwtToken = getToken();
 
   const headers: Record<string, string> = {
@@ -56,13 +63,19 @@ async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T
   if (csrfRequestToken && csrfRequestHeaderName)
     headers[csrfRequestHeaderName] = csrfRequestToken;
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers, credentials: "include" });
+  const res = await fetch(`${API_URL}${path}`, {
+    ...options,
+    headers,
+    credentials: "include",
+  });
 
   if (!res.ok) {
     const text = await res.text();
     try {
       const json = text ? JSON.parse(text) : {};
-      throw new Error(json.message || `Request to ${path} failed with status ${res.status}`);
+      throw new Error(
+        json.message || `Request to ${path} failed with status ${res.status}`
+      );
     } catch {
       throw new Error(`Request to ${path} failed with status ${res.status}`);
     }
@@ -110,11 +123,10 @@ async function register(p: RegisterPayload): Promise<number> {
 }
 
 async function verifyEmail(token: string): Promise<void> {
-
   //apirequest will handle error.
   await apiRequest(`/api/auth/verify-email?token=${token}`, {
-    method: 'POST',
-  })
+    method: "POST",
+  });
 }
 
 async function resendVerification(email: string): Promise<void> {
@@ -133,7 +145,7 @@ function clearToken() {
   localStorage.removeItem(TOKEN_KEY);
 }
 
-// Group all authentication functions into a single 'auth' service object 
+// Group all authentication functions into a single 'auth' service object
 // for easy importing and use throughout the application.
 export const auth = {
   login,

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Backend.Constants;
 
 namespace Backend.Dtos.Auth
 {
@@ -24,5 +25,8 @@ namespace Backend.Dtos.Auth
 
         [Url]
         public string? CoverUrl { get; set; }
+
+        [RegularExpression(Roles.NonAdminPattern)]
+        public string Role { get; set; } = Roles.User;
     }
 }

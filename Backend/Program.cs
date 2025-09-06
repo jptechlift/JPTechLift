@@ -4,6 +4,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using System.Threading.Tasks;
+using Backend.Constants;
+using Backend.Constants;
 using Backend.Middleware;
 using Backend.Models;
 using Backend.Repositories;
@@ -21,11 +23,8 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Tải các biến môi trường từ file .env
-if (builder.Environment.IsDevelopment())
-{
-    DotNetEnv.Env.Load();
-}
+// Tải các biến môi trường từ file .env nếu file tồn tại
+DotNetEnv.Env.Load();
 
 // === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
@@ -33,7 +32,9 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
-builder.Services.AddHttpsRedirection(o => o.HttpsPort = 443);
+var keyDir = Path.Combine(builder.Environment.ContentRootPath, "keys");
+Directory.CreateDirectory(keyDir);
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(keyDir));
 
 // 2. Cấu hình CORS
 builder.Services.AddCors(options =>
@@ -60,10 +61,9 @@ builder.Services.AddCors(options =>
 });
 
 // 3. Cấu hình Database Context
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options
-        .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-        .UseSnakeCaseNamingConvention()
+    options.UseNpgsql(connectionString).UseSnakeCaseNamingConvention()
 );
 
 // 4. Đăng ký các Services và Repositories của ứng dụng
@@ -159,7 +159,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    // Biến connectionString đã được khai báo ở trên rồi, chúng ta chỉ cần dùng lại nó
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        logger.LogError(
+            "Connection string 'DefaultConnection' is missing or empty. Migration aborted."
+        );
+        return;
+    }
     if (string.IsNullOrWhiteSpace(connectionString))
     {
         logger.LogError(
@@ -184,12 +191,45 @@ using (var scope = app.Services.CreateScope())
                 Username = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin",
                 Email = adminEmail,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
-                Role = "admin",
+                Role = Roles.Admin,
                 IsActive = true,
                 CreatedDate = DateTime.UtcNow,
             };
             await users.AddAsync(adminUser);
         }
+    }
+    var authorEmail = Environment.GetEnvironmentVariable("AUTHOR_EMAIL");
+    var authorPassword = Environment.GetEnvironmentVariable("AUTHOR_PASSWORD");
+
+    if (!string.IsNullOrEmpty(authorEmail) && !string.IsNullOrEmpty(authorPassword))
+    {
+        var author = await users.GetByEmailAsync(authorEmail);
+        if (author == null)
+        {
+            var authorUser = new User
+            {
+                Username = Environment.GetEnvironmentVariable("AUTHOR_USERNAME") ?? "author",
+                Email = authorEmail,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(authorPassword),
+                Role = Roles.Author,
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+            };
+            await users.AddAsync(authorUser);
+        }
+    }
+    else if (!await db.Users.AnyAsync(u => u.Role == Roles.Author))
+    {
+        var authorUser = new User
+        {
+            Username = "author",
+            Email = "author@example.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Author@123!"),
+            Role = Roles.Author,
+            IsActive = true,
+            CreatedDate = DateTime.UtcNow,
+        };
+        await users.AddAsync(authorUser);
     }
 }
 
@@ -199,7 +239,7 @@ app.UseRouting();
 app.Use(
     async (context, next) =>
     {
-        context.Response.Headers["Cross-Origin-Opener-Policy"] = "unsafe-none";
+        context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
         await next();
     }
 );

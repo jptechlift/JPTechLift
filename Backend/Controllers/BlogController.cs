@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Backend.Constants;
 using Backend.Dtos.Blog;
 using Backend.Models;
 using Backend.Services;
@@ -76,7 +77,7 @@ public class BlogController : ControllerBase
     /// Publishes a new blog post.
     /// </summary>
     [HttpPost("/api/blog/publish")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
     {
         var username = User.Identity?.Name ?? string.Empty;
@@ -89,7 +90,7 @@ public class BlogController : ControllerBase
     /// Updates an existing blog post.
     /// </summary>
     [HttpPut("/api/blog/{id}")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
     {
         var username = User.Identity?.Name ?? string.Empty;
@@ -103,7 +104,7 @@ public class BlogController : ControllerBase
     /// Deletes a blog post.
     /// </summary>
     [HttpDelete("/api/blog/{id}")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Delete(int id)
     {
         await _blogService.DeleteAsync(id);

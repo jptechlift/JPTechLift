@@ -17,7 +17,7 @@ public class User
 
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
-    public string Role { get; set; } = "user";
+    public string Role { get; set; } = Backend.Constants.Roles.User;
     public bool IsActive { get; set; } = true;
 
     public string? AvatarUrl { get; set; } = null;

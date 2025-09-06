@@ -465,9 +465,14 @@ $tablet: 768px;
     align-items: center;
   }
 
-  &__oauth > div {
-    width: 100%;
-    display: block;
+ &__oauth > div {
+    display: flex;
+    justify-content: center;
+    width: auto;
+  }
+
+  &__oauth > div > div {
+    width: auto;
   }
 
   // Footer

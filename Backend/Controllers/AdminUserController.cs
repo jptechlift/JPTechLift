@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using Backend.Constants;
 using Backend.Dtos.Auth;
 using Backend.Models;
 using Backend.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Backend.Controllers;
 
 /// <summary>
 /// Administrative operations for managing users.
 /// </summary>
-[Authorize(Roles = "admin")]
+[Authorize(Roles = Roles.Admin)]
 [ApiController]
 [Route("api/users")]
 public class AdminUsersController : ControllerBase

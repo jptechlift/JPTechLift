@@ -6,6 +6,7 @@ import SettingsPanel from "../components/dashboard/SettingsPanel";
 import CreateBlogForm from "../components/dashboard/blog/CreateBlogForm";
 import AdminUsersPanel from "../components/dashboard/AdminUsersPanel";
 import { user, UserProfile } from "../services/user";
+import { ROLES } from "../constants/roles";
 import TopBar from "../components/dashboard/TopBar";
 
 export default function DashboardPage() {
@@ -21,12 +22,17 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    if (
-      profile &&
-      profile.role !== "admin" &&
-      (activeTab === "blog" || activeTab === "admin-users")
-    ) {
-       setActiveTab("dashboard");
+    if (profile) {
+      if (activeTab === "admin-users" && profile.role !== ROLES.ADMIN) {
+        setActiveTab("dashboard");
+      }
+      if (
+        activeTab === "blog" &&
+        profile.role !== ROLES.ADMIN &&
+        profile.role !== ROLES.AUTHOR
+      ) {
+        setActiveTab("dashboard");
+      }
     }
   }, [profile, activeTab]);
 
@@ -35,9 +41,14 @@ export default function DashboardPage() {
       case "profile":
         return <ProfileForm />;
       case "blog":
-        return profile?.role === "admin" ? <CreateBlogForm /> : <DashboardOverview />;
+        return profile &&
+          (profile.role === ROLES.ADMIN || profile.role === ROLES.AUTHOR) ? (
+          <CreateBlogForm />
+        ) : (
+          <DashboardOverview />
+        );
       case "admin-users":
-        return profile?.role === "admin" ? (
+        return profile?.role === ROLES.ADMIN ? (
           <AdminUsersPanel />
         ) : (
           <DashboardOverview />

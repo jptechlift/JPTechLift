@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Backend.Constants;
 using Backend.Dtos.Auth;
 using Backend.Models;
 using Backend.Repositories;
@@ -31,7 +32,7 @@ public class AuthController : ControllerBase
     private readonly IMemoryCache _cache;
     private readonly IAntiforgery _antiforgery;
     private readonly CaptchaService _captchaService;
-     private readonly GoogleAuthService _googleAuth;
+    private readonly GoogleAuthService _googleAuth;
 
     public AuthController(
         UserRepository users,
@@ -51,7 +52,7 @@ public class AuthController : ControllerBase
         _cache = cache;
         _antiforgery = antiforgery;
         _captchaService = captchaService;
-         _googleAuth = googleAuth;
+        _googleAuth = googleAuth;
     }
 
     /// <summary>
@@ -71,6 +72,12 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Password does not meet requirements" });
         }
 
+        var role = request.Role ?? Roles.User;
+        if (role != Roles.User && role != Roles.Author)
+        {
+            return BadRequest(new { message = "Invalid role" });
+        }
+
         var user = new User
         {
             Username = request.Username,
@@ -79,7 +86,7 @@ public class AuthController : ControllerBase
             AvatarUrl = request.AvatarUrl,
             CoverUrl = request.CoverUrl,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = "user",
+            Role = role,
             IsActive = true,
             EmailVerified = false,
             EmailVerificationToken = Guid.NewGuid().ToString(),
@@ -173,7 +180,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login/google")]
-     [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
     {
         GoogleUserInfo info;
@@ -197,7 +204,7 @@ public class AuthController : ControllerBase
                     Username = info.Name,
                     Email = info.Email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString()),
-                    Role = "user",
+                    Role = Roles.User,
                     IsActive = true,
                     EmailVerified = true,
                     AuthProvider = "google",
