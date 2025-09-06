@@ -1,19 +1,23 @@
+using System.IO;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using System.Threading.Tasks;
+using Backend.Middleware;
 using Backend.Models;
 using Backend.Repositories;
 using Backend.Services;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,8 @@ if (builder.Environment.IsDevelopment())
 // 1. Thêm các dịch vụ nền tảng
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
+builder.Services.AddHttpsRedirection(o => o.HttpsPort = 443);
 
 // 2. Cấu hình CORS
 builder.Services.AddCors(options =>
@@ -198,6 +204,9 @@ app.Use(
     }
 );
 app.UseCors("AllowFrontend");
+app.UseForwardedHeaders(
+    new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedProto }
+);
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
