@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Controllers;
 
@@ -18,9 +19,19 @@ public class AntiforgeryController : ControllerBase
     [IgnoreAntiforgeryToken]
     public IActionResult GetToken()
     {
-        var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
-        return new JsonResult(
-            new { headerName = tokens.HeaderName, requestToken = tokens.RequestToken }
-        );
+        try
+        {
+            var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+            return new JsonResult(
+                new { headerName = tokens.HeaderName, requestToken = tokens.RequestToken }
+            );
+        }
+        catch (Exception)
+        {
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                new { error = "Failed to generate antiforgery token" }
+            );
+        }
     }
 }

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-
+using Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,7 @@ if (builder.Environment.IsDevelopment())
 {
     DotNetEnv.Env.Load();
 }
+
 // === ĐĂNG KÝ CÁC SERVICES VÀO CONTAINER ===
 
 // 1. Thêm các dịch vụ nền tảng
@@ -37,13 +38,13 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins(
-                    "http://localhost:5173", 
+                    "http://localhost:5173",
                     "https://localhost:5173",
                     // THÊM CÁC DOMAIN PRODUCTION VÀO ĐÂY
                     "https://thangmaysaigonjptechlift.com", // Domain chính
                     "https://www.thangmaysaigonjptechlift.com", // Domain www
                     "https://jptechlift.vercel.app" // Domain mặc định của Vercel
-                 ) 
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
@@ -187,11 +188,12 @@ using (var scope = app.Services.CreateScope())
 }
 
 // === CẤU HÌNH HTTP REQUEST PIPELINE ===
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
 app.Use(
     async (context, next) =>
     {
-        context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
+        context.Response.Headers["Cross-Origin-Opener-Policy"] = "unsafe-none";
         await next();
     }
 );
