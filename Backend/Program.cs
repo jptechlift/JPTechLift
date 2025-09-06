@@ -31,7 +31,6 @@ DotNetEnv.Env.Load();
 // 1. Thêm các dịch vụ nền tảng
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
-builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo("/app/keys"));
 var keyDir = Path.Combine(builder.Environment.ContentRootPath, "keys");
 Directory.CreateDirectory(keyDir);
 builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(keyDir));
@@ -102,6 +101,15 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // 6. Cấu hình Authentication và Authorization TRƯỚC Controllers
+
+var jwtSecret = Environment.GetEnvironmentVariable("Jwt__Secret");
+if (string.IsNullOrEmpty(jwtSecret))
+{
+    throw new InvalidOperationException(
+        "Jwt:Secret is missing. Check your .env file or environment variables."
+    );
+}
+
 builder
     .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -111,9 +119,7 @@ builder
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)
-            ),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
             ClockSkew = TimeSpan.Zero,
             RoleClaimType = ClaimTypes.Role,
         };
