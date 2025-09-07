@@ -1,22 +1,23 @@
+using System;
+using System.Threading.Tasks;
 using Google.Apis.Auth;
-using Microsoft.Extensions.Configuration;
 
 namespace Backend.Services;
 
 public record GoogleUserInfo(string Email, string Name, string Subject, bool EmailVerified);
 
-/// <summary>
-/// Validates Google ID tokens and extracts basic profile information.
-/// </summary>
 public class GoogleAuthService
 {
     private readonly string _clientId;
 
-    public GoogleAuthService(IConfiguration configuration)
+    public GoogleAuthService()
     {
+        // Đọc trực tiếp biến môi trường lúc khởi tạo
         _clientId =
-            configuration["Google:ClientId"]
-            ?? throw new InvalidOperationException("Google client ID not configured");
+            Environment.GetEnvironmentVariable("Google__ClientId")
+            ?? throw new InvalidOperationException(
+                "Google__ClientId is missing. Check your .env file."
+            );
     }
 
     public async Task<GoogleUserInfo> ValidateAsync(string idToken)
@@ -25,6 +26,7 @@ public class GoogleAuthService
             idToken,
             new GoogleJsonWebSignature.ValidationSettings { Audience = new[] { _clientId } }
         );
+
         return new GoogleUserInfo(
             payload.Email,
             payload.Name ?? payload.Email,

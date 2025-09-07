@@ -46,8 +46,10 @@ public class AuthController : ControllerBase
     {
         _users = users;
         _jwtSecret =
-            config["Jwt:Secret"]
-            ?? throw new InvalidOperationException("JWT secret not configured");
+            Environment.GetEnvironmentVariable("Jwt__Secret")
+            ?? throw new InvalidOperationException(
+                "Jwt__Secret not configured. Check your .env file or environment variables."
+            );
         _email = email;
         _cache = cache;
         _antiforgery = antiforgery;
@@ -183,14 +185,21 @@ public class AuthController : ControllerBase
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LoginWithGoogle([FromBody] GoogleLoginRequest request)
     {
+        if (string.IsNullOrEmpty(request.IdToken))
+        {
+            return BadRequest(new { message = "Google ID token is missing." });
+        }
         GoogleUserInfo info;
         try
         {
             info = await _googleAuth.ValidateAsync(request.IdToken);
         }
-        catch (InvalidJwtException)
+        catch (Exception ex)
         {
-            return Unauthorized(new { message = "Invalid Google token" });
+            // Trả về lỗi cho client
+            return Unauthorized(
+                new { message = "Invalid Google token or server validation error." }
+            );
         }
 
         var user = await _users.GetByProviderAsync("google", info.Subject);
