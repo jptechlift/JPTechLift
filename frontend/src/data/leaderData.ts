@@ -29,6 +29,6 @@ export const leaders: Leader[] = [
     name: "Dr. Anh Khoa",
     title: "Investor & Medical Safety Advisor",
     image: AnhKhoa,
-    description: "Chuyên gia cố vấn tiêu chuẩn an toàn vận hành thang máy JP TechLift từ góc nhìn y khoa và sức khỏe cộng đồng.",
+    description: "Cố vấn an toàn y khoa, kiến tạo tầm nhìn tương lai JP TechLift, định hướng phát triển các thế hệ thang máy bền vững, tiết kiệm năng lượng và bảo vệ môi trường.",
   },
 ];
