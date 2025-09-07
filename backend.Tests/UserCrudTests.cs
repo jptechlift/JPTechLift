@@ -1,3 +1,4 @@
+using Backend.Constants;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -21,7 +22,7 @@ public class UserCrudTests
             Email = "tester@example.com",
             PhoneNumber = "123",
             AvatarUrl = "http://example.com/avatar.png",
-            CoverUrl = "http://example.com/cover.png"
+            CoverUrl = "http://example.com/cover.png",
         };
 
         // Create

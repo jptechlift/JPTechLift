@@ -3,7 +3,6 @@ import styles from "../styles/pages/auth/registerPage.module.scss";
 // 'auth': An object containing functions to interact with the authentication API.
 // 'RegisterPayload': A TypeScript type that defines the data structure for the registration request.
 import { auth, RegisterPayload } from "../services/auth";
-import { ROLES } from "../constants/roles";
 
 export default function RegisterPage() {
   // 'form': State object to store user input from the registration form.
@@ -13,9 +12,7 @@ export default function RegisterPage() {
     username: "",
     password: "",
     email: "",
-    phoneNumber: "",
     avatar: "",
-    role: ROLES.USER,
     isActive: true,
   });
 
@@ -36,10 +33,6 @@ export default function RegisterPage() {
     // Prevents the default browser behavior of reloading the page on form submission.
     e.preventDefault();
     setError("");
-    if (!Object.values(ROLES).includes(form.role!)) {
-      setError("Invalid role");
-      return;
-    }
     setLoading(true);
     try {
       await auth.register(form);
@@ -120,56 +113,6 @@ export default function RegisterPage() {
                 At least 8 characters including upper, lower, digit, and
                 special.
               </small>
-            </div>
-          </div>
-
-          {/* Optional Fields Divider */}
-          <div className={styles.register__divider}>
-            <div className={styles.register__divider_line}></div>
-            <div className={styles.register__divider_text}>
-              <span>Optional Information</span>
-            </div>
-          </div>
-
-          {/* Optional Fields */}
-          <div className={styles.register__optional}>
-            <div className={styles.register__row}>
-              <div className={styles.register__field_compact}>
-                <label
-                  htmlFor="phoneNumber"
-                  className={styles.register__label_compact}
-                >
-                  Phone
-                </label>
-                <input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  type="tel"
-                  className={styles.register__input_compact}
-                  value={form.phoneNumber || ""}
-                  onChange={handleChange}
-                  placeholder="Phone number"
-                />
-              </div>
-
-              <div className={styles.register__field_compact}>
-                <label
-                  htmlFor="role"
-                  className={styles.register__label_compact}
-                >
-                  Role
-                </label>
-  <select
-                  id="role"
-                  name="role"
-                  className={styles.register__input_compact}
-                  value={form.role || ROLES.USER}
-                  onChange={handleChange}
-                >
-                  <option value={ROLES.USER}>User</option>
-                  <option value={ROLES.AUTHOR}>Author</option>
-                </select>
-              </div>
             </div>
           </div>
 

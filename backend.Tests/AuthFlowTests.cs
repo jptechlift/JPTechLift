@@ -28,13 +28,8 @@ public class AuthFlowTests
         services.AddLogging();
         services.AddAntiforgery();
         services.AddMemoryCache();
-        services.AddScoped<EmailService>();
-        services.AddSingleton<CaptchaService, FakeCaptchaService>();
-        provider = services.BuildServiceProvider();
-        antiforgery = provider.GetRequiredService<IAntiforgery>();
-        var cache = provider.GetRequiredService<IMemoryCache>();
-        var email = provider.GetRequiredService<EmailService>();
-
+        Environment.SetEnvironmentVariable("Google__ClientId", "dummy");
+        Environment.SetEnvironmentVariable("Jwt__Secret", "0123456789abcdef0123456789abcdef");
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(
                 new Dictionary<string, string>
@@ -43,6 +38,14 @@ public class AuthFlowTests
                 }
             )
             .Build();
+        services.AddSingleton<IConfiguration>(config);
+        services.AddScoped<EmailService>();
+        services.AddSingleton<CaptchaService, FakeCaptchaService>();
+        services.AddScoped<GoogleAuthService>();
+        provider = services.BuildServiceProvider();
+        antiforgery = provider.GetRequiredService<IAntiforgery>();
+        var cache = provider.GetRequiredService<IMemoryCache>();
+        var email = provider.GetRequiredService<EmailService>();
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -51,7 +54,16 @@ public class AuthFlowTests
         var repo = new UserRepository(context);
 
         var captcha = provider.GetRequiredService<CaptchaService>();
-        var controller = new AuthController(repo, config, email, cache, antiforgery, captcha)
+        var google = provider.GetRequiredService<GoogleAuthService>();
+        var controller = new AuthController(
+            repo,
+            config,
+            email,
+            cache,
+            antiforgery,
+            captcha,
+            google
+        )
         {
             ControllerContext =
             {

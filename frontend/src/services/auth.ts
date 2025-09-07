@@ -14,9 +14,7 @@ export interface RegisterPayload {
   username: string;
   password: string;
   email: string;
-  phoneNumber?: string;
   avatar?: string;
-  role?: Role;
   isActive?: boolean;
 }
 

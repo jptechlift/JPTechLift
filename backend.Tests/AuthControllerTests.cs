@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Backend.Controllers;
-using Backend.Dtos.Auth;
-using Backend.Models;
-using Backend.Repositories;
 using Backend.Services;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
@@ -31,14 +28,8 @@ public class AuthControllerTests
         services.AddLogging();
         services.AddAntiforgery();
         services.AddMemoryCache();
-        services.AddScoped<EmailService>();
-        services.AddSingleton<CaptchaService, FakeCaptchaService>();
-        var provider = services.BuildServiceProvider();
-        var antiforgery = provider.GetRequiredService<IAntiforgery>();
-        var cache = provider.GetRequiredService<IMemoryCache>();
-        var email = provider.GetRequiredService<EmailService>();
-        var captcha = provider.GetRequiredService<CaptchaService>();
-
+        Environment.SetEnvironmentVariable("Google__ClientId", "dummy");
+        Environment.SetEnvironmentVariable("Jwt__Secret", "0123456789abcdef0123456789abcdef");
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(
                 new Dictionary<string, string>
@@ -48,6 +39,16 @@ public class AuthControllerTests
                 }
             )
             .Build();
+        services.AddSingleton<IConfiguration>(config);
+        services.AddScoped<EmailService>();
+        services.AddSingleton<CaptchaService, FakeCaptchaService>();
+        services.AddScoped<GoogleAuthService>();
+        var provider = services.BuildServiceProvider();
+        var antiforgery = provider.GetRequiredService<IAntiforgery>();
+        var cache = provider.GetRequiredService<IMemoryCache>();
+        var email = provider.GetRequiredService<EmailService>();
+        var captcha = provider.GetRequiredService<CaptchaService>();
+        var google = provider.GetRequiredService<GoogleAuthService>();
 
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -55,7 +56,15 @@ public class AuthControllerTests
         var context = new ApplicationDbContext(options);
         var repo = new UserRepository(context);
 
-        var controller = new AuthController(repo, config, email, cache, antiforgery, captcha)
+        var controller = new AuthController(
+            repo,
+            config,
+            email,
+            cache,
+            antiforgery,
+            captcha,
+            google
+        )
         {
             ControllerContext =
             {

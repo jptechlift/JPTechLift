@@ -74,21 +74,14 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Password does not meet requirements" });
         }
 
-        var role = request.Role ?? Roles.User;
-        if (role != Roles.User && role != Roles.Author)
-        {
-            return BadRequest(new { message = "Invalid role" });
-        }
-
         var user = new User
         {
             Username = request.Username,
             Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
             AvatarUrl = request.AvatarUrl,
             CoverUrl = request.CoverUrl,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = role,
+            Role = Roles.User,
             IsActive = true,
             EmailVerified = false,
             EmailVerificationToken = Guid.NewGuid().ToString(),

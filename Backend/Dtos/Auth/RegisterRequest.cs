@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Backend.Constants;
 
 namespace Backend.Dtos.Auth
 {
@@ -17,16 +16,10 @@ namespace Backend.Dtos.Auth
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
-        [Phone]
-        public string PhoneNumber { get; set; } = string.Empty;
-
         [Url]
         public string? AvatarUrl { get; set; }
 
         [Url]
         public string? CoverUrl { get; set; }
-
-        [RegularExpression(Roles.NonAdminPattern)]
-        public string Role { get; set; } = Roles.User;
     }
 }
