@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using OtpNet;
 
@@ -33,6 +34,7 @@ public class AuthController : ControllerBase
     private readonly IAntiforgery _antiforgery;
     private readonly CaptchaService _captchaService;
     private readonly GoogleAuthService _googleAuth;
+    private readonly ILogger<AuthController> _logger;
 
     public AuthController(
         UserRepository users,
@@ -41,7 +43,8 @@ public class AuthController : ControllerBase
         IMemoryCache cache,
         IAntiforgery antiforgery,
         CaptchaService captchaService,
-        GoogleAuthService googleAuth
+        GoogleAuthService googleAuth,
+        ILogger<AuthController> logger
     )
     {
         _users = users;
@@ -55,6 +58,7 @@ public class AuthController : ControllerBase
         _antiforgery = antiforgery;
         _captchaService = captchaService;
         _googleAuth = googleAuth;
+        _logger = logger;
     }
 
     /// <summary>
@@ -63,32 +67,47 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var existing = await _users.GetByEmailAsync(request.Email);
-        if (existing != null)
+        try
         {
-            return Conflict(new { message = "Email already registered" });
-        }
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
 
-        if (!IsPasswordValid(request.Password))
-        {
-            return BadRequest(new { message = "Password does not meet requirements" });
-        }
+            if (!IsPasswordValid(request.Password))
+            {
+                ModelState.AddModelError(nameof(request.Password), "Password does not meet requirements");
+                return ValidationProblem(ModelState);
+            }
 
-        var user = new User
+            var existingEmail = await _users.GetByEmailAsync(request.Email);
+            var existingUsername = await _users.GetByUsernameAsync(request.Username);
+            if (existingEmail != null || existingUsername != null)
+            {
+                return Conflict(new { message = "Email hoặc tên đăng nhập đã được sử dụng." });
+            }
+
+            var user = new User
+            {
+                Username = request.Username,
+                Email = request.Email,
+                AvatarUrl = request.AvatarUrl,
+                CoverUrl = request.CoverUrl,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                Role = Roles.User,
+                IsActive = true,
+                EmailVerified = false,
+                EmailVerificationToken = Guid.NewGuid().ToString(),
+            };
+            await _users.AddAsync(user);
+            await _email.SendAsync(user.Email, "Verify your account", user.EmailVerificationToken!);
+            return CreatedAtAction(nameof(Register), new { id = user.Id });
+        }
+        catch (Exception ex)
         {
-            Username = request.Username,
-            Email = request.Email,
-            AvatarUrl = request.AvatarUrl,
-            CoverUrl = request.CoverUrl,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = Roles.User,
-            IsActive = true,
-            EmailVerified = false,
-            EmailVerificationToken = Guid.NewGuid().ToString(),
-        };
-        await _users.AddAsync(user);
-        await _email.SendAsync(user.Email, "Verify your account", user.EmailVerificationToken!);
-        return CreatedAtAction(nameof(Register), new { id = user.Id });
+            _logger.LogError(ex, "Error during registration");
+            return StatusCode(500, new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." });
+        }
     }
 
     /// <summary>
@@ -98,67 +117,71 @@ public class AuthController : ControllerBase
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var cacheKey = $"login_{request.Email}";
-        _cache.TryGetValue<int>(cacheKey, out var attempts);
-
-        var user = await _users.GetByEmailAsync(request.Email);
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+        const string authError = "Tên đăng nhập hoặc mật khẩu không chính xác.";
+        try
         {
-            _cache.Set(cacheKey, attempts + 1, TimeSpan.FromMinutes(15));
-            return Unauthorized(new { message = "Invalid credentials" });
-        }
+            var cacheKey = $"login_{request.Email}";
+            _cache.TryGetValue<int>(cacheKey, out var attempts);
 
-        if (!user.IsActive)
+            var user = await _users.GetByEmailAsync(request.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            {
+                _cache.Set(cacheKey, attempts + 1, TimeSpan.FromMinutes(15));
+                return Unauthorized(new { message = authError });
+            }
+
+            if (!user.IsActive || !user.EmailVerified)
+            {
+                return Unauthorized(new { message = authError });
+            }
+
+            if (attempts >= 3)
+            {
+                if (string.IsNullOrEmpty(request.CaptchaToken))
+                {
+                    return Unauthorized(new { message = authError });
+                }
+                var isCaptchaValid = await _captchaService.IsCaptchaValid(request.CaptchaToken);
+                if (!isCaptchaValid)
+                {
+                    return Unauthorized(new { message = authError });
+                }
+            }
+
+            if (user.MfaEnabled)
+            {
+                if (string.IsNullOrEmpty(request.MfaCode))
+                {
+                    return Unauthorized(new { message = authError });
+                }
+                var totp = new Totp(Base32Encoding.ToBytes(user.MfaSecret!));
+                if (!totp.VerifyTotp(request.MfaCode, out _))
+                {
+                    return Unauthorized(new { message = authError });
+                }
+            }
+
+            _cache.Remove(cacheKey);
+
+            var token = GenerateJwtToken(user);
+            Response.Cookies.Append(
+                "session",
+                token,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(15),
+                }
+            );
+            return Ok(new { token });
+        }
+        catch (Exception ex)
         {
-            return Unauthorized(new { message = "Account inactive" });
+            _logger.LogError(ex, "Error during login");
+            return StatusCode(500, new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." });
         }
-
-        if (!user.EmailVerified)
-        {
-            return Unauthorized(new { message = "Email not verified" });
-        }
-
-        if (attempts >= 3)
-        {
-            if (string.IsNullOrEmpty(request.CaptchaToken))
-            {
-                return BadRequest(new { message = "CAPTCHA token required" });
-            }
-            var isCaptchaValid = await _captchaService.IsCaptchaValid(request.CaptchaToken);
-            if (!isCaptchaValid)
-            {
-                return BadRequest(new { message = "Invalid CAPTCHA. Please try again." });
-            }
-        }
-
-        if (user.MfaEnabled)
-        {
-            if (string.IsNullOrEmpty(request.MfaCode))
-            {
-                return Unauthorized(new { message = "MFA code required" });
-            }
-            var totp = new Totp(Base32Encoding.ToBytes(user.MfaSecret!));
-            if (!totp.VerifyTotp(request.MfaCode, out _))
-            {
-                return Unauthorized(new { message = "Invalid MFA code" });
-            }
-        }
-
-        _cache.Remove(cacheKey);
-
-        var token = GenerateJwtToken(user);
-        Response.Cookies.Append(
-            "session",
-            token,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddMinutes(15),
-            }
-        );
-        return Ok(new { token });
     }
 
     [HttpGet("csrf-token")]
