@@ -1,118 +1,119 @@
-JPTechLift Frontend
-Ứng dụng React SPA phục vụ giao diện khách hàng, quản trị, blog.
 
-Yêu cầu
+# JPTechLift Frontend
+
+![alt text](https://img.shields.io/badge/React-18-blue)
+![alt text](https://img.shields.io/badge/Vite-5-purple)
+![alt text](https://img.shields.io/badge/TypeScript-5-orange)
+![alt text](https://img.shields.io/badge/TailwindCSS-3-cyan)
+
+Ứng dụng React SPA phục vụ giao diện cho khách hàng, trang quản trị và blog của dự án JPTechLift.
+
+## 🚀 Cài đặt & Chạy (Setup & Run)
+### ✅ Yêu cầu
+
 Node.js 18+
 
 npm 9+
 
-Thiết lập
+## 🔥 Chạy ứng dụng
+```bash
+Clone repository
+
 git clone <repository-url>
 cd JPTechLift/frontend
+```
+### Cài đặt các phụ thuộc
+```bash
 npm install
-cp .env.example .env  # nếu có
-Biến môi trường
-VITE_API_URL
+```
+### Cấu hình biến môi trường
+Sao chép file .env.example thành .env và điền các giá trị cần thiết.
+```bash
+cp .env.example .env
+```
+### Chạy ở chế độ development
+```bash
+npm run dev
+```
+## ⚙️ Biến môi trường (Environment Variables)
 
-VITE_SITE_URL
+Các biến sau cần được định nghĩa trong file .env của bạn:
 
-VITE_RECAPTCHA_SITE_KEY
+```bash
+# URL của backend API
+VITE_API_URL=
 
-VITE_GOOGLE_CLIENT_ID
+# URL của trang frontend
+VITE_SITE_URL=
 
-Lệnh
-npm run dev        # chạy development
-npm run build      # build production
-npm run preview    # xem build
-npm run prerender  # prerender sitemap và redirect
-npm test           # eslint + vitest
-npm run lint       # eslint
-npm run generate-sitemap
-Cấu trúc
+# Khóa reCAPTCHA của Google
+VITE_RECAPTCHA_SITE_KEY=
+
+# Client ID cho việc đăng nhập bằng Google
+VITE_GOOGLE_CLIENT_ID=
+```
+## 🛠️ Các lệnh có sẵn (Available Scripts)
+Lệnh	Mô tả
+```bash
+npm run dev	//Chạy ứng dụng ở chế độ development với hot-reload.
+npm run build	//Build ứng dụng cho môi trường production.
+npm run preview	//Xem trước bản build production trên máy local.
+npm run prerender	//Chạy script prerender sitemap và file redirects.
+npm test	//Chạy ESLint để kiểm tra code và Vitest để chạy unit tests.
+npm run lint	//Chỉ chạy ESLint để kiểm tra chất lượng code.
+npm run generate-sitemap	//Tạo file sitemap.xml.
+```
+📁 Cấu trúc thư mục (Folder Structure)
+```bash
 frontend/
-├── index.html
+├── index.html                  # HTML entry point
 ├── src/
-│   ├── main.tsx              # entry
-│   ├── App.tsx
-│   ├── components/
-│   ├── pages/
-│   ├── routes/
-│   ├── services/
-│   ├── hooks/
-│   ├── utils/
-│   └── styles/
-├── public/
-├── scripts/                  # prerender, sitemap, redirects
-├── tailwind.config.js
-├── vite.config.ts
-└── eslint.config.js
-Phụ thuộc chính
-React 18
+│   ├── main.tsx                # App entry point
+│   ├── App.tsx                 # Main app component
+│   ├── components/             # Các UI component tái sử dụng
+│   ├── pages/                  # Các trang chính của ứng dụng
+│   ├── routes/                 # Cấu hình định tuyến
+│   ├── services/               # Logic gọi API
+│   ├── hooks/                  # Các custom React hooks
+│   ├── utils/                  # Các hàm tiện ích
+│   └── styles/                 # Files CSS/SCSS
+├── public/                     # Chứa các file tĩnh (favicon, images)
+├── scripts/                    # Các script tự động (prerender, sitemap)
+├── tailwind.config.js          # Cấu hình TailwindCSS
+├── vite.config.ts              # Cấu hình Vite
+└── eslint.config.js            # Cấu hình ESLint
+<br>
+```
+<details>
+<summary><strong>📦 Xem danh sách các phụ thuộc chính...</strong></summary>
 
-React Router DOM
+- Production Dependencies	Dev Dependencies
+- React 18 & React Router DOM	Vite & Vitest
+- Axios	Testing Library (react, user-event)
+- React Hook Form & Zod	TypeScript
+- TailwindCSS & Framer Motion	ESLint (với các plugin)
+- Swiper & AOS	TailwindCSS CLI & PostCSS
+- Lucide React & EmailJS	Sass Embedded & tsx
+- DomPurify & React Helmet Async	gh-pages & jsdom
+- react-intersection-observer	
+- react-markdown & react-responsive	
+- react-google-recaptcha	
+- react-countup & @react-oauth/google	
 
-Axios
+</details>
 
-React Hook Form
+<br>
 
-Zod
+<details>
+<summary><strong>🎨 Quy ước mã hóa (Coding Style)</strong></summary>
 
-TailwindCSS
 
-Framer Motion
+- Module System: Sử dụng TypeScript module với cú pháp ESM (import/export).
 
-Swiper
+- Naming Convention: Tên biến và hàm dùng camelCase.
 
-AOS
+- Code Quality: Tuân thủ các quy tắc được định nghĩa trong eslint.config.js.
 
-Lucide React
+- Commit Messages: Sử dụng chuẩn Conventional Commits (ví dụ: feat: add login page, fix: button alignment).
 
-EmailJS
-
-DomPurify
-
-React Helmet Async
-
-react-intersection-observer
-
-react-markdown
-
-react-responsive
-
-react-google-recaptcha
-
-react-countup
-
-@react-oauth/google
-
-Dev Dependencies
-Vite
-
-Vitest
-
-Testing Library (react, user-event, jest-dom)
-
-TypeScript
-
-ESLint với plugin @eslint/js, react-hooks, react-refresh
-
-TailwindCSS CLI
-
-PostCSS
-
-Sass Embedded
-
-tsx
-
-gh-pages
-
-jsdom
-
-Coding style
-TypeScript module, ESM
-
-camelCase cho biến và hàm
-
-ESLint cấu hình trong eslint.config.js
-
-Commit theo Conventional Commits
+</details>
