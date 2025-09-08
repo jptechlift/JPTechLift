@@ -110,6 +110,7 @@ export default function Footer() {
         <div className={styles.footer__column}>
           <h4 className={styles.footer__column__title}>THÔNG TIN LIÊN HỆ</h4>
           <p>0833 447 728</p>
+          <p>0777 727 5384</p>
           <p>contact.jptechlift@gmail.com</p>
           <p>Địa chỉ: 106/107 Đường Đỗ Năng Tế, Phường An Lạc A, Quận Bình Tân, TP.HCM</p>
         </div>
