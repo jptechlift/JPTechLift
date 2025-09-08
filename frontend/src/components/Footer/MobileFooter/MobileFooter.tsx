@@ -47,7 +47,7 @@ export default function MobileFooter() {
         <p>
           <strong>HOTLINE:</strong>
           <br />
-          (+84) 777 275 384
+          0833 447 728
         </p>
       </div>
 

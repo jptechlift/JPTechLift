@@ -18,7 +18,7 @@ const TopBar = () => {
       <div className={styles.topBar__info}>
         <div className={styles.topBar__item + " " + styles.topBar__contactIcon}>
           <img src={phone} alt="Phone" />
-          <span>(+84) 777 275 384</span>
+          <span>0833 447 728</span>
         </div>
         <div className={styles.topBar__item + " " + styles.topBar__contactIcon}>
           <img src={email} alt="Email" />
