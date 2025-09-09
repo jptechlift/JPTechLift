@@ -263,7 +263,7 @@ const MobileMenu = () => {
           =================================== */}
       <div className={styles["mobile-navbar__hotline"]} role="banner">
         <p>
-          Hotline: <a href="tel:+84777275384">0833 447 728</a>
+          Hotline: <a href="tel:+84777275384">0777 727 5384</a>
         </p>
       </div>
 
