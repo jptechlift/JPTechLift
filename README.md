@@ -33,8 +33,8 @@ Làm theo các bước sau để chạy dự án trên máy của bạn.
 ### 🔥 Chạy ứng dụng
 ```bash
 # 1. Clone repository
-git clone <your-repository-url>
-cd <repository-folder>
+git clone https://github.com/jptechlift/JPTechLift.git
+cd JPTechLift
 ```
 # 2. Chạy Backend API
 ```bash
