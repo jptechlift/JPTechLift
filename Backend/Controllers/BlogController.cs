@@ -1,7 +1,5 @@
-using System.Security.Claims;
 using Backend.Constants;
 using Backend.Dtos.Blog;
-using Backend.Models;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,7 +59,8 @@ public class BlogController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-        var (title, slug, content) = await _blogService.GeneratePreviewAsync(request);
+        // Thêm 'metaDescription' vào phần giải cấu trúc
+        var (title, slug, content, metaDescription) = await _blogService.GeneratePreviewAsync(request);
         return Ok(
             new
             {
@@ -69,6 +68,7 @@ public class BlogController : ControllerBase
                 slug,
                 generatedContent = content,
                 previewUrl = $"/blogs/{slug}",
+                metaDescription // Bạn có thể thêm metaDescription vào phản hồi nếu frontend cần
             }
         );
     }

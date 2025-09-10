@@ -1,5 +1,5 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { FormValues } from "./CreateBlogForm";
+import { FormValues } from "./BlogCreatePage";
 import {
   Package,
   Tag,

@@ -1,6 +1,9 @@
+// services/blog.ts (Cập nhật)
+
 import axios from "axios";
 import { auth } from "./auth";
 
+// --- INTERFACE BLOGPOST (CHO HIỂN THỊ Ở FRONTEND) ---
 export interface BlogPost {
   id?: string;
   title: string;
@@ -15,8 +18,10 @@ export interface BlogPost {
   targetAudience?: string;
   mainPoints?: string;
   seoKeywords?: string;
+  metaDescription?: string; // <-- THÊM: Meta Description cho hiển thị
 }
 
+// --- INTERFACE BLOGPOSTAPI (TỪ API BACKEND) ---
 interface BlogPostApi {
   id?: string;
   title: string;
@@ -27,6 +32,7 @@ interface BlogPostApi {
   viewCount: number;
   imageUrl?: string;
   tags?: string[];
+  metaDescription?: string; // <-- THÊM: Meta Description từ API Backend
   topicBlog?: {
     topic: string;
     content: string;
@@ -34,8 +40,17 @@ interface BlogPostApi {
     mainPoints: string;
     seoKeywords: string;
   };
+  productBlog?: { // <-- THÊM: Có thể có ProductBlog nếu bạn muốn hiển thị chi tiết sản phẩm
+    productName: string;
+    productType: string;
+    detail: string;
+    targetAudience: string;
+    keySellingPoints: string;
+    seoKeywords: string;
+  };
 }
 
+// --- HÀM MAP DỮ LIỆU TỪ API SANG DẠNG HIỂN THỊ ---
 const mapFromApi = (data: BlogPostApi): BlogPost => ({
   id: data.id,
   title: data.title,
@@ -50,8 +65,10 @@ const mapFromApi = (data: BlogPostApi): BlogPost => ({
   targetAudience: data.topicBlog?.targetAudience,
   mainPoints: data.topicBlog?.mainPoints,
   seoKeywords: data.topicBlog?.seoKeywords,
+  metaDescription: data.metaDescription, // <-- THÊM: Ánh xạ metaDescription
 });
 
+// --- INTERFACE CHO CHI TIẾT SẢN PHẨM ---
 export type ProductDetails = {
   productName: string;
   productType: string;
@@ -65,6 +82,7 @@ export type ProductDetails = {
   callToAction?: string;
 };
 
+// --- INTERFACE CHO CHI TIẾT CHỦ ĐỀ ---
 export type TopicDetails = {
   articleTitle: string;
   targetAudience: string;
@@ -75,8 +93,7 @@ export type TopicDetails = {
   callToAction?: string;
 };
 
-
-
+// --- INTERFACE CHO BLOG REQUEST (KHI GỬI ĐI) ---
 export type BlogRequest = {
   blogType: "product" | "topic";
   productDetails?: ProductDetails;
@@ -84,8 +101,21 @@ export type BlogRequest = {
   content?: string; // final content when publishing
   author?: string;
   slug?: string;
+  title?: string; // <-- THÊM: Tiêu đề đã chỉnh sửa
+  metaDescription?: string; // <-- THÊM: Meta Description đã chỉnh sửa
 };
 
+// --- INTERFACE CHO PHẢN HỒI GENERATE PREVIEW TỪ BACKEND ---
+export interface GeneratedPreviewResponse {
+  title: string;
+  slug: string;
+  generatedContent: string; // <-- Đã đổi tên
+  previewUrl: string;
+  metaDescription: string; // <-- THÊM: Meta Description từ AI
+}
+
+
+// --- CẤU HÌNH API URL ---
 const rawApiUrl = import.meta.env.VITE_API_URL;
 const API_URL = (() => {
   if (!rawApiUrl) {
@@ -100,6 +130,7 @@ const API_URL = (() => {
   }
 })();
 
+// --- CÁC PHƯƠNG THỨC GỌI API ---
 export const blog = {
   async list(): Promise<BlogPost[]> {
     const { data } = await axios.get<BlogPostApi[]>(`${API_URL}/api/blogs`);
@@ -110,23 +141,27 @@ export const blog = {
     const { data } = await axios.get<BlogPostApi>(`${API_URL}/api/blog/${slug}`);
     return mapFromApi(data);
   },
-  
-   generatePreview(data: BlogRequest) {
+
+  // Sửa lại kiểu trả về và cách xử lý
+  async generatePreview(data: BlogRequest): Promise<GeneratedPreviewResponse> {
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.post(`${API_URL}/api/blog/generate-preview`, data, {
+    const response = await axios.post<GeneratedPreviewResponse>(`${API_URL}/api/blog/generate-preview`, data, {
       headers,
     });
+    return response.data; // Trả về trực tiếp data
   },
 
-  create(data: BlogRequest) {
+  // Đã đổi tên phương thức từ 'create' thành 'publish'
+  async publish(data: BlogRequest): Promise<BlogPost> { // Trả về BlogPost sau khi tạo thành công
     const headers: Record<string, string> = {};
     const token = auth.getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
-    return axios.post(`${API_URL}/api/blog/publish`, data, {
+    const response = await axios.post<BlogPostApi>(`${API_URL}/api/blog/publish`, data, { // Backend trả về BlogPostApi
       headers,
     });
+    return mapFromApi(response.data); // Map dữ liệu từ API về BlogPost frontend
   },
 
    async recent(): Promise<BlogPost[]> {
