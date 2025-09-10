@@ -67,12 +67,12 @@ export default function MobileFooter() {
         <p>
           <strong>HOTLINE:</strong>
           <br />
-          0833 447 728
+          083 344 7728
         </p>
         <p>
           <strong>HOTLINE:</strong>
           <br />
-          0777 727 5384
+          077 727 5384
         </p>
       </div>
 
