@@ -16,6 +16,7 @@ public class BlogDto
     public string Author { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public int ViewCount { get; set; }
+    public string MetaDescription { get; set; } = string.Empty;
     public ProductBlogDto? ProductBlog { get; set; }
     public TopicBlogDto? TopicBlog { get; set; }
 }
@@ -52,6 +53,7 @@ public static class BlogMappings
         Author = blog.Author,
         Content = blog.Content,
         ViewCount = blog.ViewCount,
+        MetaDescription = blog.MetaDescription,
         ProductBlog = blog.ProductBlog == null ? null : new ProductBlogDto
         {
             ProductName = blog.ProductBlog.ProductName,

@@ -43,25 +43,26 @@ public class BlogService
     var user = await _userRepository.GetByUsernameAsync(username)
         ?? throw new InvalidOperationException($"User '{username}' not found");
 
-    var (aiTitle, aiContent, aiMetaDescription) = await _aiBlogService.GenerateContentAsync(request); // Nhận metaDescription
-    var slug = SlugHelper.GenerateSlug(aiTitle);
-    // Cần implement EnsureUniqueSlugAsync trong BlogRepository nếu muốn đảm bảo slug không bao giờ trùng
-    // slug = await _blogRepository.EnsureUniqueSlugAsync(slug);
+    var title = request.Title ?? throw new InvalidOperationException("Title is required");
+    var slug = !string.IsNullOrWhiteSpace(request.Slug)
+        ? request.Slug!
+        : SlugHelper.GenerateSlug(title);
+    var content = request.Content ?? string.Empty;
+    var metaDescription = request.MetaDescription ?? string.Empty;
 
     var blog = new Blog
     {
-        Title = aiTitle,
+        Title = title,
         Slug = slug,
-        Content = aiContent,
-        Author = username,
+        Content = content,
+        Author = request.Author ?? username,
         Username = user.Username,
+        MetaDescription = metaDescription,
         IsPublished = true,
         CreatedDate = DateTime.UtcNow,
         UpdatedDate = DateTime.UtcNow,
-        // Nếu bạn muốn lưu metaDescription vào model Blog, hãy thêm thuộc tính MetaDescription vào lớp Blog
-        // và gán giá trị ở đây:
-        // MetaDescription = aiMetaDescription
     };
+
 
     if (request.BlogType == "product" && request.ProductDetails != null)
     {
@@ -144,22 +145,26 @@ public class BlogService
     // var user = await _userRepository.GetByUsernameAsync(username);
     // if (blog.Username != username && !(user?.Roles.Contains(Roles.Admin) ?? false)) return null;
 
-    // Cập nhật các trường cần thiết từ request
+    if (!string.IsNullOrWhiteSpace(request.Title))
+    {
+        blog.Title = request.Title;
+        if (string.IsNullOrWhiteSpace(request.Slug))
+        {
+            blog.Slug = SlugHelper.GenerateSlug(request.Title);
+        }
+    }
+    if (!string.IsNullOrWhiteSpace(request.Slug))
+    {
+        blog.Slug = request.Slug;
+    }
     if (!string.IsNullOrWhiteSpace(request.Content))
     {
         blog.Content = request.Content;
     }
-    // Nếu bạn cho phép cập nhật tiêu đề từ preview, bạn cần thêm logic này
-    // if (!string.IsNullOrWhiteSpace(request.Title))
-    // {
-    //     blog.Title = request.Title;
-    //     blog.Slug = SlugHelper.GenerateSlug(request.Title); // Cập nhật slug nếu tiêu đề thay đổi
-    // }
-    // Nếu bạn có thuộc tính MetaDescription trong model Blog và muốn cập nhật
-    // if (!string.IsNullOrWhiteSpace(request.MetaDescription))
-    // {
-    //     blog.MetaDescription = request.MetaDescription;
-    // }
+    if (!string.IsNullOrWhiteSpace(request.MetaDescription))
+    {
+        blog.MetaDescription = request.MetaDescription;
+    }
 
     blog.UpdatedDate = DateTime.UtcNow;
 

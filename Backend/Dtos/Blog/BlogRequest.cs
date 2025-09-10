@@ -18,6 +18,10 @@ public class BlogRequest
         = null;
     public string? Slug { get; set; }
         = null;
+    public string? Title { get; set; }
+   = null;
+    public string? MetaDescription { get; set; }
+        = null;
 }
 
 /// <summary>
