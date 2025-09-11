@@ -1,5 +1,5 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { FormValues } from "./BlogCreatePage";
+import { FormValues } from "./AiBlogCreationWorkflow";
 import {
   FileText,
   Users,
@@ -23,13 +23,13 @@ const toneOfVoiceOptions = [
     description: "Dễ hiểu, thân thiện, có tính hướng dẫn",
   },
   {
-    value: "Phân tích & Chuyên gia", 
+    value: "Phân tích & Chuyên gia",
     label: "Phân tích & Chuyên gia",
     description: "Chuyên sâu, logic, có dẫn chứng",
   },
   {
     value: "Tin tức & Cập nhật",
-    label: "Tin tức & Cập nhật", 
+    label: "Tin tức & Cập nhật",
     description: "Nhanh gọn, cập nhật, có tính thời sự",
   },
 ];
@@ -40,7 +40,9 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
       <div className="p-6 sm:p-8">
         {/* Header Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Topic Blog Post</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Topic Blog Post
+          </h2>
           <p className="text-gray-600">Tạo bài viết theo chủ đề cụ thể</p>
         </div>
 
@@ -76,15 +78,17 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
                 {errors.topicDetails?.articleTitle && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.topicDetails.articleTitle.message as string}</span>
+                    <span>
+                      {errors.topicDetails.articleTitle.message as string}
+                    </span>
                   </p>
                 )}
               </div>
 
               <div className="lg:col-span-2">
-                 <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
-              Đối tượng độc giả
-              </h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+                  Đối tượng độc giả
+                </h3>
                 <label
                   htmlFor="target_audience"
                   className="flex items-center text-sm font-medium text-gray-700 mb-2"
@@ -109,7 +113,9 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
                 {errors.topicDetails?.targetAudience && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.topicDetails.targetAudience.message as string}</span>
+                    <span>
+                      {errors.topicDetails.targetAudience.message as string}
+                    </span>
                   </p>
                 )}
               </div>
@@ -150,7 +156,9 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
               {errors.topicDetails?.mainPoints && (
                 <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                   <AlertCircle className="w-4 h-4 mr-1" />
-                  <span>{errors.topicDetails.mainPoints.message as string}</span>
+                  <span>
+                    {errors.topicDetails.mainPoints.message as string}
+                  </span>
                 </p>
               )}
               <div className="flex justify-end mt-2">
@@ -194,7 +202,9 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
                 {errors.topicDetails?.seoKeywords && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.topicDetails.seoKeywords.message as string}</span>
+                    <span>
+                      {errors.topicDetails.seoKeywords.message as string}
+                    </span>
                   </p>
                 )}
                 <p className="text-xs text-gray-500 mt-2 bg-gray-50 px-3 py-2 rounded-lg">
@@ -222,11 +232,13 @@ export default function TopicBlogForm({ register, errors, disabled }: Props) {
                         className="sr-only peer"
                         disabled={disabled}
                       />
-                      <div className={`flex items-center justify-center px-4 py-3 rounded-sm border border-gray-300 text-center transition-all duration-200 ${
-                        disabled
-                          ? "border-gray-200 bg-gray-50"
-                          : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-900 peer-focus:ring-2 peer-focus:ring-blue-500/20"
-                      }`}>
+                      <div
+                        className={`flex items-center justify-center px-4 py-3 rounded-sm border border-gray-300 text-center transition-all duration-200 ${
+                          disabled
+                            ? "border-gray-200 bg-gray-50"
+                            : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-900 peer-focus:ring-2 peer-focus:ring-blue-500/20"
+                        }`}
+                      >
                         <div>
                           <div className="font-semibold text-sm mb-1">
                             {option.label}

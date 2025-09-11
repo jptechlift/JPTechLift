@@ -3,7 +3,7 @@ import Sidebar from "../components/dashboard/Sidebar";
 import ProfileForm from "../components/dashboard/ProfileForm";
 import DashboardOverview from "../components/dashboard/DashboardOverview";
 import SettingsPanel from "../components/dashboard/SettingsPanel";
-import CreateBlogForm from "../components/dashboard/blog/BlogCreatePage";
+import CreateBlogForm from "../components/dashboard/blog/CreateBlogPage";
 import AdminUsersPanel from "../components/dashboard/AdminUsersPanel";
 import { user, UserProfile } from "../services/user";
 import { ROLES } from "../constants/roles";

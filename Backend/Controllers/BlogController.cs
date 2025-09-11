@@ -3,6 +3,10 @@ using Backend.Dtos.Blog;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System; // Cần cho InvalidOperationException, StringComparison
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging; // <-- THÊM: Import ILogger
+using Microsoft.AspNetCore.Http; // <-- THÊM: Cho IFormFile
 
 namespace Backend.Controllers;
 
@@ -13,10 +17,17 @@ namespace Backend.Controllers;
 public class BlogController : ControllerBase
 {
     private readonly BlogService _blogService;
+    private readonly AiBlogService _aiBlogService; // <-- THÊM: Inject AiBlogService
+    private readonly ILogger<BlogController> _logger; // <-- THÊM: Logger riêng cho controller
 
-    public BlogController(BlogService blogService)
+    public BlogController(
+        BlogService blogService,
+        AiBlogService aiBlogService, // <-- Cập nhật constructor để inject AiBlogService
+        ILogger<BlogController> logger) // <-- Cập nhật constructor để inject ILogger
     {
         _blogService = blogService;
+        _aiBlogService = aiBlogService; // <-- Khởi tạo
+        _logger = logger; // <-- Khởi tạo logger
     }
 
     /// <summary>
@@ -109,5 +120,54 @@ public class BlogController : ControllerBase
     {
         await _blogService.DeleteAsync(id);
         return NoContent();
+    }
+
+    /// <summary>
+    /// Generates a preview using AI based on the provided document file.
+    /// </summary>
+    /// <param name="file">The PDF or DOCX file to process.</param>
+    [HttpPost("/api/blog/generate-from-document")] // <-- THÊM LẠI ENDPOINT NÀY
+    [Authorize] // Yêu cầu xác thực
+    [Consumes("multipart/form-data")] // Chỉ định kiểu dữ liệu đầu vào là form-data
+    public async Task<IActionResult> GenerateFromDocument([FromForm] IFormFile file) // Nhận IFormFile từ request
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest(new { error = "No file uploaded or file is empty." });
+        }
+
+        // Kiểm tra loại file
+        if (!file.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) &&
+            !file.ContentType.Equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document", StringComparison.OrdinalIgnoreCase))
+        {
+            return BadRequest(new { error = "Unsupported file type. Only PDF and DOCX are allowed." });
+        }
+
+        try
+        {
+            // Gửi file đến AiBlogService để xử lý
+            var (title, slug, content, metaDescription) = await _aiBlogService.GenerateFromDocumentAsync(file);
+
+            return Ok(
+                new
+                {
+                    title,
+                    slug,
+                    generatedContent = content, // Đổi tên cho frontend để dễ sử dụng
+                    previewUrl = $"/blogs/{slug}",
+                    metaDescription
+                }
+            );
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Document generation failed due to invalid operation: {Message}", ex.Message);
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unexpected error occurred while processing the document.");
+            return StatusCode(500, new { error = "An unexpected error occurred while processing the document." });
+        }
     }
 }

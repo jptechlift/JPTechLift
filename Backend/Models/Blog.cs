@@ -15,10 +15,10 @@ public class Blog
 
     /// <summary>Unique slug used as URL identifier.</summary>
     [Required]
-    [MaxLength(200)]
+    [MaxLength(500)]
     public string Slug { get; set; } = string.Empty;
     
-    [MaxLength(300)] // Độ dài phù hợp cho meta description
+    [MaxLength(500)] // Độ dài phù hợp cho meta description
     public string MetaDescription { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;

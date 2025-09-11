@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { blog, BlogPost } from "../services/blog";
 import styles from "../styles/pages/blog-page/blog-page.module.scss";
 import clsx from "clsx";
-import NavBar from "../components/Navbar/Navbar";
-import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
+// import NavBar from "../components/Navbar/Navbar";
+// import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
 import { Eye } from "lucide-react";
 
 const PAGE_SIZE = 9;
@@ -29,19 +29,37 @@ const BlogPage = () => {
   }, []);
 
   // Filter and search logic
-  const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.content.toLowerCase().includes(searchTerm.toLowerCase());
-    // Add filter logic here when categories are available
-    return matchesSearch;
+  const filteredPosts = posts.filter((post) => {
+    const search = searchTerm.toLowerCase();
+    const plainContent = post.content.replace(/<[^>]+>/g, "").toLowerCase();
+    const matchesSearch =
+      post.title.toLowerCase().includes(search) ||
+      plainContent.includes(search);
+
+    let matchesFilter = true;
+    if (filterBy === "featured") {
+      matchesFilter = post.tags?.includes("featured") ?? false;
+    } else if (filterBy === "recent") {
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      matchesFilter = new Date(post.createdDate) >= thirtyDaysAgo;
+    }
+
+    return matchesSearch && matchesFilter;
   });
 
   // Sort logic
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     if (sortBy === "newest") {
-      return new Date(b.createdDate || 0).getTime() - new Date(a.createdDate || 0).getTime();
+      return (
+        new Date(b.createdDate || 0).getTime() -
+        new Date(a.createdDate || 0).getTime()
+      );
     } else if (sortBy === "oldest") {
-      return new Date(a.createdDate || 0).getTime() - new Date(b.createdDate || 0).getTime();
+      return (
+        new Date(a.createdDate || 0).getTime() -
+        new Date(b.createdDate || 0).getTime()
+      );
     } else if (sortBy === "title") {
       return a.title.localeCompare(b.title);
     }
@@ -73,7 +91,7 @@ const BlogPage = () => {
 
   return (
     <div>
-      <NavBar/>
+      {/* <NavBar /> */}
       <section className={styles["blog-page"]}>
         <div className={styles["blog-page__header"]}>
           <h1 className={styles["blog-page__title"]}>Blog</h1>
@@ -95,7 +113,7 @@ const BlogPage = () => {
               </p>
             )}
           </div>
-          
+
           <div className={styles["blog-page__controls"]}>
             <div className={styles["blog-page__search-wrapper"]}>
               <input
@@ -107,18 +125,18 @@ const BlogPage = () => {
               />
               <div className={styles["blog-page__search-icon"]}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path 
-                    d="M21 21L16.514 16.506M19 10.5C19 15.194 15.194 19 10.5 19S2 15.194 2 10.5 5.806 2 10.5 2 19 5.806 19 10.5Z" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <path
+                    d="M21 21L16.514 16.506M19 10.5C19 15.194 15.194 19 10.5 19S2 15.194 2 10.5 5.806 2 10.5 2 19 5.806 19 10.5Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
               </div>
             </div>
-            
-            <select 
+
+            <select
               className={styles["blog-page__select"]}
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -127,8 +145,8 @@ const BlogPage = () => {
               <option value="oldest">Cũ nhất</option>
               <option value="title">Theo tên</option>
             </select>
-            
-            <select 
+
+            <select
               className={styles["blog-page__select"]}
               value={filterBy}
               onChange={(e) => setFilterBy(e.target.value)}
@@ -161,36 +179,43 @@ const BlogPage = () => {
                     </div>
                   ) : (
                     <div className={styles["blog-page__thumb-placeholder"]}>
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                        <path 
-                          d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" 
-                          stroke="currentColor" 
+                      <svg
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                          stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <path 
-                          d="M8.5 9.5C9.32843 9.5 10 8.82843 10 8C10 7.17157 9.32843 6.5 8.5 6.5C7.67157 6.5 7 7.17157 7 8C7 8.82843 7.67157 9.5 8.5 9.5Z" 
-                          stroke="currentColor" 
+                        <path
+                          d="M8.5 9.5C9.32843 9.5 10 8.82843 10 8C10 7.17157 9.32843 6.5 8.5 6.5C7.67157 6.5 7 7.17157 7 8C7 8.82843 7.67157 9.5 8.5 9.5Z"
+                          stroke="currentColor"
                           strokeWidth="2"
                         />
-                        <path 
-                          d="M21 15L16 10L5 21" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
+                        <path
+                          d="M21 15L16 10L5 21"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                       </svg>
                     </div>
                   )}
-                  
+
                   <div className={styles["blog-page__card-body"]}>
-                    <h3 className={styles["blog-page__card-title"]}>{post.title}</h3>
+                    <h3 className={styles["blog-page__card-title"]}>
+                      {post.title}
+                    </h3>
                     <p className={styles["blog-page__card-excerpt"]}>
                       {post.content.replace(/<[^>]+>/g, "").slice(0, 120)}...
                     </p>
-                    
+
                     <div className={styles["blog-page__card-footer"]}>
-                       <span className={styles["blog-page__view-count"]}>
+                      <span className={styles["blog-page__view-count"]}>
                         <Eye size={16} /> {post.viewCount}
                       </span>
                       <a
@@ -198,7 +223,12 @@ const BlogPage = () => {
                         className={styles["blog-page__read-more"]}
                       >
                         Đọc thêm
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
                           <path
                             d="M5 12H19M19 12L12 5M19 12L12 19"
                             stroke="currentColor"
@@ -218,18 +248,18 @@ const BlogPage = () => {
           <div className={styles["blog-page__empty"]}>
             <div className={styles["blog-page__empty-icon"]}>
               <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-                <path 
-                  d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <path
+                  d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <path 
-                  d="M14 2V8H20" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <path
+                  d="M14 2V8H20"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
@@ -237,7 +267,7 @@ const BlogPage = () => {
             <h3>Không tìm thấy bài viết nào</h3>
             <p>Thử thay đổi từ khóa tìm kiếm hoặc bộ lọc của bạn</p>
             {searchTerm && (
-              <button 
+              <button
                 className={styles["blog-page__clear-search"]}
                 onClick={() => setSearchTerm("")}
               >
@@ -248,7 +278,10 @@ const BlogPage = () => {
         )}
 
         {totalPages > 1 && (
-          <nav className={styles["blog-page__pagination-wrap"]} aria-label="Phân trang blog">
+          <nav
+            className={styles["blog-page__pagination-wrap"]}
+            aria-label="Phân trang blog"
+          >
             <button
               className={styles["blog-page__page-btn"]}
               onClick={handlePrev}
@@ -256,27 +289,29 @@ const BlogPage = () => {
               aria-label="Trang trước"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path 
-                  d="M19 12H5M5 12L12 19M5 12L12 5" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <path
+                  d="M19 12H5M5 12L12 19M5 12L12 5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
               TRƯỚC
             </button>
-            
+
             <div className={styles["blog-page__pagination"]}>
               {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter(p => {
+                .filter((p) => {
                   // Show first, last, current, and adjacent pages
                   return p === 1 || p === totalPages || Math.abs(p - page) <= 1;
                 })
                 .map((p, index, array) => (
                   <div key={p}>
                     {index > 0 && array[index - 1] < p - 1 && (
-                      <span className={styles["blog-page__page-ellipsis"]}>...</span>
+                      <span className={styles["blog-page__page-ellipsis"]}>
+                        ...
+                      </span>
                     )}
                     <button
                       className={clsx(
@@ -290,10 +325,9 @@ const BlogPage = () => {
                       {p}
                     </button>
                   </div>
-                ))
-              }
+                ))}
             </div>
-            
+
             <button
               className={styles["blog-page__page-btn"]}
               onClick={handleNext}
@@ -302,11 +336,11 @@ const BlogPage = () => {
             >
               SAU
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path 
-                  d="M5 12H19M19 12L12 5M19 12L12 19" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
+                <path
+                  d="M5 12H19M19 12L12 5M19 12L12 19"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
@@ -314,7 +348,7 @@ const BlogPage = () => {
           </nav>
         )}
       </section>
-      <Footer/>
+      {/* <Footer /> */}
     </div>
   );
 };

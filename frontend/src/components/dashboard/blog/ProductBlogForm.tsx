@@ -1,5 +1,5 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { FormValues } from "./BlogCreatePage";
+import { FormValues } from "./AiBlogCreationWorkflow";
 import {
   Package,
   Tag,
@@ -51,8 +51,12 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
       <div className="p-6 sm:p-8">
         {/* Header Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Blog Post</h2>
-          <p className="text-gray-600">Tạo bài viết chi tiết cho sản phẩm cụ thể</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Product Blog Post
+          </h2>
+          <p className="text-gray-600">
+            Tạo bài viết chi tiết cho sản phẩm cụ thể
+          </p>
         </div>
 
         <div className="space-y-8">
@@ -87,7 +91,9 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                 {errors.productDetails?.productName && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.productDetails.productName.message as string}</span>
+                    <span>
+                      {errors.productDetails.productName.message as string}
+                    </span>
                   </p>
                 )}
               </div>
@@ -123,7 +129,11 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                     ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                    <svg
+                      className="h-5 w-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
                       <path
                         fillRule="evenodd"
                         d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
@@ -135,7 +145,9 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                 {errors.productDetails?.productType && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.productDetails.productType.message as string}</span>
+                    <span>
+                      {errors.productDetails.productType.message as string}
+                    </span>
                   </p>
                 )}
               </div>
@@ -171,7 +183,9 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
               {errors.productDetails?.targetAudience && (
                 <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                   <AlertCircle className="w-4 h-4 mr-1" />
-                  <span>{errors.productDetails.targetAudience.message as string}</span>
+                  <span>
+                    {errors.productDetails.targetAudience.message as string}
+                  </span>
                 </p>
               )}
             </div>
@@ -211,7 +225,9 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                 {errors.productDetails?.keySellingPoints && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.productDetails.keySellingPoints.message as string}</span>
+                    <span>
+                      {errors.productDetails.keySellingPoints.message as string}
+                    </span>
                   </p>
                 )}
               </div>
@@ -243,7 +259,9 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                 {errors.productDetails?.seoKeywords && (
                   <p className="mt-2 text-xs text-red-600 flex items-center bg-red-50 px-3 py-1 rounded-lg">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    <span>{errors.productDetails.seoKeywords.message as string}</span>
+                    <span>
+                      {errors.productDetails.seoKeywords.message as string}
+                    </span>
                   </p>
                 )}
               </div>
@@ -275,11 +293,13 @@ export default function ProductBlogForm({ register, errors, disabled }: Props) {
                       className="sr-only peer"
                       disabled={disabled}
                     />
-                    <div className={`flex items-center justify-center px-4 py-3 rounded-sm border border-gray-300 text-center transition-all duration-200 ${
-                      disabled
-                        ? "border-gray-200 bg-gray-50"
-                        : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-900 peer-focus:ring-2 peer-focus:ring-blue-500/20"
-                    }`}>
+                    <div
+                      className={`flex items-center justify-center px-4 py-3 rounded-sm border border-gray-300 text-center transition-all duration-200 ${
+                        disabled
+                          ? "border-gray-200 bg-gray-50"
+                          : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-900 peer-focus:ring-2 peer-focus:ring-blue-500/20"
+                      }`}
+                    >
                       <div>
                         <div className="font-semibold text-sm mb-1">
                           {option.label}

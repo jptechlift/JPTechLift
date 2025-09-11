@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
 using System.Threading.Tasks;
 using Backend.Constants;
-using Backend.Constants;
 using Backend.Middleware;
 using Backend.Models;
 using Backend.Repositories;
@@ -46,10 +45,9 @@ builder.Services.AddCors(options =>
                 .WithOrigins(
                     "http://localhost:5173",
                     "https://localhost:5173",
-                    // THÊM CÁC DOMAIN PRODUCTION VÀO ĐÂY
-                    "https://thangmaysaigonjptechlift.com", // Domain chính
-                    "https://www.thangmaysaigonjptechlift.com", // Domain www
-                    "https://jptechlift.vercel.app" // Domain mặc định của Vercel
+                    "https://thangmaysaigonjptechlift.com",
+                    "https://www.thangmaysaigonjptechlift.com",
+                    "https://jptechlift.vercel.app"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
@@ -66,15 +64,32 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 // 4. Đăng ký các Services và Repositories của ứng dụng
+
 builder.Services.AddHttpClient<AiBlogService>();
-builder.Services.AddScoped<AiBlogService>();
-builder.Services.AddScoped<BlogService>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<BlogRepository>();
+
+builder.Services.AddScoped<BlogService>(provider =>
+    new BlogService(
+        provider.GetRequiredService<BlogRepository>(),
+        provider.GetRequiredService<UserRepository>(),
+        provider.GetRequiredService<AiBlogService>(),
+        provider.GetRequiredService<ApplicationDbContext>(),
+        provider.GetRequiredService<ILogger<BlogService>>()
+    )
+);
+
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddHttpClient<CaptchaService>();
 builder.Services.AddScoped<CaptchaService>();
 builder.Services.AddScoped<GoogleAuthService>();
+
+builder.Services.AddLogging(configure =>
+{
+    configure.AddConsole();
+    configure.AddDebug();
+});
+
 
 // 5. Cấu hình Rate Limiter
 builder.Services.AddRateLimiter(options =>
@@ -138,12 +153,10 @@ builder.Services.AddAntiforgery(options =>
 builder
     .Services.AddControllersWithViews(options =>
     {
-        // Tự động bảo vệ các endpoint khỏi tấn công CSRF
         // options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     })
     .AddJsonOptions(options =>
     {
-        // Cấu hình cách JSON được serialize
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
         options.JsonSerializerOptions.PropertyNamingPolicy = System
             .Text
@@ -161,88 +174,124 @@ builder
 // === XÂY DỰNG ỨNG DỤNG ===
 var app = builder.Build();
 
-// === LOGIC KHỞI TẠO ===
+// === LOGIC KHỞI TẠO (Áp dụng Migrations và tạo Admin/Author mặc định) ===
 using (var scope = app.Services.CreateScope())
 {
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    // Biến connectionString đã được khai báo ở trên rồi, chúng ta chỉ cần dùng lại nó
+    var serviceProvider = scope.ServiceProvider;
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+
+    // Kiểm tra và thực hiện Migrations
+    // Khai báo db ở phạm vi ngoài khối try để có thể sử dụng bên dưới
+    ApplicationDbContext? db = null; // Khởi tạo là null
+
     if (string.IsNullOrWhiteSpace(connectionString))
     {
         logger.LogError(
             "Connection string 'DefaultConnection' is missing or empty. Migration aborted."
         );
-        return;
+        // Có thể thoát sớm nếu không có chuỗi kết nối
+        // Environment.Exit(1); // Thoát ứng dụng
     }
-    if (string.IsNullOrWhiteSpace(connectionString))
+    else
     {
-        logger.LogError(
-            "Connection string 'DefaultConnection' is missing or empty. Migration aborted."
-        );
-        return;
-    }
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-
-    var users = scope.ServiceProvider.GetRequiredService<UserRepository>();
-    var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
-    var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
-
-    if (!string.IsNullOrEmpty(adminEmail) && !string.IsNullOrEmpty(adminPassword))
-    {
-        var admin = await users.GetByEmailAsync(adminEmail);
-        if (admin == null)
+        try
         {
-            var adminUser = new User
-            {
-                Username = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin",
-                Email = adminEmail,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
-                Role = Roles.Admin,
-                IsActive = true,
-                CreatedDate = DateTime.UtcNow,
-            };
-            await users.AddAsync(adminUser);
+            db = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            db.Database.Migrate();
+            logger.LogInformation("Database migration successful.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while migrating the database.");
+            // Ném lại ngoại lệ để ứng dụng không khởi động với database bị lỗi
+            // throw;
         }
     }
-    var authorEmail = Environment.GetEnvironmentVariable("AUTHOR_EMAIL");
-    var authorPassword = Environment.GetEnvironmentVariable("AUTHOR_PASSWORD");
 
-    if (!string.IsNullOrEmpty(authorEmail) && !string.IsNullOrEmpty(authorPassword))
+
+    // Tạo người dùng Admin và Author mặc định nếu chưa tồn tại
+    // Chỉ tiếp tục nếu db không null (tức là migration có thể thực hiện)
+    if (db != null) // <-- Thêm kiểm tra null cho db
     {
-        var author = await users.GetByEmailAsync(authorEmail);
-        if (author == null)
+        var users = serviceProvider.GetRequiredService<UserRepository>();
+        var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL");
+        var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+
+        if (!string.IsNullOrEmpty(adminEmail) && !string.IsNullOrEmpty(adminPassword))
+        {
+            var admin = await users.GetByEmailAsync(adminEmail);
+            if (admin == null)
+            {
+                var adminUser = new User
+                {
+                    Username = Environment.GetEnvironmentVariable("ADMIN_USERNAME") ?? "admin",
+                    Email = adminEmail,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
+                    Role = Roles.Admin,
+                    IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
+                };
+                await users.AddAsync(adminUser);
+                logger.LogInformation("Default Admin user created.");
+            }
+        }
+        else
+        {
+            logger.LogWarning("ADMIN_EMAIL or ADMIN_PASSWORD environment variables are missing. Default Admin user not created.");
+        }
+
+
+        var authorEmail = Environment.GetEnvironmentVariable("AUTHOR_EMAIL");
+        var authorPassword = Environment.GetEnvironmentVariable("AUTHOR_PASSWORD");
+
+        if (!string.IsNullOrEmpty(authorEmail) && !string.IsNullOrEmpty(authorPassword))
+        {
+            var author = await users.GetByEmailAsync(authorEmail);
+            if (author == null)
+            {
+                var authorUser = new User
+                {
+                    Username = Environment.GetEnvironmentVariable("AUTHOR_USERNAME") ?? "author",
+                    Email = authorEmail,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(authorPassword),
+                    Role = Roles.Author,
+                    IsActive = true,
+                    CreatedDate = DateTime.UtcNow,
+                };
+                await users.AddAsync(authorUser);
+                logger.LogInformation("Default Author user created.");
+            }
+        }
+        else if (!await db.Users.AnyAsync(u => u.Role == Roles.Author))
         {
             var authorUser = new User
             {
-                Username = Environment.GetEnvironmentVariable("AUTHOR_USERNAME") ?? "author",
-                Email = authorEmail,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(authorPassword),
+                Username = "author",
+                Email = "author@example.com",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Author@123!"),
                 Role = Roles.Author,
                 IsActive = true,
                 CreatedDate = DateTime.UtcNow,
             };
             await users.AddAsync(authorUser);
+            logger.LogInformation("Fallback default Author user created.");
+        }
+        else
+        {
+            logger.LogWarning("AUTHOR_EMAIL or AUTHOR_PASSWORD environment variables are missing. Default Author user not created. (or already exists)");
         }
     }
-    else if (!await db.Users.AnyAsync(u => u.Role == Roles.Author))
+    else
     {
-        var authorUser = new User
-        {
-            Username = "author",
-            Email = "author@example.com",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("Author@123!"),
-            Role = Roles.Author,
-            IsActive = true,
-            CreatedDate = DateTime.UtcNow,
-        };
-        await users.AddAsync(authorUser);
+        logger.LogError("ApplicationDbContext was not successfully initialized. Skipping default user creation.");
     }
 }
+
 
 // === CẤU HÌNH HTTP REQUEST PIPELINE ===
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseRouting();
-app.Use(
+app.Use( // <-- ĐÃ SỬA: Chỉ cần 'app.Use'
     async (context, next) =>
     {
         context.Response.Headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups";
