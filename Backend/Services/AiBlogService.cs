@@ -155,235 +155,26 @@ public class AiBlogService
     /// <returns>A tuple containing the generated Title, Slug, Content (formatted as HTML), and MetaDescription.</returns>
     public async Task<(string Title, string Slug, string Content, string MetaDescription)> GenerateFromDocumentAsync(IFormFile file)
     {
-        if (string.IsNullOrWhiteSpace(_apiKey))
-        {
-            _logger.LogWarning("GEMINI_API_KEY is not configured. Returning placeholder content for document upload.");
-            return ("Tiêu đề Placeholder từ tài liệu", Helpers.SlugHelper.GenerateSlug("Tiêu đề Placeholder từ tài liệu"), "Đây là nội dung placeholder từ tài liệu được tải lên.", "Meta description placeholder từ tài liệu.");
-        }
-
-        // Bước 1: Trích xuất tiêu đề và toàn bộ văn bản gốc (thô) từ file PDF/DOCX
-        var (finalTitleFromDocument, rawDocumentContentExcludingTitle) = await ExtractTitleAndTextFromFile(file);
-
-        if (string.IsNullOrWhiteSpace(finalTitleFromDocument) && string.IsNullOrWhiteSpace(rawDocumentContentExcludingTitle))
+        var (extractedTitle, body) = await ExtractTitleAndTextFromFile(file);
+        if (string.IsNullOrWhiteSpace(extractedTitle) && string.IsNullOrWhiteSpace(body))
         {
             _logger.LogWarning("Extracted text from document was empty.");
             throw new InvalidOperationException("Không thể trích xuất văn bản từ tài liệu hoặc tài liệu trống.");
         }
 
-        if (string.IsNullOrWhiteSpace(finalTitleFromDocument))
+        if (string.IsNullOrWhiteSpace(extractedTitle))
+
         {
-            finalTitleFromDocument = "Tài liệu trống hoặc không có tiêu đề rõ ràng.";
+            extractedTitle = "Tài liệu trống hoặc không có tiêu đề rõ ràng.";
+
         }
 
-        // --- XÂY DỰNG PROMPT CHO AI ĐỂ TẠO CẢ TIÊU ĐỀ, NỘI DUNG CÓ CẤU TRÚC VÀ META DESCRIPTION ---
-        var promptBuilder = new StringBuilder();
-
-        promptBuilder.AppendLine("Bạn là công cụ chuyển đổi văn bản sang HTML.");
-        promptBuilder.AppendLine("Giữ nguyên toàn bộ nội dung gốc, chỉ thêm các thẻ HTML cơ bản để phản ánh chuẩn xác cấu trúc tài liệu so với bản gốc.");
-        promptBuilder.AppendLine("Không được thêm, bớt hay sửa bất kỳ từ ngữ nào ngoài việc bổ sung thẻ HTML.");
-        if (!string.IsNullOrWhiteSpace(finalTitleFromDocument))
-        {
-            promptBuilder.AppendLine($"Tiêu đề của bài viết: \"{finalTitleFromDocument}\". Tiêu đề này không nằm trong văn bản bên dưới, hãy đặt nó trong thẻ <h1> ở đầu kết quả.");
-        }
-        promptBuilder.AppendLine("Nội dung văn bản:");
-        promptBuilder.AppendLine(rawDocumentContentExcludingTitle);
-        promptBuilder.AppendLine("Trả về duy nhất JSON hợp lệ với cấu trúc sau:");
-        promptBuilder.AppendLine("{");
-        promptBuilder.AppendLine("  \"body\": \"HTML chuyển đổi từ nội dung, bao gồm cả thẻ <h1> cho tiêu đề ở đầu.\",");
-        promptBuilder.AppendLine("  \"metaDescription\": \"Tóm tắt 160-200 ký tự dựa trên nội dung, không thêm thông tin ngoài.\"");
-        promptBuilder.AppendLine("}");
-
-        var model = "gemini-1.5-flash-latest";
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={_apiKey}";
-
-        var payload = new GeminiRequest
-        {
-            Contents = new List<Content>
-            {
-                new Content { Parts = new List<Part> { new Part { Text = promptBuilder.ToString() } } }
-            }
-        };
-
-        string aiGeneratedBodyHtml = string.Empty;
-        string aiGeneratedMetaDescription = string.Empty;
-
-        try
-        {
-            _logger.LogInformation("Sending document-based prompt to Gemini API for full blog generation. Prompt length: {Length}", promptBuilder.Length);
-            var response = await _httpClient.PostAsJsonAsync(url, payload);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var errorBody = await response.Content.ReadAsStringAsync();
-                _logger.LogError("Gemini API (document-full-gen) request failed with status {StatusCode}. Response: {ErrorBody}", response.StatusCode, errorBody);
-                // Handle gracefully, potentially returning placeholder or re-throwing a specific exception
-            }
-            else
-            {
-                var geminiResponse = await response.Content.ReadFromJsonAsync<GeminiResponse>();
-                var generatedText = geminiResponse?.Candidates?.FirstOrDefault()?.Content?.Parts?.FirstOrDefault()?.Text;
-
-                if (!string.IsNullOrWhiteSpace(generatedText))
-                {
-                    _logger.LogInformation("Successfully received and parsed content from Gemini API for document blog.");
-                    try
-                    {
-                        var cleanJsonText = StripCodeFences(generatedText);
-                        var jsonDoc = JsonDocument.Parse(cleanJsonText);
-
-                        if (jsonDoc.RootElement.TryGetProperty("body", out JsonElement bodyElement) && bodyElement.ValueKind == JsonValueKind.String)
-                        {
-                            aiGeneratedBodyHtml = bodyElement.GetString() ?? string.Empty;
-                        }
-                        if (jsonDoc.RootElement.TryGetProperty("metaDescription", out JsonElement metaElement) && metaElement.ValueKind == JsonValueKind.String)
-                        {
-                            aiGeneratedMetaDescription = metaElement.GetString() ?? string.Empty;
-                        }
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        _logger.LogError(jsonEx, "Failed to parse JSON response for document blog generation from Gemini. Raw text was: {GeneratedText}", generatedText);
-                    }
-                }
-                else
-                {
-                    _logger.LogWarning("Gemini API (document-full-gen) returned a successful response, but the generated text was empty.");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An exception occurred while calling Gemini API for document blog generation.");
-        }
-
-        // --- FINALIZATION AND FALLBACK LOGIC ---
-        string finalTitle = finalTitleFromDocument;
-        string finalBodyHtml = string.IsNullOrWhiteSpace(aiGeneratedBodyHtml)
-                               ? Markdig.Markdown.ToHtml($"# {finalTitleFromDocument}\n\n{rawDocumentContentExcludingTitle}") // Fallback to old behavior (Markdown to HTML) if AI body is empty
-                               : aiGeneratedBodyHtml;
-        string finalMetaDescription = aiGeneratedMetaDescription;
-
-        // Ensure finalTitle is not empty for slug generation
-        if (string.IsNullOrWhiteSpace(finalTitle))
-        {
-            finalTitle = "Tiêu đề Blog Từ Tài liệu";
-        }
-
-        string slug = Helpers.SlugHelper.GenerateSlug(finalTitle);
-
-
-        // --- Robust fallback and length enforcement for Meta Description (Yêu cầu 2) ---
-        string processedMetaDescription = finalMetaDescription;
-
-        // If AI didn't provide a good meta description, generate from the (potentially AI-generated) body
-        if (string.IsNullOrWhiteSpace(processedMetaDescription) || processedMetaDescription.Length < 150)
-        {
-            _logger.LogWarning("AI-generated meta description is too short or empty (length: {Length}). Attempting to generate/extend from document content.", processedMetaDescription.Length);
-
-            // Use the *finalBodyHtml* as the source for meta description extension
-            string sourceContentForExtension = finalBodyHtml; // Now using HTML body for context
-
-            // Strip HTML tags for cleaner text for meta description generation
-            string plainTextBody = System.Text.RegularExpressions.Regex.Replace(sourceContentForExtension, "<.*?>", String.Empty);
-            plainTextBody = plainTextBody.Replace("&nbsp;", " ").Trim(); // Clean up common HTML entities
-
-            StringBuilder tempBuilder = new StringBuilder(processedMetaDescription.Trim());
-
-            if (!string.IsNullOrWhiteSpace(plainTextBody))
-            {
-                string snippet = plainTextBody;
-                if (snippet.Length > 300)
-                { // Take a larger snippet for better context
-                    snippet = snippet.Substring(0, 300);
-                }
-
-                string[] sentences = snippet.Split(new[] { '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string sentence in sentences)
-                {
-                    string trimmedSentence = sentence.Trim();
-                    if (!string.IsNullOrWhiteSpace(trimmedSentence))
-                    {
-                        if (tempBuilder.Length + trimmedSentence.Length + 2 <= 160) // +2 for period and space
-                        {
-                            if (tempBuilder.Length > 0 && !tempBuilder.ToString().EndsWith(".")) tempBuilder.Append(".");
-                            tempBuilder.Append(" ").Append(trimmedSentence);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (tempBuilder.Length < 150)
-                {
-                    string[] words = plainTextBody.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string word in words)
-                    {
-                        if (tempBuilder.Length + word.Length + 1 <= 160) // +1 for space
-                        {
-                            if (tempBuilder.Length > 0) tempBuilder.Append(" ");
-                            tempBuilder.Append(word);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-            processedMetaDescription = tempBuilder.ToString().Trim();
-
-            // Fallback if still too short
-            if (string.IsNullOrWhiteSpace(processedMetaDescription) || processedMetaDescription.Length < 50)
-            {
-                processedMetaDescription = finalTitle + ". Thông tin chi tiết về chủ đề này.";
-            }
-            else if (!processedMetaDescription.Contains(finalTitle, StringComparison.OrdinalIgnoreCase) && processedMetaDescription.Length < 120)
-            {
-                processedMetaDescription = finalTitle + ": " + processedMetaDescription;
-            }
-        }
-
-        // Strictly enforce maximum length (160 chars)
-        if (processedMetaDescription.Length > 160)
-        {
-            processedMetaDescription = processedMetaDescription.Substring(0, 160).Trim();
-            int lastSpace = processedMetaDescription.LastIndexOf(' ');
-            if (lastSpace > 0 && processedMetaDescription.Length > 150)
-            {
-                processedMetaDescription = processedMetaDescription.Substring(0, lastSpace).Trim() + "...";
-            }
-            else
-            {
-                processedMetaDescription = processedMetaDescription.Substring(0, Math.Min(processedMetaDescription.Length, 157)).Trim() + "...";
-            }
-        }
-
-        // Final sanity check for minimum length and ending punctuation
-        if (processedMetaDescription.Length < 150)
-        {
-            if (!processedMetaDescription.EndsWith(".") && !processedMetaDescription.EndsWith("!") && !processedMetaDescription.EndsWith("..."))
-            {
-                processedMetaDescription += ".";
-            }
-        }
-
-        finalMetaDescription = processedMetaDescription;
-
-        // Final comprehensive null/empty checks before returning
-        if (string.IsNullOrWhiteSpace(finalTitle)) finalTitle = "Tiêu đề không xác định từ tài liệu";
-        if (string.IsNullOrWhiteSpace(slug)) slug = Helpers.SlugHelper.GenerateSlug(finalTitle);
-        if (string.IsNullOrWhiteSpace(finalBodyHtml)) finalBodyHtml = "Nội dung bài viết không có sẵn từ AI. Vui lòng kiểm tra lại tài liệu hoặc cấu hình AI.";
-        if (string.IsNullOrWhiteSpace(finalMetaDescription))
-        {
-            finalMetaDescription = "Mô tả bài viết chi tiết về nội dung được cung cấp.";
-            if (finalMetaDescription.Length < 80 && !string.IsNullOrWhiteSpace(finalTitle) && !finalMetaDescription.Contains(finalTitle, StringComparison.OrdinalIgnoreCase))
-            {
-                finalMetaDescription = finalTitle + ": " + finalMetaDescription;
-            }
-        }
-        return (finalTitle, slug, finalBodyHtml, finalMetaDescription);
+        string encodedBody = System.Net.WebUtility.HtmlEncode(body);
+        string finalBodyHtml = encodedBody.Replace("\r\n", "<br/>").Replace("\n", "<br/>");
+        string plainTextBody = body.Replace('\r', ' ').Replace('\n', ' ').Trim();
+        string metaDescription = plainTextBody.Length > 200 ? plainTextBody.Substring(0, 200).Trim() : plainTextBody;
+        string slug = Helpers.SlugHelper.GenerateSlug(extractedTitle);
+        return (extractedTitle, slug, finalBodyHtml, metaDescription);
     }
 
 
@@ -462,35 +253,26 @@ public class AiBlogService
             return (string.Empty, string.Empty);
         }
 
-        var separators = new[] { "\r\n\r\n", "\n\n", "\r\r" };
-        int paragraphEnd = -1;
-        int separatorLength = 0;
-        foreach (var sep in separators)
-        {
-            int idx = rawFullText.IndexOf(sep, cursor, StringComparison.Ordinal);
-            if (idx >= 0 && (paragraphEnd == -1 || idx < paragraphEnd))
-            {
-                paragraphEnd = idx;
-                separatorLength = sep.Length;
-            }
-        }
+        int lineEnd = rawFullText.IndexOfAny(new[] { '\r', '\n' }, cursor);
+
         string title;
         string body;
 
-        if (paragraphEnd == -1)
+        if (lineEnd == -1)
         {
             title = rawFullText.Substring(cursor).Trim();
             body = string.Empty;
         }
         else
         {
-            title = rawFullText.Substring(cursor, paragraphEnd - cursor).Trim();
-            int bodyStart = paragraphEnd + separatorLength;
-            body = rawFullText.Substring(bodyStart);
-            while (body.Length > 0 && (body[0] == '\r' || body[0] == '\n'))
+            title = rawFullText.Substring(cursor, lineEnd - cursor).Trim();
+            int bodyStart = lineEnd;
+            while (bodyStart < rawFullText.Length && (rawFullText[bodyStart] == '\r' || rawFullText[bodyStart] == '\n'))
             {
-                body = body.Substring(1);
+                bodyStart++;
+
             }
+            body = rawFullText.Substring(bodyStart);
         }
         return (title, body);
     }
