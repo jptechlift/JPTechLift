@@ -161,52 +161,18 @@ public class AiBlogService
             return ("Tiêu đề Placeholder từ tài liệu", Helpers.SlugHelper.GenerateSlug("Tiêu đề Placeholder từ tài liệu"), "Đây là nội dung placeholder từ tài liệu được tải lên.", "Meta description placeholder từ tài liệu.");
         }
 
-        // Bước 1: Trích xuất Toàn bộ văn bản gốc (thô) từ file PDF/DOCX
-        var (_, documentText) = await ExtractTitleAndTextFromFile(file);
+        // Bước 1: Trích xuất tiêu đề và toàn bộ văn bản gốc (thô) từ file PDF/DOCX
+        var (finalTitleFromDocument, rawDocumentContentExcludingTitle) = await ExtractTitleAndTextFromFile(file);
 
-        if (string.IsNullOrWhiteSpace(documentText))
+        if (string.IsNullOrWhiteSpace(finalTitleFromDocument) && string.IsNullOrWhiteSpace(rawDocumentContentExcludingTitle))
         {
             _logger.LogWarning("Extracted text from document was empty.");
             throw new InvalidOperationException("Không thể trích xuất văn bản từ tài liệu hoặc tài liệu trống.");
         }
 
-        string finalTitleFromDocument = "Tiêu đề tài liệu không xác định"; // Tiêu đề lấy từ dòng đầu tiên của tài liệu
-        string rawDocumentContentExcludingTitle = string.Empty; // Phần còn lại của tài liệu sau khi lấy tiêu đề
-
-        // Phân tích documentText dòng theo dòng để tìm dòng không rỗng đầu tiên
-        var rawLines = documentText.Split(new[] { '\r', '\n' }, StringSplitOptions.None);
-
-        int firstNonEmptyLineIndex = -1;
-        for (int i = 0; i < rawLines.Length; i++)
+        if (string.IsNullOrWhiteSpace(finalTitleFromDocument))
         {
-            if (!string.IsNullOrWhiteSpace(rawLines[i]))
-            {
-                firstNonEmptyLineIndex = i;
-                break;
-            }
-        }
-
-        if (firstNonEmptyLineIndex != -1)
-        {
-            // Lấy dòng không rỗng đầu tiên làm tiêu đề, chỉ trim khoảng trắng ở đầu/cuối
-            finalTitleFromDocument = rawLines[firstNonEmptyLineIndex].Trim();
-
-            // Lấy phần còn lại của documentText để làm nội dung body, giữ nguyên cấu trúc dòng gốc
-            StringBuilder bodyContentRawBuilder = new StringBuilder();
-            for (int i = 0; i < rawLines.Length; i++)
-            {
-                if (i != firstNonEmptyLineIndex) // Bỏ qua dòng đã được dùng làm tiêu đề gốc
-                {
-                    bodyContentRawBuilder.AppendLine(rawLines[i]);
-                }
-            }
-            rawDocumentContentExcludingTitle = bodyContentRawBuilder.ToString().Trim(); // Trim toàn bộ phần body sau khi ghép
-        }
-        else
-        {
-            // Trường hợp tài liệu chỉ chứa khoảng trắng hoặc rỗng
             finalTitleFromDocument = "Tài liệu trống hoặc không có tiêu đề rõ ràng.";
-            rawDocumentContentExcludingTitle = documentText.Trim(); // Nếu không tìm thấy tiêu đề, toàn bộ là nội dung
         }
 
         // --- XÂY DỰNG PROMPT CHO AI ĐỂ TẠO CẢ TIÊU ĐỀ, NỘI DUNG CÓ CẤU TRÚC VÀ META DESCRIPTION ---
@@ -438,12 +404,6 @@ public class AiBlogService
                 finalMetaDescription = finalTitle + ": " + finalMetaDescription;
             }
         }
-        if (finalMetaDescription.Length > 160)
-        {
-            finalMetaDescription = finalMetaDescription.Substring(0, 157).Trim() + "...";
-        }
-
-
         return (finalTitle, slug, finalBodyHtml, finalMetaDescription);
     }
 
@@ -462,9 +422,7 @@ public class AiBlogService
         memoryStream.Position = 0; // Reset stream position
 
         string fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        string fullText = string.Empty;
-        string titleGuess = "Tiêu đề tài liệu không xác định (tạm thời)"; // Giá trị này không còn được dùng làm finalTitle
-
+        string rawFullText = string.Empty;
         switch (fileExtension)
         {
             case ".pdf":
@@ -477,8 +435,8 @@ public class AiBlogService
                         {
                             textBuilder.AppendLine(page.Text);
                         }
-                        // RẤT QUAN TRỌNG: KHÔNG TRIM TOÀN BỘ CHUỖI ở đây để giữ nguyên tất cả các dòng gốc và khoảng trắng
-                        fullText = textBuilder.ToString();
+                        // KHÔNG TRIM để giữ nguyên cấu trúc dòng và khoảng trắng
+                        rawFullText = textBuilder.ToString();
                     }
                 }
                 catch (Exception ex)
@@ -493,8 +451,8 @@ public class AiBlogService
                 {
                     using (var doc = DocX.Load(memoryStream))
                     {
-                        // RẤT QUAN TRỌNG: Lấy toàn bộ văn bản thô, KHÔNG TRIM
-                        fullText = doc.Text;
+                        // Lấy toàn bộ văn bản thô, KHÔNG TRIM
+                        rawFullText = doc.Text;
                     }
                 }
                 catch (Exception ex)
@@ -507,8 +465,46 @@ public class AiBlogService
             default:
                 throw new InvalidOperationException("Unsupported file type for text extraction.");
         }
-        // Trả về fullText thô nhất có thể. titleGuess chỉ là placeholder.
-        return (titleGuess, fullText);
+        if (string.IsNullOrWhiteSpace(rawFullText))
+        {
+            return (string.Empty, string.Empty);
+        }
+
+        // Xác định dòng không rỗng đầu tiên làm tiêu đề và giữ nguyên phần còn lại của tài liệu
+        int cursor = 0;
+        // Bỏ qua các ký tự xuống dòng ở đầu file
+        while (cursor < rawFullText.Length && (rawFullText[cursor] == '\r' || rawFullText[cursor] == '\n'))
+        {
+            cursor++;
+        }
+
+        if (cursor >= rawFullText.Length)
+        {
+            return (string.Empty, string.Empty);
+        }
+
+        int titleEnd = rawFullText.IndexOfAny(new[] { '\r', '\n' }, cursor);
+        string title;
+        string body;
+
+        if (titleEnd == -1)
+        {
+            title = rawFullText.Substring(cursor).Trim();
+            body = string.Empty;
+        }
+        else
+        {
+            title = rawFullText.Substring(cursor, titleEnd - cursor).Trim();
+
+            int newlineLength = 1;
+            if (rawFullText[titleEnd] == '\r' && titleEnd + 1 < rawFullText.Length && rawFullText[titleEnd + 1] == '\n')
+            {
+                newlineLength = 2;
+            }
+
+            body = rawFullText.Substring(titleEnd + newlineLength);
+        }
+        return (title, body);
     }
 
 
