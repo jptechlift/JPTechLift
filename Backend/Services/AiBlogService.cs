@@ -216,7 +216,6 @@ public class AiBlogService
         promptBuilder.AppendLine("Sử dụng nội dung được cung cấp dưới đây làm nguồn thông tin chính để triển khai bài viết. KHÔNG thêm thông tin nào nằm ngoài nội dung được cung cấp, trừ khi đó là các yếu tố cấu trúc blog chung như lời mở đầu, kết luận, lời kêu gọi hành động hoặc câu chuyển tiếp.");
         promptBuilder.AppendLine("Bài viết phải có cấu trúc rõ ràng, dễ đọc, sử dụng các thẻ HTML (`<p>`, `<h2>`, `<h3>`, `<ul>`, `<li>`) một cách hợp lý để định dạng.");
         promptBuilder.AppendLine("Văn phong phải chuyên nghiệp, tin cậy, và hấp dẫn.");
-        promptBuilder.AppendLine("Giữ độ dài tiêu đề từ 50-60 ký tự, và meta description từ 150-160 ký tự.");
 
         if (!string.IsNullOrWhiteSpace(finalTitleFromDocument) && finalTitleFromDocument != "Tài liệu trống hoặc không có tiêu đề rõ ràng.")
         {
@@ -229,9 +228,8 @@ public class AiBlogService
 
 
         promptBuilder.AppendLine("\nCấu trúc bài viết cần bao gồm:");
-        promptBuilder.AppendLine("  -   **Mở đầu (`<h2>`):** Giới thiệu chủ đề dựa trên thông tin được cung cấp trong tài liệu. Tạo sự hấp dẫn và nêu rõ mục tiêu của bài viết.");
-        promptBuilder.AppendLine("  -   **Phân tích các ý chính (`<h2>`):** Phát triển các nội dung quan trọng từ tài liệu thành các phần rõ ràng, mỗi phần có thể dùng `<h3>` làm tiêu đề phụ. Cung cấp thông tin chuyên sâu và đáng tin cậy DỰA TRÊN TÀI LIỆU.");
-        promptBuilder.AppendLine("  -   **Giải quyết vấn đề hoặc Lợi ích liên quan (`<h2>`):** Liên hệ nội dung tài liệu với các mối quan tâm, câu hỏi, hoặc lợi ích mà người đọc có thể nhận được (nếu phù hợp với ngữ cảnh của tài liệu).");
+        promptBuilder.AppendLine("  -   **Mở đầu (`<h2>`):** Lấy dòng đầu tiên của file đã được đọc làm mở đầu.");
+        promptBuilder.AppendLine("  -   **Phân tích các ý chính (`<h2>`):** Nội dung chính được lấy từ tài liệu thành các phần rõ ràng, mỗi phần có thể dùng `<h3>` làm tiêu đề phụ DỰA TRÊN TÀI LIỆU.");
         promptBuilder.AppendLine("  -   **Kết luận (`<h2>`):** Tóm tắt các điểm chính và đưa ra cái nhìn tổng quan hoặc dự đoán dựa trên tài liệu.");
         promptBuilder.AppendLine("  -   **Lời kêu gọi hành động (`<h2>`):** Khuyến khích độc giả tìm hiểu thêm, liên hệ tư vấn hoặc khám phá các dịch vụ liên quan của JP TechLift (nếu phù hợp với nội dung tài liệu).");
 
@@ -240,9 +238,9 @@ public class AiBlogService
 
         promptBuilder.AppendLine("\nYÊU CẦU ĐẦU RA: Vui lòng trả lời bằng một chuỗi JSON hợp lệ và CHỈ JSON mà thôi, không có giải thích hay ký tự ``` nào. Cấu trúc JSON phải như sau:");
         promptBuilder.AppendLine("{");
-        promptBuilder.AppendLine("  \"title\": \"Một tiêu đề cuối cùng, hấp dẫn, chuẩn SEO (khoảng 50-60 ký tự) cho bài viết dựa trên tài liệu\",");
+        // promptBuilder.AppendLine("  \"title\": \"Tiêu đề là dòng đầu tiên của dữ liệu được đọc từ file\",");
         promptBuilder.AppendLine("  \"body\": \"Nội dung đầy đủ của bài viết ở đây, được định dạng bằng các thẻ HTML như <p>, <h2>, <ul>, <li> và được phát triển từ nội dung tài liệu.\",");
-        promptBuilder.AppendLine("  \"metaDescription\": \"Một mô tả ngắn gọn, hấp dẫn, chứa từ khóa chính và TUÂN THỦ NGHIÊM NGẶT độ dài 150-160 ký tự cho mục đích SEO.\"");
+        promptBuilder.AppendLine("  \"metaDescription\": \"Một mô tả ngắn gọn, hấp dẫn, chứa từ khóa chính và TUÂN THỦ NGHIÊM NGẶT độ dài 160-200 ký tự cho mục đích SEO.\"");
         promptBuilder.AppendLine("}");
 
         var model = "gemini-1.5-flash-latest";
