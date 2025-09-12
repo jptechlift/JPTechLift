@@ -177,36 +177,20 @@ public class AiBlogService
 
         // --- XÂY DỰNG PROMPT CHO AI ĐỂ TẠO CẢ TIÊU ĐỀ, NỘI DUNG CÓ CẤU TRÚC VÀ META DESCRIPTION ---
         var promptBuilder = new StringBuilder();
-        promptBuilder.AppendLine("Bạn là một chuyên gia content marketing giàu kinh nghiệm của công ty thang máy JP TechLift, người có khả năng viết các bài blog chuyên nghiệp, hấp dẫn và tối ưu hóa SEO vượt trội.");
-        promptBuilder.AppendLine("Mục tiêu là tạo ra một bài blog chất lượng cao, cung cấp giá trị cho người đọc, khuyến khích tương tác và tăng cường thứ hạng trên các công cụ tìm kiếm.");
-        promptBuilder.AppendLine("Sử dụng nội dung được cung cấp dưới đây làm nguồn thông tin chính để triển khai bài viết. KHÔNG thêm thông tin nào nằm ngoài nội dung được cung cấp, trừ khi đó là các yếu tố cấu trúc blog chung như lời mở đầu, kết luận, lời kêu gọi hành động hoặc câu chuyển tiếp.");
-        promptBuilder.AppendLine("Bài viết phải có cấu trúc rõ ràng, dễ đọc, sử dụng các thẻ HTML (`<p>`, `<h2>`, `<h3>`, `<ul>`, `<li>`) một cách hợp lý để định dạng.");
-        promptBuilder.AppendLine("Văn phong phải chuyên nghiệp, tin cậy, và hấp dẫn.");
 
-        if (!string.IsNullOrWhiteSpace(finalTitleFromDocument) && finalTitleFromDocument != "Tài liệu trống hoặc không có tiêu đề rõ ràng.")
+        promptBuilder.AppendLine("Bạn là công cụ chuyển đổi văn bản sang HTML.");
+        promptBuilder.AppendLine("Giữ nguyên toàn bộ nội dung gốc, chỉ thêm các thẻ HTML cơ bản để phản ánh chuẩn xác cấu trúc tài liệu so với bản gốc.");
+        promptBuilder.AppendLine("Không được thêm, bớt hay sửa bất kỳ từ ngữ nào ngoài việc bổ sung thẻ HTML.");
+        if (!string.IsNullOrWhiteSpace(finalTitleFromDocument))
         {
-            promptBuilder.AppendLine($"\nChủ đề chính ban đầu (từ dòng đầu tiên của tài liệu): \"{finalTitleFromDocument}\"");
+            promptBuilder.AppendLine($"Tiêu đề của bài viết: \"{finalTitleFromDocument}\". Tiêu đề này không nằm trong văn bản bên dưới, hãy đặt nó trong thẻ <h1> ở đầu kết quả.");
         }
-        else
-        {
-            promptBuilder.AppendLine("\nChủ đề bài viết sẽ được AI tự xác định từ nội dung tài liệu.");
-        }
-
-
-        promptBuilder.AppendLine("\nCấu trúc bài viết cần bao gồm:");
-        promptBuilder.AppendLine("  -   **Mở đầu (`<h2>`):** Lấy dòng đầu tiên của file đã được đọc làm mở đầu.");
-        promptBuilder.AppendLine("  -   **Phân tích các ý chính (`<h2>`):** Nội dung chính được lấy từ tài liệu thành các phần rõ ràng, mỗi phần có thể dùng `<h3>` làm tiêu đề phụ DỰA TRÊN TÀI LIỆU.");
-        promptBuilder.AppendLine("  -   **Kết luận (`<h2>`):** Tóm tắt các điểm chính và đưa ra cái nhìn tổng quan hoặc dự đoán dựa trên tài liệu.");
-        promptBuilder.AppendLine("  -   **Lời kêu gọi hành động (`<h2>`):** Khuyến khích độc giả tìm hiểu thêm, liên hệ tư vấn hoặc khám phá các dịch vụ liên quan của JP TechLift (nếu phù hợp với nội dung tài liệu).");
-
-        promptBuilder.AppendLine("\nNỘI DUNG TỪ TÀI LIỆU ĐỂ BẠN PHÂN TÍCH VÀ PHÁT TRIỂN (Sử dụng đây làm nguồn thông tin chi tiết):");
-        promptBuilder.AppendLine(rawDocumentContentExcludingTitle); // Gửi phần còn lại của tài liệu cho AI
-
-        promptBuilder.AppendLine("\nYÊU CẦU ĐẦU RA: Vui lòng trả lời bằng một chuỗi JSON hợp lệ và CHỈ JSON mà thôi, không có giải thích hay ký tự ``` nào. Cấu trúc JSON phải như sau:");
+        promptBuilder.AppendLine("Nội dung văn bản:");
+        promptBuilder.AppendLine(rawDocumentContentExcludingTitle);
+        promptBuilder.AppendLine("Trả về duy nhất JSON hợp lệ với cấu trúc sau:");
         promptBuilder.AppendLine("{");
-        // promptBuilder.AppendLine("  \"title\": \"Tiêu đề là dòng đầu tiên của dữ liệu được đọc từ file\",");
-        promptBuilder.AppendLine("  \"body\": \"Nội dung đầy đủ của bài viết ở đây, được định dạng bằng các thẻ HTML như <p>, <h2>, <ul>, <li> và được phát triển từ nội dung tài liệu.\",");
-        promptBuilder.AppendLine("  \"metaDescription\": \"Một mô tả ngắn gọn, hấp dẫn, chứa từ khóa chính và TUÂN THỦ NGHIÊM NGẶT độ dài 160-200 ký tự cho mục đích SEO.\"");
+        promptBuilder.AppendLine("  \"body\": \"HTML chuyển đổi từ nội dung, bao gồm cả thẻ <h1> cho tiêu đề ở đầu.\",");
+        promptBuilder.AppendLine("  \"metaDescription\": \"Tóm tắt 160-200 ký tự dựa trên nội dung, không thêm thông tin ngoài.\"");
         promptBuilder.AppendLine("}");
 
         var model = "gemini-1.5-flash-latest";
@@ -220,7 +204,6 @@ public class AiBlogService
             }
         };
 
-        string aiGeneratedTitle = string.Empty;
         string aiGeneratedBodyHtml = string.Empty;
         string aiGeneratedMetaDescription = string.Empty;
 
@@ -248,10 +231,6 @@ public class AiBlogService
                         var cleanJsonText = StripCodeFences(generatedText);
                         var jsonDoc = JsonDocument.Parse(cleanJsonText);
 
-                        if (jsonDoc.RootElement.TryGetProperty("title", out JsonElement titleElement) && titleElement.ValueKind == JsonValueKind.String)
-                        {
-                            aiGeneratedTitle = titleElement.GetString() ?? string.Empty;
-                        }
                         if (jsonDoc.RootElement.TryGetProperty("body", out JsonElement bodyElement) && bodyElement.ValueKind == JsonValueKind.String)
                         {
                             aiGeneratedBodyHtml = bodyElement.GetString() ?? string.Empty;
@@ -278,7 +257,7 @@ public class AiBlogService
         }
 
         // --- FINALIZATION AND FALLBACK LOGIC ---
-        string finalTitle = string.IsNullOrWhiteSpace(aiGeneratedTitle) ? finalTitleFromDocument : aiGeneratedTitle;
+        string finalTitle = finalTitleFromDocument;
         string finalBodyHtml = string.IsNullOrWhiteSpace(aiGeneratedBodyHtml)
                                ? Markdig.Markdown.ToHtml($"# {finalTitleFromDocument}\n\n{rawDocumentContentExcludingTitle}") // Fallback to old behavior (Markdown to HTML) if AI body is empty
                                : aiGeneratedBodyHtml;
@@ -483,26 +462,35 @@ public class AiBlogService
             return (string.Empty, string.Empty);
         }
 
-        int titleEnd = rawFullText.IndexOfAny(new[] { '\r', '\n' }, cursor);
+        var separators = new[] { "\r\n\r\n", "\n\n", "\r\r" };
+        int paragraphEnd = -1;
+        int separatorLength = 0;
+        foreach (var sep in separators)
+        {
+            int idx = rawFullText.IndexOf(sep, cursor, StringComparison.Ordinal);
+            if (idx >= 0 && (paragraphEnd == -1 || idx < paragraphEnd))
+            {
+                paragraphEnd = idx;
+                separatorLength = sep.Length;
+            }
+        }
         string title;
         string body;
 
-        if (titleEnd == -1)
+        if (paragraphEnd == -1)
         {
             title = rawFullText.Substring(cursor).Trim();
             body = string.Empty;
         }
         else
         {
-            title = rawFullText.Substring(cursor, titleEnd - cursor).Trim();
-
-            int newlineLength = 1;
-            if (rawFullText[titleEnd] == '\r' && titleEnd + 1 < rawFullText.Length && rawFullText[titleEnd + 1] == '\n')
+            title = rawFullText.Substring(cursor, paragraphEnd - cursor).Trim();
+            int bodyStart = paragraphEnd + separatorLength;
+            body = rawFullText.Substring(bodyStart);
+            while (body.Length > 0 && (body[0] == '\r' || body[0] == '\n'))
             {
-                newlineLength = 2;
+                body = body.Substring(1);
             }
-
-            body = rawFullText.Substring(titleEnd + newlineLength);
         }
         return (title, body);
     }
