@@ -226,78 +226,153 @@ private string ExtractHtmlFromDocx(Stream docxStream)
 /// <summary>
 /// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
 /// </summary>
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// Phiên bản nâng cấp để nhận diện heading và list thông minh hơn.
+/// </summary>
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// PHIÊN BẢN NÂNG CẤP TOÀN DIỆN để tạo ra HTML có cấu trúc (h2, h3, ul, strong).
+/// </summary>
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// PHIÊN BẢN HOÀN CHỈNH: Có khả năng loại bỏ các ký tự điều khiển vô hình.
+/// </summary>
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// PHIÊN BẢN CUỐI CÙNG: Sử dụng quy tắc nhận diện heading dựa trên bookmark (thẻ <a> rỗng).
+/// </summary>
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// PHIÊN BẢN CUỐI CÙNG (ĐÃ SỬA LỖI CS1061): Sử dụng cú pháp chính xác của HtmlAgilityPack.
+/// </summary>
 private (string Title, string ContentHtml) ProcessDocxHtml(string rawHtml)
 {
     var doc = new HtmlDocument();
     doc.LoadHtml(rawHtml);
 
-    // 1. Tách tiêu đề
-    var titleNode = doc.DocumentNode.SelectSingleNode("//h1|//h2|//p[string-length(normalize-space(.)) > 0]");
-    string title = titleNode != null ? WebUtility.HtmlDecode(titleNode.InnerText.Trim()) : "Tiêu đề không xác định";
+    // 1. Tách tiêu đề chính
+    var titleNode = doc.DocumentNode.SelectSingleNode("//h1|//p[string-length(normalize-space(.)) > 0]");
+    string title = titleNode != null ? CleanAndDecodeText(titleNode.InnerText) : "Tiêu đề không xác định";
     titleNode?.Remove();
 
-    // 2. Lấy body và dọn dẹp
+    // 2. Lấy body và dọn dẹp thuộc tính không cần thiết
     var bodyNode = doc.DocumentNode.SelectSingleNode("//body");
     if (bodyNode == null) return (title, string.Empty);
-    
-    // Loại bỏ tất cả các thuộc tính (class, style,...) khỏi mọi thẻ, chỉ giữ lại cấu trúc
-    foreach (var node in bodyNode.SelectNodes("//*"))
+
+    foreach (var node in bodyNode.SelectNodes("//*[@style or @class or @dir or @lang]"))
     {
-        node.Attributes.RemoveAll();
+        node.Attributes.Remove("style");
+        node.Attributes.Remove("class");
+        node.Attributes.Remove("dir");
+        node.Attributes.Remove("lang");
     }
-    
+
     var newContent = new StringBuilder();
     var nodes = bodyNode.SelectNodes("./*")?.ToList() ?? new List<HtmlNode>();
 
     for (int i = 0; i < nodes.Count; i++)
     {
         var node = nodes[i];
-        if (node.Name != "p") // Chỉ xử lý các thẻ <p> ban đầu
+        if (node.Name != "p")
         {
-            // Nếu là thẻ khác (ví dụ <h2> đã có sẵn), giữ nguyên nó
             newContent.AppendLine(node.OuterHtml);
             continue;
         }
 
-        string innerText = WebUtility.HtmlDecode(node.InnerText).Trim();
-        if (string.IsNullOrWhiteSpace(innerText)) continue;
+        string cleanInnerText = CleanAndDecodeText(node.InnerText);
+        if (string.IsNullOrWhiteSpace(cleanInnerText)) continue;
 
-        // Quy tắc nhận diện Heading từ <p> in đậm
-        var strongNode = node.SelectSingleNode(".//strong");
-        if (strongNode != null && WebUtility.HtmlDecode(strongNode.InnerText).Trim().Length > innerText.Length * 0.8)
+        // QUY TẮC 1: NHẬN DIỆN HEADING (H2) DỰA VÀO THẺ <a> RỖNG (BOOKMARK)
+        var anchorNode = node.SelectSingleNode("./a");
+
+        // DÒNG CODE ĐÃ ĐƯỢC SỬA LỖI TẠI ĐÂY
+        if (anchorNode != null && string.IsNullOrWhiteSpace(anchorNode.InnerText) && anchorNode.Attributes["href"] == null)
         {
-            newContent.AppendLine($"<h2>{innerText}</h2>");
+            newContent.AppendLine($"<h2>{WebUtility.HtmlEncode(cleanInnerText)}</h2>");
             continue;
         }
 
-        // Quy tắc nhận diện Danh sách có thứ tự
-        if (IsListItem(node))
+        // QUY TẮC 2: NHẬN DIỆN DANH SÁCH (UL/OL)
+        if (IsListItem(node, cleanInnerText, out string listType, out string cleanHtml))
         {
-            newContent.AppendLine("<ol>");
-            newContent.AppendLine($"  <li>{node.InnerHtml.Trim()}</li>");
+            newContent.AppendLine($"<{listType}>");
+            newContent.AppendLine($"  <li>{cleanHtml}</li>");
 
-            while (i + 1 < nodes.Count && IsListItem(nodes[i + 1]))
+            // Gom các mục danh sách liền kề
+            while (i + 1 < nodes.Count)
             {
-                i++; // Bỏ qua node tiếp theo trong vòng lặp chính
-                newContent.AppendLine($"  <li>{nodes[i].InnerHtml.Trim()}</li>");
+                var nextNode = nodes[i + 1];
+                string nextCleanInnerText = CleanAndDecodeText(nextNode.InnerText);
+                if (IsListItem(nextNode, nextCleanInnerText, out string nextListType, out string nextCleanHtml) && nextListType == listType)
+                {
+                    i++;
+                    newContent.AppendLine($"  <li>{nextCleanHtml}</li>");
+                }
+                else
+                {
+                    break;
+                }
             }
-            newContent.AppendLine("</ol>");
+            newContent.AppendLine($"</{listType}>");
             continue;
         }
 
-        // Mặc định là đoạn văn bản bình thường
+        // MẶC ĐỊNH: Là đoạn văn bản <p> bình thường
+        // Loại bỏ thẻ <a> rỗng không cần thiết
+        if (anchorNode != null && string.IsNullOrWhiteSpace(anchorNode.InnerText) && anchorNode.Attributes["href"] == null)
+        {
+             anchorNode.Remove();
+        }
         newContent.AppendLine(node.OuterHtml);
     }
-    
+
     return (title, newContent.ToString());
 }
 
-// Hàm phụ để kiểm tra một node <p> có phải là một mục trong danh sách không
-private bool IsListItem(HtmlNode node)
+// Các hàm phụ trợ CleanAndDecodeText và IsListItem giữ nguyên như phiên bản trước.
+// Bạn không cần thay đổi chúng.
+/// <summary>
+/// Hàm phụ quan trọng: Giải mã HTML entities và loại bỏ tất cả các ký tự điều khiển Unicode.
+/// </summary>
+private string CleanAndDecodeText(string inputText)
 {
+    if (string.IsNullOrEmpty(inputText)) return "";
+    // 1. Giải mã các ký tự HTML như &amp;
+    string decodedText = WebUtility.HtmlDecode(inputText);
+    // 2. Sử dụng Regex để loại bỏ tất cả các ký tự trong danh mục "Control" (C) của Unicode
+    return Regex.Replace(decodedText, @"\p{C}", "").Trim();
+}
+
+/// <summary>
+/// Hàm phụ kiểm tra node <p> có phải là một mục trong danh sách không.
+/// Sử dụng văn bản đã được làm sạch để kiểm tra.
+/// </summary>
+private bool IsListItem(HtmlNode node, string cleanInnerText, out string listType, out string cleanedInnerHtml)
+{
+    listType = null;
+    cleanedInnerHtml = node.InnerHtml; 
+
     if (node.Name != "p") return false;
-    string innerText = WebUtility.HtmlDecode(node.InnerText).Trim();
-    return Regex.IsMatch(innerText, @"^\s*(\d+|[a-zA-Z]|[ivxlcdm]+)\.\s+", RegexOptions.IgnoreCase);
+
+    var ulMatch = Regex.Match(cleanInnerText, @"^[●○\-*]\s*");
+    if (ulMatch.Success)
+    {
+        listType = "ul";
+        cleanedInnerHtml = Regex.Replace(node.InnerHtml, @"^\s*[●○\-*]\s*", "").Trim();
+        return true;
+    }
+    
+    // Xử lý cho danh sách con như "○ Máy tính: FPT"
+    var olSubMatch = Regex.Match(cleanInnerText, @"^[○]\s*");
+    if (olSubMatch.Success)
+    {
+        listType = "ul"; // Coi danh sách con cũng là <ul>
+        cleanedInnerHtml = Regex.Replace(node.InnerHtml, @"^\s*[○]\s*", "").Trim();
+        return true;
+    }
+
+    return false;
 }
 
 /// <summary>

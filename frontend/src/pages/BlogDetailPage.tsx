@@ -181,7 +181,7 @@ const DetailBlogPage = () => {
             <h3 className="text-2xl font-bold text-primary mb-6 font-inter">
               Bài viết khác
             </h3>
-            <div className="p-8 rounded-lg shadow-lg">
+            <div className="bg-slate-50 p-8 rounded-lg shadow-xl">
               <Link
                 to={`/blog/${recommended.slug}`}
                 className="block text-accent hover:text-primary text-xl font-inter font-semibold"
