@@ -3,10 +3,10 @@ using Backend.Dtos.Blog;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System; // Cần cho InvalidOperationException, StringComparison
+using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging; // <-- THÊM: Import ILogger
-using Microsoft.AspNetCore.Http; // <-- THÊM: Cho IFormFile
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Backend.Controllers;
 
@@ -17,22 +17,21 @@ namespace Backend.Controllers;
 public class BlogController : ControllerBase
 {
     private readonly BlogService _blogService;
-    private readonly AiBlogService _aiBlogService; // <-- THÊM: Inject AiBlogService
-    private readonly ILogger<BlogController> _logger; // <-- THÊM: Logger riêng cho controller
+    private readonly AiBlogService _aiBlogService;
+    private readonly ILogger<BlogController> _logger;
 
     public BlogController(
         BlogService blogService,
-        AiBlogService aiBlogService, // <-- Cập nhật constructor để inject AiBlogService
-        ILogger<BlogController> logger) // <-- Cập nhật constructor để inject ILogger
+        AiBlogService aiBlogService,
+        ILogger<BlogController> logger)
     {
         _blogService = blogService;
-        _aiBlogService = aiBlogService; // <-- Khởi tạo
-        _logger = logger; // <-- Khởi tạo logger
+        _aiBlogService = aiBlogService;
+        _logger = logger;
     }
 
-    /// <summary>
-    /// Retrieves all published blogs.
-    /// </summary>
+    // --- CÁC PHƯƠNG THỨC KHÁC ĐƯỢC GIỮ NGUYÊN ---
+
     [HttpGet("/api/blogs")]
     public async Task<IActionResult> GetAll()
     {
@@ -40,9 +39,6 @@ public class BlogController : ControllerBase
         return Ok(blogs);
     }
 
-    /// <summary>
-    /// Retrieves a blog post by its slug.
-    /// </summary>
     [HttpGet("/api/blog/{slug}")]
     public async Task<IActionResult> GetBySlug(string slug)
     {
@@ -52,10 +48,6 @@ public class BlogController : ControllerBase
         return Ok(blog);
     }
 
-    /// <summary>
-    /// Retrieves a list of the most recent blog posts.
-    /// </summary>
-    /// <param name="count">Optional maximum number of posts to return.</param>
     [HttpGet("/api/blog/recent")]
     public async Task<IActionResult> GetRecent([FromQuery] int? count)
     {
@@ -63,30 +55,14 @@ public class BlogController : ControllerBase
         return Ok(blogs);
     }
 
-    /// <summary>
-    /// Generates a preview using AI based on the provided request.
-    /// </summary>
     [HttpPost("/api/blog/generate-preview")]
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-        // Thêm 'metaDescription' vào phần giải cấu trúc
         var (title, slug, content, metaDescription) = await _blogService.GeneratePreviewAsync(request);
-        return Ok(
-            new
-            {
-                title,
-                slug,
-                generatedContent = content,
-                previewUrl = $"/blogs/{slug}",
-                metaDescription // Bạn có thể thêm metaDescription vào phản hồi nếu frontend cần
-            }
-        );
+        return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}", metaDescription });
     }
 
-    /// <summary>
-    /// Publishes a new blog post.
-    /// </summary>
     [HttpPost("/api/blog/publish")]
     [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Publish([FromBody] BlogRequest request)
@@ -97,9 +73,6 @@ public class BlogController : ControllerBase
         return CreatedAtAction(nameof(Publish), new { id = blogDto.Id }, blogDto);
     }
 
-    /// <summary>
-    /// Updates an existing blog post.
-    /// </summary>
     [HttpPut("/api/blog/{id}")]
     [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Update(int id, [FromBody] BlogRequest request)
@@ -111,9 +84,6 @@ public class BlogController : ControllerBase
         return Ok(blog);
     }
 
-    /// <summary>
-    /// Deletes a blog post.
-    /// </summary>
     [HttpDelete("/api/blog/{id}")]
     [Authorize(Roles = Roles.Admin + "," + Roles.Author)]
     public async Task<IActionResult> Delete(int id)
@@ -122,52 +92,53 @@ public class BlogController : ControllerBase
         return NoContent();
     }
 
+
+    // === PHIÊN BẢN CUỐI CÙNG CỦA PHƯƠNG THỨC TẠO BLOG TỪ TÀI LIỆU ===
     /// <summary>
-    /// Generates a preview using AI based on the provided document file.
+    /// Generates a preview by extracting content directly from an uploaded document.
     /// </summary>
-    /// <param name="file">The PDF or DOCX file to process.</param>
-    [HttpPost("/api/blog/generate-from-document")] // <-- THÊM LẠI ENDPOINT NÀY
+    /// <param name="file">The uploaded document file (.docx, .pdf, .txt).</param>
+    [HttpPost("/api/blog/generate-from-document")]
     [Authorize] // Yêu cầu xác thực
-    [Consumes("multipart/form-data")] // Chỉ định kiểu dữ liệu đầu vào là form-data
-    public async Task<IActionResult> GenerateFromDocument([FromForm] IFormFile file) // Nhận IFormFile từ request
+    public async Task<IActionResult> GenerateFromDocument([FromForm] IFormFile file)
     {
+        // 1. Kiểm tra đầu vào cơ bản
         if (file == null || file.Length == 0)
         {
-            return BadRequest(new { error = "No file uploaded or file is empty." });
-        }
-
-        // Kiểm tra loại file
-        if (!file.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) &&
-            !file.ContentType.Equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document", StringComparison.OrdinalIgnoreCase))
-        {
-            return BadRequest(new { error = "Unsupported file type. Only PDF and DOCX are allowed." });
+            return BadRequest(new { message = "Không có file nào được tải lên hoặc file trống." });
         }
 
         try
         {
-            // Gửi file đến AiBlogService để xử lý
+            // 2. Gửi file trực tiếp đến AiBlogService để xử lý.
+            // Service sẽ tự kiểm tra định dạng file và thực hiện logic trích xuất.
             var (title, slug, content, metaDescription) = await _aiBlogService.GenerateFromDocumentAsync(file);
 
-            return Ok(
-                new
-                {
-                    title,
-                    slug,
-                    generatedContent = content, // Đổi tên cho frontend để dễ sử dụng
-                    previewUrl = $"/blogs/{slug}",
-                    metaDescription
-                }
-            );
+            // 3. Trả về kết quả thành công cho frontend
+            return Ok(new
+            {
+                title,
+                slug,
+                generatedContent = content, // Tên thuộc tính này phải khớp với frontend
+                metaDescription
+            });
         }
-        catch (InvalidOperationException ex)
+        // 4. Bắt các lỗi cụ thể từ service để trả về thông báo chính xác
+        catch (NotSupportedException ex) // Bắt lỗi khi định dạng file không được hỗ trợ
         {
-            _logger.LogWarning(ex, "Document generation failed due to invalid operation: {Message}", ex.Message);
-            return BadRequest(new { error = ex.Message });
+             _logger.LogWarning("Attempted to upload an unsupported file type. File: {FileName}, Message: {Message}", file.FileName, ex.Message);
+             return BadRequest(new { message = ex.Message }); // Lỗi 400
+        }
+        catch (InvalidOperationException ex) // Bắt lỗi khi file hỏng hoặc trống
+        {
+            _logger.LogWarning(ex, "Document processing failed for file {FileName}. Message: {Message}", file.FileName, ex.Message);
+            return BadRequest(new { message = ex.Message }); // Lỗi 400
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error occurred while processing the document.");
-            return StatusCode(500, new { error = "An unexpected error occurred while processing the document." });
+            _logger.LogError(ex, "An unexpected error occurred while processing file {FileName}.", file.FileName);
+            // Lỗi 500 cho các vấn đề không lường trước được ở server
+            return StatusCode(500, new { message = "Đã xảy ra lỗi hệ thống. Vui lòng thử lại." });
         }
     }
 }

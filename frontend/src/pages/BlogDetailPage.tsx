@@ -1,5 +1,3 @@
-// src/pages/DetailBlogPage.tsx
-
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import DOMPurify from "dompurify";
@@ -11,65 +9,36 @@ import {
   Facebook,
   Twitter,
   Linkedin,
-  Share2,
 } from "lucide-react";
-import { blog } from "../services/blog"; // Đảm bảo đường dẫn này đúng
+// === SỬA LỖI QUAN TRỌNG: Chỉ import BlogPost từ service ===
+import { blog, BlogPost } from "../services/blog"; 
 import NotFound from "./NotFound";
-// Không còn import styles từ SCSS module nữa
-// import styles from "../styles/pages/blog-detail/blog-detail.module.scss";
-import NavBar from "../components/Navbar/Navbar"; // Đảm bảo đường dẫn này đúng
-import Footer from "../components/Footer/DesktopFooter/DesktopFooter"; // Đảm bảo đường dẫn này đúng
+import NavBar from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
 
-// Định nghĩa interface BlogPost để TypeScript hiểu cấu trúc dữ liệu
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  content: string; // Nội dung HTML hoặc Markdown (đã được backend chuyển đổi thành HTML)
-  author: string;
-  createdDate: string; // ISO 8601 string, ví dụ: "2025-09-11T10:30:00Z"
-  viewCount: number;
-  imageUrl?: string; // URL của hình ảnh hero
-  tags?: string[]; // Mảng các tag
-  metaDescription?: string; // Meta description, có thể không hiển thị trực tiếp nhưng có trong dữ liệu
-}
-
-// Component con MetaItem đã được refactor với Tailwind CSS
-const MetaItem: React.FC<{
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}> = ({ icon, children }) => (
-  <span className="inline-flex items-center gap-1 text-gray-300 text-sm md:text-base">
-    {/* Sử dụng React.cloneElement để thêm class vào icon từ Lucide */}
-    {React.cloneElement(icon as React.ReactElement, {
-      size: 16,
-      className: "text-jp-blue-icon",
-    })}{" "}
-    {/* Sử dụng màu tùy chỉnh */}
-    {children}
-  </span>
-);
+// === SỬA LỖI QUAN TRỌNG: Xóa hoàn toàn interface BlogPost thừa ở đây ===
+// Giao diện (interface) cho BlogPost sẽ được lấy trực tiếp từ file service
+// để đảm bảo tính nhất quán và không còn xung đột.
 
 const DetailBlogPage = () => {
+  // Logic fetching data, state, memo...
   const { slug } = useParams<{ slug: string }>();
+  // State `post` sẽ sử dụng đúng interface BlogPost đã được import
   const [post, setPost] = useState<BlogPost | null>(null);
   const [recommended, setRecommended] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // GỢI Ý 3: Hiện đại hóa Data Fetching với async/await
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchPost = async () => {
       if (!slug) {
-        setError(true); // Nếu không có slug, coi như lỗi
+        setError(true);
         setLoading(false);
         return;
       }
-
       try {
         setLoading(true);
-        // Gọi service để lấy bài blog theo slug.
-        // Giả định `blog.get(slug)` trả về Promise<BlogPost>
         const data: BlogPost = await blog.get(slug);
         setPost(data);
       } catch (err) {
@@ -79,11 +48,11 @@ const DetailBlogPage = () => {
         setLoading(false);
       }
     };
-
     fetchPost();
   }, [slug]);
 
   useEffect(() => {
+    if (!post) return;
     const fetchRecommended = async () => {
       try {
         const recent = await blog.recent(5);
@@ -94,45 +63,30 @@ const DetailBlogPage = () => {
       }
     };
     fetchRecommended();
-  }, [slug]);
+  }, [post, slug]);
 
-  // Tính toán thời gian đọc (Reading Time)
   const readingTime = useMemo(() => {
     if (!post || !post.content) return 0;
-    // Strip HTML tags to get plain text for word count
     const text = post.content.replace(/<[^>]+>/g, " ");
     const words = text.trim().split(/\s+/).length;
-    return Math.max(1, Math.ceil(words / 200)); // 200 từ/phút là tốc độ đọc trung bình
+    return Math.max(1, Math.ceil(words / 200));
   }, [post]);
 
   if (error) return <NotFound />;
 
-  // GỢI Ý 1: Cải thiện UX khi loading bằng Skeleton Loader với Tailwind
   if (loading || !post) {
     return (
       <>
         <NavBar />
-        <div className="animate-pulse max-w-4xl mx-auto px-6 py-12">
-          {/* Skeleton cho tiêu đề */}
-          <div className="bg-gray-300 h-10 w-3/4 mb-6 rounded mx-auto"></div>
-          {/* Skeleton cho meta info */}
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-10">
-            <div className="bg-gray-300 h-5 w-24 rounded"></div>
-            <div className="bg-gray-300 h-5 w-32 rounded"></div>
-            <div className="bg-gray-300 h-5 w-28 rounded"></div>
-            <div className="bg-gray-300 h-5 w-24 rounded"></div>
-          </div>
-          {/* Skeleton cho hero image */}
-          <div className="bg-gray-200 h-64 md:h-80 w-full mb-12 rounded-lg shadow-md"></div>
-          {/* Skeleton cho nội dung */}
-          <div className="space-y-4">
-            <div className="bg-gray-200 h-4 w-full rounded"></div>
-            <div className="bg-gray-200 h-4 w-full rounded"></div>
-            <div className="bg-gray-200 h-4 w-5/6 rounded"></div>
-            <div className="bg-gray-200 h-4 w-full rounded"></div>
-            <div className="bg-gray-200 h-4 w-3/4 rounded"></div>
-            <div className="bg-gray-200 h-4 w-full rounded"></div>
-            <div className="bg-gray-200 h-4 w-full rounded"></div>
+        <div className="animate-pulse max-w-4xl mx-auto px-6 py-12 md:px-8 lg:px-12 lg:py-16">
+          <div className="bg-white rounded-lg shadow-lg p-8 md:p-12">
+            <div className="bg-gray-300 h-10 w-3/4 mb-4 rounded"></div>
+            <div className="bg-gray-300 h-8 w-1/2 mb-10 rounded"></div>
+            <div className="bg-gray-200 h-5 w-full mb-4 rounded"></div>
+            <div className="space-y-4">
+              <div className="bg-gray-200 h-4 w-full rounded"></div>
+              <div className="bg-gray-200 h-4 w-5/6 rounded"></div>
+            </div>
           </div>
         </div>
         <Footer />
@@ -140,142 +94,109 @@ const DetailBlogPage = () => {
     );
   }
 
-  // Sanitize nội dung HTML để ngăn chặn XSS attacks
   const sanitizedContent = post.content ? DOMPurify.sanitize(post.content) : "";
+  const formattedDate = new Date(post.createdDate).toLocaleDateString("vi-VN", { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const formattedTime = new Date(post.createdDate).toLocaleTimeString("vi-VN", { hour: '2-digit', minute: '2-digit' });
 
   return (
     <>
       <NavBar />
-      <article className="max-w-6xl mx-auto px-6 py-12 md:px-8 lg:px-12 lg:py-16">
-        <section className="relative mb-12 md:mb-16 rounded-lg overflow-hidden bg-gray-100 shadow-xl">
-          {post.imageUrl && (
-            <img
-              src={post.imageUrl}
-              alt={post.title}
-              className="w-full h-72 md:h-96 object-cover block"
-            />
-          )}
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 to-transparent text-white text-center">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 leading-tight">
+      <article className="bg-texture-bg bg-texture-pattern py-12 lg:py-10">
+        
+        <div className="max-w-4xl mx-auto md:pt-2 md:pl-12 md:pr-12">
+        
+          <header className="mb-8 md:mb-10 border-b border-gray-200 pb-8">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-primary font-inter mb-4 leading-tight">
               {post.title}
             </h1>
-            <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-              <MetaItem icon={<User />}>{post.author}</MetaItem>
-              <MetaItem icon={<Calendar />}>
-                {new Date(post.createdDate).toLocaleDateString("vi-VN")}
-              </MetaItem>
-              <MetaItem icon={<Clock />}>{readingTime} phút đọc</MetaItem>
-              <MetaItem icon={<Eye />}>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-black font-nunito border-l-4 border-accent pl-4">
+              <span>
+                Đóng góp bởi <strong className="font-semibold text-black-900">{post.author}</strong>
+              </span>
+              <span>
+                Cập nhật ngày {formattedDate}, lúc {formattedTime}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Eye size={14} />
                 {post.viewCount || 0} lượt xem
-              </MetaItem>{" "}
-              {/* Đảm bảo viewCount không bị null/undefined */}
+              </span>
             </div>
-          </div>
-        </section>
+          </header>
 
-        <div className="flex flex-col lg:flex-row lg:gap-8">
-          {/* Nội dung chính của bài blog */}
-          <div className="flex-grow max-w-full lg:max-w-3xl xl:max-w-4xl">
+          <main>
             {post.tags && post.tags.length > 0 && (
-              <div className="mb-10 flex flex-wrap gap-2">
+              <div className="mb-8 flex flex-wrap gap-2 font-nunito">
                 {post.tags.map((tag) => (
-                  <button
+                  <span
                     key={tag}
-                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors duration-200"
-                    type="button"
+                    className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium"
                   >
                     {tag}
-                  </button>
+                  </span>
                 ))}
               </div>
             )}
 
-            {/* Sử dụng lớp 'prose' của Tailwind Typography Plugin để tạo kiểu dáng cho nội dung HTML */}
             <div
-              className="prose prose-lg max-w-none text-gray-800 leading-relaxed font-serif" // Thêm font-serif cho nội dung dễ đọc
+              className="prose prose-lg max-w-none font-noto 
+                         prose-p:text-black 
+                         prose-li:text-black 
+                         prose-ul:text-black 
+                         prose-ol:text-black 
+                         prose-blockquote:text-black
+                         prose-strong:text-black"
               dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
 
-            <div className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-md mt-12 mb-10 border border-gray-100">
+            <div className="flex items-center gap-6 p-6 bg-gray-50 rounded-lg shadow-sm mt-16 mb-12 border border-gray-200">
               <img
                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
                   post.author
-                )}&background=jp-primary&color=fff`} // Sử dụng màu tùy chỉnh
+                )}&background=041e41&color=fff&font-size=0.5`}
                 alt={post.author}
-                className="w-20 h-20 rounded-full object-cover border-2 border-jp-blue-icon" // Sử dụng màu tùy chỉnh
+                className="w-20 h-20 rounded-full object-cover border-2 border-accent"
               />
               <div>
-                <div className="text-xl font-bold text-gray-900">
+                <div className="text-xl font-bold text-primary font-inter">
                   {post.author}
                 </div>
-                <div className="text-sm text-gray-600 leading-relaxed">
+                <div className="text-sm text-gray-600 leading-relaxed mt-1 font-nunito">
                   Thông tin tác giả đang được cập nhật.
                 </div>
               </div>
             </div>
 
             <div className="flex justify-center gap-4 mb-10">
-              <button
-                className="bg-gray-100 text-gray-600 border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:-translate-y-0.5"
-                aria-label="Chia sẻ Facebook"
-                type="button"
-              >
-                <Facebook size={18} />
-              </button>
-              <button
-                className="bg-gray-100 text-gray-600 border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:-translate-y-0.5"
-                aria-label="Chia sẻ Twitter"
-                type="button"
-              >
-                <Twitter size={18} />
-              </button>
-              <button
-                className="bg-gray-100 text-gray-600 border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:-translate-y-0.5"
-                aria-label="Chia sẻ Linkedin"
-                type="button"
-              >
-                <Linkedin size={18} />
-              </button>
-              <button
-                className="bg-gray-100 text-gray-600 border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:-translate-y-0.5"
-                aria-label="Chia sẻ"
-                type="button"
-              >
-                <Share2 size={18} />
-              </button>
+              {/* Nút chia sẻ */}
             </div>
 
-            <div className="text-center p-6 bg-gray-50 rounded-lg text-gray-500 italic mb-12 border border-gray-100">
+            <div className="text-center p-6 bg-gray-50 rounded-lg text-gray-500 italic mb-4 border border-gray-100 font-nunito">
               Tính năng bình luận sẽ sớm ra mắt.
             </div>
-          </div>
-
-          {/* Vùng sidebar tùy chọn cho các bài viết liên quan, quảng cáo, v.v. */}
-          <aside className="w-full lg:w-80 xl:w-96 p-6 bg-white rounded-lg shadow-md mt-8 lg:mt-0 border border-gray-100 h-fit">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 border-b pb-3 border-gray-200">
-              Bài viết đề xuất
-            </h3>
-            {recommended ? (
-              <div>
-                <Link
-                  to={`/blog/${recommended.slug}`}
-                  className="block text-blue-600 hover:text-blue-800 hover:underline text-lg font-medium"
-                >
-                  {recommended.title}
-                </Link>
-                {recommended.metaDescription && (
-                  <p className="text-gray-500 text-sm mt-1">
-                    {recommended.metaDescription}
-                  </p>
-                )}
-              </div>
-            ) : (
-              <p className="text-gray-500 text-sm">
-                Không có bài viết đề xuất.
-              </p>
-            )}
-          </aside>
+          </main>
         </div>
+
+        {recommended && (
+          <aside className="max-w-4xl mx-auto mt-12 px-6 md:px-0">
+            <h3 className="text-2xl font-bold text-primary mb-6 font-inter">
+              Bài viết khác
+            </h3>
+            <div className="p-8 rounded-lg shadow-lg">
+              <Link
+                to={`/blog/${recommended.slug}`}
+                className="block text-accent hover:text-primary text-xl font-inter font-semibold"
+              >
+                {recommended.title}
+              </Link>
+              {recommended.metaDescription && (
+                <p className="text-gray-500 text-base mt-3 font-nunito">
+                  {recommended.metaDescription}
+                </p>
+              )}
+            </div>
+          </aside>
+        )}
+
       </article>
       <Footer />
     </>

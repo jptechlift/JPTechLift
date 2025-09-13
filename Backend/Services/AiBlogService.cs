@@ -1,22 +1,25 @@
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Backend.Dtos.Blog; // Đảm bảo đường dẫn này đúng cho các DTO của bạn
-using Microsoft.AspNetCore.Http; // Cho IFormFile
-using System.IO; // Cho MemoryStream, Path
-using System.Threading.Tasks;
-using UglyToad.PdfPig; // Cho PDF
-using Xceed.Words.NET; // Cho DOCX
-using Backend.Helpers; // Để sử dụng SlugHelper
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
-using Markdig; // Dòng này RẤT QUAN TRỌNG để chuyển đổi Markdown sang HTML
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Backend.Dtos.Blog;
+using Backend.Helpers;
+using DocumentFormat.OpenXml.Packaging;
+using HtmlAgilityPack;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OpenXmlPowerTools;
+using UglyToad.PdfPig;
+using System.Net; 
 
 namespace Backend.Services;
 
@@ -143,203 +146,212 @@ public class AiBlogService
     }
 
 
-    /// <summary>
-    /// Generates AI-assisted blog content based on an uploaded document (PDF/DOCX).
-    /// This method is specifically designed to:
-    /// 1. Extract the first non-empty line from the document as the initial title guess.
-    /// 2. Use AI to generate a structured blog post (Title, HTML Body, Meta Description)
-    ///    based on the extracted document content as source material.
-    /// 3. Implement robust fallback and length enforcement for the Meta Description.
-    /// 4. Generate a slug from the final title.
-    /// </summary>
-    /// <param name="file">The uploaded document file.</param>
-    /// <returns>A tuple containing the generated Title, Slug, Content (formatted as HTML), and MetaDescription.</returns>
-    public async Task<(string Title, string Slug, string Content, string MetaDescription)> GenerateFromDocumentAsync(IFormFile file)
+   #region === PHẦN MÃ ĐƯỢC CẬP NHẬT CHO VIỆC TRÍCH XUẤT TỪ DOCUMENT ===
+
+/// <summary>
+/// Trích xuất nội dung từ một tài liệu được tải lên (.docx, .pdf, .txt)
+/// một cách CHÍNH XÁC, không sử dụng AI để sáng tạo nội dung.
+/// </summary>
+public async Task<(string Title, string Slug, string Content, string MetaDescription)> GenerateFromDocumentAsync(IFormFile file)
+{
+    if (file == null || file.Length == 0)
     {
-        var (extractedTitle, body) = await ExtractTitleAndTextFromFile(file);
-        if (string.IsNullOrWhiteSpace(extractedTitle) && string.IsNullOrWhiteSpace(body))
-        {
-            _logger.LogWarning("Extracted text from document was empty.");
-            throw new InvalidOperationException("Không thể trích xuất văn bản từ tài liệu hoặc tài liệu trống.");
-        }
-
-string title = string.IsNullOrWhiteSpace(extractedTitle)
-            ? "Tài liệu trống hoặc không có tiêu đề rõ ràng."
-            : extractedTitle.Trim();
-        string slug = Helpers.SlugHelper.GenerateSlug(title);
-
-        if (string.IsNullOrWhiteSpace(_apiKey))
-        {
-            string encodedBody = System.Net.WebUtility.HtmlEncode(body);
-            string finalBodyHtmlFallback = encodedBody.Replace("\r\n", "<br/>").Replace("\n", "<br/>");
-            string metaDescriptionFallback = body.Replace('\r', ' ').Replace('\n', ' ').Trim();
-            return (title, slug, finalBodyHtmlFallback, metaDescriptionFallback);
-        }
-
-        var promptBuilder = new StringBuilder();
-        promptBuilder.AppendLine("Bạn là một chuyên gia content marketing của công ty thang máy JP TechLift.");
-        promptBuilder.AppendLine("Hãy sử dụng 100% nội dung dưới đây để soạn thành một bài blog HTML giữ nguyên thiết kế và cấu trúc của văn bản gốc.");
-        promptBuilder.AppendLine("Không được thêm hoặc bớt bất kỳ thông tin nào ngoài việc định dạng lại.");
-        promptBuilder.AppendLine("Tạo thêm một meta description hấp dẫn, chuyên nghiệp để thu hút người đọc.");
-        promptBuilder.AppendLine("Nội dung gốc:");
-        promptBuilder.AppendLine(body);
-        promptBuilder.AppendLine("\nYÊU CẦU ĐẦU RA: Chỉ trả về chuỗi JSON với cấu trúc sau và không có ký tự thừa:");
-        promptBuilder.AppendLine("{");
-        promptBuilder.AppendLine("  \"body\": \"Nội dung bài viết dạng HTML\",");
-        promptBuilder.AppendLine("  \"metaDescription\": \"Mô tả ngắn gọn hấp dẫn\"");
-        promptBuilder.AppendLine("}");
-
-        var model = "gemini-1.5-flash-latest";
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={_apiKey}";
-
-        var payload = new GeminiRequest
-        {
-            Contents = new List<Content>
-            {
-                new Content { Parts = new List<Part> { new Part { Text = promptBuilder.ToString() } } }
-            }
-        };
-
-        string aiBodyHtml = string.Empty;
-        string aiMetaDescription = string.Empty;
-
-        try
-        {
- _logger.LogInformation("Sending document prompt to Gemini API. Prompt length: {Length}", promptBuilder.Length);
-            var response = await _httpClient.PostAsJsonAsync(url, payload);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var geminiResponse = await response.Content.ReadFromJsonAsync<GeminiResponse>();
-                var generatedText = geminiResponse?.Candidates?.FirstOrDefault()?.Content?.Parts?.FirstOrDefault()?.Text;
-
-                if (!string.IsNullOrWhiteSpace(generatedText))
-                {
-                    try
-                    {
-                        var cleanJsonText = StripCodeFences(generatedText);
-                        var jsonDoc = JsonDocument.Parse(cleanJsonText);
-                        if (jsonDoc.RootElement.TryGetProperty("body", out JsonElement bodyEl) && bodyEl.ValueKind == JsonValueKind.String)
-                        {
-                            aiBodyHtml = bodyEl.GetString() ?? string.Empty;
-                        }
-                        if (jsonDoc.RootElement.TryGetProperty("metaDescription", out JsonElement metaEl) && metaEl.ValueKind == JsonValueKind.String)
-                        {
-                            aiMetaDescription = metaEl.GetString() ?? string.Empty;
-                        }
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        _logger.LogError(jsonEx, "Failed to parse JSON response from Gemini. Raw text was: {GeneratedText}", generatedText);
-                    }
-                }
-                else
-                {
-                    _logger.LogWarning("Gemini API returned empty text for document generation.");
-                }
-            }
-            else
-            {
-                var errorBody = await response.Content.ReadAsStringAsync();
-                _logger.LogError("Gemini API request failed with status {StatusCode}. Response: {ErrorBody}", response.StatusCode, errorBody);
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Exception occurred while calling Gemini API for document generation.");
-        }
-
-        string finalBodyHtml = string.IsNullOrWhiteSpace(aiBodyHtml)
-            ? System.Net.WebUtility.HtmlEncode(body).Replace("\r\n", "<br/>").Replace("\n", "<br/>")
-            : aiBodyHtml;
-        string finalMetaDescription = string.IsNullOrWhiteSpace(aiMetaDescription)
-            ? body.Replace('\r', ' ').Replace('\n', ' ').Trim()
-            : aiMetaDescription;
-
-        return (title, slug, finalBodyHtml, finalMetaDescription);
+        throw new ArgumentException("Không có file nào được tải lên.", nameof(file));
     }
 
+    string title;
+    string contentHtml;
+    var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
-    /// <summary>
-    /// Extracts the full raw text from a document. The definitive title will be derived
-    /// in GenerateFromDocumentAsync from the first non-empty line of this fullText.
-    /// This method is now even more robust about preserving raw line structure.
-    /// </summary>
-    /// <param name="file">The uploaded document file.</param>
-    /// <returns>A tuple containing a guess for title (no longer used) and the full document text.</returns>
-    private async Task<(string title, string body)> ExtractTitleAndTextFromFile(IFormFile file)
+    await using var memoryStream = new MemoryStream();
+    await file.CopyToAsync(memoryStream);
+    memoryStream.Position = 0;
+
+    try
     {
-        using var memoryStream = new MemoryStream();
-        await file.CopyToAsync(memoryStream);
-        memoryStream.Position = 0; // Reset stream position
-
-        string fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        string rawFullText = string.Empty;
         switch (fileExtension)
         {
-            case ".pdf":
-                try
-                {
-                    using (var pdfDocument = PdfDocument.Open(memoryStream))
-                    {
-                        var textBuilder = new StringBuilder();
-                        foreach (var page in pdfDocument.GetPages())
-                        {
-                            textBuilder.AppendLine(page.Text);
-                        }
-                        // KHÔNG TRIM để giữ nguyên cấu trúc dòng và khoảng trắng
-                        rawFullText = textBuilder.ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to extract text from PDF file.");
-                    throw new InvalidOperationException("Failed to extract text from PDF file. Please ensure it's a valid PDF.");
-                }
-                break;
-
             case ".docx":
-                try
-                {
-                    using (var doc = DocX.Load(memoryStream))
-                    {
-                        // Lấy toàn bộ văn bản thô, KHÔNG TRIM
-                        rawFullText = doc.Text;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to extract text from DOCX file.");
-                    throw new InvalidOperationException("Failed to extract text from DOCX file. Please ensure it's a valid DOCX.");
-                }
+                string rawHtml = ExtractHtmlFromDocx(memoryStream);
+                (title, contentHtml) = ProcessDocxHtml(rawHtml); // Sử dụng phương thức xử lý DOCX chuyên dụng
                 break;
-
+            case ".pdf":
+            case ".txt":
+                string plainText = fileExtension == ".pdf" 
+                    ? ExtractTextFromPdf(memoryStream) 
+                    : await new StreamReader(memoryStream).ReadToEndAsync();
+                (title, contentHtml) = ExtractTitleAndContentFromPlainText(plainText); // Sử dụng phương thức xử lý text
+                break;
             default:
-                throw new InvalidOperationException("Unsupported file type for text extraction.");
+                throw new NotSupportedException("Định dạng file không được hỗ trợ. Vui lòng sử dụng .docx, .pdf, hoặc .txt.");
         }
-        if (string.IsNullOrWhiteSpace(rawFullText))
-        {
-            return (string.Empty, string.Empty);
-        }
-
-       rawFullText = rawFullText.TrimStart('\r', '\n');
-        var match = Regex.Match(rawFullText, @"\r?\n\s*\r?\n");
-        string title;
-        string body;
-
-        if (match.Success)
-        {
-             title = rawFullText.Substring(0, match.Index).Trim();
-            int bodyStart = match.Index + match.Length;
-            body = rawFullText.Substring(bodyStart);
-        }
-        else
-        {
-            title = rawFullText.Trim();
-            body = string.Empty;
-        }
-        return (title, body);
     }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Lỗi xảy ra trong quá trình trích xuất nội dung từ file {FileName}", file.FileName);
+        throw new InvalidOperationException("Không thể xử lý file. File có thể bị hỏng hoặc không đúng định dạng.", ex);
+    }
+
+    if (string.IsNullOrWhiteSpace(contentHtml))
+    {
+        throw new InvalidOperationException("Không thể trích xuất nội dung từ file. File có thể trống.");
+    }
+
+    var slug = SlugHelper.GenerateSlug(title);
+    var metaDescription = CreateMetaDescription(contentHtml, 160);
+
+    return (title, slug, contentHtml, metaDescription);
+}
+
+/// <summary>
+/// Chuyển đổi một file DOCX trong stream thành một chuỗi HTML thô.
+/// </summary>
+private string ExtractHtmlFromDocx(Stream docxStream)
+{
+    byte[] byteArray = new byte[docxStream.Length];
+    docxStream.Read(byteArray, 0, byteArray.Length);
+
+    using (MemoryStream memStream = new MemoryStream())
+    {
+        memStream.Write(byteArray, 0, byteArray.Length);
+        using (WordprocessingDocument wDoc = WordprocessingDocument.Open(memStream, true))
+        {
+            var settings = new HtmlConverterSettings();
+            XElement html = HtmlConverter.ConvertToHtml(wDoc, settings);
+            return html.ToString();
+        }
+    }
+}
+
+/// <summary>
+/// Xử lý HTML thô từ DOCX: Tách tiêu đề, dọn dẹp và tái cấu trúc nội dung.
+/// </summary>
+private (string Title, string ContentHtml) ProcessDocxHtml(string rawHtml)
+{
+    var doc = new HtmlDocument();
+    doc.LoadHtml(rawHtml);
+
+    // 1. Tách tiêu đề
+    var titleNode = doc.DocumentNode.SelectSingleNode("//h1|//h2|//p[string-length(normalize-space(.)) > 0]");
+    string title = titleNode != null ? WebUtility.HtmlDecode(titleNode.InnerText.Trim()) : "Tiêu đề không xác định";
+    titleNode?.Remove();
+
+    // 2. Lấy body và dọn dẹp
+    var bodyNode = doc.DocumentNode.SelectSingleNode("//body");
+    if (bodyNode == null) return (title, string.Empty);
+    
+    // Loại bỏ tất cả các thuộc tính (class, style,...) khỏi mọi thẻ, chỉ giữ lại cấu trúc
+    foreach (var node in bodyNode.SelectNodes("//*"))
+    {
+        node.Attributes.RemoveAll();
+    }
+    
+    var newContent = new StringBuilder();
+    var nodes = bodyNode.SelectNodes("./*")?.ToList() ?? new List<HtmlNode>();
+
+    for (int i = 0; i < nodes.Count; i++)
+    {
+        var node = nodes[i];
+        if (node.Name != "p") // Chỉ xử lý các thẻ <p> ban đầu
+        {
+            // Nếu là thẻ khác (ví dụ <h2> đã có sẵn), giữ nguyên nó
+            newContent.AppendLine(node.OuterHtml);
+            continue;
+        }
+
+        string innerText = WebUtility.HtmlDecode(node.InnerText).Trim();
+        if (string.IsNullOrWhiteSpace(innerText)) continue;
+
+        // Quy tắc nhận diện Heading từ <p> in đậm
+        var strongNode = node.SelectSingleNode(".//strong");
+        if (strongNode != null && WebUtility.HtmlDecode(strongNode.InnerText).Trim().Length > innerText.Length * 0.8)
+        {
+            newContent.AppendLine($"<h2>{innerText}</h2>");
+            continue;
+        }
+
+        // Quy tắc nhận diện Danh sách có thứ tự
+        if (IsListItem(node))
+        {
+            newContent.AppendLine("<ol>");
+            newContent.AppendLine($"  <li>{node.InnerHtml.Trim()}</li>");
+
+            while (i + 1 < nodes.Count && IsListItem(nodes[i + 1]))
+            {
+                i++; // Bỏ qua node tiếp theo trong vòng lặp chính
+                newContent.AppendLine($"  <li>{nodes[i].InnerHtml.Trim()}</li>");
+            }
+            newContent.AppendLine("</ol>");
+            continue;
+        }
+
+        // Mặc định là đoạn văn bản bình thường
+        newContent.AppendLine(node.OuterHtml);
+    }
+    
+    return (title, newContent.ToString());
+}
+
+// Hàm phụ để kiểm tra một node <p> có phải là một mục trong danh sách không
+private bool IsListItem(HtmlNode node)
+{
+    if (node.Name != "p") return false;
+    string innerText = WebUtility.HtmlDecode(node.InnerText).Trim();
+    return Regex.IsMatch(innerText, @"^\s*(\d+|[a-zA-Z]|[ivxlcdm]+)\.\s+", RegexOptions.IgnoreCase);
+}
+
+/// <summary>
+/// Trích xuất toàn bộ văn bản thô từ một file PDF trong stream.
+/// </summary>
+private string ExtractTextFromPdf(Stream pdfStream)
+{
+    var textBuilder = new StringBuilder();
+    using (var pdfDocument = PdfDocument.Open(pdfStream))
+    {
+        foreach (var page in pdfDocument.GetPages())
+        {
+            textBuilder.AppendLine(page.Text);
+        }
+    }
+    return textBuilder.ToString();
+}
+
+/// <summary>
+/// Xử lý văn bản thô (từ PDF/TXT) để tách tiêu đề và nội dung.
+/// </summary>
+private (string Title, string ContentHtml) ExtractTitleAndContentFromPlainText(string plainText)
+{
+    var lines = plainText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+                          .SkipWhile(string.IsNullOrWhiteSpace).ToList();
+    if (!lines.Any()) return ("Tiêu đề không xác định", "");
+
+    string title = lines.First().Trim();
+    var bodyLines = lines.Skip(1);
+    var contentBuilder = new StringBuilder();
+    foreach (var line in bodyLines)
+    {
+        if (string.IsNullOrWhiteSpace(line)) continue;
+        contentBuilder.Append($"<p>{WebUtility.HtmlEncode(line.Trim())}</p>\n");
+    }
+    return (title, contentBuilder.ToString());
+}
+
+/// <summary>
+/// Tạo một meta description ngắn gọn từ nội dung HTML.
+/// </summary>
+private string CreateMetaDescription(string htmlContent, int maxLength)
+{
+    if (string.IsNullOrEmpty(htmlContent)) return "";
+    var plainText = Regex.Replace(htmlContent, "<.*?>", string.Empty);
+    plainText = WebUtility.HtmlDecode(plainText);
+    plainText = Regex.Replace(plainText.Trim(), @"\s+", " ");
+    if (plainText.Length <= maxLength) return plainText;
+    int lastSpace = plainText.LastIndexOf(' ', maxLength);
+    if (lastSpace > 0) return plainText.Substring(0, lastSpace) + "...";
+    return plainText.Substring(0, maxLength) + "...";
+}
+
+#endregion
 
 
     private static string StripCodeFences(string text)
