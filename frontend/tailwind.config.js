@@ -1,5 +1,5 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import typography from "@tailwindcss/typography"; // <-- THÊM: Import plugin
+import typography from "@tailwindcss/typography"; 
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -51,7 +51,7 @@ export default {
         moveRight: "moveRight 3s ease-in-out infinite",
       },
 
-      // --- PHẦN BỔ SUNG: TÙY CHỈNH GIAO DIỆN CHO PLUGIN TYPOGRAPHY ---
+    
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
@@ -89,10 +89,7 @@ export default {
           },
         },
       }),
-      // --- KẾT THÚC PHẦN BỔ SUNG ---
     },
   },
-
-  // --- THÊM: KÍCH HOẠT PLUGIN ---
   plugins: [typography],
 };

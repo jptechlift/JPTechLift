@@ -5,6 +5,8 @@ import clsx from "clsx";
 // import NavBar from "../components/Navbar/Navbar";
 // import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
 import { Eye } from "lucide-react";
+import NavBar from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/DesktopFooter/DesktopFooter";
 
 const PAGE_SIZE = 9;
 
@@ -91,7 +93,7 @@ const BlogPage = () => {
 
   return (
     <div>
-      {/* <NavBar /> */}
+      <NavBar/>
       <section className={styles["blog-page"]}>
         <div className={styles["blog-page__header"]}>
           <h1 className={styles["blog-page__title"]}>Blog</h1>
@@ -348,7 +350,7 @@ const BlogPage = () => {
           </nav>
         )}
       </section>
-      {/* <Footer /> */}
+      <Footer/>
     </div>
   );
 };
