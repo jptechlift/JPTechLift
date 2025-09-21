@@ -1,13 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import styles from "../../styles/pages/about-us-page/about-us-banner.module.scss";
 
 import image from "../../assets/images/Book-Img.jpg";
 
 export default function PrincipleSection() {
+  const [showFlipbook, setShowFlipbook] = useState(false); // State điều khiển hiển thị flipbook
+
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
+
+  const handleButtonClick = () => {
+    setShowFlipbook(!showFlipbook); // Chuyển đổi trạng thái hiển thị flipbook
+  };
 
   return (
     <section className="w-full px-4 py-12 md:px-12 lg:px-24 text-center text-[#041E42] bg-texture-bg bg-texture-pattern bg-[length:8px_8px]">
@@ -51,6 +58,7 @@ export default function PrincipleSection() {
           className="px-6 py-2 bg-[#041E42] text-white text-sm hover:bg-[#041E42] transition"
           data-aos="zoom-in"
           data-aos-delay="400"
+          onClick={handleButtonClick}
         >
           TẢI VỀ BỘ NGUYÊN TẮC CỦA JPTECHLIFT
         </button>
@@ -81,11 +89,7 @@ export default function PrincipleSection() {
           trong mọi quyết định của chúng tôi là nền tảng dẫn đến thành công
           trong kinh doanh.
         </p>
-        <div
-          className="mb-10"
-          data-aos="zoom-in-up"
-          data-aos-delay="300"
-        >
+        <div className="mb-10" data-aos="zoom-in-up" data-aos-delay="300">
           <img
             src={image}
             alt="Principle"
@@ -96,9 +100,27 @@ export default function PrincipleSection() {
           className="px-6 py-2 bg-[#041E42] text-white text-sm hover:bg-[#041E42] transition"
           data-aos="zoom-in"
           data-aos-delay="400"
+          onClick={handleButtonClick}
         >
           ĐỌC BỘ NGUYÊN TẮC JPTECHLIFT
         </button>
+        {/* Hiển thị flipbook khi nhấn nút */}
+        {showFlipbook && (
+          <div className={styles.flipbookWrapper}>
+            <iframe
+              allowFullScreen
+              allow="clipboard-write"
+              scrolling="no"
+              className="fp-iframe"
+              src="https://online.fliphtml5.com/JPTechLift/zhwa/"
+              style={{
+                border: "1px solid lightgray",
+                width: "100%",
+                height: "400px",
+              }}
+            ></iframe>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -5,15 +5,13 @@ import styles from "../../styles/pages/about-us-page/about-us-banner.module.scss
 import cityImg from "../../assets/images/city.jpg";
 
 export default function AboutUsBanner() {
-  const [showFlipbook, setShowFlipbook] = useState(false); // State điều khiển hiển thị flipbook
+
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
   }, []);
 
-  const handleButtonClick = () => {
-    setShowFlipbook(!showFlipbook); // Chuyển đổi trạng thái hiển thị flipbook
-  };
+
 
   return (
     <section className={styles.aboutBanner}>
@@ -61,28 +59,12 @@ export default function AboutUsBanner() {
         </div>
 
         <div className={styles.aboutBanner__buttonWrapper}>
-          <button className={styles.aboutBanner__button} onClick={handleButtonClick}>
+          <button className={styles.aboutBanner__button}>
             ĐỒNG HÀNH CÙNG JPTECHLIFT
           </button>
         </div>
 
-        {/* Hiển thị flipbook khi nhấn nút */}
-        {showFlipbook && (
-          <div className={styles.flipbookWrapper}>
-            <iframe
-              allowFullScreen
-              allow="clipboard-write"
-              scrolling="no"
-              className="fp-iframe"
-              src="https://online.fliphtml5.com/JPTechLift/zhwa/"
-              style={{
-                border: "1px solid lightgray",
-                width: "100%",
-                height: "400px",
-              }}
-            ></iframe>
-          </div>
-        )}
+       
       </div>
     </section>
   );

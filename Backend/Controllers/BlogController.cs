@@ -1,12 +1,12 @@
+using System;
+using System.Threading.Tasks;
 using Backend.Constants;
 using Backend.Dtos.Blog;
 using Backend.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Backend.Controllers;
 
@@ -23,7 +23,8 @@ public class BlogController : ControllerBase
     public BlogController(
         BlogService blogService,
         AiBlogService aiBlogService,
-        ILogger<BlogController> logger)
+        ILogger<BlogController> logger
+    )
     {
         _blogService = blogService;
         _aiBlogService = aiBlogService;
@@ -59,8 +60,19 @@ public class BlogController : ControllerBase
     [Authorize]
     public async Task<IActionResult> GeneratePreview([FromBody] BlogRequest request)
     {
-        var (title, slug, content, metaDescription) = await _blogService.GeneratePreviewAsync(request);
-        return Ok(new { title, slug, generatedContent = content, previewUrl = $"/blogs/{slug}", metaDescription });
+        var (title, slug, content, metaDescription) = await _blogService.GeneratePreviewAsync(
+            request
+        );
+        return Ok(
+            new
+            {
+                title,
+                slug,
+                generatedContent = content,
+                previewUrl = $"/blogs/{slug}",
+                metaDescription,
+            }
+        );
     }
 
     [HttpPost("/api/blog/publish")]
@@ -92,7 +104,6 @@ public class BlogController : ControllerBase
         return NoContent();
     }
 
-
     // === PHIÊN BẢN CUỐI CÙNG CỦA PHƯƠNG THỨC TẠO BLOG TỪ TÀI LIỆU ===
     /// <summary>
     /// Generates a preview by extracting content directly from an uploaded document.
@@ -112,31 +123,47 @@ public class BlogController : ControllerBase
         {
             // 2. Gửi file trực tiếp đến AiBlogService để xử lý.
             // Service sẽ tự kiểm tra định dạng file và thực hiện logic trích xuất.
-            var (title, slug, content, metaDescription) = await _aiBlogService.GenerateFromDocumentAsync(file);
+            var (title, slug, content, metaDescription) =
+                await _aiBlogService.GenerateFromDocumentAsync(file);
 
             // 3. Trả về kết quả thành công cho frontend
-            return Ok(new
-            {
-                title,
-                slug,
-                generatedContent = content, // Tên thuộc tính này phải khớp với frontend
-                metaDescription
-            });
+            return Ok(
+                new
+                {
+                    title,
+                    slug,
+                    generatedContent = content, // Tên thuộc tính này phải khớp với frontend
+                    metaDescription,
+                }
+            );
         }
         // 4. Bắt các lỗi cụ thể từ service để trả về thông báo chính xác
         catch (NotSupportedException ex) // Bắt lỗi khi định dạng file không được hỗ trợ
         {
-             _logger.LogWarning("Attempted to upload an unsupported file type. File: {FileName}, Message: {Message}", file.FileName, ex.Message);
-             return BadRequest(new { message = ex.Message }); // Lỗi 400
+            _logger.LogWarning(
+                "Attempted to upload an unsupported file type. File: {FileName}, Message: {Message}",
+                file.FileName,
+                ex.Message
+            );
+            return BadRequest(new { message = ex.Message }); // Lỗi 400
         }
         catch (InvalidOperationException ex) // Bắt lỗi khi file hỏng hoặc trống
         {
-            _logger.LogWarning(ex, "Document processing failed for file {FileName}. Message: {Message}", file.FileName, ex.Message);
+            _logger.LogWarning(
+                ex,
+                "Document processing failed for file {FileName}. Message: {Message}",
+                file.FileName,
+                ex.Message
+            );
             return BadRequest(new { message = ex.Message }); // Lỗi 400
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unexpected error occurred while processing file {FileName}.", file.FileName);
+            _logger.LogError(
+                ex,
+                "An unexpected error occurred while processing file {FileName}.",
+                file.FileName
+            );
             // Lỗi 500 cho các vấn đề không lường trước được ở server
             return StatusCode(500, new { message = "Đã xảy ra lỗi hệ thống. Vui lòng thử lại." });
         }

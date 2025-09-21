@@ -76,7 +76,10 @@ public class AuthController : ControllerBase
 
             if (!IsPasswordValid(request.Password))
             {
-                ModelState.AddModelError(nameof(request.Password), "Password does not meet requirements");
+                ModelState.AddModelError(
+                    nameof(request.Password),
+                    "Password does not meet requirements"
+                );
                 return ValidationProblem(ModelState);
             }
 
@@ -106,7 +109,10 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during registration");
-            return StatusCode(500, new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." });
+            return StatusCode(
+                500,
+                new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." }
+            );
         }
     }
 
@@ -180,7 +186,10 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during login");
-            return StatusCode(500, new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." });
+            return StatusCode(
+                500,
+                new { message = "Đã có lỗi hệ thống xảy ra. Vui lòng thử lại sau." }
+            );
         }
     }
 
