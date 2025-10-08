@@ -117,3 +117,34 @@ frontend/
 - Commit Messages: Sử dụng chuẩn Conventional Commits (ví dụ: feat: add login page, fix: button alignment).
 
 </details>
+
+## 📄 Phục vụ tài liệu PDF tĩnh
+
+- Sao chép các file `.pdf` của bạn vào thư mục `frontend/public/docs/`. Mỗi file đặt tên không chứa dấu cách để URL gọn và ổn định.
+- Khi build, Vite giữ nguyên mọi file trong `public`, do đó tài liệu sẽ được phát trực tiếp tại đường dẫn `/docs/<ten-file>.pdf` sau khi deploy.
+- Trong HTML tĩnh, đặt liên kết như sau để trình duyệt mở trình đọc PDF có sẵn:
+
+  ```html
+  <a href="/docs/bao-cao-tai-chinh.pdf" target="_blank" rel="noopener noreferrer">
+    Xem báo cáo PDF
+  </a>
+  ```
+
+- Trong component React, dùng cùng URL tuyệt đối từ gốc để tránh lỗi bundler:
+
+  ```tsx
+  export function DocumentButton() {
+    return (
+      <a
+        href="/docs/bao-cao-tai-chinh.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center rounded bg-primary px-4 py-2 text-white"
+      >
+        Xem tài liệu
+      </a>
+    );
+  }
+  ```
+
+- Kiểm tra sau deploy bằng cách truy cập trực tiếp URL (ví dụ `https://ten-mien/docs/bao-cao-tai-chinh.pdf`). Nếu tài liệu hiển thị, mọi nút/link trỏ tới nó cũng hoạt động.

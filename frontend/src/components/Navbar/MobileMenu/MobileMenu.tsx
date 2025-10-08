@@ -34,10 +34,10 @@ const NAVIGATION_DATA = {
     { label: "THANG MÁY GIA ĐÌNH", path: "/san-pham/thang-may-gia-dinh" },
     { label: "THANG MÁY HÀNH KHÁCH", path: "/san-pham/thang-may-hanh-khach" },
     { label: "THANG MÁY TẢI HÀNG", path: "/san-pham/thang-may-tai-hang" },
-    { label: "THANG MÁY QUAN SÁT", path: "/san-pham/thang-may-quan-sat" },
-    { label: "THANG MÁY BỆNH VIỆN", path: "/san-pham/thang-may-benh-vien" },
+    // { label: "THANG MÁY QUAN SÁT", path: "/san-pham/thang-may-quan-sat" },
+    // { label: "THANG MÁY BỆNH VIỆN", path: "/san-pham/thang-may-benh-vien" },
     { label: "THANG MÁY THỰC PHẨM", path: "/san-pham/thang-tai-thuc-pham" },
-    { label: "THANG CUỐN", path: "/san-pham/thang-truot-thang-cuon" },
+    // { label: "THANG CUỐN", path: "/san-pham/thang-truot-thang-cuon" },
   ],
   services: [
     { label: "TƯ VẤN – THIẾT KẾ", path: "/dich-vu-thang-may/tu-van-thiet-ke" },
