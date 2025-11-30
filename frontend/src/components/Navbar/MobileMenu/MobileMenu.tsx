@@ -48,7 +48,7 @@ const NAVIGATION_DATA = {
   ],
   about: [
     { label: "VỀ CHÚNG TÔI", path: "/gioi-thieu" },
-    { label: "BAN LÃNH ĐẠO", path: "/gioi-thieu/ban-lanh-dao" },
+    // { label: "BAN LÃNH ĐẠO", path: "/gioi-thieu/ban-lanh-dao" },
     { label: "NGUYÊN TẮC", path: "/gioi-thieu/nguyen-tac" },
     { label: "QUY TRÌNH DỰ ÁN", path: "/gioi-thieu/quy-trinh-du-an" },
   ],
