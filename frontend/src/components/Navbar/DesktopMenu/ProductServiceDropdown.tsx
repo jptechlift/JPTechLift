@@ -5,7 +5,7 @@ import type { ProductTitle } from "../../../constants/productSlugMap";
 
 const aboutLinks: Record<string, string> = {
   "VỀ CHÚNG TÔI": "/gioi-thieu",
-  "BAN LÃNH ĐẠO": "/gioi-thieu/ban-lanh-dao",
+  // "BAN LÃNH ĐẠO": "/gioi-thieu/ban-lanh-dao",
   "NGUYÊN TẮC": "/gioi-thieu/nguyen-tac",
   "QUY TRÌNH DỰ ÁN": "/gioi-thieu/quy-trinh-du-an",
 };
@@ -49,7 +49,7 @@ const ProductServiceDropdown = ({ type, onClose }: DropdownContentProps) => {
     ],
     about: {
       title: "GIỚI THIỆU",
-      items: ["JP TECHLIFT", "BAN LÃNH ĐẠO", "NGUYÊN TẮC", "QUY TRÌNH DỰ ÁN"],
+      items: ["JP TECHLIFT", "NGUYÊN TẮC", "QUY TRÌNH DỰ ÁN"],
     },
     contact: {
       title: "LIÊN HỆ CHÍNH",

@@ -5,7 +5,7 @@ import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import StandardPage from "./pages/StandardPage";
 import PrinciplePage from "./pages/PrinciplePage";
-import LeaderPage from "./pages/LeaderPage";
+// import LeaderPage from "./pages/LeaderPage";
 import ScrollToTop from "./components/ScrollToTop";
 import ProductTemplatePage from "./pages/Products/ProductTemplate";
 import ServiceTemplatePage from "./pages/Services/ServiceTemplatePage";
@@ -54,7 +54,7 @@ const App = () => {
           {/* Trang tiêu chuẩn */}
           <Route path="/gioi-thieu/nguyen-tac" element={<PrinciplePage />} />
           {/* Trang nguyên tắc */}
-          <Route path="/gioi-thieu/ban-lanh-dao" element={<LeaderPage />} />
+          {/* <Route path="/gioi-thieu/ban-lanh-dao" element={<LeaderPage />} /> */}
           {/* Trang nguyên tắc */}
           <Route path="/tin-tuc-thang-may" element={<NewsPage />} /> {/* Trang tin tức */}
           <Route path="/gioi-thieu" element={<AboutUsPage />} />
